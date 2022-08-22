@@ -4,10 +4,12 @@ from .models import User
 
 
 class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label='username', min_length=5, max_length=150)
-    email = forms.EmailField()
+    username = forms.CharField(label='username', min_length=5, max_length=150,
+                               widget=forms.TextInput(attrs={'placeholder': 'Login'}))
+    email = forms.EmailField(widget=forms.TextInput(
+        attrs={'placeholder': 'Email'}))
     password1 = forms.CharField(label='password', widget=forms.PasswordInput(
-        attrs={"autocomplete": "new-password"}))
+        attrs={"autocomplete": "new-password", 'placeholder': 'Password'}))
     password2 = None
 
     class Meta:
@@ -27,5 +29,10 @@ class RegisterUserForm(UserCreationForm):
 
 
 class AuthenticationUserForm(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder': 'Login or Email'}))
+    password = forms.CharField(label='password', widget=forms.PasswordInput(
+        attrs={"autocomplete": "new-password", 'placeholder': 'Password'}))
+
     class Meta:
         model = User

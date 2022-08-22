@@ -7,10 +7,14 @@ from django.views.generic.edit import CreateView
 from .forms import RegisterUserForm, AuthenticationUserForm
 from .models import User
 
+from django.urls import reverse_lazy
+
 
 class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterUserForm
+
+    success_url = reverse_lazy('login')
 
 
 class AuthenticationView(LoginView):
