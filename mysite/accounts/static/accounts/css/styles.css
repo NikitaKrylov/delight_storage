@@ -527,7 +527,6 @@ body._lock .mobileMenuBackground {
 .regContainer {
     /* background-image: url('/image/post/background.webp'); */
     background-size: cover;
-
     position: absolute;
     top: 0;
     left: 0;

@@ -43,6 +43,7 @@
 
                             <div class="forgotData">
                                 <a href="">I`m forgot login or password</a>
+
                             </div>
 
                             <div class="_1AOkp">
@@ -100,7 +101,8 @@
             "url(/static/accounts/images/backgrounds/bg9.jpg) 40% 50% no-repeat",
         ];
         console.log(backgrounds[Math.floor(Math.random() * (backgrounds.length))]);
-        document.querySelector('.regContainer').style.background = backgrounds[Math.floor(Math.random() * (backgrounds.length))];  
+        document.querySelector('.regContainer').style.background  = backgrounds[Math.floor(Math.random() * (backgrounds.length))];
+        document.querySelector('.regContainer').style.backgroundSize = 'cover'
     </script>
 </body>
 

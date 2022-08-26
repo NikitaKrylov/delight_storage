@@ -16,15 +16,21 @@ post_list_display = (
     'disable_comments',
     'count_tags',
     'count_comments',
-    'count_marks',
-    'average_mark',
+    'count_likes',
+    'count_views',
 )
 post_readonly_fields = (
     'count_comments',
-    'count_marks',
-    'average_mark',
+    'count_likes',
+    'count_views',
+    'count_views',
+)
+post_exclude_fields = (
+    'views',
 )
 
+
+admin.site.register(Like)
 
 @admin.register(ImagePost)
 class ImagePostAdmin(admin.ModelAdmin):
@@ -32,6 +38,7 @@ class ImagePostAdmin(admin.ModelAdmin):
     list_filter = post_list_filter
     list_display = post_list_display
     readonly_fields = post_readonly_fields
+    exclude = post_exclude_fields
 
 
 @admin.register(VideoPost)
@@ -40,6 +47,7 @@ class VideoPostAdmin(admin.ModelAdmin):
     list_filter = post_list_filter
     list_display = post_list_display
     readonly_fields = post_readonly_fields
+    exclude = post_exclude_fields
 
 
 @admin.register(TextPost)
@@ -51,6 +59,7 @@ class TextPostAdmin(admin.ModelAdmin):
     list_filter = post_list_filter
     list_display = post_list_display
     readonly_fields = post_readonly_fields
+    exclude = post_exclude_fields
 
 
 @admin.register(PostTag)
@@ -58,6 +67,7 @@ class TagAdmin(admin.ModelAdmin):
     search_fields = (
         'name',
     )
+    prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Comment)
@@ -73,18 +83,3 @@ class CommentAdmin(admin.ModelAdmin):
         'text_length',
     )
 
-
-@admin.register(Mark)
-class MarkAdmin(admin.ModelAdmin):
-    search_fields = (
-        'author.username',
-    )
-    list_filter = (
-        'value',
-    )
-    list_display = (
-        'value',
-        'author',
-        'content_type',
-        'object_id',
-    )

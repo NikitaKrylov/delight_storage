@@ -99,7 +99,9 @@
             "url(/static/accounts/images/backgrounds/bg9.jpg) 40% 50% no-repeat",
         ];
         console.log(backgrounds[Math.floor(Math.random() * (backgrounds.length))]);
-        document.querySelector('.regContainer').style.background = backgrounds[Math.floor(Math.random() * (backgrounds.length))];  
+        document.querySelector('.regContainer').style.background = backgrounds[Math.floor(Math.random() * (backgrounds.length))];
+        document.querySelector('.regContainer').style.backgroundSize = 'cover'
+
     </script>
 </body>
 

@@ -128,6 +128,9 @@ RECOMMENDED_IMAGE_BAIT_SIZE = 300 * 1024
 MAX_IMAGE_BAIT_SIZE = 700 * 1024
 MIN_IMAGE_BAIT_SIZE = 1024
 
+
+PAGINATED_AMOUNT = 20
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'

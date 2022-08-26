@@ -1,14 +1,12 @@
 from django.db import models
-from accounts.models import User
+from accounts.models import User, ClientIP
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Avg, QuerySet
-from django.core.validators import MaxValueValidator
-from typing import List
 from django.urls import reverse
 from django.core.exceptions import ValidationError
-
+from django.template.defaultfilters import slugify
 
 class PostManager(models.Manager):
     def contain_tags(self, *tags) -> QuerySet:
@@ -32,12 +30,19 @@ class AbstractBasePost(models.Model):
 
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'))
     comments = GenericRelation("Comment")
-    marks = GenericRelation("Mark")
+    views = models.ManyToManyField(ClientIP, blank=True)
+    likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
 
     objects = PostManager()
 
     class Meta:
         abstract = True
+
+    def count_likes(self) -> int:
+        return self.likes.count()
+
+    def count_views(self) -> int:
+        return self.views.count()
 
     def count_comments(self) -> int:
         return self.comments.count()
@@ -45,15 +50,8 @@ class AbstractBasePost(models.Model):
     def count_tags(self) -> int:
         return self.tags.count()
 
-    def count_marks(self) -> int:
-        return self.marks.count()
-
-    def average_mark(self) -> float:
-        value_avg = self.marks.aggregate(Avg('value'))['value__avg']
-        return 0 if value_avg is None else value_avg
-
-    def get_tags(self) -> List:
-        return self.marks.all()
+    def get_tags(self):
+        return self.tags.all()
 
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
@@ -109,32 +107,21 @@ class Comment(models.Model):
         return len(self.text)
 
     def clean(self):
-        if self.content_object is None:
+        print(self.content_object.disable_comments, '\n\n\n\n')
+        if self.content_object is None or not hasattr(self.content_object, "disable_comments"):
             raise ValidationError(f"{self.content_type.name} c id {self.object_id} не найден")
 
+        elif self.content_object.disable_comments:
+            raise ValidationError(f"К {self.content_type.name} c id {self.object_id} нельзя оставлять коментарии")
+
         return super().clean()
-
-
-class Mark(models.Model):
-    value = models.PositiveBigIntegerField(_("оценка"), validators=(MaxValueValidator(5),))
-    author = models.ForeignKey(User, verbose_name=_("автор оценки"), on_delete=models.SET_NULL, null=True)
-
-    content_type = models.ForeignKey(ContentType, verbose_name='тип оцениваемого объекта', on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField(verbose_name=_('id объекта'))
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-    class Meta:
-        verbose_name = "Оценка"
-        verbose_name_plural = "Оценки"
-
-    def __str__(self):
-        return "{} оценил на {}".format(self.author, self.value)
 
 
 # --------------------TAG--------------------------
 
 class PostTag(models.Model):
-    name = models.CharField(_("название тега"), max_length=30, db_index=True)
+    name = models.CharField(_("название тега"), max_length=30, db_index=True, unique=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         verbose_name = "Тег"
@@ -142,3 +129,14 @@ class PostTag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="likes")
+
+    class Meta:
+        verbose_name = 'Лайк'
+        verbose_name_plural = 'Лайки'
+
+    def __str__(self):
+        return "Лайк от {}".format(self.user.username)

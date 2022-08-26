@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
 
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(_('имя пользователя'), max_length=50, unique=True)
     email = models.EmailField(_("email addres"), max_length=255, unique=True)
     avatar = models.ImageField(_("иконка пользователя"), blank=True, null=True)
     birth_date = models.DateField(
@@ -43,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     start_date = models.DateField(
         verbose_name="дата регистрации", auto_now_add=True)
     ignored_tags = models.ManyToManyField(
-        "posts.PostTag", verbose_name=_('игнорируемые теги'), null=True)
+        "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -74,3 +74,14 @@ class ContentAuthor(models.Model):
     class Meta:
         verbose_name = "Автор контента"
         verbose_name_plural = "Авторы контента"
+
+
+class ClientIP(models.Model):
+    ip = models.CharField(_('адрес'), max_length=100)
+
+    class Meta:
+        verbose_name = 'IP Клиента'
+        verbose_name_plural = 'IP Клиентов'
+
+    def __str__(self):
+        return self.ip

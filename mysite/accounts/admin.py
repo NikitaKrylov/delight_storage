@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import User, ContentAuthor
+from .models import User, ContentAuthor, ClientIP
 
+admin.site.register(ClientIP)
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -15,6 +16,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'last_login',
+        'is_adult',
     )
 
     def is_adult(self, obj: User):

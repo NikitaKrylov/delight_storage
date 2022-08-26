@@ -1,5 +1,8 @@
 from django.views.generic.detail import SingleObjectMixin
-from .models import ImagePost, VideoPost, TextPost, AbstractBasePost
+from django.views.generic.list import MultipleObjectMixin
+
+from .models import AbstractBasePost
+from .services import update_post_views
 
 
 class PostMixin(SingleObjectMixin):
@@ -14,10 +17,28 @@ class PostMixin(SingleObjectMixin):
         context['post_author'] = post.post_author
         context['tags'] = list(post.tags.all())
         context['comments'] = list(post.comments.all())
-        context['average_mark'] = post.average_mark()
+        context['views_amount'] = post.count_views()
+        context['likes_amount'] = post.count_likes()
 
         return context
 
 
-class CheckPermissionsMixin:
-    pass
+class PostListItemMixin(MultipleObjectMixin):
+    model = AbstractBasePost
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            queryset = queryset.filter(for_autenticated_users=False)
+
+        if not self.request.user.is_adult():
+            queryset = queryset.filter(only_for_adult=False)
+
+        return queryset
+
+
+class UpdateViewsMixin(SingleObjectMixin):
+    """Inherited before PostMixin"""
+    def get(self, request, *args, **kwargs):
+        update_post_views(request, self.get_object())
+        return super().get(request, *args, **kwargs)
