@@ -27,10 +27,12 @@ post_readonly_fields = (
 )
 post_exclude_fields = (
     'views',
+    'likes',
 )
 
 
 admin.site.register(Like)
+
 
 @admin.register(ImagePost)
 class ImagePostAdmin(admin.ModelAdmin):

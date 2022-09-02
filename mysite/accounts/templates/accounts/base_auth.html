@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'accounts/css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/mobile.css' %}">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https: //fonts.googleapis.com/css2?family= Inter: wght @500 & display=swap" rel="stylesheet">
+
+    <title>Log In</title>
+</head>
+
+<body id="body">
+    <div class="wrapper">
+        <main class="regContainer">
+
+            {% block content %}{% endblock %}
+
+        </main>
+    </div>
+
+
+    <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
+    <script src="{% static 'accounts/js/scripts.js' %}"></script>
+    <script>
+        var backgrounds = [
+            "url(/static/accounts/images/backgrounds/bg1.jpg) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg2.jpg) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg3.webp) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg4.jpg) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg5.jpg) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg7.jpg) 40% 50% no-repeat",
+            "url(/static/accounts/images/backgrounds/bg9.jpg) 40% 50% no-repeat",
+        ];
+        var regContainer = document.querySelector('.regContainer')
+        regContainer.style.background = backgrounds[Math.floor(Math.random() * (backgrounds.length))];
+        regContainer.style.backgroundSize = 'cover'
+
+    </script>
+</body>
+</html>

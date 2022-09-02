@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'mediacore',
     'communications',
     'notifications',
+    'contentcreation',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -148,3 +149,10 @@ AUTH_USER_MODEL = "accounts.User"
 AUTHENTICATION_BACKENDS = [
     'mysite.backends.AuthBackend',
 ]
+
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+

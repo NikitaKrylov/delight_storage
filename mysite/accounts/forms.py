@@ -1,15 +1,16 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from .models import User
 
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='username', min_length=5, max_length=150,
-                               widget=forms.TextInput(attrs={'placeholder': 'Login'}))
+                               widget=forms.TextInput(attrs={'placeholder': 'Никнейм'}))
     email = forms.EmailField(widget=forms.TextInput(
         attrs={'placeholder': 'Email'}))
     password1 = forms.CharField(label='password', widget=forms.PasswordInput(
-        attrs={"autocomplete": "new-password", 'placeholder': 'Password'}))
+        attrs={"autocomplete": "new-password", 'placeholder': 'Пароль'}))
     password2 = None
 
     class Meta:
@@ -23,6 +24,8 @@ class RegisterUserForm(UserCreationForm):
     def save(self, commit=True):
         user = super(RegisterUserForm, self).save(commit=False)
         user.set_password(self.cleaned_data['password1'])
+        user.is_active = True
+
         if commit:
             user.save()
         return user
@@ -30,9 +33,48 @@ class RegisterUserForm(UserCreationForm):
 
 class AuthenticationUserForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Login or Email'}))
+        attrs={'placeholder': 'Никнейм или email', 'class': 'input'}))
     password = forms.CharField(label='password', widget=forms.PasswordInput(
-        attrs={"autocomplete": "new-password", 'placeholder': 'Password'}))
+        attrs={"autocomplete": "new-password", 'placeholder': 'Пароль', 'class': 'input'}))
 
     class Meta:
         model = User
+
+
+class EditUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'avatar',
+            'birth_date',
+            'ignored_tags',
+        )
+        # widgets = {}
+
+
+class UserPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        widget=forms.EmailInput(attrs={"autocomplete": "email", 'placeholder': 'Email'}))
+    # class Meta:
+    #     widgets = {
+    #         'email': forms.TextInput(attrs={'placeholder': 'Email'})
+    #     }
+    #     fields = ('email',)
+
+
+class UserSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'placeholder': 'Новый пароль'}),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'placeholder': 'Подтверждение пароля'}),
+    )

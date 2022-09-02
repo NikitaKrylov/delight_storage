@@ -1,18 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.urls import reverse
 from django.utils import timezone
 from typing import List
 from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
-
     def create_user(self, email: str, username: str, password: str, **other_field):
         if not email:
             raise ValueError(_("You must provide an email address"))
 
         email = self.normalize_email(email)
         user: User = self.model(email=email, username=username, **other_field)
+        user.is_active = True
         user.set_password(password)
         user.save()
 
@@ -34,7 +35,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
     username = models.CharField(_('имя пользователя'), max_length=50, unique=True)
     email = models.EmailField(_("email addres"), max_length=255, unique=True)
     avatar = models.ImageField(_("иконка пользователя"), blank=True, null=True)
@@ -62,12 +62,14 @@ class User(AbstractBaseUser, PermissionsMixin):
             return False
         return (timezone.now().year - self.birth_date.year) > 18
 
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.username
 
 
 class ContentAuthor(models.Model):
-
     name = models.CharField(_("автор контента"), max_length=60)
     url = models.URLField(_("ссылка на ресурс автора"), blank=True, null=True)
 

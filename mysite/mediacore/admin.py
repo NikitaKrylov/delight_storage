@@ -6,7 +6,6 @@ from .models import ImageFile, VideoFile
 from django.utils.safestring import mark_safe
 
 
-
 class InlineImageFileAdmin(admin.StackedInline):
     model = ImageFile
     extra = 0
