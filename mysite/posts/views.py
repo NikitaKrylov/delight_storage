@@ -2,14 +2,14 @@ from django.views.generic import DetailView, ListView, View
 from .mixins import PostMixin, UpdateViewsMixin, PostListItemMixin
 from .models import ImagePost, VideoPost, TextPost
 from django.http import HttpResponse
-from .services import update_post_views
+from contentcreation.services.telegram_parser import loop, TelegramParser
+from datetime import datetime
 
 
 class ImagePostView(UpdateViewsMixin, PostMixin, DetailView):
     model = ImagePost
 
     def get(self, request, *args, **kwargs):
-        print(request.__dict__)
         super().get(request, *args, **kwargs)
         post: ImagePost = self.get_object()
         return HttpResponse("<h1>{}</h1> <span>Pub date: {}</span> <h3>Author: {}</h3>".format(post, post.publication_date, post.post_author))
