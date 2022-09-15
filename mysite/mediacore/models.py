@@ -10,7 +10,6 @@ file_post_help_text = 'файл обязательно должен быть п�
 
 
 class ImageFile(models.Model):
-    title = models.CharField(_('заголовок'), max_length=60, blank=True)
     file = models.ImageField(_('файл'), upload_to="images")
     use_compression = models.BooleanField(
         _('использовать компрессию'), default=False)
@@ -46,7 +45,6 @@ class ImageFile(models.Model):
 
 
 class VideoFile(models.Model):
-    title = models.CharField(_('заголовок'), max_length=60, blank=True)
     file = models.FileField(_('файл'), upload_to="videos")
     content_author = models.ForeignKey(
         ContentAuthor, verbose_name=_('автор изображения'), on_delete=models.SET_NULL, null=True, blank=True)

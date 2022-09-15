@@ -1,9 +1,7 @@
-from django.views.generic import DetailView, ListView, View
+from django.views.generic import DetailView, ListView
 from .mixins import PostMixin, UpdateViewsMixin, PostListItemMixin
 from .models import ImagePost, VideoPost, TextPost
 from django.http import HttpResponse
-from contentcreation.services.telegram_parser import loop, TelegramParser
-from datetime import datetime
 
 
 class ImagePostView(UpdateViewsMixin, PostMixin, DetailView):

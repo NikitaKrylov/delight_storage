@@ -9,3 +9,6 @@ class TelegramChanelSource(models.Model):
     class Meta:
         verbose_name = _('телеграм канал')
         verbose_name_plural = _('телеграм каналы')
+
+    def __str__(self):
+        return 'ТГ канал {}'.format(self.name)

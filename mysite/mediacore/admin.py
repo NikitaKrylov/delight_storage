@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 class InlineImageFileAdmin(admin.StackedInline):
     model = ImageFile
     extra = 0
-    min_num = 1
+    min_num = 0
     max_num = MAX_FILES_IN_IMAGE_POST
     readonly_fields = (
         'compressed',
@@ -29,14 +29,12 @@ class InlineImageFileAdmin(admin.StackedInline):
 class ImageFileAdmin(admin.ModelAdmin):
     search_fields = (
         'file',
-        'title',
     )
     readonly_fields = (
         'compressed',
         'file_image',
     )
     list_display = (
-        'title',
         'filename',
         'file_size',
         'compressed',
@@ -61,7 +59,6 @@ class InlineVideoFileAdmin(admin.StackedInline):
 class VideoFileAdmin(admin.ModelAdmin):
     search_fields = (
         'file',
-        'title',
     )
     list_display = (
         'filename',
