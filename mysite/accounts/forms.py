@@ -6,11 +6,11 @@ from .models import User
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='username', min_length=5, max_length=150,
-                               widget=forms.TextInput(attrs={'placeholder': 'Никнейм'}))
+                               widget=forms.TextInput(attrs={'autofocus': 'autofocus', 'placeholder': 'Никнейм', 'class': 'input'}))
     email = forms.EmailField(widget=forms.TextInput(
-        attrs={'placeholder': 'Email'}))
+        attrs={'placeholder': 'Email', 'class': 'input'}))
     password1 = forms.CharField(label='password', widget=forms.PasswordInput(
-        attrs={"autocomplete": "new-password", 'placeholder': 'Пароль'}))
+        attrs={"autocomplete": "new-password", 'placeholder': 'Пароль', 'class': 'input'}))
     password2 = None
 
     class Meta:
@@ -33,7 +33,7 @@ class RegisterUserForm(UserCreationForm):
 
 class AuthenticationUserForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(
-        attrs={'placeholder': 'Никнейм или email', 'class': 'input'}))
+        attrs={'autofocus': 'autofocus', 'placeholder': 'Никнейм или email', 'class': 'input'}))
     password = forms.CharField(label='password', widget=forms.PasswordInput(
         attrs={"autocomplete": "new-password", 'placeholder': 'Пароль', 'class': 'input'}))
 
@@ -69,12 +69,14 @@ class UserPasswordResetForm(PasswordResetForm):
 class UserSetPasswordForm(SetPasswordForm):
     new_password1 = forms.CharField(
         label="New password",
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'placeholder': 'Новый пароль'}),
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "new-password", 'placeholder': 'Новый пароль', 'class': 'input'}),
         strip=False,
         help_text=password_validation.password_validators_help_text_html(),
     )
     new_password2 = forms.CharField(
         label="New password confirmation",
         strip=False,
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'placeholder': 'Подтверждение пароля'}),
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "new-password", 'placeholder': 'Подтверждение пароля', 'class': 'input'}),
     )

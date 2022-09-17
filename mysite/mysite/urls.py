@@ -8,9 +8,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('posts.urls')),
     path('account/', include('accounts.urls')),
-    path('inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    path('images/', include('mediacore.urls')),
+    path('inbox/notifications/',
+         include(notifications.urls, namespace='notifications')),
 ]
 
-if settings.DEBUG: 
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

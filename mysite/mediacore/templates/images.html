@@ -1,0 +1,431 @@
+{% load static %}
+{% load compress %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'mediacore/css/reset.css' %}">
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'mediacore/sass/styles.scss' %}">
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'mediacore/sass/images.scss' %}">
+    {% endcompress %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Document</title>
+</head>
+
+<body id="body">
+    <div class="mobileMenuBackground"></div>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header__wrapper">
+                <div class="header__container">
+                    <div class="header__logo">
+                        <span class="header__logo logo">BestHntArt</span>
+                    </div>
+                    <button class="header__movbile-navigation" type="button">
+                        <i class="fa-solid fa-bars hamburgerIcon"></i>
+                    </button>
+                    <div class="header__search">
+                        <form autocomplete="off" action="" method="get">
+                            <fieldset class="fs-nf">
+                                <div class="search-bar-container">
+                                    <label for="search">
+                                        <input class="search-bar-container__search-input search-input" type="text" value
+                                            placeholder="Поиск" autocomplete="off" style="color: #ffffff;">
+                                    </label>
+                                    <button class="search-bar-container__search-button">
+                                        <svg width="95%" height="95%" viewBox="0 0 15 15" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <circle cx="5" cy="5" r="4.5" stroke="#838592" />
+                                            <line x1="8.35355" y1="8.64645" x2="14.3536" y2="14.6464"
+                                                stroke="#838592" />
+                                        </svg>
+                                        <!-- <i class="fa fa-search fa-1x" style="color: rgb(79, 80, 85);"></i> -->
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="header__notification-icon">
+                        <div class="notification-items">
+                            <div class="notification-items__item">
+                                <span
+                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                            <div class="notification-items__item">
+                                <span
+                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                <i class=" fa-solid fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header__profile">
+                        <img class="small-avatar" src="{% static 'mediacore/images/icon/avatar.png' %}" alt="Аватар">
+                        <ul class="profile-dropdown">
+                            <li><span><a href="#" class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
+                                        профиль</a></span></li>
+                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-heart"></i>Лайки</a></span></li>
+                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-bell"></i>Уведомления</a></span></li>
+                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-user-group"></i>Подписки</a></span></li>
+                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-clipboard"></i>Мои
+                                        посты</a></span></li>
+                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-user-xmark"></i>Игнор-лист</a></span></li>
+                            <li style="border-top: solid 1px rgb(206, 206, 206);"><span><a href="#"
+                                        class="profile-dropdown__Link"><i
+                                            class="fa-solid fa-gear"></i>Настройки</a></span>
+                            </li>
+                            <li><span><a href="#" class="profile-dropdown__Link" style="color:red;"><i
+                                            class="fa-solid fa-right-from-bracket"></i>Выход</a></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="header__nav">
+                    <ul class="header__nav-menu">
+                        <li><a href="index.html"><span class="header__item-name">Home</span></a></li>
+                        <li><a href=""><span class="header__item-name">Posts</span></a></li>
+                        <li><a href="images.html"><span class="header__item-name">Images</span></a></li>
+                        <li><a href=""><span class="header__item-name">Videos</span></a></li>
+                        <li><a href=""><span class="header__item-name">Cosplay</span></a></li>
+                        <li><a href=""><span class="header__item-name">Casual</span></a></li>
+                        <li><a href=""><span class="header__item-name">18+</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+            <!-- paper -->
+            <div class="gallery-filter">
+                <div class="wrap">
+                    <div class="hover-sort">
+                        <div class="retractable-arrow">
+                            <i class="fa-solid fa-chevron-right fs30" style="color:white;"></i>
+                            <aside class="sort-container">
+                                <div class="sort-filter">
+                                    <div class="seacth-filter-menu">
+                                        <div class="search-filter-submenu">
+                                            <div class="search-filter-submenu__name">Topics</div>
+                                            <div class="search-filter-submenu__btn">
+                                                <span class="search-filter-submenu__selected text-truncate">All</span>
+                                                <i class="fa-solid fa-arrow-right fs14"></i>
+                                            </div>
+                                        </div>
+                                        <div class="search-filter-submenu-2">
+                                            <div class="search-filter-submenu__name">Tags</div>
+                                            <div class="search-filter-submenu__btn">
+                                                <span class="search-filter-submenu__selected text-truncate">All</span>
+                                                <i class="fa-solid fa-arrow-right fs14"></i>
+                                            </div>
+                                        </div>
+                                        <div class="search-filter-group">
+                                            <div class="search-filter-group__title">Сортировать по</div>
+                                            <div class="search-filter-group__content">
+                                                <label class="custom-radio">
+                                                    <input type="radio" name="color" checked value="name-radio-1">
+                                                    <span class="custom-radio__radio-btn"></span>
+                                                    <span class="custom-radio__radio-text">Лучшее</span>
+                                                    <span class="custom-radio__sort-icon"><i
+                                                            class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                                </label>
+                                                <label class="custom-radio">
+                                                    <input type="radio" name="color" value="name-radio-1">
+                                                    <span class="custom-radio__radio-btn"></span>
+                                                    <span class="custom-radio__radio-text">Просмотрам</span>
+                                                    <span class="custom-radio__sort-icon"><i
+                                                            class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                                </label>
+                                                <label class="custom-radio">
+                                                    <input type="radio" name="color" value="name-radio-1">
+                                                    <span class="custom-radio__radio-btn"></span>
+                                                    <span class="custom-radio__radio-text">Новинкам</span>
+                                                    <span class="custom-radio__sort-icon"><i
+                                                            class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                                </label>
+                                                <label class="custom-radio">
+                                                    <input type="radio" name="color" value="name-radio-1">
+                                                    <span class="custom-radio__radio-btn"></span>
+                                                    <span class="custom-radio__radio-text">Лайкам</span>
+                                                    <span class="custom-radio__sort-icon"><i
+                                                            class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="search-filter-group" style="padding-top: 0px;">
+                                            <div class="search-filter-group__title">Возрастной рейтинг</div>
+                                            <div class="search-filter-group__content _column2">
+                                                <div class="checkbox">
+                                                    <input id="checkbox" type="checkbox" name="checkbox_1">
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <span>18+</span>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <input id="checkbox" type="checkbox" name="checkbox_2">
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <span>все</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="search-filter-layout">
+                                    <div class="search-filter__head">
+                                        <div class="search-filter__head-title">
+                                            <span>asfasfasfa</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="search-filter-layout-2">
+                                    <div class="search-filter__head">
+                                        <div class="search-filter__head-title">
+                                            <span>252352353</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="page">
+            <div class="page__inner">
+                <div class="page__wrapper">
+                    <div class="container-gallery">
+                        <section id="gallery" class="no-gutter-sizer infinite-container are-images-unloaded">
+                            {% for image in images %}
+                            <!-- <div class="gutter"></div> -->
+                            <div class="item-masonry infinite-item">
+                                <img src={{image.file.url}} loading="lazy">
+                                <div class="cover-item-gallery">
+                                    <a href=""></a>
+                                    <div class="cover-item-gallery__container">
+                                        <div>
+                                            <div class="cover-item-gallery__items">
+                                                <div class="cover-item-gallery__author">
+                                                    <div class="gallery__author">
+                                                        <div class="gallery__author-avatar">
+                                                            <a href="">
+                                                                <img src="{% static 'mediacore/images/icon/avatar.png' %}"
+                                                                    style="width: 25px; height: 25px">
+                                                            </a>
+                                                        </div>
+                                                        <div class="gallery__author-name">
+                                                            <a href="">
+                                                                <span style="display: contents;">nickname</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="cover-item-gallery__LC">
+                                                    <a href="" class="cover-item-gallery__com">
+                                                        <div class="_39asK">
+                                                            <div class="gallery__numcom">100</div>
+                                                            <span><i class="fa-regular fa-message"></i></span>
+                                                        </div>
+                                                    </a>
+                                                    <button class="cover-item-gallery__likes">
+                                                        <div class="_39asK">
+                                                            <div class="gallery__numcom">200</div>
+                                                            <span><i class="fa-regular fa-heart"></i></span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </section>
+                        <div>
+                            <div>
+                                {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <template>
+            <aside id="nav-menu-mobile" style="color: white;">
+                <div id="header-menu">
+                    <div class="header-menu__title">BestHntArt</div>
+                    <span class="close-ham-menu">
+                        <i class="fa-solid fa-xmark close-icon"></i>
+                    </span>
+                </div>
+                <div class="nav-menu-links menu-wrapper menu-section">
+                    <a href="index.html" class="nav-menu__link">Home</a>
+                    <a href="" class="nav-menu__link">Posts</a>
+                    <a href="images.html" class="nav-menu__link">Images</a>
+                    <a href="" class="nav-menu__link">Videos</a>
+                    <a href="" class="nav-menu__link">Cosplay</a>
+                    <a href="" class="nav-menu__link">Casual</a>
+                    <a href="" class="nav-menu__link">18+</a>
+                </div>
+            </aside>
+            <aside id="profile-menu-mobile" style="color: white;">
+                <div id="header-menu">
+                    <span class="close-ham-menu-2">
+                        <i class="fa-solid fa-xmark close-icon"></i>
+                    </span>
+                    <div class="header-menu__title">Профиль</div>
+                </div>
+                <div class="nav-menu-links menu-wrapper menu-section">
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-heart"></i>Лайки</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-bell"></i>Уведомления</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-user-group"></i>Подписки</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-clipboard"></i>Мои посты</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-user-xmark"></i>Игнор лист</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-gear"></i>Настройки</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-right-from-bracket"></i>Выход</a>
+                </div>
+            </aside>
+            <aside class="paper_mobile">
+                <div class="paper_mobile__container">
+                    <button class="btnFilter">Фильтры</button>
+                </div>
+                <div class="sort-container">
+                    <div class="search-filter__head-2">
+                        <div class="search-filter__head-title">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <span>Фильтры</span>
+                        </div>
+                    </div>
+                    <div class="sort-filter">
+                        <div class="seacth-filter-menu">
+                            <div class="search-filter-submenu">
+                                <div class="search-filter-submenu__name">Topics</div>
+                                <div class="search-filter-submenu__btn">
+                                    <span class="search-filter__selected text-truncate">All</span>
+                                    <i class="fa-solid fa-arrow-right fs14"></i>
+                                </div>
+                            </div>
+                            <div class="search-filter-submenu-2">
+                                <div class="search-filter-submenu__name">Tags</div>
+                                <div class="search-filter-submenu__btn">
+                                    <span class="search-filter__selected text-truncate">All</span>
+                                    <i class="fa-solid fa-arrow-right fs14"></i>
+                                </div>
+                            </div>
+                            <div class="search-filter-group">
+                                <div class="search-filter-group__title">Сортировать по</div>
+                                <div class="search-filter-group__content">
+                                    <label class="custom-radio">
+                                        <input type="radio" name="color" checked value="name-radio-1">
+                                        <span class="custom-radio__radio-btn"></span>
+                                        <span class="custom-radio__radio-text">Лучшее</span>
+                                        <span class="custom-radio__sort-icon"><i
+                                                class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                    </label>
+                                    <label class="custom-radio">
+                                        <input type="radio" name="color" value="name-radio-1">
+                                        <span class="custom-radio__radio-btn"></span>
+                                        <span class="custom-radio__radio-text">Просмотрам</span>
+                                        <span class="custom-radio__sort-icon"><i
+                                                class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                    </label>
+                                    <label class="custom-radio">
+                                        <input type="radio" name="color" value="name-radio-1">
+                                        <span class="custom-radio__radio-btn"></span>
+                                        <span class="custom-radio__radio-text">Новинкам</span>
+                                        <span class="custom-radio__sort-icon"><i
+                                                class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                    </label>
+                                    <label class="custom-radio">
+                                        <input type="radio" name="color" value="name-radio-1">
+                                        <span class="custom-radio__radio-btn"></span>
+                                        <span class="custom-radio__radio-text">Лайкам</span>
+                                        <span class="custom-radio__sort-icon"><i
+                                                class="fa-solid fa-arrow-down-wide-short"></i></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="search-filter-group" style="padding-top: 0px;">
+                                <div class="search-filter-group__title">Возрастной рейтинг</div>
+                                <div class="search-filter-group__content _column2">
+                                    <div class="checkbox">
+                                        <input id="checkbox" type="checkbox" name="checkbox_1">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>18+</span>
+                                    </div>
+                                    <div class="checkbox">
+                                        <input id="checkbox" type="checkbox" name="checkbox_2">
+                                        <i class="fa-solid fa-check"></i>
+                                        <span>все</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div>
+
+                        </div>
+                    </div>
+                    <div class="search-filter-layout">
+                        <div class="search-filter__head">
+                            <div class="search-filter__head-title">
+                                <span>asfasfasfa</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-filter-layout-2">
+                        <div class="search-filter__head">
+                            <div class="search-filter__head-title">
+                                <span>252352353</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </template>
+        <footer class="footer">
+            <div class="footer__content">
+                <div class="footer__title">
+                    <ul>
+                        <li class="footer__title-text">В случаях нарушения авторских прав - нам похуй</li>
+                    </ul>
+                </div>
+                <div class="footer__title">
+                    <ul>
+                        <li class="footer__title-text"><a href="">Поддержать сайт</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__link">
+                <div class="footer__social-link">
+                    <a href=""><img src="{% static 'mediacore/images/icon/vk.png' %}"></a>
+                    <a href=""><img src="{% static 'mediacore/images/icon/tg.png' %}"></a>
+                    <a href=""><img src="{% static 'mediacore/images/icon/inst.png' %}"></a>
+                    <a href=""><img src="{% static 'mediacore/images/icon/ds.png' %}"></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.5/waypoints.min.js"></script> -->
+    <script src="{% static 'mediacore/libs/lazyload.min.js' %}"></script>
+    <script src="{% static 'mediacore/libs/slick.min.js' %}"></script>
+    <script src="{% static 'mediacore/libs/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'mediacore/libs/infinite.min.js' %}"></script>
+    {% compress js %}
+    <script src="{% static 'mediacore/js/device.js' %}"></script>
+    <script src="{% static 'mediacore/js/scripts.js' %}"></script>
+    {% endcompress %}
+</body>
+
+</html>
