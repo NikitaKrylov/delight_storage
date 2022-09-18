@@ -30,8 +30,9 @@ class PostListItemMixin(MultipleObjectMixin):
         queryset = super().get_queryset()
         if not self.request.user.is_authenticated:
             queryset = queryset.filter(for_autenticated_users=False)
+            queryset = queryset.filter(only_for_adult=False)
 
-        if not self.request.user.is_adult():
+        elif not self.request.user.is_adult():
             queryset = queryset.filter(only_for_adult=False)
 
         return queryset

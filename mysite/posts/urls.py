@@ -8,5 +8,5 @@ urlpatterns = [
     path('video-post/<int:pk>/', VideoPostView.as_view(), name='videopost'),
     path('text-post/<int:pk>/', TextPostView.as_view(), name='textpost'),
 
-    path('image-posts/', ImagePostList.as_view(), name='image_post_list')
+    path('image-post/all/', ImagePostList.as_view(), name='image_post_list')
 ]

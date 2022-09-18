@@ -1,0 +1,66 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+{% block page %}
+<main class="page">
+    <div class="page__inner">
+        <div class="page__wrapper">
+            <div class="container-gallery">
+                <section id="gallery" class="no-gutter-sizer infinite-container are-images-unloaded">
+                    {% for post in posts %}
+                    <!-- <div class="gutter"></div> -->
+                    <div class="item-masonry infinite-item">
+                        <img src={{post.files.first.file.url}} loading="lazy">
+                        <div class="cover-item-gallery">
+                            <a href=""></a>
+                            <div class="cover-item-gallery__container">
+                                <div>
+                                    <div class="cover-item-gallery__items">
+                                        <div class="cover-item-gallery__author">
+                                            <div class="gallery__author">
+                                                <div class="gallery__author-avatar">
+                                                    <a href="">
+                                                        <img src="{% static 'posts/images/icon/avatar.png' %}"
+                                                            style="width: 25px; height: 25px">
+                                                    </a>
+                                                </div>
+                                                <div class="gallery__author-name">
+                                                    <a href="">
+                                                        <span style="display: contents;">nickname</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="cover-item-gallery__LC">
+                                            <a href="" class="cover-item-gallery__com">
+                                                <div class="_39asK">
+                                                    <div class="gallery__numcom">{{post.count_comments}}</div>
+                                                    <span><i class="fa-regular fa-message"></i></span>
+                                                </div>
+                                            </a>
+                                            <button class="cover-item-gallery__likes">
+                                                <div class="_39asK">
+                                                    <div class="gallery__numcom">{{post.count_likes}}</div>
+                                                    <span><i class="fa-regular fa-heart"></i></span>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </section>
+                <div>
+                    <div>
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -8,7 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', include('posts.urls')),
     path('account/', include('accounts.urls')),
-    path('images/', include('mediacore.urls')),
     path('inbox/notifications/',
          include(notifications.urls, namespace='notifications')),
 ]

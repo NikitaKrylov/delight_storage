@@ -23,7 +23,7 @@ class TextPostView(UpdateViewsMixin, PostMixin, DetailView):
 
 class ImagePostList(PostListItemMixin, ListView):
     model = ImagePost
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponse(f"{[post.publication_date for post in self.get_queryset()]}")
+    paginate_by = 10
+    template_name = 'posts/images.html'
+    context_object_name = 'posts'
 

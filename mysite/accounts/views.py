@@ -1,4 +1,6 @@
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
@@ -6,6 +8,11 @@ from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm
 from .models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('image_post_list')
 
 
 class RegisterView(CreateView):

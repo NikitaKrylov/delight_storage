@@ -1,12 +1,10 @@
 from django.urls import path
 from .views import *
-from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
-
 
 urlpatterns = [
     path('signup/', RegisterView.as_view(), name='signup'),
     path('login/', AuthenticationView.as_view(), name='login'),
+    path('logout/', logout_view, name='logout'),
     path('<int:pk>/edit/', EditUserProfileView.as_view(), name='edit_profile'),
     path('<int:pk>/', UserProfileView.as_view(), name='profile'),
 

@@ -1,0 +1,525 @@
+/* ______________________mobile______________________ */
+
+/* body._touch  */
+
+
+body._touch .headerNav {
+    display: none;
+}
+
+body._touch .namelogo {
+    display: none;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+body._touch .profile {
+    position: block;
+}
+
+body._touch .profileDropdownLink {
+    font-size: 24px;
+}
+
+
+body._touch #mobileNavigation {
+    display: block;
+    width: 47px;
+    height: 50px;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: inherit;
+    right: inherit;
+    border: 0;
+}
+
+body._touch .hamburgerIcon {
+    font-size: 30px;
+    color: #fd96cf;
+}
+
+
+body._touch #mobileNavigation::before,
+body._touch #mobileNavigation::after {
+    content: "";
+}
+
+body._touch #headerMenu::before,
+body._touch #headerMenu::after {
+    content: "";
+}
+
+@media (max-width: 480px) {
+    #leftMenu {
+        width: 100%;
+    }
+}
+
+@media (min-width: 480px) {
+    #leftMenu {
+        width: 85%;
+        max-width: 300px;
+    }
+}
+
+body._touch #headerMenu::before {
+    display: table;
+}
+
+body._touch #headerMenu::after {
+    clear: both;
+}
+
+body._touch .menuSection::before {
+    content: "";
+    display: table;
+}
+
+body._touch .closeHamMenu {
+    position: absolute;
+    top: 16px;
+    right: 25px;
+    bottom: inherit;
+    left: inherit;
+    z-index: 1;
+
+    font-size: 34px;
+    color: #fd96cf;
+}
+
+body._touch .phLogoWrap,
+body._touch .closeIcon {
+    vertical-align: middle;
+}
+
+
+/* body._touch .namelogo {
+    display: none;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+body._touch .profile {
+    position: block;
+}
+
+body._touch .profileDropdownLink {
+    font-size: 24px;
+} */
+
+/* body._touch .navBurger {
+    display: block;
+    z-index: 12;
+    position: relative;
+    width: 30px;
+    height: 18px;
+    cursor: pointer;
+}
+
+body._touch .navBurger span,
+body._touch .navBurger::before,
+body._touch .navBurger::after {
+    left: 0;
+    position: absolute;
+    height: 10%;
+    width: 100%;
+    transition: all 0.3s ease 0s;
+    background-color: white;
+}
+
+body._touch .navBurger::before,
+body._touch .navBurger::after {
+    content: "";
+}
+
+body._touch .navBurger::before {
+    top: 0;
+}
+
+body._touch .navBurger::after {
+    bottom: 0;
+}
+
+.navBurger span {
+    top: 50%;
+    transform: scale(1) translate(0, -50%);
+}
+
+.navBurger._active span {
+    transform: scale(0) translate(0, -50%);
+}
+
+.navBurger._active::before {
+    top: 50%;
+    transform: rotate(-45deg) translate(0, -50%);
+}
+
+.navBurger._active::after {
+    bottom: 50%;
+    transform: rotate(45deg) translate(0, 50%);
+} */
+
+/* body._touch #mobileNavigation {
+    width: 47px;
+    height: 50px;
+    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: inherit;
+    right: inherit;
+    border: 0;
+}
+
+body._touch .hamburgerIcon {
+    font-size: 30px;
+    color: #fd96cf;
+}
+
+body._touch #mobileNavigation::before,
+body._touch #mobileNavigation::after {
+    content: "";
+}
+
+
+#mobileNavigation span {
+    top: 50%;
+    transform: scale(1) translate(0, -50%);
+}
+
+#mobileNavigation._active span {
+    transform: scale(0) translate(0, -50%);
+}
+
+body._touch #headerMenu::before,
+body._touch #headerMenu::after {
+    content: "";
+}
+
+body._touch #headerMenu::before {
+    content: "";
+    display: table;
+}
+
+body._touch #headerMenu::after {
+    clear: both;
+}
+
+body._touch .menuSection::before {
+    content: "";
+    display: table;
+}
+
+body._touch .menuSection::after {
+    clear: both;
+}
+
+.closeHamMenu {
+    position: absolute;
+    top: 16px;
+    right: 25px;
+    bottom: inherit;
+    left: inherit;
+}*/
+
+
+
+body._touch .containerGallery {
+    padding-top: 40px;
+}
+
+body._touch .descriptionForm {
+    display: none;
+    visibility: hidden;
+}
+
+body._touch .regMenu {
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+}
+
+body._touch .formContainer {
+    min-width: 276px;
+    max-width: none;
+}
+
+body._touch .paper {
+    display: none;
+}
+
+body._touch .profileDropdown {
+    display: none;
+}
+
+body._touch .paper_mobile {
+    display: block;
+}
+
+.paper_mobile {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 6px 13px;
+    z-index: 8;
+    background: #1c1c1e;
+}
+
+.paper_mobile__container {
+    display: flex;
+    max-width: 1920px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.btnFilter {
+    flex: 1 0 0;
+    display: inline-block;
+    min-height: 16px;
+    height: 32px;
+    margin: 0;
+    padding: 0 16px;
+    color: #babbbd;
+    line-height: 32px;
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 600;
+    font-style: normal;
+    text-transform: none;
+    text-shadow: none;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    outline: 0;
+    border: none;
+    border-radius: 4px;
+    background-color: #2d2d2d;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-transition: opacity .1s ease, color .1s ease, background .1s ease;
+    transition: opacity .1s ease, color .1s ease, background .1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+body._touch .sortContainer {
+    position: fixed;
+    top: 0%;
+    right: 0%;
+
+    width: 100%;
+    height: 100%;
+
+    background: #0A0C12;
+    z-index: 10;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: 0.3s;
+    transform: translate(110%, 0);
+}
+
+.paper_mobile._active .sortContainer {
+
+    transform: translate(0%, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+body._touch .search-filter-layout-2,
+body._touch .search-filter-layout {
+    transform: translateX(100%);
+}
+
+body._touch .search-filter-layout-2._active,
+body._touch .search-filter-layout._active {
+    transform: translateX(0%);
+}
+
+/* leftmenu */
+
+#leftMenu {
+    /* width: 85%; */
+    height: 100%;
+    min-width: 271px;
+    background: #0A0C12;
+    position: fixed;
+    top: 0;
+    left: -200%;
+    transition: left .4s ease;
+    z-index: 12;
+    overflow: auto;
+    padding-bottom: 90px;
+}
+
+
+#headerMenu {
+    width: 90%;
+    margin: auto;
+    padding: 15px 0 5px;
+    background: #0A0C12;
+    zoom: 1;
+    height: auto;
+}
+
+#topMenuSection a.phLogoWrap {
+    float: left;
+    width: auto;
+    padding-top: 0;
+}
+
+#leftMenu .closeHamMenu {
+    position: absolute;
+    top: 16px;
+    right: 25px;
+    bottom: inherit;
+    left: inherit;
+    font-weight: 700;
+}
+
+.menuWrapper {
+    width: 90%;
+    margin: auto;
+    zoom: 1;
+    padding: 15px 0 40px 0;
+}
+
+#leftMenu._active {
+    left: 0;
+    transition: left 0.4s ease;
+}
+
+.phLogoWrap {
+    float: left;
+    width: auto;
+    padding-top: 0;
+    font-size: 10px;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    background: 0 0;
+    text-align: center;
+    position: relative;
+}
+
+/* end-leftmenu */
+
+/* right-menu */
+
+#rightMenu {
+    height: 100%;
+    min-width: 271px;
+    background: #0A0C12;
+    position: fixed;
+    top: 0;
+    right: 0%;
+    transition: left .4s ease;
+    z-index: 12;
+    overflow: auto;
+    padding-bottom: 90px;
+
+    transition: 0.4s;
+    transform: translate(110%, 0);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+#rightMenu._active {
+    transform: translate(0%, 0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+
+@media (max-width: 320px) {
+    #rightMenu {
+        width: 100%;
+    }
+}
+
+@media (min-width: 320px) {
+    #rightMenu {
+        width: 80%;
+    }
+}
+
+
+#rightMenu .closeHamMenu-2 {
+    position: absolute;
+    top: 16px;
+    left: 25px;
+    bottom: inherit;
+    left: inherit;
+    background-color: #000;
+    font-weight: 700;
+
+}
+
+body._touch .closeHamMenu-2 {
+    position: absolute;
+    top: 16px;
+    left: 25px;
+    bottom: inherit;
+    left: inherit;
+    z-index: 1;
+}
+
+body._touch .closeHamMenu-2 {
+    font-size: 34px;
+    color: #fd96cf;
+}
+
+.headerMenu-title {
+    font-family: 'Helvetica';
+    text-align: center;
+    max-height: 60px;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px;
+    opacity: .5;
+}
+
+.rightMenu__link {
+    font-family: 'Helvetica';
+    padding: 12px 16px;
+    position: relative;
+    display: block;
+    color: #ddd;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid #38383a;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.rightMenu__link i {
+    width: 30px;
+}
+
+/* end-right-menu */
+
+
+/* slide */
+body._touch .slider .slick-arrow {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* end-slider */
+
+
+/* ______________________end-mobile______________________ */

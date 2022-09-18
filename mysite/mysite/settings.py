@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'posts',
     'mediacore',
     'communications',
     'notifications',
     'contentcreation',
     'compressor',
+    'posts',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
