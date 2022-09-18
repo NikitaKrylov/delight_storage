@@ -38,6 +38,7 @@ post_exclude_fields = (
 admin.site.register(Like)
 
 
+
 @admin.register(ImagePost)
 class ImagePostAdmin(admin.ModelAdmin):
     inlines = [InlineImageFileAdmin]

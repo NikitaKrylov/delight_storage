@@ -32,18 +32,18 @@
                                             </div>
                                         </div>
                                         <div class="cover-item-gallery__LC">
-                                            <a href="" class="cover-item-gallery__com">
+                                            <a class="cover-item-gallery__com">
                                                 <div class="_39asK">
                                                     <div class="gallery__numcom">{{post.count_comments}}</div>
                                                     <span><i class="fa-regular fa-message"></i></span>
                                                 </div>
                                             </a>
-                                            <button class="cover-item-gallery__likes">
+                                            <a data-href="{{ post.get_absolute_like_url }}"  class="cover-item-gallery__likes">
                                                 <div class="_39asK">
                                                     <div class="gallery__numcom">{{post.count_likes}}</div>
                                                     <span><i class="fa-regular fa-heart"></i></span>
                                                 </div>
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -63,4 +63,12 @@
         </div>
     </div>
 </main>
+
+
+
+{% endblock %}
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'posts/js/like.js' %}"></script>
 {% endblock %}

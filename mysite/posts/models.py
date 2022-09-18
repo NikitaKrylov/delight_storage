@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.template.defaultfilters import slugify
 
+
 class PostManager(models.Manager):
     def contain_tags(self, *tags) -> QuerySet:
         return self.get_queryset().filter(tags__name__in=tags).order_by("-publication_date")
@@ -55,6 +56,9 @@ class AbstractBasePost(models.Model):
 
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
+
+    def get_absolute_like_url(self):
+        return reverse(viewname=self.__class__._meta.model_name + '_like', kwargs={"pk": self.pk})
 
 
 class ImagePost(AbstractBasePost):
