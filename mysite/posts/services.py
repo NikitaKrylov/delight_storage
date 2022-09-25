@@ -1,9 +1,9 @@
-from .models import AbstractBasePost
+from .models import Post
 from accounts.services import get_client_ip
 from accounts.models import ClientIP
 
 
-def update_post_views(request, post: AbstractBasePost):
+def update_post_views(request, post: Post):
     if post is None: return
 
     string_ip = get_client_ip(request)

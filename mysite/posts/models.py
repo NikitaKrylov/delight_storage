@@ -3,10 +3,9 @@ from accounts.models import User, ClientIP
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.utils.translation import gettext_lazy as _
-from django.db.models import Avg, QuerySet
+from django.db.models import QuerySet
 from django.urls import reverse
 from django.core.exceptions import ValidationError
-from django.template.defaultfilters import slugify
 
 
 class PostManager(models.Manager):
@@ -17,10 +16,10 @@ class PostManager(models.Manager):
         return self.get_queryset().filter(post_author=author).order_by("-publication_date")
 
 
-class AbstractBasePost(models.Model):
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     publication_date = models.DateField(
         _("дата публикации"), auto_now_add=True)
-    post_author = models.ForeignKey(User, verbose_name=_('автор поста'), on_delete=models.PROTECT)
     only_for_adult = models.BooleanField(_("18+ контент"), default=False)
     for_autenticated_users = models.BooleanField(
         _("для авторизированных пользователей"), default=False)
@@ -28,8 +27,9 @@ class AbstractBasePost(models.Model):
         _("для премиум пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
+    description = models.CharField(_('описание'), max_length=300, null=True, blank=True)
 
-    tags = models.ManyToManyField("PostTag", verbose_name=_('теги'))
+    tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
     comments = GenericRelation("Comment")
     views = models.ManyToManyField(ClientIP, blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
@@ -37,7 +37,8 @@ class AbstractBasePost(models.Model):
     objects = PostManager()
 
     class Meta:
-        abstract = True
+        verbose_name = _('пост')
+        verbose_name_plural = _('посты')
 
     def count_likes(self) -> int:
         return self.likes.count()
@@ -51,56 +52,33 @@ class AbstractBasePost(models.Model):
     def count_tags(self) -> int:
         return self.tags.count()
 
+    def count_media(self) -> int:
+        return self.images.count() + self.videos.count()
+
     def get_tags(self):
         return self.tags.all()
+
+    def get_images(self):
+        return self.images
+
+    def get_videos(self):
+        return self.videos
 
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
 
     def get_absolute_like_url(self):
-        return reverse(viewname=self.__class__._meta.model_name + '_like', kwargs={"pk": self.pk})
-
-
-class ImagePost(AbstractBasePost):
-    class Meta:
-        verbose_name = "Фото пост"
-        verbose_name_plural = "Фото посты"
+        return reverse(viewname='post_like', kwargs={"pk": self.pk})
 
     def __str__(self):
-        return 'Фото пост id - {}'.format(self.pk)
-
-
-class VideoPost(AbstractBasePost):
-    class Meta:
-        verbose_name = "Видео пост"
-        verbose_name_plural = "Видео посты"
-
-    def __str__(self):
-        return 'Видео пост id - {}'.format(self.pk)
-
-
-class TextPost(AbstractBasePost):
-    title = models.CharField(_("заголовок"), max_length=150)
-    body = models.TextField(_("текст"), blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Текстовые пост"
-        verbose_name_plural = "Текстовые посты"
-
-    def __str__(self):
-        return 'Текстовый пост id - {}'.format(self.pk)
+        return "Пост id - {}".format(self.pk)
 
 
 # -----------------------COMMENTS----------------------------
 
 class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name=_("автор"), on_delete=models.CASCADE)
-
-    content_type = models.ForeignKey(ContentType, verbose_name=_('тип коментируемого объекта'),
-                                     on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField(_('id объекта'))
-    content_object = GenericForeignKey('content_type', 'object_id')
-
+    post = models.ForeignKey(Post, verbose_name=_('комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
     text = models.TextField(_('текст'))
 
     class Meta:
@@ -109,16 +87,6 @@ class Comment(models.Model):
 
     def text_length(self):
         return len(self.text)
-
-    def clean(self):
-        print(self.content_object.disable_comments, '\n\n\n\n')
-        if self.content_object is None or not hasattr(self.content_object, "disable_comments"):
-            raise ValidationError(f"{self.content_type.name} c id {self.object_id} не найден")
-
-        elif self.content_object.disable_comments:
-            raise ValidationError(f"К {self.content_type.name} c id {self.object_id} нельзя оставлять коментарии")
-
-        return super().clean()
 
 
 # --------------------TAG--------------------------

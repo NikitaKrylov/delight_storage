@@ -55,25 +55,33 @@
                     <div class="header__notification-icon">
                         <div class="notification-items">
                             <div class="notification-items__item">
-                                <span
-                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                {% if request.user.is_authenticated %}
+                                    {% with nf_amount=request.user.get_unread_notifications.count %}
+                                    {% if nf_amount > 0 %}
+                                    <span class="notification-items__number-of-notifications number-of-notifications">{{nf_amount}}</span>
+                                    {% endif %}
+                                    {% endwith %}
+                                {% endif %}
                                 <i class="fa-solid fa-bell"></i>
                             </div>
                             <div class="notification-items__item">
-                                <span
-                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
-                                <i class=" fa-solid fa-heart"></i>
+                                {% if request.user.is_authenticated %}
+                                <span class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                {% endif %}
+                                <i hre class=" fa-solid fa-heart">
+                                </i>
                             </div>
                         </div>
                     </div>
+                    {% if request.user.is_authenticated %}
                     <div class="header__profile">
                         <img class="small-avatar" src="{% static 'mediacore/images/icon/avatar.png' %}" alt="Аватар">
                         <ul class="profile-dropdown">
-                            <li><span><a href="{% url 'profile' request.user.pk %}" class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
+                            <li><span><a href="" class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
                                         профиль</a></span></li>
                             <li><span><a href="#" class="profile-dropdown__Link"><i
                                             class="fa-solid fa-heart"></i>Лайки</a></span></li>
-                            <li><span><a href="#" class="profile-dropdown__Link"><i
+                            <li><span><a href="{% url 'user_notifications' %}" class="profile-dropdown__Link"><i
                                             class="fa-solid fa-bell"></i>Уведомления</a></span></li>
                             <li><span><a href="#" class="profile-dropdown__Link"><i
                                             class="fa-solid fa-user-group"></i>Подписки</a></span></li>
@@ -90,6 +98,9 @@
                                             class="fa-solid fa-right-from-bracket"></i>Выход</a></span></li>
                         </ul>
                     </div>
+                    {% else %}
+                    <span style="color:red;">Андрей, доделай</span>
+                    {% endif %}
                 </div>
                 <nav class="header__nav">
                     <ul class="header__nav-menu">
@@ -216,7 +227,9 @@
                     <a href="" class="nav-menu__link">Videos</a>
                     <a href="" class="nav-menu__link">Cosplay</a>
                     <a href="" class="nav-menu__link">Casual</a>
+                    {% if request.user.is_authenticated %}
                     <a href="" class="nav-menu__link">18+</a>
+                    {% endif %}
                 </div>
             </aside>
             <aside id="profile-menu-mobile" style="color: white;">
@@ -227,14 +240,14 @@
                     <div class="header-menu__title">Профиль</div>
                 </div>
                 <div class="nav-menu-links menu-wrapper menu-section">
-                    <a href="{% url 'profile' request.user.pk %}" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
+                    <a href="" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
                     <a href="" class="nav-menu__link"><i class="fa-solid fa-heart"></i>Лайки</a>
-                    <a href="" class="nav-menu__link"><i class="fa-solid fa-bell"></i>Уведомления</a>
+                    <a href="{% url 'user_notifications' %}" class="nav-menu__link"><i class="fa-solid fa-bell"></i>Уведомления</a>
                     <a href="" class="nav-menu__link"><i class="fa-solid fa-user-group"></i>Подписки</a>
                     <a href="" class="nav-menu__link"><i class="fa-solid fa-clipboard"></i>Мои посты</a>
                     <a href="" class="nav-menu__link"><i class="fa-solid fa-user-xmark"></i>Игнор лист</a>
                     <a href="" class="nav-menu__link"><i class="fa-solid fa-gear"></i>Настройки</a>
-                    <a href="" class="nav-menu__link"><i class="fa-solid fa-right-from-bracket"></i>Выход</a>
+                    <a href="{% url 'logout' %}" class="nav-menu__link"><i class="fa-solid fa-right-from-bracket"></i>Выход</a>
                 </div>
             </aside>
             <aside class="paper_mobile">

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
-
+from django.contrib import messages
 from .models import *
 from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
@@ -10,7 +10,6 @@ post_list_filter = (
     'tags',
     'only_for_adult',
     'for_autenticated_users',
-    'for_premium_users',
 )
 post_list_display = (
     'id',
@@ -18,7 +17,6 @@ post_list_display = (
     'only_for_adult',
     'for_autenticated_users',
     'disable_comments',
-    'count_tags',
     'count_comments',
     'count_likes',
     'count_views',
@@ -27,21 +25,18 @@ post_readonly_fields = (
     'count_comments',
     'count_likes',
     'count_views',
-    'count_views',
 )
 post_exclude_fields = (
     'views',
     'likes',
 )
 
-
 admin.site.register(Like)
 
 
-
-@admin.register(ImagePost)
-class ImagePostAdmin(admin.ModelAdmin):
-    inlines = [InlineImageFileAdmin]
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    inlines = [InlineImageFileAdmin, InlineVideoFileAdmin]
     list_filter = post_list_filter
     list_display = post_list_display
     readonly_fields = post_readonly_fields
@@ -50,12 +45,16 @@ class ImagePostAdmin(admin.ModelAdmin):
 
     def response_generate_image(self, request, post) -> bool:
         if "generate_image" in request.POST:
-            cg = ContentGenerator()
-            image_file = ImageFile(file=cg.generate(), post=post)
-            image_file.save()
-
-            post.files.add(image_file)
-            post.save()
+            try:
+                cg = ContentGenerator()
+                image_file = ImageFile(file=cg.generate(), post=post)
+                image_file.save()
+            except IndexError:
+                self.message_user(request, "Ошибка генерации медиа! Список '{}' пуст.".format(cg.last_source_type), level=messages.ERROR)
+            else:
+                post.images.add(image_file)
+                post.save()
+            self.message_user(request, 'Медиа файл успешно создан! Ресурс - {}'.format(cg.last_source_name), level=messages.SUCCESS)
             return True
         return False
 
@@ -71,26 +70,11 @@ class ImagePostAdmin(admin.ModelAdmin):
             return HttpResponseRedirect(reverse("admin:%s_%s_change" %(self.model._meta.app_label, self.model._meta.model_name), args=(post.id,)))
         return super().response_add(request, post, post_url_continue)
 
-
-@admin.register(VideoPost)
-class VideoPostAdmin(admin.ModelAdmin):
-    inlines = [InlineVideoFileAdmin]
-    list_filter = post_list_filter
-    list_display = post_list_display
-    readonly_fields = post_readonly_fields
-    exclude = post_exclude_fields
-
-
-@admin.register(TextPost)
-class TextPostAdmin(admin.ModelAdmin):
-    search_fields = (
-        'title',
-        'body'
-    )
-    list_filter = post_list_filter
-    list_display = post_list_display
-    readonly_fields = post_readonly_fields
-    exclude = post_exclude_fields
+    def save_model(self, request, post, form, change):
+        responce = super().save_model(request, post, form, change)
+        if post.images.count() == 0 and post.videos.count() == 0:
+            self.message_user(request, '{} должен иметь хотябы один медиа файл!'.format(post), level=messages.WARNING)
+        return responce
 
 
 @admin.register(PostTag)
@@ -109,8 +93,6 @@ class CommentAdmin(admin.ModelAdmin):
     )
     list_display = (
         'author',
-        'content_type',
-        'object_id',
         'text_length',
     )
 

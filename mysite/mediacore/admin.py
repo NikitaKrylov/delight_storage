@@ -18,7 +18,7 @@ class InlineImageFileAdmin(admin.StackedInline):
     image_scale = .3
 
     def file_image(self, obj: ImageFile):
-        return mark_safe('<img src="{url}" width="{width} height="{height} />"'.format(
+        return mark_safe('<img src="{url}" width="{width}" height="{height}" />"'.format(
             url=obj.file.url,
             width=obj.file.width * self.image_scale,
             height=obj.file.height * self.image_scale,
@@ -41,7 +41,7 @@ class ImageFileAdmin(admin.ModelAdmin):
     )
 
     def file_image(self, obj: ImageFile):
-        return mark_safe('<img src="{url}" width="{width} height="{height} />"'.format(
+        return mark_safe('<img src="{url}" width="{width}" height="{height}" />'.format(
             url=obj.file.url,
             width=obj.file.width,
             height=obj.file.height,
@@ -51,7 +51,7 @@ class ImageFileAdmin(admin.ModelAdmin):
 class InlineVideoFileAdmin(admin.StackedInline):
     model = VideoFile
     extra = 0
-    min_num = 1
+    min_num = 0
     max_num = MAX_FILES_IN_VIDEO_POST
 
 

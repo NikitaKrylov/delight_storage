@@ -1,8 +1,9 @@
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
+from notifications.models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm
 from .models import User
@@ -10,9 +11,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 
 
+#--------Authentivation / Register-------
+
+
 def logout_view(request):
     logout(request)
-    return redirect('image_post_list')
+    return redirect('post_list')
 
 
 class RegisterView(CreateView):
@@ -25,10 +29,13 @@ class AuthenticationView(LoginView):
     template_name = 'accounts/authentication.html'
 
 
+# --------------User---------------
+
 class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = 'accounts/profile.html'
     model = User
     context_object_name = 'user'
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,6 +48,7 @@ class EditUserProfileView(LoginRequiredMixin, UpdateView):
     form_class = EditUserProfileForm
     model = User
     success_url = reverse_lazy('profile')
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,8 +59,17 @@ class EditUserProfileView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('profile', kwargs={'pk': self.object.pk})
 
 
-# -----------------------Password reset-----------------------------
+class NotificationListView(LoginRequiredMixin, ListView):
+    model = Notification
+    context_object_name = 'notifications'
+    login_url = reverse_lazy('login')
+    template_name = 'accounts/notifications.html'
 
+    def get_queryset(self):
+        return self.model.objects.filter(recipient__id=self.request.user.id)
+
+
+# -----------------------Password reset-----------------------------
 
 class UserPasswordResetView(PasswordResetView):
     """1. Ввод почты для отправки письма с инструкциями"""

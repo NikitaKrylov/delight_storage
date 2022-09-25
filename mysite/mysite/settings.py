@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'mediacore',
-    'communications',
     'notifications',
     'contentcreation',
     'compressor',

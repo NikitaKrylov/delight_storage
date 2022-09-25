@@ -1,6 +1,6 @@
 from django.db import models
-from posts.models import VideoPost, ImagePost
-from accounts.models import ContentAuthor
+from django.urls import reverse
+from posts.models import Post
 import os
 from django.utils.translation import gettext_lazy as _
 from .services import compress
@@ -14,10 +14,8 @@ class ImageFile(models.Model):
     use_compression = models.BooleanField(
         _('использовать компрессию'), default=False)
     post = models.ForeignKey(
-        ImagePost, on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='files')
+        'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='images')
     compressed = models.BooleanField(default=False)
-    content_author = models.ForeignKey(verbose_name=_(
-        'автор изображения'), to=ContentAuthor, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = "Изображение"
@@ -37,8 +35,8 @@ class ImageFile(models.Model):
     def file_size(self):
         return self.file.size
 
-    def clean(self):
-        return super().clean()
+    def get_absolute_url(self):
+        return reverse(viewname='post', kwargs={"pk": self.post.pk})
 
     def __str__(self):
         return self.filename()
@@ -46,10 +44,8 @@ class ImageFile(models.Model):
 
 class VideoFile(models.Model):
     file = models.FileField(_('файл'), upload_to="videos")
-    content_author = models.ForeignKey(
-        ContentAuthor, verbose_name=_('автор изображения'), on_delete=models.SET_NULL, null=True, blank=True)
     post = models.ForeignKey(
-        VideoPost, on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='files')
+        'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='videos')
 
     class Meta:
         verbose_name = "Видео файл"

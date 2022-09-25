@@ -65,17 +65,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse('profile', kwargs={"pk": self.pk})
 
+    def get_unread_notifications(self):
+        return self.notifications.filter(unread=True)
+
     def __str__(self):
         return self.username
-
-
-class ContentAuthor(models.Model):
-    name = models.CharField(_("автор контента"), max_length=60)
-    url = models.URLField(_("ссылка на ресурс автора"), blank=True, null=True)
-
-    class Meta:
-        verbose_name = "Автор контента"
-        verbose_name_plural = "Авторы контента"
 
 
 class ClientIP(models.Model):

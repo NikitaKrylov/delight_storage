@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, ContentAuthor, ClientIP
+from .models import User, ClientIP
 
 admin.site.register(ClientIP)
 
@@ -23,9 +23,3 @@ class UserAdmin(admin.ModelAdmin):
         return obj.is_adult()
     
     is_adult.boolean = True
-
-@admin.register(ContentAuthor)
-class ContentAuthorAdmin(admin.ModelAdmin):
-    search_fields = [
-        'name'
-    ]
