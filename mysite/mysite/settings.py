@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse_lazy
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
     'contentcreation',
     'compressor',
     'posts',
+    'social_django',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -79,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
             ],
         },
     },
@@ -136,6 +140,10 @@ MIN_IMAGE_BAIT_SIZE = 1024
 
 PAGINATED_AMOUNT = 20
 
+
+LOGIN_REDIRECT_URL = reverse_lazy('post_list')
+LOGOUT_REDIRECT_URL = reverse_lazy('post_list')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'
@@ -157,8 +165,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.User"
 
 AUTHENTICATION_BACKENDS = [
+    'social_core.backends.vk.VKOAuth2',
     'mysite.backends.AuthBackend',
+
 ]
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '51463304'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = '0qzM47xgGKNWrDJ2YXuT'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 # memcache
 # CACHES = {

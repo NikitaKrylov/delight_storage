@@ -10,6 +10,7 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path('inbox/notifications/',
          include(notifications.urls, namespace='notifications')),
+    path('', include('social_django.urls')),
 ]
 
 # handler400 = 'my_app.views.bad_request'

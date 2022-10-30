@@ -13,10 +13,10 @@ $('.cover-item-gallery__likes').click(function(event){
              dataType: "json",
              success: function(response) {
               selector = document.getElementsByName(response.content_id);
-                    if(response.liked==true){
+                    if (response.liked==true){
                         setText(child, 1)
                     }
-                    else if(response.liked==false){
+                    else if (response.liked==false){
                       setText(child, -1)
                     }
               }

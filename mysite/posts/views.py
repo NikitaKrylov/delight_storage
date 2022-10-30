@@ -1,5 +1,4 @@
 import json
-
 from django.db.models import Q
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
@@ -10,6 +9,8 @@ from django.http import HttpResponse
 
 class LikePostView(View):
     def get(self, request, *args, **kwargs):
+        ctx = {"liked": None}
+
         if request.user.is_authenticated:
             post = Post.objects.get(pk=kwargs['pk'])
 
@@ -17,14 +18,12 @@ class LikePostView(View):
             if not created:  # already liked the content
                 post.likes.remove(like)  # remove user from likes
                 like.delete()
-                liked = False
+                ctx['liked'] = False
             else:
                 post.likes.add(like)
-                liked = True
+                ctx['liked'] = True
 
-            ctx = {"liked": liked}
-            return HttpResponse(json.dumps(ctx), content_type='application/json')
-        return super().get(request, *args, **kwargs)
+        return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 class HomeView(TemplateView):
@@ -48,13 +47,13 @@ class PostList(PostListItemMixin, ListView):
 
     def get_queryset(self):
         search_terms: str = self.request.GET.get('search', '').split()
+        response = super().get_queryset()
 
         if search_terms:
             query = Q()
             for item in search_terms:
                 query |= Q(tags__name__startswith=item)
-            response = self.model.objects.filter(query).distinct()
-        else:
-            response = self.model.objects.all()
+            response = response.filter(query).distinct()
+
         return response
 
