@@ -1,8 +1,10 @@
 import json
+
+from django.db.models import Q
 from django.views import View
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from .mixins import PostMixin, UpdateViewsMixin, PostListItemMixin
-from .models import Post, Like
+from .models import Post
 from django.http import HttpResponse
 
 
@@ -25,8 +27,8 @@ class LikePostView(View):
         return super().get(request, *args, **kwargs)
 
 
-class HomeView(View):
-    pass
+class HomeView(TemplateView):
+    template_name = 'posts/home.html'
 
 
 class PostView(UpdateViewsMixin, PostMixin, DetailView):
@@ -44,6 +46,15 @@ class PostList(PostListItemMixin, ListView):
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
-    def dispatch(self, request, *args, **kwargs):
-        print(self.request.user.is_authenticated)
-        return super().dispatch(request, *args, **kwargs)
+    def get_queryset(self):
+        search_terms: str = self.request.GET.get('search', '').split()
+
+        if search_terms:
+            query = Q()
+            for item in search_terms:
+                query |= Q(tags__name__startswith=item)
+            response = self.model.objects.filter(query).distinct()
+        else:
+            response = self.model.objects.all()
+        return response
+

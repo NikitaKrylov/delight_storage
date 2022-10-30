@@ -32,14 +32,13 @@
                         <i class="fa-solid fa-bars hamburgerIcon"></i>
                     </button>
                     <div class="header__search">
-                        <form autocomplete="off" action="" method="get">
+                        <form autocomplete="off" action="{% url 'post_list' %}" method="get">
                             <fieldset class="fs-nf">
                                 <div class="search-bar-container">
                                     <label for="search">
-                                        <input class="search-bar-container__search-input search-input" type="text" value
-                                            placeholder="Поиск" autocomplete="off" style="color: #ffffff;">
+                                        <input class="search-bar-container__search-input search-input" name="search" type="text" placeholder="Поиск..." autocomplete="off" style="color: #ffffff;">
                                     </label>
-                                    <button class="search-bar-container__search-button">
+                                    <button class="search-bar-container__search-button" type="submit">
                                         <svg width="95%" height="95%" viewBox="0 0 15 15" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="5" cy="5" r="4.5" stroke="#838592" />
@@ -104,7 +103,7 @@
                 </div>
                 <nav class="header__nav">
                     <ul class="header__nav-menu">
-                        <li><a href="index.html"><span class="header__item-name">Home</span></a></li>
+                        <li><a href="{% url 'home' %}"><span class="header__item-name">Home</span></a></li>
                         <li><a href=""><span class="header__item-name">Posts</span></a></li>
                         <li><a href="images.html"><span class="header__item-name">Images</span></a></li>
                         <li><a href=""><span class="header__item-name">Videos</span></a></li>
@@ -221,7 +220,7 @@
                     </span>
                 </div>
                 <div class="nav-menu-links menu-wrapper menu-section">
-                    <a href="index.html" class="nav-menu__link">Home</a>
+                    <a href="{% url 'home' %}" class="nav-menu__link">Home</a>
                     <a href="" class="nav-menu__link">Posts</a>
                     <a href="images.html" class="nav-menu__link">Images</a>
                     <a href="" class="nav-menu__link">Videos</a>
