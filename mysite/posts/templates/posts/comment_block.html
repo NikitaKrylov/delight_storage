@@ -1,0 +1,29 @@
+<div class="comment">
+    <div class="comment__body">
+        <div class="comment__head">
+            <a href="" class="comment__user">
+                <img class="comment__avatar" src="images/icon/avatar.png">
+                <span class="comment__username">{{comment.author}}</span>
+            </a>
+            <time class="comment__date-time">
+                <time datetime="Fri Sep 1 1939 00:00:01 GMT+000">{{comment.pub_date}}</time>
+            </time>
+        </div>
+        <div class="comment__content">
+            <div>
+                {{comment.text}}
+            </div>
+        </div>
+        <div class="comment__controls">
+            <button class="answer-button">ответить</button>
+
+        </div>
+    </div>
+    <div class="comment__children">
+        {% for comment in comment.answered.all %}
+
+            {% include 'posts/comment_block.html' %}
+
+        {% endfor %}
+    </div>
+</div>

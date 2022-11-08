@@ -1,0 +1,38 @@
+@import "./pages/_header";
+@import "./pages/_main";
+@import "./pages/_gallery-filter";
+@import "./pages/_slider";
+@import "./pages/_mobile-menu";
+@import "./pages/_footer";
+
+$color-background-default: #06070d;
+
+.section-title {
+    width: 96%;
+    margin: 30px 0 0;
+    background-color: $color-background-default;
+    height: 40px;
+}
+
+.section-title__link {
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+}
+
+.arrow {
+    margin-left: 8px;
+    position: relative;
+    top: 2px;
+}
+
+
+
+
+

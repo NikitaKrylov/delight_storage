@@ -2,11 +2,10 @@ function setText(block, update){
     block.textContent = parseInt(block.textContent) + update
 }
 // AJAX CALL
-$('.cover-item-gallery__likes').click(function(event){
+$('.like-btn').click(function(event){
     event.preventDefault()
-    var this_ = $(this)
-    var like_url = this_.attr('data-href')
-    var child = this_.children().children()[0]
+    var like_url = $(this).attr('data-href')
+    var child = $(this).children().children()[0]
     $.ajax({
              type: "GET",
              url: like_url,
@@ -14,16 +13,12 @@ $('.cover-item-gallery__likes').click(function(event){
              dataType: "json",
              success: function(response) {
               selector = document.getElementsByName(response.content_id);
-                    if(response.liked==true){
+                    if (response.liked==true){
                         setText(child, 1)
                     }
-                    else if(response.liked==false){
+                    else if (response.liked==false){
                       setText(child, -1)
                     }
-
-
               }
-
         });
-
   })

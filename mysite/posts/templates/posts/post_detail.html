@@ -1,0 +1,496 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+
+{% block compressible_stylesheet %}
+    <link rel="stylesheet" href="{% static 'posts/css/art_post.css' %}">
+{% endblock %}
+
+
+{% block uncompressible_stylesheet %}
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+    <!-- Link LightGallery -->
+    <link rel="stylesheet" href="https://unpkg.com/lightgallery@2.7.0/css/lightgallery.css" />
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="page__wrapper">
+            <div class="post-container">
+                <div class="post-images">
+                    <div id="lightgallery" class="image-slider swiper" id="product-tab-gallery"
+                        style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
+                        <!-- <button class="dynamic-gallery-button button"></button> -->
+                        <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
+
+                            {% for image in images %}
+                            <div class="image-slider__slide swiper-slide">
+                                <div class="image-slider__image">
+                                    <img src="{{ image.file.url }}">
+
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                    {% if post.count_media != 1 %}
+                    <div class="slider-buttons">
+                        <div class="slider-buttons__button swiper-button-next"></div>
+                        <div class="slider-buttons__button swiper-button-prev"></div>
+                    </div>
+
+                    <div thumbsSlider="" class="image-slider-2 swiper">
+                        <div class="image-slider-2__wrapper swiper-wrapper">
+
+                            {% for image in images %}
+                            <div class="image-slider-2__slide swiper-slide">
+                                <img src="{{ image.file.url }}">
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- <div class="post-images mySwiper">
+                    <div class="post-images__image">
+                        <img src="images/post/im (2).webp">
+                    </div>
+                </div> -->
+                <div class="post-info">
+                    <div class="like-wrap">
+                        <div class="like-cont">
+                            <div class="post-cont-likes">
+                                <button class="like-btn">
+                                    <!-- <i class="fa-regular fa-heart"></i> -->
+                                    <i class="like-btn__heart"></i>
+                                    <span class="like-cont-info">
+                                        <span class="like-cont__likes-number">{{post.count_likes}}</span>
+                                        <!-- <span>Likes</span> -->
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="post-cont-com">
+                                <button class="comment-btn">
+                                    <div class="_39asK">
+                                        <i class="fa-regular fa-message"></i>
+                                        <span class="like-cont-info">
+                                            <span class="like-cont-com-number">{{post.count_comments}}</span>
+                                            <!-- <span>Comments</span> -->
+                                        </span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="post-cont-views">
+                                <div class="post-views">
+                                    <div class="_39asK">
+                                        <i class="fa-regular fa-eye"></i>
+                                        <span class="like-cont-info">
+                                            <span class="like-cont-views-number">{{post.count_views}}</span>
+                                            <!-- <span>Views</span> -->
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-data-published">
+                            <span>
+                                Опубликованно:
+                                <time>
+                                    {{post.publication_date}}
+                                </time>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="post-info-author">
+                        <div class="post-info-author__author">
+                            <img src="images/icon/avatar.png" alt="Аватар">
+                            <div class="author-name">
+                                <span class="author-name__name">{{post.author}}</span>
+                                <span class="author-name__subscribe">
+                                    Подписчики:
+                                    <span>10000</span>
+                                </span>
+                            </div>
+
+                        </div>
+                        <button class="post-info-author__btn">
+                            <i class="fa-solid fa-plus"></i>
+                            Подписаться
+                        </button>
+                    </div>
+                    <div class="post-info-details">
+                        <div class="post-info-tags">
+                            <h3 class="post-info-tags__title">Теги</h3>
+                            <div class="post-tags">
+                                {% for tag in tags %}
+                                <a class="post-tags__tag" href=""><span>{{tag}}</span></a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if post.description %}
+                        <div class="post-info-description">
+                            <h3 class="post-info-description__title">Описание</h3>
+                            <div class="post-description">
+                                {{post.description}}<br>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="post-info-comments">
+                        <section class="post-info-comments__container">
+                            <div class="comments-form">
+                                <!-- <form class="comments-form__form">
+                                    <div class="comments-form__container">
+                                        <div class="comments-form__author">
+                                            <img src="images/icon/avatar.png">
+                                        </div>
+                                        <div class="underline">
+                                            <textarea class="comments-form__container__input-comment"
+                                                placeholder="input a new comment" required></textarea>
+                                            <div class="_10Line"></div>
+                                        </div>
+                                    </div>
+                                    <button class="button-send" type="submit"
+                                        aria-label="отправить коментарий">Оптравить</button>
+                                </form> -->
+                                <!-- <div class="comments-form__title">КОМЕНТАРИИ</div> -->
+                                <div class="comments-form__sort">
+                                    <span class="comments-form__title">КОМЕНТАРИИ</span>
+                                    <div class="comments-form-sorting">
+                                        <span class="comments-form-sorting__sort-btn"><i
+                                                class="fa-solid fa-sort"></i>УПОРЯДОЧИТЬ</span>
+                                        <div class="comments-form-sorting__sortlist" aria-hidden="true">
+                                            <label class="custom-radio">
+                                                <input type="radio" name="color" checked value="name-radio-1">
+                                                <span class="custom-radio__radio-btn"></span>
+                                                <span class="custom-radio__radio-text">Новые</span>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <input type="radio" name="color" value="name-radio-1">
+                                                <span class="custom-radio__radio-btn"></span>
+                                                <span class="custom-radio__radio-text">Старые</span>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <input type="radio" name="color" value="name-radio-1">
+                                                <span class="custom-radio__radio-btn"></span>
+                                                <span class="custom-radio__radio-text">Популярные</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="comments-form__form" action="." method="post">
+                                    {% csrf_token %}
+                                    <div class="comments-form__pseudo-form">
+                                        Написать коментарий
+                                    </div>
+                                </form>
+                            </div>
+                            {% if comments %}
+                            <div class="comments-list">
+                                {% for comment in comments %}
+                                    {% include 'posts/comment_block.html' %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'posts/js/device.js' %}"></script>
+<script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
+<script src="{% static 'posts/libs/autosize.min.js' %}"></script>
+<script src="{% static 'posts/js/scripts.js' %}"></script>
+
+<script>
+        const postInfoActive__com = document.querySelector('.comment-btn')
+        postInfoActive__com.addEventListener('click', function (e) {
+            document.querySelector('.post-info-comments').scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            });
+        })
+    </script>
+
+    <!-- кнопка сортировки коментов -->
+    <script>
+        const sortBtn = $('.comments-form-sorting')
+        const sortlist = $('.comments-form-sorting__sortlist')
+        const sort = $('.comments-form-sorting__sort-btn')
+        const animSpeed = 150
+
+        sort.on("click", function () {
+            if (!sort.hasClass('_active')) {
+                sortlist.animate({
+                    height: 'show',
+                    opacity: 1,
+                }, animSpeed).slideDown(animSpeed);
+                sort.addClass("_active");
+                sortlist.attr("aria-hidden", "false");
+            } else {
+                sortlist.animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                sort.removeClass("_active");
+                sortlist.attr("aria-hidden", "true");
+            }
+        });
+        // при клике на пустое место
+        $(document).on('click', function (e) {
+            if (!e.target.closest('.comments-form-sorting')) {
+                sortlist.animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                sort.removeClass("_active");
+                sortlist.attr("aria-hidden", "true");
+            }
+            // if (!sort.is(e.target) && sortlist.has(e.target).length === 0 && sort.hasClass("_active")) {
+            //     sortlist.animate({
+            //         height: 'hide',
+            //         opacity: 0,
+            //     }, animSpeed).slideUp(animSpeed);
+            //     sort.removeClass("_active");
+            //     sortlist.attr("aria-hidden", "true");
+            // }
+        });
+    </script>
+
+    <!-- answer-button -->
+    <script>
+        // const template = document.getElementById("commentReply");
+
+        const InputReplyComment = document.createElement('div');
+        InputReplyComment.classList.add("comment-reply");
+        InputReplyComment.innerHTML =
+            `<form>
+                <div class="comment-reply__input">
+                    <textarea class="comments-form__input-comment" required></textarea>
+                </div>
+                <div class="comment-reply__controls">
+                    <div class="comment-reply__send">
+                        <button class="button-send" type="submit"
+                            aria-label="отправить коментарий">Оптравить</button>
+                    </div>
+                </div>
+            </form>`
+
+        $(".answer-button").on('click', function (e) {
+            let currentButton = e.target;
+            const parentButton = e.target.parentNode
+
+            if (!currentButton.classList.contains("_active")) {
+                currentButton.classList.add("_active");
+                currentButton.textContent = 'отмена'
+                // const firstlone = template.content.cloneNode(true);
+                // parentButton.after(firstlone);
+                parentButton.after(InputReplyComment);
+                // document.querySelector('.comment-reply__input > div').focus();
+                document.querySelector('.comment-reply__input > textarea').focus();
+
+            } else {
+                currentButton.classList.remove("_active");
+                currentButton.textContent = 'ответить'
+                // const clone = document.querySelector('.comment-reply');
+                // clone.remove();
+                InputReplyComment.remove();
+            }
+
+            $(document).on('click', function (e) {
+                const commentReply = $('.comment-reply')
+                if (!$(currentButton).is(e.target) && $(commentReply).has(e.target).length === 0) {
+                    currentButton.classList.remove("_active");
+                    currentButton.textContent = 'ответить'
+                    commentReply.remove();
+                }
+            });
+
+            // var textarea = document.querySelector('.comments-form__input-comment');
+            // textarea.addEventListener('keydown', function (e) {
+            //     console.log('autosize');
+            //     setInterval(() => {
+            //         e.target.style.height = 'auto';
+            //         e.target.style.height = `${e.target.scrollHeight}px`;
+            //     }, 0);
+            // });
+            autosize($('.comments-form__input-comment'));
+        });
+    </script>
+
+    <!-- input comment -->
+    <script>
+        const InputNewComment = document.createElement('div');
+        InputNewComment.classList.add("comments-form__reply");
+        InputNewComment.innerHTML =
+            `<div class="comments-form__input"
+                    aria-placeholder="Введите ваш комментарий">
+                    <textarea class="comments-form__input-comment" name=comment_body" required></textarea>
+                </div>
+                <div class="comments-form__controls">
+                    <div class="comment-form__send">
+                        <button class="button-send" type="submit"
+                            aria-label="отправить коментарий">Оптравить</button>
+                    </div>
+                </div>`
+
+        $(".comments-form__pseudo-form").on('click', function (e) {
+            // const firstlone = template0.content.cloneNode(true);
+            document.querySelector('.comments-form__pseudo-form').remove();
+            document.querySelector('.comments-form__form').append(InputNewComment);
+            // document.querySelector('.comment-form__input > div').focus();
+            document.querySelector('.comments-form__input > textarea').focus();
+
+            // var textarea = document.querySelector('.comments-form__input-comment');
+            // textarea.addEventListener('keydown', function (e) {
+            //     console.log('autosize');
+            //     setInterval(() => {
+            //         e.target.style.height = 'auto';
+            //         e.target.style.height = `${e.target.scrollHeight}px`;
+            //     }, 0);
+            // });
+            autosize($('.comments-form__input > textarea'));
+        });
+    </script>
+
+    <!-- кнопка поиска -->
+    <script>
+        const searchCont = $('.search-bar-container')
+        const searchBtn = $('.search-bar-container__search-button')
+        const searchInp = $('.search-bar-container__search-input')
+        searchInp.fadeOut();
+        searchBtn.on('click', function (e) {
+            if (searchBtn.attr('type') == 'submit') {
+                searchBtn.submit();
+            } else {
+                searchInp.fadeIn(350).focus();
+                searchCont.addClass('_active');
+                searchBtn.attr('type', 'submit');
+                return false;
+            }
+        });
+
+        $(document).on('click', function (e) {
+            if (!e.target.closest('.search-bar-container') && (searchInp.val().length === 0)) {
+                searchInp.fadeOut(350);
+                searchCont.removeClass('_active');
+                searchBtn.attr('type', 'button');
+            }
+            //     if (!searchBtn.is(e.target) && searchCont.has(e.target).length === 0 && searchInp.val().length === 0) {
+            //         searchInp.fadeOut(350);
+            //         searchCont.removeClass('_active');
+            //         searchBtn.attr('type', 'button');
+            //     }
+        });
+    </script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".image-slider-2", {
+            // loop: true,
+            // loopedSlides: 1,
+            spaceBetween: 5,
+            slidesPerView: 'auto',
+            // touchRatio: 0,
+            freeMode: true,
+            watchSlidesProgress: true,
+            watchOverflow: true,
+
+            speed: 250,
+        });
+        // основной слайдер
+        var swiper2 = new Swiper(".image-slider", {
+            loop: true,
+            // loopedSlides: 1,
+            spaceBetween: 10,
+            // freeMode: true,
+            slidesPerView: 1,
+            // watchOverflow: true,
+            // grabCursor: true,
+
+            // preloadImages: false,
+            // lazy: {
+            //     loadOnTransitionStart: true,
+            //     loadPrevNext: true,
+            // },
+            // watchSlidesProgress: true,
+            // watchSlidesVisibility: true,
+
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            keyboard: {
+                enabled: true,
+                onlyInViewport: true,
+                pageUpDown: true,
+            },
+            thumbs: {
+                swiper: swiper,
+            },
+
+            speed: 300,
+
+            // для инвалидов
+            a11y: {
+                enabled: true,
+                prevSlideMessage: 'предыдущий слайд',
+                nextSlideMessage: 'следующий слайд',
+                firstSlideMessage: 'это первый слайд',
+                lastSlideMessage: 'это последний слад',
+                paginationBulletMessage: 'перейти к слайду {{index}}',
+            }
+
+        });
+
+    </script>
+
+    <!-- LightGallery -->
+    <script src="https://unpkg.com/lightgallery@2.7.0/lightgallery.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/zoom/lg-zoom.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/thumbnail/lg-thumbnail.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/autoplay/lg-autoplay.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/video/lg-video.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/fullscreen/lg-fullscreen.min.js"></script>
+    <script src="https://unpkg.com/lightgallery@2.7.0/plugins/hash/lg-hash.min.js"></script>
+    <script src="{% static 'posts/js/search-tags.js' %}"></script>
+    <script>
+
+        const dynamicGallery = document.querySelector(".dynamic-gallery-button");
+        const popup = lightGallery(document.getElementById('lightgallery'), {
+            // dynamic: true,
+            autoplayFirstVideo: false,
+            pager: false,
+            selector: '.image-slider__image img',
+            plugins: [lgZoom, lgAutoplay, lgVideo, lgFullscreen, lgHash],
+            mobileSettings: {
+                controls: true,
+                showCloseIcon: true,
+                download: true,
+                rotate: false
+            },
+        });
+
+
+    </script>
+{% endblock %}

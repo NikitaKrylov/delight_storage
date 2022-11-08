@@ -7,7 +7,8 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('notifications/', NotificationListView.as_view(), name='user_notifications'),
     path('<int:pk>/edit/', EditUserProfileView.as_view(), name='edit_profile'),
-    path('<int:pk>/', UserProfileView.as_view(), name='profile'),
+    path('user/<int:pk>/', UserProfileView.as_view(), name='profile'),
+    # path('user/<int:pk>/liked', UserProfileView.as_view(), name='profile'),
 
     # Ввод почты для отправки письма
     path('password/reset/', UserPasswordResetView.as_view(), name='password_reset_form'),

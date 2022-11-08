@@ -59,11 +59,6 @@ class UserPasswordResetForm(PasswordResetForm):
         label="Email",
         max_length=254,
         widget=forms.EmailInput(attrs={"autocomplete": "email", 'placeholder': 'Email'}))
-    # class Meta:
-    #     widgets = {
-    #         'email': forms.TextInput(attrs={'placeholder': 'Email'})
-    #     }
-    #     fields = ('email',)
 
 
 class UserSetPasswordForm(SetPasswordForm):

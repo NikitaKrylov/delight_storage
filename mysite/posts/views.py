@@ -1,13 +1,17 @@
 import json
 from django.db.models import Q
+from django.urls import reverse
 from django.views import View
-from django.views.generic import DetailView, ListView, TemplateView
-from .mixins import PostMixin, UpdateViewsMixin, PostListItemMixin
+from django.views.generic import DetailView, ListView, TemplateView, FormView
+from .mixins import UpdateViewsMixin, PostQueryMixin
 from .models import Post
-from django.http import HttpResponse
+from .forms import PostTagsForm
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 class LikePostView(View):
+    http_method_names = ('get',)
+
     def get(self, request, *args, **kwargs):
         ctx = {"liked": None}
 
@@ -30,20 +34,32 @@ class HomeView(TemplateView):
     template_name = 'posts/home.html'
 
 
-class PostView(UpdateViewsMixin, PostMixin, DetailView):
+class PostView(UpdateViewsMixin, DetailView):
     model = Post
+    template_name = 'posts/post_detail.html'
+    context_object_name = 'post'
 
-    def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
-        post: Post = self.get_object()
-        return HttpResponse("<h1>{}</h1> <span>Pub date: {}</span> <h3>Author: {}</h3>".format(post, post.publication_date, post.author))
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['images'] = list(self.object.images.all())
+        context['tags'] = list(self.object.tags.all())
+        context['comments'] = list(self.object.comments.all())
+
+        return context
 
 
-class PostList(PostListItemMixin, ListView):
+
+
+class PostList(PostQueryMixin, ListView):
     model = Post
     paginate_by = 10
     template_name = 'posts/images.html'
     context_object_name = 'posts'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['search_form'] = PostTagsForm()
+        return context
 
     def get_queryset(self):
         search_terms: str = self.request.GET.get('search', '').split()

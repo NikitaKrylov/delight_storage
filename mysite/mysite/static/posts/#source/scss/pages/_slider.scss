@@ -1,0 +1,150 @@
+/* ______________________slider______________________ */
+
+/* Слайдер */
+
+.slick-slider {
+    &.slick-initialized, &.slick-dotted {}
+  }
+  
+  /* Слайдер запущен */
+  
+  /* Слайдер с точками */
+  
+  /* Ограничивающая оболочка */
+  
+  .slick-list {
+    overflow: hidden;
+  }
+  
+  /* Лента слайдов */
+  
+  .slick-track {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+  
+  /* Слайд */
+  
+  .slick-slide {
+    &.slick-active, &.slick-current, &.slick-center, &.slick-cloned {}
+  }
+  
+  /* Слайд активный (показывается) */
+  
+  /* Слайд основной */
+  
+  /* Слайд по центру */
+  
+  /* Клонированный слайд */
+  
+  /* Стрелка */
+  
+  .slick-arrow {
+    &.slick-prev, &.slick-next, &.slick-disabled {}
+  }
+  
+  /* Стрелка влево */
+  
+  /* Стрелка вправо */
+  
+  /* Стрелка не активная */
+  
+  /* Точки (булиты) */
+  
+  .slick-dots li {
+    &.slick-active, button {}
+  }
+  
+  /* Активная точка */
+  
+  /* Элемент точки */
+  
+  /* Конкретный слайдер */
+  
+  .slider {
+    position: relative;
+  
+    .slick-arrow {
+      position: absolute;
+  
+      /* top: 50%; */
+      top: 0;
+  
+      /* margin: -30px 0 0 0; */
+      z-index: 2;
+      font-size: 0;
+      width: 30px;
+  
+      /* height: 60px; */
+      height: 100%;
+      border: none;
+      -webkit-transition: all 0.2s ease;
+      -o-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+      opacity: 0;
+  
+      &:hover {
+        opacity: 1;
+      }
+  
+      &.slick-prev {
+        left: 0;
+        background: url('/front/site/image/icon/sl-arrow_l.svg') 50% 50% / 100% no-repeat;
+      }
+  
+      &.slick-next {
+        right: 0;
+        background: url('/front/site/image/icon/sl-arrow_r.svg') 50% 50% / 100% no-repeat;
+      }
+    }
+  }
+  
+  .slider__item {
+    text-align: center;
+  }
+  
+  .slider .slick-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    right: 0;
+    left: 0;
+  
+    li {
+      margin: 0 2px;
+  
+      &.slick-active button {
+        /* background-color: rgb(184, 184, 184); */
+        background: white;
+        opacity: 1;
+      }
+    }
+  
+    button {
+      vertical-align: middle;
+      padding: 0;
+      font-size: 0;
+      width: 7px;
+      height: 7px;
+      background: #8d8d8d;
+      border-radius: 50%;
+      opacity: 0.9;
+      border: 0; 
+      appearance: none;
+    }
+  }
+  
+  body._touch .slider .slick-arrow {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  /* ______________________end-slide______________________ */

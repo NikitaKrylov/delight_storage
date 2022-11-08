@@ -25,17 +25,9 @@ const isMobile = {
     }
 };
 
-function showContent() {
-    var temp = document.getElementsByTagName("template")[0];
-    var clon = temp.content.cloneNode(true);
-    document.body.appendChild(clon);
-  }
-
-// const isMobile = navigator.userAgentData.mobile;
 
 if (isMobile.any()) {
     document.body.classList.add('_touch');
-    showContent()
 
 } else {
     document.body.classList.add('_pc');

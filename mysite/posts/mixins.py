@@ -1,29 +1,10 @@
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-
 from .models import Post
 from .services import update_post_views
 
 
-class PostMixin(SingleObjectMixin):
-    model = Post
-    context_object_name = 'post'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        post = self.get_object()
-
-        context['pub_date'] = post.publication_date
-        context['post_author'] = post.author
-        context['tags'] = list(post.tags.all())
-        context['comments'] = post.comments.all()
-        context['views_amount'] = post.count_views()
-        context['likes_amount'] = post.count_likes()
-
-        return context
-
-
-class PostListItemMixin(MultipleObjectMixin):
+class PostQueryMixin(MultipleObjectMixin):
     model = Post
 
     def get_queryset(self):

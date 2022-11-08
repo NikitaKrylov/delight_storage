@@ -1,7 +1,13 @@
 {% extends 'posts/base.html' %}
+{% load static %}
 
-{% block page %}
+{% block content %}
 
     <span>хуй</span>
 
+{% endblock %}
+
+{% block script %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'posts/js/like.js' %}"></script>
 {% endblock %}

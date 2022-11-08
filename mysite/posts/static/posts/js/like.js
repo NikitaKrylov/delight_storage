@@ -2,7 +2,7 @@ function setText(block, update){
     block.textContent = parseInt(block.textContent) + update
 }
 // AJAX CALL
-$('.cover-item-gallery__likes').click(function(event){
+$('.like-btn').click(function(event){
     event.preventDefault()
     var like_url = $(this).attr('data-href')
     var child = $(this).children().children()[0]

@@ -1,0 +1,47 @@
+{% load static %}
+
+<div class="item-masonry sizer4">
+    <img class="lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+    <div class="dots-container">
+        <ul class="dots-items">
+            <li class="dots-items__item"></li>
+        </ul>
+    </div>
+    <div class="cover-item-gallery-container">
+        <a href="{% url 'post' post.pk %}"></a>
+        <div class="cover-item-gallery">
+            <div>
+                <div class="cover-item-gallery__items">
+                    <div class="cover-item-gallery__author">
+                        <div class="gallery__author">
+                            <div class="gallery__author-avatar">
+                                <img src="{% static 'posts/images/icon/avatar.png' %}"
+                                    style="width: 25px; height: 25px">
+                            </div>
+<!--                            <div class="gallery__author-name">-->
+<!--                                <span style="display: contents;">nickname</span>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                    <div class="cover-item-gallery__LC">
+                        <div class="post-views">
+                            <div class="_39asK">
+                                <div class="gallery__numcom">{{ post.count_views }}</div>
+                                <span><i class="fa-regular fa-eye"></i></span>
+                            </div>
+                        </div>
+                        <a data-href="{{ post.get_absolute_like_url }}"  class="like-btn" style="text-decoration: none;">
+                            <div class="_39asK">
+                                <div class="gallery__numcom">{{post.count_likes}}</div>
+                                <i class="like-btn__heart"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

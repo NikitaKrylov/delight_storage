@@ -770,6 +770,7 @@ body._lock .mobileMenuBackground {
     border-radius: 5px;
     cursor: pointer;
     position: relative;
+    text-decoration: none;
 }
 
 .entranceOr svg {}

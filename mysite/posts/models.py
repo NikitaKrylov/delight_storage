@@ -64,6 +64,9 @@ class Post(models.Model):
     def get_videos(self):
         return self.videos
 
+    def converted_date(self) -> str:
+        pass
+
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
 
@@ -79,7 +82,9 @@ class Post(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name=_("автор"), on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name=_('комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
+    pub_date = models.DateTimeField(verbose_name=_('Дата комментария'), auto_now_add=True)
     text = models.TextField(_('текст'))
+    answered = models.ForeignKey('Comment', on_delete=models.CASCADE, verbose_name=_('Комментируемый комментарий'), related_name='related_comments', blank=True, null=True)
 
     class Meta:
         verbose_name = "Коментарий"
@@ -100,7 +105,7 @@ class PostTag(models.Model):
         verbose_name_plural = "Теги"
 
     def __str__(self):
-        return self.name
+        return self.name.capitalize()
 
 
 class Like(models.Model):
