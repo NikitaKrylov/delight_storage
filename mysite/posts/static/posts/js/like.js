@@ -14,9 +14,11 @@ $('.like-btn').click(function(event){
              success: function(response) {
               selector = document.getElementsByName(response.content_id);
                     if (response.liked==true){
+//                    ты только что лайкнул фото
                         setText(child, 1)
                     }
                     else if (response.liked==false){
+//                    ты снял лайк с фото
                       setText(child, -1)
                     }
               }
