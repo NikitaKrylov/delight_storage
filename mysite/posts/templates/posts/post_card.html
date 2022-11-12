@@ -18,9 +18,9 @@
                                 <img src="{% static 'posts/images/icon/avatar.png' %}"
                                     style="width: 25px; height: 25px">
                             </div>
-<!--                            <div class="gallery__author-name">-->
-<!--                                <span style="display: contents;">nickname</span>-->
-<!--                            </div>-->
+                            <!--                            <div class="gallery__author-name">-->
+                            <!--                                <span style="display: contents;">nickname</span>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
                     <div class="cover-item-gallery__LC">
@@ -30,18 +30,31 @@
                                 <span><i class="fa-regular fa-eye"></i></span>
                             </div>
                         </div>
-                        <a data-href="{{ post.get_absolute_like_url }}"  class="like-btn" style="text-decoration: none;">
+                        <button class="like-btn button" data-href="{{ post.get_absolute_like_url }}">
+                            <div class="_39asK">
+                                <span class="like-cont-info">
+                                    <span class="like-cont__likes-number">{{post.count_likes}}</span>
+                                </span>
+                                <i class="like-btn__heart"></i>
+                            </div>
+                        </button>
+                    </div>
+                    <!-- <div class="cover-item-gallery__LC">
+                        <div class="post-views">
+                            <div class="_39asK">
+                                <div class="gallery__numcom">{{ post.count_views }}</div>
+                                <span><i class="fa-regular fa-eye"></i></span>
+                            </div>
+                        </div>
+                        <a data-href="{{ post.get_absolute_like_url }}" class="like-btn" style="text-decoration: none;">
                             <div class="_39asK">
                                 <div class="gallery__numcom">{{post.count_likes}}</div>
                                 <i class="like-btn__heart"></i>
                             </div>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-

@@ -9,21 +9,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'posts/css/reset.css' %}">
-    <link rel="stylesheet" href="{% static 'posts/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/reset.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/page.css' %}">
     <link rel="stylesheet" href="{% static 'posts/css/images.css' %}">
     {% block compressible_stylesheet %}{% endblock %}
     {% block uncompressible_stylesheet %}{% endblock %}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Document</title>
 </head>
 
 <body id="body">
     <div class="search-container">
         <div class="search-container__wrapper">
-            <div class="search-input">
-                <form>
+            <form id="search-tags-form">
+                <div class="search-input">
                     <button class="search-input__btn button search-input-icon-btn" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
@@ -32,258 +31,980 @@
                     <div class="search-input__close search-input-icon-btn">
                         <i class="fa-solid fa-xmark"></i>
                     </div>
-                </form>
-            </div>
-            <div class="search-content">
-                <div class="tags-list">
-                    <div type="number" class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Poetry</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Photo Manipulation</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Resources</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Sculpture</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Stree Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Wallpaper</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Digital</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>illustration</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>fantasy</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fan Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fan Fiction</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fractal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Game Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Manga</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Horror</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Kinky</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>3D</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>18+</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Nude Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Pixel Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Photography</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Poetry</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Photo Manipulation</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Resources</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Sculpture</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Stree Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Wallpaper</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Adoptables</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Anthro</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>animal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Digital</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>illustration</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>fantasy</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fan Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fan Fiction</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Fractal</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Game Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Manga</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Horror</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Kinky</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>3D</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>18+</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Nude Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Pixel Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Photography</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Poetry</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Photo Manipulation</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Resources</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Sculpture</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Stree Art</span>
-                    </div>
-                    <div class="tags-list__tag" style="display: none;" data-three-pos>
-                        <span>Wallpaper</span>
+                </div>
+                <div class="search-content">
+                    <div class="tags-list">
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Poetry</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Photo Manipulation</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Resources</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Sculpture</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Stree Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Wallpaper</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Digital</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>illustration</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>fantasy</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fan Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fan Fiction</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fractal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Game Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Manga</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Horror</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Kinky</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>3D</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>18+</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Nude Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Pixel Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Photography</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Poetry</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Photo Manipulation</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Resources</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Sculpture</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Stree Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Wallpaper</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Adoptables</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Anthro</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>animal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Digital</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>illustration</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>fantasy</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fan Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fan Fiction</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Fractal</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Game Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Manga</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Horror</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Kinky</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>3D</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>18+</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Nude Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Pixel Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Photography</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Poetry</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Photo Manipulation</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Resources</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Sculpture</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Stree Art</span>
+                        </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            <input class="tags-list__checkbox three-pos-inp" type="checkbox" value="0">
+                            <span>Wallpaper</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <div class="mobileMenuBackground"></div>
@@ -303,10 +1024,11 @@
                             <span>Поиск</span>
                         </button>
                     </div>
-                    <div class="header__notification-icon">
-                        <div class="notification-items">
-                            <div class="notification-items__item">
-                                {% if request.user.is_authenticated %}
+                    <div class="header__account-menu">
+                        <div class="header__notification-icon">
+                            <div class="notification-items">
+                                <div class="notification-items__item">
+                                    {% if request.user.is_authenticated %}
                                     {% with nf_amount=request.user.get_unread_notifications.count %}
                                     {% if nf_amount > 0 %}
                                     <span
@@ -314,45 +1036,49 @@
 
                                     {% endif %}
                                     {% endwith %}
-                                {% endif %}
-                                <i class="fa-solid fa-bell"></i>
-                            </div>
-                            <div class="notification-items__item">
+                                    {% endif %}
+                                    <i class="fa-solid fa-bell"></i>
+                                </div>
+                                <div class="notification-items__item">
 
-                                <span
-                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
-                                <i class=" fa-solid fa-heart"></i>
+                                    <span
+                                        class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                    <i class=" fa-solid fa-heart"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="header__profile">
-                        {% if request.user.is_authenticated %}
-                        <!-- для зареганых -->
-                        <img class="header-profile-avatar" src="{% static 'posts/images/icon/avatar.png' %}" alt="Аватар">
-                        <ul class="profile-dropdown">
-                            <li><span><a href="{% url 'profile' request.user.pk %}" class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
-                                        профиль</a></span></li>
-                            <li><span><a href="" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-heart"></i>Лайки</a></span></li>
-                            <li><span><a href="{% url 'user_notifications' %}" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-bell"></i>Уведомления</a></span></li>
-                            <li><span><a href="" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-user-group"></i>Подписки</a></span></li>
-                            <li><span><a href="#" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-clipboard"></i>Мои
-                                        посты</a></span></li>
-                            <li><span><a href="" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-user-xmark"></i>Игнор-лист</a></span></li>
-                            <div class="line"></div>
-                            <li><span><a href="" class="profile-dropdown__Link"><i
-                                            class="fa-solid fa-gear"></i>Настройки</a></span></li>
-                            <li><span><a href="{% url 'logout' %}" class="profile-dropdown__Link" style="color:red;"><i
-                                            class="fa-solid fa-right-from-bracket"></i>Выход</a></span></li>
-                        </ul>
-                        {% else %}
-                        <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
-                        <a href="{% url 'signup' %}" class="button header__signin-link">Регистрация</a>
-                        {% endif %}
+                        <div class="header__profile">
+                            {% if request.user.is_authenticated %}
+                            <!-- для зареганых -->
+                            <img class="header-profile-avatar" src="{% static 'posts/images/icon/avatar.png' %}"
+                                alt="Аватар">
+                            <ul class="profile-dropdown">
+                                <li><span><a href="{% url 'profile' request.user.pk %}"
+                                            class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
+                                            профиль</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-heart"></i>Лайки</a></span></li>
+                                <li><span><a href="{% url 'user_notifications' %}" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-bell"></i>Уведомления</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-user-group"></i>Подписки</a></span></li>
+                                <li><span><a href="#" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-clipboard"></i>Мои
+                                            посты</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-user-xmark"></i>Игнор-лист</a></span></li>
+                                <div class="line"></div>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-gear"></i>Настройки</a></span></li>
+                                <li><span><a href="{% url 'logout' %}" class="profile-dropdown__Link"
+                                            style="color:red;"><i
+                                                class="fa-solid fa-right-from-bracket"></i>Выход</a></span></li>
+                            </ul>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
+                            <a href="{% url 'signup' %}" class="button header__signin-link">Регистрация</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 <nav class="header__nav">
@@ -372,15 +1098,15 @@
 
             {% endblock %}
 
-            <div class="search-mobile">
-                <div class="search-mobile__container">
-                    <button class="search-mobile__button search-button button">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>Поиск</span>
-                    </button>
-                </div>
-            </div>
         </main>
+        <div class="search-mobile">
+            <div class="search-mobile__container">
+                <button class="search-mobile__button search-button button">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Поиск</span>
+                </button>
+            </div>
+        </div>
         <aside id="nav-menu-mobile">
             <div id="header-menu">
                 <div class="header-menu__title">BestHntArt</div>
@@ -411,7 +1137,8 @@
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-clipboard"></i>Мои посты</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-user-xmark"></i>Игнор лист</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-gear"></i>Настройки</a>
-                <a href="{% url 'signup' %}" class="nav-menu__link"><i class="fa-solid fa-right-from-bracket"></i>Выход</a>
+                <a href="{% url 'signup' %}" class="nav-menu__link"><i
+                        class="fa-solid fa-right-from-bracket"></i>Выход</a>
             </div>
         </aside>
         <footer class="footer">
@@ -436,19 +1163,17 @@
                 </div>
             </div>
         </footer>
-
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
     <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
-    <script src="{% static 'libs/lazyload.min.js' %}"></script>
-    <script src="{% static 'libs/slick.min.js' %}"></script>
-    {% compress js %}
-    <script src="{% static 'posts/js/device.js' %}"></script>
+
+    <script src="{% static '/js/device.js' %}"></script>
+    <script src="{% static '/js/search-tags.js' %}"></script>
+    <script src="{% static '/js/index.js' %}"></script>
+    <script src="{% static 'posts/js/like.js' %}"></script>
     <script src="{% static 'posts/js/scripts.js' %}"></script>
-    <script src="{% static 'posts/js/search-tags.js' %}"></script>
-    {% endcompress %}
 
     {% block script %}
     {% endblock %}

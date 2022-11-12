@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.1.3', '127.0.0.1', '192.168.1.2']
 
 
 # Application definition
@@ -148,6 +148,9 @@ LOGOUT_REDIRECT_URL = reverse_lazy('post_list')
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static_styles'),
+]
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
