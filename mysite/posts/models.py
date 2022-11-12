@@ -28,7 +28,6 @@ class Post(models.Model):
     description = models.CharField(_('описание'), max_length=300, null=True, blank=True)
 
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
-    comments = GenericRelation("Comment")
     views = models.ManyToManyField('UserView', blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
 

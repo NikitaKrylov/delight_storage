@@ -37,6 +37,7 @@ class PostAdmin(admin.ModelAdmin):
     'views',
     'likes',
     )
+    filter_horizontal = ('tags',)
     change_form_template = 'posts/image_post_change_form.html'
 
     def response_generate_image(self, request, post) -> bool:
