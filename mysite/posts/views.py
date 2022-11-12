@@ -48,8 +48,6 @@ class PostView(UpdateViewsMixin, DetailView):
         return context
 
 
-
-
 class PostList(PostQueryMixin, ListView):
     model = Post
     paginate_by = 10
