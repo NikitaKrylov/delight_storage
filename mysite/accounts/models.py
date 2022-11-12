@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 class UserManager(BaseUserManager):
     def create_user(self, email: str, username: str, password: str = None, **other_field):
         if not email:
-            raise ValueError(_("You must provide an email address"))
+            raise ValueError(_("Нужно указать email адресс"))
 
         email = self.normalize_email(email)
         user: User = self.model(email=email, username=username, **other_field)
@@ -25,11 +25,11 @@ class UserManager(BaseUserManager):
         other_field.setdefault("is_active", True)
 
         if other_field.get("is_staff") is not True:
-            raise ValueError("Superuser must be assigned to is_staff=True.")
+            raise ValueError("Superuser должен быть создан с параметром is_staff=True.")
 
         if other_field.get("is_superuser") is not True:
             raise ValueError(
-                "Superuser must be assigned to is_superuser=True.")
+                "Superuser должен быть создан с параметром is_superuser=True.")
 
         return self.create_user(email, username, password, **other_field)
 
