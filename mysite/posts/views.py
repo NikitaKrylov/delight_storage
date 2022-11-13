@@ -48,11 +48,9 @@ class PostView(UpdateViewsMixin, DetailView):
         return context
 
 
-
-
 class PostList(PostQueryMixin, ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 5
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
@@ -72,4 +70,3 @@ class PostList(PostQueryMixin, ListView):
             response = response.filter(query).distinct()
 
         return response
-

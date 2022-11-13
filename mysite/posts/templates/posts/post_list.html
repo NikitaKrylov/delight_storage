@@ -8,7 +8,7 @@
 <div class="container">
     <div class="page__wrapper">
         <div class="container-gallery">
-            <section class="gallery no-gutter-sizer">
+            <section class="gallery no-gutter-sizer infinite-container">
 
                 {% for post in posts %}
 
@@ -18,6 +18,11 @@
 
 
             </section>
+            {% if page_obj.has_next %}
+            <div>
+                <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -26,5 +31,7 @@
 
 {% block script %}
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="{% static 'posts/js/masonry.js' %}"></script>
+<script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'posts/libs/infinite.min.js' %}"></script>
+<script src="{% static 'posts/js/gallery.js' %}"></script>
 {% endblock %}

@@ -327,10 +327,9 @@
 }
 
 .header-profile-avatar {
-  display: inline-block;
-  max-width: 40px;
-  max-height: 40px;
-  vertical-align: middle;
+  display: block;
+  width: 40px;
+  height: 40px;
 }
 
 .page {
