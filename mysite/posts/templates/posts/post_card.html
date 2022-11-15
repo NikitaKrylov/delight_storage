@@ -8,7 +8,7 @@
         </ul>
     </div>
     <div class="cover-item-gallery-container">
-        <a href="{% url 'post' post.pk %}"></a>
+        <a href="{{post.get_absolute_url}}"></a>
         <div class="cover-item-gallery">
             <div>
                 <div class="cover-item-gallery__items">
@@ -26,33 +26,20 @@
                     <div class="cover-item-gallery__LC">
                         <div class="post-views">
                             <div class="_39asK">
-                                <div class="gallery__numcom">{{ post.count_views }}</div>
+                                <div class="gallery__numcom">{{ post.views.count }}</div>
                                 <span><i class="fa-regular fa-eye"></i></span>
                             </div>
                         </div>
                         <button class="like-btn button" data-href="{{ post.get_absolute_like_url }}">
                             <div class="_39asK">
                                 <span class="like-cont-info">
-                                    <span class="like-cont__likes-number">{{post.count_likes}}</span>
+                                    <span class="like-cont__likes-number">{{post.likes.count}}</span>
                                 </span>
                                 <i class="like-btn__heart"></i>
                             </div>
                         </button>
                     </div>
-                    <!-- <div class="cover-item-gallery__LC">
-                        <div class="post-views">
-                            <div class="_39asK">
-                                <div class="gallery__numcom">{{ post.count_views }}</div>
-                                <span><i class="fa-regular fa-eye"></i></span>
-                            </div>
-                        </div>
-                        <a data-href="{{ post.get_absolute_like_url }}" class="like-btn" style="text-decoration: none;">
-                            <div class="_39asK">
-                                <div class="gallery__numcom">{{post.count_likes}}</div>
-                                <i class="like-btn__heart"></i>
-                            </div>
-                        </a>
-                    </div> -->
+
                 </div>
             </div>
         </div>

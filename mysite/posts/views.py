@@ -1,12 +1,24 @@
 import json
 from django.db.models import Q
-from django.urls import reverse
+from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import DetailView, ListView, TemplateView, FormView
-from .mixins import UpdateViewsMixin, PostQueryMixin
-from .models import Post
+from django.views.generic import DetailView, ListView, TemplateView
+from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
+from .models import Post, Comment
 from .forms import PostTagsForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
+
+
+def add_comment(request, *args, **kwargs):
+    if request.method == "POST" and request.user.is_authenticated:
+        post = Post.objects.get(pk=kwargs.get('pk'))
+        comment = Comment(author=request.user, post=post, text=request.POST['input-comments-form'])
+
+        if "reply_comment_pk" in kwargs.values():
+            comment.answered = Comment.objects.get(pk=kwargs['reply_comment_pk'])
+
+        comment.save()
+        return redirect(post)
 
 
 class LikePostView(View):
@@ -34,23 +46,28 @@ class HomeView(TemplateView):
     template_name = 'posts/home.html'
 
 
-class PostView(UpdateViewsMixin, DetailView):
+class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['images'] = list(self.object.images.all())
-        context['tags'] = list(self.object.tags.all())
-        context['comments'] = list(self.object.comments.all())
+        context['images'] = self.object.images.all()
+        context['tags'] = self.object.tags.all()
+        context['comments'] = self.object.comments.all()
+
+        if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
+            context['like_active'] = '_active'
+        else:
+            context['like_active'] = ''
 
         return context
 
 
-class PostList(PostQueryMixin, ListView):
+class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 20
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
@@ -60,14 +77,30 @@ class PostList(PostQueryMixin, ListView):
         return context
 
     def get_queryset(self):
-        search_terms: str = self.request.GET.get('search', '').split()
         response = super().get_queryset()
+        form = PostTagsForm(self.request.GET)
 
-        if search_terms:
-            query = Q()
-            for item in search_terms:
-                query |= Q(tags__name__startswith=item)
-            response = response.filter(query).distinct()
+        filter_query = Q()
+        exclude_query = Q()
 
-        return response
+        for name, value in form.data.lists():
+            if name == 'search': continue
+
+            value = int(value[0])
+            if value == 1:
+                filter_query |= Q(tags__slug=name)
+            elif value == -1:
+                exclude_query |= Q(tags__slug=name)
+
+        return response.exclude(exclude_query).filter(filter_query)
+
+
+class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
+    model = Post
+    paginate_by = 20
+    template_name = 'posts/images.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(likes__user=self.request.user)
 

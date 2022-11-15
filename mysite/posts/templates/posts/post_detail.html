@@ -76,12 +76,12 @@
                 <div class="like-wrap">
                     <div class="like-cont">
                         <div class="post-cont-likes">
-                            <button class="like-btn button" data-href="{{ post.get_absolute_like_url }}">
+                            <button class="like-btn button {{like_active}}" data-href="{{ post.get_absolute_like_url }}">
                                 <!-- <i class="fa-regular fa-heart"></i> -->
                                 <div class="_39asK">
                                     <i class="like-btn__heart"></i>
                                     <span class="like-cont-info">
-                                        <span class="like-cont__likes-number">{{post.count_likes}}</span>
+                                        <span class="like-cont__likes-number">{{post.likes.count}}</span>
                                         <!-- <span>Likes</span> -->
                                     </span>
                                 </div>
@@ -92,7 +92,7 @@
                                 <div class="_39asK">
                                     <i class="fa-regular fa-message"></i>
                                     <span class="like-cont-info">
-                                        <span class="like-cont-com-number">{{post.count_comments}}</span>
+                                        <span class="like-cont-com-number">{{post.comments.count}}</span>
                                         <!-- <span>Comments</span> -->
                                     </span>
                                 </div>
@@ -103,7 +103,7 @@
                                 <div class="_39asK">
                                     <i class="fa-regular fa-eye"></i>
                                     <span class="like-cont-info">
-                                        <span class="like-cont-views-number">{{post.count_views}}</span>
+                                        <span class="like-cont-views-number">{{post.views.count}}</span>
                                         <!-- <span>Views</span> -->
                                     </span>
                                 </div>
@@ -114,7 +114,7 @@
                         <span>
                             Опубликованно:
                             <time>
-                                {{post.publication_date}}
+                                {{post.creation_date}}
                             </time>
                         </span>
                     </div>
@@ -141,7 +141,10 @@
                         <h3 class="post-info-tags__title">Теги</h3>
                         <div class="post-tags">
                             {% for tag in tags %}
-                            <a class="post-tags__tag" href=""><span>{{tag}}</span></a>
+                            <form method="get" action="{% url 'post_list' %}">
+                                <input name="{{tag.slug}}" value="1" style="display: none;">
+                                <button class="post-tags__tag" type="submit"><span>{{tag}}</span></button>
+                            </form>
                             {% endfor %}
                         </div>
                     </div>
@@ -181,17 +184,22 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- комы незя -->
+
+                            {% if post.disable_comments %}
+
                             <div class="comments-are-forbidden">
                                 <span>Автор запретил комментарии</span>
                             </div>
-                            <!-- комы можна -->
-                            <!-- <form id="input-comments-form" action="." method="post">
+
+                            {% else %}
+
+                            <form id="input-comments-form" action="{% url 'add_comment' post.id %}" method="post">
                                 {% csrf_token %}
                                 <div class="comments-form__pseudo-form">
                                     Написать коментарий
                                 </div>
-                            </form> -->
+                            </form>
+                            {% endif %}
                         </div>
                         {% if comments %}
                         <div class="comments-list">

@@ -18,6 +18,7 @@ class UserAdmin(admin.ModelAdmin):
         'last_login',
         'is_adult',
     )
+    filter_horizontal = ('ignored_tags',)
 
     def is_adult(self, obj: User):
         return obj.is_adult()
