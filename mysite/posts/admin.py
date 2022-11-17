@@ -23,15 +23,10 @@ class PostAdmin(admin.ModelAdmin):
         'only_for_adult',
         'for_autenticated_users',
         'disable_comments',
-        'count_comments',
-        'count_likes',
-        'count_views',
+        'status',
     )
     readonly_fields = (
         'creation_date',
-        'count_comments',
-        'count_likes',
-        'count_views',
     )
     exclude = (
     'views',
@@ -39,6 +34,7 @@ class PostAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ('tags',)
     change_form_template = 'posts/image_post_change_form.html'
+    actions = ('make_published', 'put_off',)
 
     def response_generate_image(self, request, post) -> bool:
         if "generate_image" in request.POST:
@@ -72,6 +68,14 @@ class PostAdmin(admin.ModelAdmin):
         if post.images.count() == 0 and post.videos.count() == 0:
             self.message_user(request, '{} должен иметь хотябы один медиа файл!'.format(post), level=messages.WARNING)
         return responce
+
+    @admin.action(description="Опубликовать")
+    def make_published(self, request, queryset):
+        queryset.update(status=0)
+
+    @admin.action(description="Отложить")
+    def put_off(self, request, queryset):
+        queryset.update(status=1)
 
 
 @admin.register(PostTag)

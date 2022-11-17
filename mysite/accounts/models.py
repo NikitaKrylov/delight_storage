@@ -39,9 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email addres"), max_length=255, unique=True)
     avatar = models.ImageField(_("иконка пользователя"), blank=True, null=True)
     birth_date = models.DateField(
-        verbose_name="дата рождения", blank=True, null=True)
+        verbose_name=_("дата рождения"), blank=True, null=True)
     start_date = models.DateField(
-        verbose_name="дата регистрации", auto_now_add=True)
+        verbose_name=_("дата регистрации"), auto_now_add=True)
     ignored_tags = models.ManyToManyField(
         "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
 

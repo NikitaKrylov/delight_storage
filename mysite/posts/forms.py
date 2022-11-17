@@ -1,18 +1,20 @@
 from django import forms
 from .models import PostTag
 
+POST_TAGS = PostTag.objects.all()
+
 
 class PostTagsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tags = []
 
-        for tag in PostTag.objects.all():
-            self.fields["tag_{}".format(tag.slug)] = forms.IntegerField(
-                label=tag.name,
-                widget=forms.CheckboxInput(attrs={"class": ""})
+        for tag in POST_TAGS:
+            self.fields[tag.slug] = forms.IntegerField(
+                label=str(tag),
+                widget=forms.NumberInput(attrs={"class": "tags-list__checkbox three-pos-inp", "value": 0}),
             )
+            self.fields[tag.slug].required = False
 
-            self.tags.append("tag_{}".format(tag.slug))
+
 

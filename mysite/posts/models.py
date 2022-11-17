@@ -15,8 +15,14 @@ class PostManager(models.Manager):
 
 
 class Post(models.Model):
+    STATUS = (
+        (0, _('опубликованно')),
+        (1, _('отложенно')),
+        (2, _('на рассмотрении'))
+    )
+
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    creation_date = models.DateField(
+    creation_date = models.DateTimeField(
         _("дата создания"), auto_now_add=True)
     only_for_adult = models.BooleanField(_("18+ контент"), default=False)
     for_autenticated_users = models.BooleanField(
@@ -25,6 +31,7 @@ class Post(models.Model):
         _("для премиум пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
+    status = models.IntegerField(_('статус'), choices=STATUS, default=0)
     description = models.CharField(_('описание'), max_length=300, null=True, blank=True)
 
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
@@ -36,33 +43,13 @@ class Post(models.Model):
     class Meta:
         verbose_name = _('пост')
         verbose_name_plural = _('посты')
-
-    def count_likes(self) -> int:
-        return self.likes.count()
-
-    def count_views(self) -> int:
-        return self.views.count()
-
-    def count_comments(self) -> int:
-        return self.comments.count()
-
-    def count_tags(self) -> int:
-        return self.tags.count()
+        ordering = ('-creation_date',)
 
     def count_media(self) -> int:
         return self.images.count() + self.videos.count()
 
     def get_tags(self):
         return self.tags.all()
-
-    def get_images(self):
-        return self.images
-
-    def get_videos(self):
-        return self.videos
-
-    def converted_date(self) -> str:
-        pass
 
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
@@ -86,6 +73,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Коментарий"
         verbose_name_plural = "Коментарии"
+        ordering = ('-pub_date',)
 
     def text_length(self):
         return len(self.text)

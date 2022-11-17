@@ -31,6 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.1.3', '127.0.0.1', '192.168.1.2']
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 
 # Application definition
 
@@ -50,6 +53,8 @@ INSTALLED_APPS = [
     'compressor',
     'posts',
     'social_django',
+
+    'debug_toolbar',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -67,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
