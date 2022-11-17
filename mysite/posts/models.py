@@ -1,11 +1,9 @@
 from django.db import models
 from accounts.models import User, ClientIP
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.fields import GenericRelation
 from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
 from django.urls import reverse
-from django.core.exceptions import ValidationError
 
 
 class PostManager(models.Manager):
@@ -18,8 +16,8 @@ class PostManager(models.Manager):
 
 class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    publication_date = models.DateField(
-        _("дата публикации"), auto_now_add=True)
+    creation_date = models.DateField(
+        _("дата создания"), auto_now_add=True)
     only_for_adult = models.BooleanField(_("18+ контент"), default=False)
     for_autenticated_users = models.BooleanField(
         _("для авторизированных пользователей"), default=False)
@@ -31,7 +29,7 @@ class Post(models.Model):
 
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
     comments = GenericRelation("Comment")
-    views = models.ManyToManyField(ClientIP, blank=True)
+    views = models.ManyToManyField('UserView', blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
 
     objects = PostManager()
@@ -109,7 +107,8 @@ class PostTag(models.Model):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="likes")
+    creation_date = models.DateTimeField(_('дата создания'), auto_now_add=True)
+    user = models.ForeignKey(User, verbose_name=_('пользователь'), on_delete=models.SET_NULL, null=True, related_name="likes")
 
     class Meta:
         verbose_name = 'Лайк'
@@ -117,3 +116,16 @@ class Like(models.Model):
 
     def __str__(self):
         return "Лайк от {}".format(self.user.username)
+
+
+class UserView(models.Model):
+    creation_date = models.DateTimeField(_('дата создания'), auto_now_add=True)
+    user = models.ForeignKey(User, verbose_name=_('пользователь'), on_delete=models.SET_NULL, null=True, blank=True)
+    client_ip = models.ForeignKey(ClientIP, verbose_name=_('IP пользователя'), null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        verbose_name = 'Просмотр пользователя'
+        verbose_name_plural = 'Просмотры пользователей'
+
+    def __str__(self):
+        return 'Лайкт от {}'.format(self.user or self.client_ip)

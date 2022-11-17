@@ -6,41 +6,37 @@ from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
 from mediacore.models import ImageFile
 
-post_list_filter = (
-    'tags',
-    'only_for_adult',
-    'for_autenticated_users',
-)
-post_list_display = (
-    'id',
-    'publication_date',
-    'only_for_adult',
-    'for_autenticated_users',
-    'disable_comments',
-    'count_comments',
-    'count_likes',
-    'count_views',
-)
-post_readonly_fields = (
-    'count_comments',
-    'count_likes',
-    'count_views',
-)
-post_exclude_fields = (
-    'views',
-    'likes',
-)
-
 admin.site.register(Like)
 
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     inlines = [InlineImageFileAdmin, InlineVideoFileAdmin]
-    list_filter = post_list_filter
-    list_display = post_list_display
-    readonly_fields = post_readonly_fields
-    exclude = post_exclude_fields
+    list_filter = (
+        'tags',
+        'only_for_adult',
+        'for_autenticated_users',
+)
+    list_display = (
+        'id',
+        'creation_date',
+        'only_for_adult',
+        'for_autenticated_users',
+        'disable_comments',
+        'count_comments',
+        'count_likes',
+        'count_views',
+    )
+    readonly_fields = (
+        'creation_date',
+        'count_comments',
+        'count_likes',
+        'count_views',
+    )
+    exclude = (
+    'views',
+    'likes',
+    )
     change_form_template = 'posts/image_post_change_form.html'
 
     def response_generate_image(self, request, post) -> bool:
@@ -92,7 +88,27 @@ class CommentAdmin(admin.ModelAdmin):
         'author',
     )
     list_display = (
+        'id',
         'author',
         'text_length',
     )
+
+
+@admin.register(UserView)
+class UserViewAdmin(admin.ModelAdmin):
+    search_fields = (
+        'user_id',
+        'client_ip.ip',
+    )
+    list_display = (
+        'id',
+        'user',
+        'client_ip',
+    )
+    list_filter = (
+        'user',
+        'client_ip',
+    )
+
+
 
