@@ -20,10 +20,8 @@
         </div>
     </div>
     <div class="comment__children">
-        {% for comment in comment.answered.all %}
-
-            {% include 'posts/comment_block.html' %}
-
+        {% for comment in comment.related_comments.all %}
+        {% include 'posts/comment_block.html' %}
         {% endfor %}
     </div>
 </div>

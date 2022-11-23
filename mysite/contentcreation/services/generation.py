@@ -1,6 +1,7 @@
 from random import choice
 from .telegram_parser import loop, get_random_image
 from ..models import TelegramChanelSource
+from mysite.settings import POST_MEDIA_PATH
 import os
 
 api_id = '17810821'
@@ -20,6 +21,6 @@ class ContentGenerator:
         url, name = choice(TelegramChanelSource.objects.values_list('url', 'name'))
         self.last_source_name = name
         path = loop.run_until_complete(get_random_image(url))
-        return 'images/' + os.path.basename(path)
+        return POST_MEDIA_PATH + '/' + os.path.basename(path)
 
 

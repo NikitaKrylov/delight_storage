@@ -1,16 +1,19 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
-from posts.models import Post
 import os
 from django.utils.translation import gettext_lazy as _
 from .services import compress
 from django.dispatch import receiver
+from mysite.settings import POST_MEDIA_PATH, ALLOWED_EXTENSIONS
 
 file_post_help_text = 'файл обязательно должен быть прикреплен к посту'
 
 
 class ImageFile(models.Model):
-    file = models.ImageField(_('файл'), upload_to="images")
+    file = models.ImageField(_('файл'), upload_to=POST_MEDIA_PATH, validators=[
+        FileExtensionValidator(allowed_extensions=ALLOWED_EXTENSIONS)
+    ])
     use_compression = models.BooleanField(
         _('использовать компрессию'), default=False)
     post = models.ForeignKey(
@@ -43,7 +46,7 @@ class ImageFile(models.Model):
 
 
 class VideoFile(models.Model):
-    file = models.FileField(_('файл'), upload_to="videos")
+    file = models.FileField(_('файл'), upload_to=POST_MEDIA_PATH)
     post = models.ForeignKey(
         'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='videos')
 

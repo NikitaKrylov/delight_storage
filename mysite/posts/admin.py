@@ -6,8 +6,6 @@ from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
 from mediacore.models import ImageFile
 
-admin.site.register(Like)
-
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
@@ -78,12 +76,28 @@ class PostAdmin(admin.ModelAdmin):
         queryset.update(status=1)
 
 
+@admin.register(PostDelay)
+class PostDelayAdmin(admin.ModelAdmin):
+    list_display = (
+        'post',
+        'time',
+    )
+
+
 @admin.register(PostTag)
 class TagAdmin(admin.ModelAdmin):
     search_fields = (
         'name',
+        'slug',
     )
     prepopulated_fields = {'slug': ('name',)}
+    readonly_fields = (
+        'related_posts_amount',
+    )
+    list_display = (
+        'name',
+        'related_posts_amount',
+    )
 
 
 @admin.register(Comment)
@@ -96,6 +110,7 @@ class CommentAdmin(admin.ModelAdmin):
         'id',
         'author',
         'text_length',
+        'post',
     )
 
 
@@ -114,6 +129,19 @@ class UserViewAdmin(admin.ModelAdmin):
         'user',
         'client_ip',
     )
+    readonly_fields = (
+        'creation_date',
+        'related_post',
+    )
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'creation_date',
+        'related_post',
+    )
+
 
 
 

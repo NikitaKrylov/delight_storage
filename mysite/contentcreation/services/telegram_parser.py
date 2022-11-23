@@ -1,8 +1,9 @@
 from telethon.sync import TelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest
 import asyncio
-from mysite.settings import MEDIA_ROOT
+from mysite.settings import MEDIA_ROOT, POST_MEDIA_PATH
 from random import choice
+import os
 
 api_id = '17810821'
 api_hash = '742ceea4305ac925a1ebb092015dfe39'
@@ -19,7 +20,9 @@ async def get_random_image(channel_url: str, limit=50) -> str:
             if message.photo:
                 target_messages.append(message)
 
-        path = await client.download_media(choice(target_messages).photo, MEDIA_ROOT + 'images')
+        if not os.path.exists(MEDIA_ROOT + POST_MEDIA_PATH):
+            os.makedirs(MEDIA_ROOT + POST_MEDIA_PATH)
+        path = await client.download_media(choice(target_messages).photo, MEDIA_ROOT + POST_MEDIA_PATH)
         return path
 
 

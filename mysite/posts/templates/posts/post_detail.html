@@ -204,7 +204,9 @@
                         {% if comments %}
                         <div class="comments-list">
                             {% for comment in comments %}
-                            {% include 'posts/comment_block.html' %}
+                                {% if not comment.answered %}
+                                    {% include 'posts/comment_block.html' %}
+                                {% endif %}
                             {% endfor %}
                         </div>
                         {% endif %}
