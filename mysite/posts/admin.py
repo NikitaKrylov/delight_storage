@@ -1,10 +1,24 @@
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.utils.safestring import mark_safe
+
 from .models import *
 from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
 from mediacore.models import ImageFile
+
+admin.site.register(PostTag)
+
+
+@admin.register(PostDelay)
+class PostDelayAdmin(admin.ModelAdmin):
+    readonly_fields = ('post',)
+
+    def get_related_post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.get_absolute_url(), obj))
+
+    get_related_post_link.short_description = "Отложеный объект"
 
 
 @admin.register(Post)
@@ -14,10 +28,11 @@ class PostAdmin(admin.ModelAdmin):
         'tags',
         'only_for_adult',
         'for_autenticated_users',
-)
+        'status',
+    )
     list_display = (
         'id',
-        'creation_date',
+        'pub_date',
         'only_for_adult',
         'for_autenticated_users',
         'disable_comments',
@@ -25,14 +40,15 @@ class PostAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'creation_date',
+        'pub_date',
     )
     exclude = (
-    'views',
-    'likes',
+        'views',
+        'likes',
     )
     filter_horizontal = ('tags',)
     change_form_template = 'posts/image_post_change_form.html'
-    actions = ('make_published', 'put_off',)
+    actions = ('make_published',)
 
     def response_generate_image(self, request, post) -> bool:
         if "generate_image" in request.POST:
@@ -69,35 +85,15 @@ class PostAdmin(admin.ModelAdmin):
 
     @admin.action(description="Опубликовать")
     def make_published(self, request, queryset):
-        queryset.update(status=0)
+        for post in queryset:
+            if post.status == 1 and post.delay:
+                post.status = 0
+                post.creation_date = post.delay.time
+                post.delay.delete()
+                post.delay = None
+                post.save()
 
-    @admin.action(description="Отложить")
-    def put_off(self, request, queryset):
-        queryset.update(status=1)
-
-
-@admin.register(PostDelay)
-class PostDelayAdmin(admin.ModelAdmin):
-    list_display = (
-        'post',
-        'time',
-    )
-
-
-@admin.register(PostTag)
-class TagAdmin(admin.ModelAdmin):
-    search_fields = (
-        'name',
-        'slug',
-    )
-    prepopulated_fields = {'slug': ('name',)}
-    readonly_fields = (
-        'related_posts_amount',
-    )
-    list_display = (
-        'name',
-        'related_posts_amount',
-    )
+        messages.add_message(request, messages.SUCCESS, "Посты опубликованы")
 
 
 @admin.register(Comment)

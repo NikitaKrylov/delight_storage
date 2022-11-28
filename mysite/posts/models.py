@@ -1,17 +1,12 @@
+import datetime
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.db.models import QuerySet
 from django.urls import reverse
-
-
-class PostManager(models.Manager):
-    def contain_tags(self, *tags) -> QuerySet:
-        return self.get_queryset().filter(tags__name__in=tags).order_by("-publication_date")
-
-    def get_by_author(self, author: User):
-        return self.get_queryset().filter(post_author=author).order_by("-publication_date")
 
 
 class Post(models.Model):
@@ -23,7 +18,8 @@ class Post(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     creation_date = models.DateTimeField(
-        _("дата создания"), auto_now_add=True)
+        _("дата создания"), auto_now_add=True, editable=False)
+    pub_date = models.DateTimeField(_('дата публикации'), blank=True, null=True)
     only_for_adult = models.BooleanField(_("18+ контент"), default=False)
     for_autenticated_users = models.BooleanField(
         _("для авторизированных пользователей"), default=False)
@@ -37,9 +33,7 @@ class Post(models.Model):
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
     views = models.ManyToManyField('UserView', blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
-    delay = models.OneToOneField("PostDelay", verbose_name=_('задержка'), on_delete=models.SET_NULL, related_name='post', blank=True, null=True)
-
-    objects = PostManager()
+    delay = models.OneToOneField('PostDelay', verbose_name=_('время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = _('пост')
@@ -48,9 +42,6 @@ class Post(models.Model):
 
     def count_media(self) -> int:
         return self.images.count() + self.videos.count()
-
-    def get_tags(self):
-        return self.tags.all()
 
     def get_absolute_url(self):
         return reverse(viewname=self.__class__._meta.model_name, kwargs={"pk": self.pk})
@@ -63,6 +54,17 @@ class Post(models.Model):
             self.status = 1
         return super().save(force_insert, force_update, using, update_fields)
 
+    def clean(self):
+        if self.status == 0 and not self.pub_date:
+            self.pub_date = timezone.now()
+
+        if self.delay and self.delay.time < timezone.now():
+            raise ValidationError("Время публикации не может быть меньше текущего.")
+
+        if self.status == 1 and not self.delay:
+            raise ValidationError("Укажите время публикации для отложенного поста")
+        return super().clean()
+
     def __str__(self):
         if self.delay:
             return "Отложенный пост id - {}".format(self.pk)
@@ -70,14 +72,20 @@ class Post(models.Model):
 
 
 class PostDelay(models.Model):
-    time = models.DateTimeField(_('время публикации'))
+    time = models.DateTimeField(verbose_name=_('Время отложенной публикации'))
 
     class Meta:
-        verbose_name = _('задержка публикации')
-        verbose_name_plural = _('задержки публикаций')
+        verbose_name = "Отложенная задача"
+        verbose_name_plural = "Отложенные задачи"
+
+    def clean(self):
+        if self.time < timezone.now():
+            raise ValidationError("Время отложенной задачи не может быть меньше текущей!")
+        return super().clean()
+
 
     def __str__(self):
-        return 'Задержка публикации до {}'.format(self.time)
+        return "Задержка публикации до {}".format(self.time)
 
 
 # -----------------------COMMENTS----------------------------

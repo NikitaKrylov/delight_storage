@@ -3,7 +3,6 @@ from django.db import models
 from django.urls import reverse
 import os
 from django.utils.translation import gettext_lazy as _
-from .services import compress
 from django.dispatch import receiver
 from mysite.settings import POST_MEDIA_PATH, ALLOWED_EXTENSIONS
 
@@ -14,23 +13,13 @@ class ImageFile(models.Model):
     file = models.ImageField(_('файл'), upload_to=POST_MEDIA_PATH, validators=[
         FileExtensionValidator(allowed_extensions=ALLOWED_EXTENSIONS)
     ])
-    use_compression = models.BooleanField(
-        _('использовать компрессию'), default=False)
     post = models.ForeignKey(
         'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='images')
-    compressed = models.BooleanField(default=False)
+    compressed = models.BooleanField(_('Использование компресии'), default=False)
 
     class Meta:
         verbose_name = "Изображение"
         verbose_name_plural = "Изображения"
-
-    def save(self, *args, **kwargs):
-        if self.use_compression and not self.compressed:
-            new_image = compress(self.file)
-            self.file = new_image
-            self.compressed = True
-
-        return super().save(*args, **kwargs)
 
     def filename(self):
         return os.path.basename(self.file.name)

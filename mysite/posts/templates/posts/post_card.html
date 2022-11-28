@@ -3,9 +3,13 @@
 <div class="item-masonry infinite-item sizer4">
     <img class="lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
     <div class="dots-container">
+        {% if post.images.count > 1 %}
         <ul class="dots-items">
             <li class="dots-items__item"></li>
+            <li class="dots-items__item"></li>
+            <li class="dots-items__item"></li>
         </ul>
+        {% endif %}
     </div>
     <div class="cover-item-gallery-container">
         <a href="{{post.get_absolute_url}}"></a>

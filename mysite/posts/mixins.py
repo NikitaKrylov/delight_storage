@@ -8,7 +8,7 @@ from .services import update_post_views
 class PostFilterFormMixin:
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['search_form'] = PostTagsForm()
+        context['search_form'] = PostTagsForm(self.request.GET)
         return context
 
 

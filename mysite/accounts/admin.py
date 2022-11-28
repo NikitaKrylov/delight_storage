@@ -3,6 +3,7 @@ from .models import User, ClientIP
 
 admin.site.register(ClientIP)
 
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     search_fields = (
@@ -18,9 +19,12 @@ class UserAdmin(admin.ModelAdmin):
         'last_login',
         'is_adult',
     )
+    exclude = ('password',)
     filter_horizontal = ('ignored_tags',)
 
     def is_adult(self, obj: User):
         return obj.is_adult()
+
+    is_adult.short_description = "18+ пользователь"
     
     is_adult.boolean = True

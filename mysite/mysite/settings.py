@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'compressor',
     'posts',
     'social_django',
+    'celerycore',
 
     'debug_toolbar',
 ]
@@ -127,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ru-RU'
 USE_I18N = True
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -165,7 +166,7 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-POST_MEDIA_PATH = datetime.now().strftime('post_media/%Y_%m_%d')
+POST_MEDIA_PATH = datetime.now().strftime('post_media/%Y/%m/%d')
 ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif',)
 
 # Default primary key field type
@@ -225,3 +226,10 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# CELERY
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+PUBLISH_POST_SCHEDULE = 10.0

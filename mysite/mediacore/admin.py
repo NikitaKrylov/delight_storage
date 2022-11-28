@@ -1,6 +1,4 @@
 from django.contrib import admin
-from django.core.exceptions import ValidationError
-
 from mysite.settings import MAX_FILES_IN_IMAGE_POST, MAX_FILES_IN_VIDEO_POST, MAX_IMAGE_BAIT_SIZE
 from .models import ImageFile, VideoFile
 from django.utils.safestring import mark_safe
@@ -23,6 +21,7 @@ class InlineImageFileAdmin(admin.StackedInline):
             width=obj.file.width * self.image_scale,
             height=obj.file.height * self.image_scale,
         ))
+    file_image.short_description = "Изображение"
 
 
 @admin.register(ImageFile)
@@ -46,6 +45,7 @@ class ImageFileAdmin(admin.ModelAdmin):
             width=obj.file.width,
             height=obj.file.height,
         ))
+    file_image.short_description = "Изображение"
 
 
 class InlineVideoFileAdmin(admin.StackedInline):
