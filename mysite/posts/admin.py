@@ -61,7 +61,7 @@ class PostAdmin(admin.ModelAdmin):
             else:
                 post.images.add(image_file)
                 post.save()
-            self.message_user(request, 'Медиа файл успешно создан! Ресурс - {}'.format(cg.last_source_name), level=messages.SUCCESS)
+                self.message_user(request, 'Медиа файл успешно создан! Ресурс - {}'.format(cg.last_source_name), level=messages.SUCCESS)
             return True
         return False
 

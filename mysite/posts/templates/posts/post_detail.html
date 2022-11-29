@@ -38,12 +38,23 @@
 
                         {% for image in images %}
                         <div class="image-slider__slide swiper-slide">
+
                             <div class="image-slider__image">
                                 <img src="{{ image.file.url }}">
+                            </div>
 
+                        </div>
+                        {% endfor %}
+
+                        {% for video in videos %}-->
+                        <div class="image-slider__slide swiper-slide">
+
+                            <div class="image-slider__image">
+                                <video src="{{video.file.url}}" controls></video>
                             </div>
                         </div>
                         {% endfor %}
+
 
                     </div>
                 </div>

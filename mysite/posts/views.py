@@ -54,6 +54,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['images'] = self.object.images.all()
+        context['videos'] = self.object.videos.all()
         context['tags'] = self.object.tags.all()
         context['comments'] = self.object.comments.all()
         context['title'] = "Пост {}".format(self.object.id)
