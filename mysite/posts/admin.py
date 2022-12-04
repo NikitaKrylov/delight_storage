@@ -8,7 +8,11 @@ from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
 from mediacore.models import ImageFile
 
-admin.site.register(PostTag)
+
+@admin.register(PostTag)
+class PostTagAdmin(admin.ModelAdmin):
+    readonly_fields = ('related_posts_amount',)
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(PostDelay)
@@ -33,10 +37,10 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'pub_date',
+        'status',
         'only_for_adult',
         'for_autenticated_users',
         'disable_comments',
-        'status',
     )
     readonly_fields = (
         'creation_date',
@@ -88,9 +92,13 @@ class PostAdmin(admin.ModelAdmin):
         for post in queryset:
             if post.status == 1 and post.delay:
                 post.status = 0
-                post.creation_date = post.delay.time
+                post.pub_date = post.delay.time
                 post.delay.delete()
                 post.delay = None
+                post.save()
+            elif post.status == 2:
+                post.status = 0
+                post.pub_date = timezone.now()
                 post.save()
 
         messages.add_message(request, messages.SUCCESS, "Посты опубликованы")
@@ -127,16 +135,26 @@ class UserViewAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'creation_date',
-        'related_post',
+        'related_post_link',
     )
+
+    def related_post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+
+    related_post_link.short_description = "Просмотренный пост"
 
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
     readonly_fields = (
         'creation_date',
-        'related_post',
+        'related_post_link',
     )
+
+    def related_post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+
+    related_post_link.short_description = "Лайкнутый пост"
 
 
 

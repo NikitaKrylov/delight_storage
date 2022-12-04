@@ -16,6 +16,7 @@ class UserAdmin(admin.ModelAdmin):
         'is_adult',
     )
     readonly_fields = (
+        'id',
         'last_login',
         'is_adult',
     )

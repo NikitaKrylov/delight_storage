@@ -30,7 +30,7 @@ async def _get_channel(client, url):
     return await client.get_entity(url)
 
 
-async def _get_history(client, url, limit=50):
+async def _get_history(client, url, limit=80):
     channel = await _get_channel(client, url)
     return await client(GetHistoryRequest(
     peer=channel,

@@ -46,10 +46,9 @@ class EditUserProfileForm(forms.ModelForm):
         model = User
         fields = (
             'username',
-            'email',
             'avatar',
+            'email',
             'birth_date',
-            'ignored_tags',
         )
         # widgets = {}
 

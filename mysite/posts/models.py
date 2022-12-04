@@ -117,7 +117,7 @@ class Comment(models.Model):
 
 class PostTag(models.Model):
     name = models.CharField(_("название тега"), max_length=30, db_index=True, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = "Тег"
@@ -126,7 +126,7 @@ class PostTag(models.Model):
     def related_posts_amount(self):
         return self.post_set.count()
 
-    related_posts_amount.short_description = _('связанных постов')
+    related_posts_amount.short_description = _('связаных постов')
 
     def __str__(self):
         return self.name.capitalize()
@@ -140,13 +140,12 @@ class Like(models.Model):
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
 
+    @property
     def related_post(self):
         return self.post_set.first()
 
-    related_post.short_description = _('лайкнутый пост')
-
     def __str__(self):
-        return "Лайк от {} -> {}".format(self.user.username, self.related_post())
+        return "Лайк от {} -> {}".format(self.user.username, self.related_post)
 
 
 class UserView(models.Model):
@@ -158,10 +157,9 @@ class UserView(models.Model):
         verbose_name = 'Просмотр пользователя'
         verbose_name_plural = 'Просмотры пользователей'
 
+    @property
     def related_post(self):
         return self.post_set.first()
-
-    related_post.short_description = _('просмотренный пост')
 
     def __str__(self):
         return 'Лайкт от {}'.format(self.user or self.client_ip)
