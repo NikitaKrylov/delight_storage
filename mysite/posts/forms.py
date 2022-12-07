@@ -12,9 +12,7 @@ class PostTagsForm(forms.Form):
         for tag in POST_TAGS:
             self.fields[tag.slug] = forms.IntegerField(
                 label=str(tag),
-                widget=forms.NumberInput(attrs={"class": "tags-list__checkbox three-pos-inp", "value": 0}),
+                widget=forms.NumberInput(
+                    attrs={"class": "tags-list__checkbox hidden-checkbox three-pos-inp", "value": 0, "tabindex": -1, "readonly": "", }),
             )
             self.fields[tag.slug].required = False
-
-
-

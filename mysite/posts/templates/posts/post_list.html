@@ -8,15 +8,27 @@
 <div class="container">
     <div class="page__wrapper">
         <div class="container-gallery">
-            <section class="gallery no-gutter-sizer infinite-container">
-
+            <section class="gallery infinite-container">
                 {% for post in posts %}
 
                 {% include 'posts/post_card.html' %}
 
                 {% endfor %}
 
+                <!-- <div class="posts-not-found">
+                    <span>Не найдено</span>
+                    <div class="posts-not-found__icon">
+                        <img src="{% static 'posts/images/icon/posts-not-found.gif' %}" width="70px" height="70px">
+                    </div>
+                </div> -->
 
+                <div class="loading-box">
+                    <div class="pulse-container">
+                        <div class="pulse-bubble pulse-bubble-1"></div>
+                        <div class="pulse-bubble pulse-bubble-2"></div>
+                        <div class="pulse-bubble pulse-bubble-3"></div>
+                    </div>
+                </div>
             </section>
             {% if page_obj.has_next %}
             <div>

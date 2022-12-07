@@ -12,10 +12,12 @@ from django.http import HttpResponse
 def add_comment(request, *args, **kwargs):
     if request.method == "POST" and request.user.is_authenticated:
         post = Post.objects.get(pk=kwargs.get('pk'))
-        comment = Comment(author=request.user, post=post, text=request.POST['input-comments-form'])
+        comment = Comment(author=request.user, post=post,
+                          text=request.POST['input-comments-form'])
 
         if "reply_comment_pk" in kwargs.values():
-            comment.answered = Comment.objects.get(pk=kwargs['reply_comment_pk'])
+            comment.answered = Comment.objects.get(
+                pk=kwargs['reply_comment_pk'])
 
         comment.save()
         return redirect(post)
@@ -67,7 +69,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
 class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 20
+    paginate_by = 1
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
@@ -84,7 +86,8 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
         exclude_query = Q()
 
         for name, value in form.data.lists():
-            if name == 'search': continue
+            if name == 'search':
+                continue
 
             value = int(value[0])
             if value == 1:
@@ -103,4 +106,3 @@ class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(likes__user=self.request.user)
-

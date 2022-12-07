@@ -8,13 +8,6 @@ $font-family-helvetica: 'Helvetica';
 $font-family-natasans: 'Noto Sans TC', sans-serif;
 $font-family-roboto: 'Roboto', sans-serif;
 
-$color-white: #fff;
-$color-pink: #FAABD3;
-$color-profile-dropdown: rgb(240, 240, 240);
-$color-background-default: #06070d;
-$color-enable: #3ccc7b;
-$color-disable: #f44336;
-
 $max-width-nav-menu: 764px;
 $max-display-width: 1920px;
 
@@ -48,7 +41,7 @@ $browser-context: 16; // Default
     width: inherit;
     // padding: 0 110px;
     margin: 0 auto;
-    background-color: $color-background-default;
+    background-color: var(--bg-default);
   }
 
   &__container {
@@ -73,6 +66,7 @@ $browser-context: 16; // Default
     @media (max-width: 991px) {
       & {
         padding: 0 10px;
+        height: 44px;
         // grid-template-columns: 0.1fr 1fr 0.1fr;
       }
     }
@@ -93,22 +87,20 @@ $browser-context: 16; // Default
     margin: 0;
     // margin-left: 10px;
 
-    @media (max-width: 991px) {
-      // display: none;
-      display: none;
-    }
+    // @media (max-width: 991px) {
+    //   display: none;
+    // }
   }
 
   &__account-menu {
     display: flex;
-    gap: 5px;
+    gap: 20px;
     height: 100%;
   }
 
   &__mobile-navigation {
     display: block;
     // width: 47px;
-    height: 50px;
     background-color: transparent;
     // position: absolute;
     top: 0;
@@ -122,9 +114,10 @@ $browser-context: 16; // Default
 
     @media (max-width: 991px) {
       i.hamburgerIcon {
-        font-size: 30px;
+        font-size: 20px;
+        line-height: 44px;
         // color: #fd96cf;
-        color: $color-pink;
+        color: var(--light-pink);
       }
     }
     @media (min-width: 992px) {
@@ -136,15 +129,14 @@ $browser-context: 16; // Default
     }
   }
 
-  &__notification-icon {
-    display: inherit;
-    grid-template-columns: 1fr;
-    width: 100%;
-    height: 100%;
-    // justify-items: center;
-    align-items: center;
-    margin: 0;
-    padding: 0;
+  &__notification-icons {
+    padding: 10px 0;
+    // width: 100%;
+    // height: 100%;
+    // // justify-items: center;
+    // align-items: center;
+    // margin: 0;
+    // padding: 0;
 
     @media (max-width: 991px) {
       & {
@@ -165,7 +157,7 @@ $browser-context: 16; // Default
     cursor: pointer;
     gap: 10px;
 
-    font-family: $font-family-roboto;
+    // font-family: $font-family-roboto;
 
     &._active .profile-dropdown {
       display: block;
@@ -182,7 +174,7 @@ $browser-context: 16; // Default
     // @include adaptive-value(padding-right, 16, 10, 0);
     padding: 0 em(16);
     // font-size: em(8);
-    border: 1px solid $color-pink;
+    border: 1px solid var(--pink);
   }
 
   &__nav {
@@ -226,7 +218,8 @@ $browser-context: 16; // Default
         width: inherit;
         height: 2px;
         pointer-events: none;
-        background: rgb(247, 190, 237);
+        // background-color: rgb(247, 190, 237);
+        background-color: var(--light-pink);
         content: "";
         opacity: 0;
         transition: all 0.3s;
@@ -265,24 +258,25 @@ $browser-context: 16; // Default
     justify-content:center;
     align-items: center;
     height: 100%;
-    font-family: $font-family-inter;
+    // font-family: $font-family-inter;
     @include mixins.font-settings(500, 18px, normal);
-    color: $color-white;
+    color: var(--white);
   }
 }
   
 .logo {
-  font-family: $font-family-inter;
+  // font-family: $font-family-inter;
   @include mixins.font-settings(500, 32px, normal);
   font-style: italic;
   text-align: left;
-  color: $color-white;
+  color: var(--white);
 }
 
 .notification-items {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
+  display: flex;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  // justify-items: center;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -294,22 +288,32 @@ $browser-context: 16; // Default
 
     i {
       font-size: 22px;
-      color: $color-white;
+      color: var(--white);
 
-      &:hover {
-        color: rgb(255, 195, 232);
-      }
+      // &:hover {
+      //   color: rgb(255, 195, 232);
+      // }
     }
 
-    &:last-child {
-      margin-right: 0;
+    // &:last-child {
+    //   margin-right: 0;
+    // }
+  }
+
+  &__icon {
+    line-height: 44px;
+
+    &:hover {
+      // background-color: var(--hover-btn-default);
+      // background-color: var(--bg-secondary-default);
+      background-color: var(--bg-light-secondary-default);
     }
   }
 
   &__number-of-notifications {
     position: absolute;
     right: 0;
-    top: -10px;
+    top: 2px;
   }
 
   @media (max-width: 991px) {
@@ -327,13 +331,19 @@ $browser-context: 16; // Default
   color: hsla(0, 0%, 100%, 0); */
 
   /* если есть */
-  background-color: red;
-  color: $color-white;
-  @include mixins.font-settings(500, 14px, normal);
-  border-radius: 8px;
+  // background-color: rgb(255, 68, 68);
+  // background-color: var(--red);
+  color: var(--white);
+  // border-radius: 8px;
   height: 15px;
   line-height: 17px;
-  padding: 0 8px;
+  padding: 0 3px;
+
+  background-color: var(--bg-notifications);
+  min-width: 16px;
+  border-radius: 16px;
+  font-size: 10px;
+  // line-height: 16px;
 }
 
 .profile-dropdown {
@@ -343,7 +353,7 @@ $browser-context: 16; // Default
   // left: -200%;
   right: -200%;
 
-  background-color: $color-white;
+  background-color: var(--white);
   padding: 10px;
   min-width: 255px;
   transform: translate(0px, 5%);
@@ -359,14 +369,14 @@ $browser-context: 16; // Default
     white-space: nowrap;
 
     &:hover {
-      background-color: $color-profile-dropdown;
+      background-color: var(--secondary-white);
     }
   }
 
   &__Link {
     font-size: 18px;
-    font-family: $font-family-inter;
-    color: black;
+    // font-family: $font-family-inter;
+    color: var(--black);
 
     i {
       margin-right: 10px;
@@ -392,4 +402,9 @@ $browser-context: 16; // Default
   display: block;
   width: 40px;
   height: 40px;
+
+  @media (max-width: 991px) {
+    width: 32px;
+    height: 32px;
+  }
 }

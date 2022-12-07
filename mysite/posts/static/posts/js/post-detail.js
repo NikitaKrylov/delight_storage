@@ -7,6 +7,18 @@ postInfoActive__com.addEventListener('click', function (e) {
     });
 })
 
+const authorSubscribe = document.querySelector('.subscribe-btn')
+authorSubscribe.addEventListener('click', function (e) {
+    
+    if (authorSubscribe.classList.contains("_active")) {
+        authorSubscribe.classList.remove('_active');
+        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
+    } else {
+        authorSubscribe.classList.add('_active');
+        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
+    }
+})
+
 // кнопка сортировки коментарием
 const sortBtn = $('.comments-form-sorting')
 const sortlist = $('.comments-form-sorting__sortlist')
@@ -50,92 +62,58 @@ $(document).on('click', function (e) {
 });
 
 // answer-button
-const InputReplyComment = document.createElement('div');
-InputReplyComment.classList.add("comment-reply");
-InputReplyComment.innerHTML =
-    `<form id="reply-reply">
-        <div class="comment-reply__input">
-            <textarea class="comments-form__input-comment" name="reply-reply" required></textarea>
-        </div>
-        <div class="comment-reply__controls">
-            <div class="comment-reply__send">
-                <button class="button-send" type="submit"
-                    aria-label="отправить коментарий">Оптравить</button>
-            </div>
-        </div>
-    </form>`
+$(function() {
+    document.querySelector('.comments-list').addEventListener('click', function(e) {
+        let currentButton = e.target;
+        if (currentButton.closest(".answer-button")) {
+            if (!currentButton.classList.contains("_active")) {
+                $(".answer-button").text('ответить').removeClass("_active");
+                $('.comment-reply').prop("hidden", true);
+                $('.comments-form__input-comment').val('');
+                
+                $(currentButton).addClass("_active");
+                currentButton.textContent = 'отмена';
+                setTimeout(() => currentButton.closest('.comment__body').querySelector('.comment-reply__input > textarea').focus(), 100);
+                var commentboxId= $(currentButton).attr('data-commentbox');
+                $('#'+commentboxId).prop("hidden", false);
 
-$(".answer-button").on('click', function (e) {
-    let currentButton = e.target;
-    const parentButton = e.target.parentNode
-
-    if (!currentButton.classList.contains("_active")) {
-        currentButton.classList.add("_active");
-        currentButton.textContent = 'отмена'
-        // const firstlone = template.content.cloneNode(true);
-        // parentButton.after(firstlone);
-        parentButton.after(InputReplyComment);
-        // document.querySelector('.comment-reply__input > div').focus();
-        document.querySelector('.comment-reply__input > textarea').focus();
-
-    } else {
-        currentButton.classList.remove("_active");
-        currentButton.textContent = 'ответить'
-        // const clone = document.querySelector('.comment-reply');
-        // clone.remove();
-        InputReplyComment.remove();
-    }
-
-    $(document).on('click', function (e) {
-        const commentReply = $('.comment-reply')
-        if (!$(currentButton).is(e.target) && $(commentReply).has(e.target).length === 0) {
-            currentButton.classList.remove("_active");
-            currentButton.textContent = 'ответить'
-            commentReply.remove();
+            } else {
+                $(".answer-button").text('ответить').removeClass("_active");
+                $('.comment-reply').prop("hidden", true);
+                $('.comments-form__input-comment').val('');
+            }
         }
     });
 
-    // var textarea = document.querySelector('.comments-form__input-comment');
-    // textarea.addEventListener('keydown', function (e) {
-    //     console.log('autosize');
-    //     setInterval(() => {
-    //         e.target.style.height = 'auto';
-    //         e.target.style.height = `${e.target.scrollHeight}px`;
-    //     }, 0);
+    // $(".answer-button").on('click', function(e) {
+    //     let currentButton = e.target; 
+        
+    //     if (!currentButton.classList.contains("_active")) {
+    //         $(".answer-button").text('ответить').removeClass("_active");
+    //         $('.comment-reply').prop("hidden", true);
+    //         $('.comments-form__input-comment').val('');
+
+            
+    //         $(currentButton).addClass("_active");
+    //         currentButton.textContent = 'отмена';
+    //         setTimeout(() => currentButton.closest('.comment__body').querySelector('.comment-reply__input > textarea').focus(), 100);
+    //         var commentboxId= $(this).attr('data-commentbox');
+    //         $('#'+commentboxId).prop("hidden", false);
+
+    //     } else {
+    //         $(".answer-button").text('ответить').removeClass("_active");
+    //         $('.comment-reply').prop("hidden", true);
+    //         $('.comments-form__input-comment').val('');
+    //     }
     // });
-    autosize($('.comments-form__input-comment'));
 });
 
 // input-comment
-const InputNewComment = document.createElement('div');
-InputNewComment.classList.add("comments-form__reply");
-InputNewComment.innerHTML =
-    `<div class="comments-form__input"
-        aria-placeholder="Введите ваш комментарий">
-        <textarea class="comments-form__input-comment" name="input-comments-form" required></textarea>
-    </div>
-    <div class="comments-form__controls">
-        <div class="comment-form__send">
-            <button class="button-send" type="submit"
-                aria-label="отправить коментарий">Оптравить</button>
-        </div>
-    </div>`
-
 $(".comments-form__pseudo-form").on('click', function (e) {
-    // const firstlone = template0.content.cloneNode(true);
     document.querySelector('.comments-form__pseudo-form').remove();
-    document.getElementById('input-comments-form').append(InputNewComment);
-    // document.querySelector('.comment-form__input > div').focus();
+    // document.getElementById('input-comments-form').append(InputNewComment);
+    document.getElementById('input-comments-form').querySelector(".comments-form__reply").hidden = false;
     document.querySelector('.comments-form__input-comment').focus();
-
-    // var textarea = document.querySelector('.comments-form__input-comment');
-    // textarea.addEventListener('keydown', function (e) {
-    //     console.log('autosize');
-    //     setInterval(() => {
-    //         e.target.style.height = 'auto';
-    //         e.target.style.height = `${e.target.scrollHeight}px`;
-    //     }, 0);
-    // });
     autosize($('.comments-form__input-comment'));
 });
 
@@ -208,9 +186,10 @@ const popup = lightGallery(document.getElementById("lightgallery"), {
     selector: '.image-slider__image img',
     plugins: [lgZoom, lgFullscreen, lgRotate, lgHash, lgVideo],
     mobileSettings: {
-        controls: true,
+        controls: false,
         showCloseIcon: true,
         download: true,
-        rotate: true
+        rotate: true,
     }
 });
+

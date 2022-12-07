@@ -38,14 +38,14 @@ body {
 #nav-menu-mobile {
   /* width: 85%; */
   height: 100%;
-  min-width: 271px;
-  background: #0A0C12;
+  min-width: $min-width;
+  background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
-  left: -200%;
-  transition: left .4s ease;
+  left: -100%;
+  transition: all .4s ease;
   z-index: 120;
-  overflow: auto;
+  // overflow: auto;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -54,7 +54,7 @@ body {
   &._active {
     display: block;
     left: 0;
-    transition: left 0.4s ease;
+    // transform: translate(0%, 0);
     opacity: 1;
     visibility: visible;
     pointer-events: all;
@@ -79,27 +79,25 @@ body {
   }
 }
 
-#header-menu {
+.header-menu {
   display: flex;
   justify-content: space-between;
   width: 90%;
   margin: auto;
   padding: 15px 0 5px;
-  background: #0A0C12;
   zoom: 1;
   height: auto;
-  color: white;
-}
+  color: var(--white);
 
-.header-menu__title {
-  margin: 0 auto;
-  font-family: 'Helvetica';
-  text-align: center;
-  max-height: 60px;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 10px;
-  opacity: .5;
+  &__title {
+    margin: 0 auto;
+    text-align: center;
+    max-height: 60px;
+    font-size: em(20);
+    font-weight: 600;
+    padding: 10px;
+    // opacity: .5;
+  }
 }
 
 #topmenu-section a.phLogoWrap {
@@ -117,7 +115,7 @@ body {
   left: inherit;
   z-index: 1;
   font-size: 34px;
-  color: #fd96cf;
+  color: var(--light-pink);
 }
 
 .menu-wrapper {
@@ -146,13 +144,13 @@ body {
 
 #profile-menu-mobile {
   height: 100%;
-  min-width: 271px;
-  background: #0A0C12;
+  min-width: $min-width;
+  background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
   // right: 0;
   right: -100%;
-  transition: left .4s ease;
+  transition: all .4s ease;
   z-index: 120;
   overflow: auto;
   // padding-bottom: 90px;
@@ -181,39 +179,38 @@ body {
   //   font-weight: 700;
   // }
 
-  @media (min-width: 992px) {
-    & {
-      display: none;
-    }
-  }
-
   @media (max-width: $min-width) {
     & {
       width: 100%;
     }
   }
-  
+  @media (min-width: 992px) {
+    & {
+      display: none;
+    }
+  }
   @media (min-width: $min-width) {
     & {
       width: 80%;
+  
+      /* max-width: 300px; */
     }
   }
 }
 
 .nav-menu__link {
-  font-family: 'Helvetica';
   padding: 12px 16px;
   position: relative;
   display: block;
-  color: #ddd;
+  color: var(--light-gray);
   font-size: 16px;
   font-weight: 600;
-  text-decoration: none;
-  border-bottom: 1px solid #38383a;
-  -webkit-tap-highlight-color: transparent;
+  border-bottom: 1px solid var(--dark-line);
 
   i {
-    width: 30px;
+    color: var(--secondary-white);
+    width: em(30);
+    font-size: em(20);
   }
 }
 

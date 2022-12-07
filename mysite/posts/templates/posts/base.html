@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#05060C">
+    <!-- <meta name="theme-color" content="#BF8F97"> -->
 
     <link rel="stylesheet" href="{% static '/css/reset.css' %}">
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
@@ -26,8 +28,8 @@
                     <button class="search-input__btn button search-input-icon-btn" type="submit">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                    <input class="search-input__input" name="search" type="text" placeholder="Search..." autocomplete="off"
-                        data-search-input>
+                    <input class="search-input__input" name="search" type="text" placeholder="Search..."
+                        autocomplete="off" data-search-input>
                     <div class="search-input__close search-input-icon-btn">
                         <i class="fa-solid fa-xmark"></i>
                     </div>
@@ -37,10 +39,10 @@
 
                         {% for field in search_form %}
 
-                            <div class="tags-list__tag" style="display: none;">
-                                {{ field }}
-                                <span>{{ field.label }}</span>
-                            </div>
+                        <div class="tags-list__tag" style="display: none;">
+                            {{ field }}
+                            <span>{{ field.label }}</span>
+                        </div>
 
                         {% endfor %}
 
@@ -55,7 +57,7 @@
             <div class="header__wrapper">
                 <div class="header__container">
                     <div class="header__logo">
-                        <span class="header__logo logo">BestHntArt</span>
+                        <span class="header__logo logo">DelightArt</span>
                     </div>
                     <button class="header__mobile-navigation" type="button" aria-label="открыть меню навигации">
                         <i class="fa-solid fa-bars hamburgerIcon"></i>
@@ -67,32 +69,35 @@
                         </button>
                     </div>
                     <div class="header__account-menu">
-                        <div class="header__notification-icon">
+                        <div class="header__notification-icons">
                             <div class="notification-items">
                                 <div class="notification-items__item">
-                                    {% if request.user.is_authenticated %}
-                                    {% with nf_amount=request.user.get_unread_notifications.count %}
-                                    {% if nf_amount > 0 %}
-                                    <span
-                                        class="notification-items__number-of-notifications number-of-notifications">{{nf_amount}}</span>
+                                    <div class="notification-items__icon">
+                                        {% if request.user.is_authenticated %}
+                                        {% with nf_amount=request.user.get_unread_notifications.count %}
+                                        {% if nf_amount > 0 %}
+                                        <span
+                                            class="notification-items__number-of-notifications number-of-notifications">{{nf_amount}}</span>
 
-                                    {% endif %}
-                                    {% endwith %}
-                                    {% endif %}
-                                    <i class="fa-solid fa-bell"></i>
+                                        {% endif %}
+                                        {% endwith %}
+                                        {% endif %}
+                                        <i class="fa-solid fa-bell"></i>
+                                    </div>
                                 </div>
                                 <div class="notification-items__item">
-
-                                    <span
-                                        class="notification-items__number-of-notifications number-of-notifications">0</span>
-                                    <i class=" fa-solid fa-heart"></i>
+                                    <div class="notification-items__icon">
+                                        <span
+                                            class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                        <i class=" fa-solid fa-heart"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="header__profile">
                             {% if request.user.is_authenticated %}
                             <!-- для зареганых -->
-                            <img class="header-profile-avatar" src="{% static 'posts/images/icon/avatar.png' %}"
+                            <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
                                 alt="Аватар">
                             <ul class="profile-dropdown">
                                 <li><span><a href="{% url 'profile' request.user.pk %}"
@@ -141,31 +146,23 @@
             {% endblock %}
 
         </main>
-        <div class="search-mobile">
-            <div class="search-mobile__container">
-                <button class="search-mobile__button search-button button">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Поиск</span>
-                </button>
-            </div>
-        </div>
         <aside id="nav-menu-mobile">
-            <div id="header-menu">
+            <div class="header-menu">
                 <div class="header-menu__title">BestHntArt</div>
                 <span class="close-ham-menu">
                     <i class="fa-solid fa-xmark close-icon"></i>
                 </span>
             </div>
             <div class="nav-menu-links menu-wrapper menu-section">
-                <a href="{% url 'home' %}" class="nav-menu__link">Главня</a>
-                <a href="{% url 'post_list' %}" class="nav-menu__link">Арты</a>
-                <a href="" class="nav-menu__link">Видео</a>
-                <a href="" class="nav-menu__link">Косплей</a>
-                <a href="" class="nav-menu__link">Фото</a>
+                <a href="{% url 'home' %}" class="nav-menu__link"><i class="fa-solid fa-house"></i>Главня</a>
+                <a href="{% url 'post_list' %}" class="nav-menu__link"><i class="fa-brands fa-artstation"></i>Арты</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-video"></i>Видео</a>
+                <a href="" class="nav-menu__link"><i class="fa-brands fa-gitlab"></i>Косплей</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-image"></i>Фото</a>
             </div>
         </aside>
         <aside id="profile-menu-mobile">
-            <div id="header-menu">
+            <div class="header-menu">
                 <span class="close-ham-menu-2">
                     <i class="fa-solid fa-xmark close-icon"></i>
                 </span>
@@ -198,10 +195,13 @@
             </div>
             <div class="footer-link">
                 <div class="footer-link__social-links">
-                    <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/vk.png' %}"></a>
+                    <i class="fa-brands fa-vk"></i>
+                    <i class="fa-brands fa-telegram"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                    <!-- <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/vk.png' %}"></a>
                     <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/tg.png' %}"></a>
                     <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/inst.png' %}"></a>
-                    <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/ds.png' %}"></a>
+                    <a href="" class="footer-link__link"><img src="{% static 'posts/images/icon/ds.png' %}"></a> -->
                 </div>
             </div>
         </footer>

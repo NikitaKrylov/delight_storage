@@ -1,13 +1,13 @@
-'use strict';
-
 function btn(button, closebtn, parent) {
   const btn = $(button);
   const clsbtn = $(closebtn);
   const clsname = $(parent);
   const allcont = $('.wrapper');
+
+  // clsname.css('visibility', 'visible');
   
   clsname.addClass('_active');
-  allcont.addClass('_anim-search');
+  // allcont.addClass('_anim-search');
   document.body.classList.add('_lock');
 
   $(document).on('mouseup', function (e) {
@@ -15,13 +15,13 @@ function btn(button, closebtn, parent) {
     // if (!s.is(e.target) && clsname .has(e.target).length === 0) {
     if (!e.target.closest('.search-container__wrapper')) {
       clsname.removeClass('_active');
-      allcont.removeClass('_anim-search');
       document.body.classList.remove('_lock');
     } else {
       if (clsbtn) {
         clsbtn.click(function (e) {
+          // clsname.css('visibility', 'hidden');
           clsname.removeClass('_active');
-          allcont.removeClass('_anim-search');
+          // allcont.removeClass('_anim-search');
           document.body.classList.remove('_lock');
         });
       };
@@ -29,9 +29,13 @@ function btn(button, closebtn, parent) {
   });
 };
 
-$('.search-button').click(function() {
+
+$('.search-button').on('click',function(e) {
   btn('.search-button','.search-input__close', '.search-container');
+  setTimeout(() => document.querySelector('.search-input__input').focus(), 100);
+  // document.querySelector('.search-input__input').focus()
 });
+
 
 // желательно чтобы кнопки имели общий родитель который имеет селетор или id
 function threeBtn(btnName) {
@@ -50,7 +54,7 @@ function threeBtn(btnName) {
         tar.classList.add('_disabled');
         tar.classList.remove('_enabled');
         tar.querySelector('.three-pos-inp').value = '-1';
-
+        
       } else if (valueinp == '-1') {
         tar.classList.remove('_disabled');
         tar.querySelector('.three-pos-inp').value = '0';
@@ -58,30 +62,8 @@ function threeBtn(btnName) {
     };
   });
 };
-
 threeBtn('.tags-list__tag');
 
-// const threePosBtns = document.querySelectorAll('[data-three-pos]')
-// threePosBtns.forEach( function(e) {
-//   e.dataset.threePos = 0
-// });
-
-// $(threePosBtns).on('click', function(e) {
-//   let btn = $(e.currentTarget);
-//   let valuebtn = btn.attr("data-three-pos");
-  
-//   if (valuebtn == '0') {
-//     btn.attr('data-three-pos', '1')
-//   } else if (valuebtn == '1') {
-//     btn.attr('data-three-pos', '-1')
-//   } else if (valuebtn == '-1') {
-//     btn.attr('data-three-pos', '0')
-//   }
-// });
-
-// document.querySelector('.search-input__input').oninput = function() {
-//   search()
-// };
 
 class tagSearch {
   constructor(inputName, itemName) {
@@ -141,16 +123,19 @@ class tagSearch {
 
   start() {
     let arrayitem = document.querySelectorAll(this.itemName);
+    document.querySelector(this.inputName).focus();
     // console.log(arrayitem.length)
 
     document.querySelector(this.itemName).parentNode.addEventListener('click', function(e) {
-      if (e.target.closest(this.itemName)) {
+      let clickBtn = e.target.closest(this.itemName)
+      if (clickBtn) {
+        setTimeout(() => clickBtn.querySelector('.three-pos-inp').focus(), 100);
         let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
         
         // скрыть кнопку если строка пустая и кнопка пасивна
-        if (!this.searchForMatches(e.target.closest(this.itemName), textInp)) {
-          if (e.target.closest(this.itemName).querySelector('.three-pos-inp').value == '0') {
-            this.hide(e.target.closest(this.itemName));
+        if (!this.searchForMatches(clickBtn, textInp)) {
+          if (clickBtn.querySelector('.three-pos-inp').value == '0') {
+            this.hide(clickBtn);
           };
         };
 
@@ -170,6 +155,7 @@ class tagSearch {
     // });
   };
 };
+
 
 const search = new tagSearch('.search-input__input', '.tags-list__tag');
 search.start();
