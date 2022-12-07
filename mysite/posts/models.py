@@ -5,7 +5,6 @@ from django.db import models
 from accounts.models import User, ClientIP
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.db.models import QuerySet
 from django.urls import reverse
 
 
@@ -52,6 +51,7 @@ class Post(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.delay:
             self.status = 1
+
         return super().save(force_insert, force_update, using, update_fields)
 
     def clean(self):
@@ -82,7 +82,6 @@ class PostDelay(models.Model):
         if self.time < timezone.now():
             raise ValidationError("Время отложенной задачи не может быть меньше текущей!")
         return super().clean()
-
 
     def __str__(self):
         return "Задержка публикации до {}".format(self.time)
@@ -117,7 +116,7 @@ class Comment(models.Model):
 
 class PostTag(models.Model):
     name = models.CharField(_("название тега"), max_length=30, db_index=True, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = "Тег"
@@ -126,7 +125,7 @@ class PostTag(models.Model):
     def related_posts_amount(self):
         return self.post_set.count()
 
-    related_posts_amount.short_description = _('связанных постов')
+    related_posts_amount.short_description = _('связаных постов')
 
     def __str__(self):
         return self.name.capitalize()
@@ -140,13 +139,12 @@ class Like(models.Model):
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
 
+    @property
     def related_post(self):
         return self.post_set.first()
 
-    related_post.short_description = _('лайкнутый пост')
-
     def __str__(self):
-        return "Лайк от {} -> {}".format(self.user.username, self.related_post())
+        return "Лайк от {} -> {}".format(self.user.username, self.related_post)
 
 
 class UserView(models.Model):
@@ -158,10 +156,9 @@ class UserView(models.Model):
         verbose_name = 'Просмотр пользователя'
         verbose_name_plural = 'Просмотры пользователей'
 
+    @property
     def related_post(self):
         return self.post_set.first()
-
-    related_post.short_description = _('просмотренный пост')
 
     def __str__(self):
         return 'Лайкт от {}'.format(self.user or self.client_ip)

@@ -18,9 +18,9 @@ class ContentGenerator:
 
     def _from_telegram(self):
         self.last_source_type = TelegramChanelSource._meta.verbose_name_plural.title()
-        url, name = choice(TelegramChanelSource.objects.filter(use_in_generation=True).values_list('url', 'name'))
-        self.last_source_name = name
-        path = loop.run_until_complete(get_random_image(url))
+        source = choice(TelegramChanelSource.objects.filter(use_in_generation=True))
+        self.last_source_name = source.name
+        path = loop.run_until_complete(get_random_image(source.formated))
         return POST_MEDIA_PATH + '/' + os.path.basename(path)
 
 

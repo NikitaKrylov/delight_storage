@@ -12,7 +12,7 @@ loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 
 
-async def get_random_image(channel_url: str, limit=50) -> str:
+async def get_random_image(channel_url: str, limit=80) -> str:
     async with TelegramClient(username, api_id, api_hash, loop=loop) as client:
         history = await _get_history(client, channel_url, limit=limit)
         target_messages = []
@@ -30,7 +30,7 @@ async def _get_channel(client, url):
     return await client.get_entity(url)
 
 
-async def _get_history(client, url, limit=50):
+async def _get_history(client, url, limit=80):
     channel = await _get_channel(client, url)
     return await client(GetHistoryRequest(
     peer=channel,

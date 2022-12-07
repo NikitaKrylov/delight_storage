@@ -12,7 +12,7 @@ def publish_posts():
         post.pub_date = post.delay.time
         post.delay.delete()
         post.delay = None
-        post.save()
+        post.save(update_fields=['status', 'pub_date'])
 
     return f"\n--------------- Publish post, amount: {len(posts)} ---------------"
 

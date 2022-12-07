@@ -8,7 +8,11 @@ from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
 from mediacore.models import ImageFile
 
-admin.site.register(PostTag)
+
+@admin.register(PostTag)
+class PostTagAdmin(admin.ModelAdmin):
+    readonly_fields = ('related_posts_amount',)
+    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(PostDelay)
@@ -33,10 +37,10 @@ class PostAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'pub_date',
+        'status',
         'only_for_adult',
         'for_autenticated_users',
         'disable_comments',
-        'status',
     )
     readonly_fields = (
         'creation_date',
@@ -58,6 +62,8 @@ class PostAdmin(admin.ModelAdmin):
                 image_file.save()
             except IndexError:
                 self.message_user(request, "Ошибка генерации медиа! Список '{}' пуст.".format(cg.last_source_type), level=messages.ERROR)
+            except Exception as e:
+                self.message_user(request, e, level=messages.ERROR)
             else:
                 post.images.add(image_file)
                 post.save()
@@ -78,20 +84,26 @@ class PostAdmin(admin.ModelAdmin):
         return super().response_add(request, post, post_url_continue)
 
     def save_model(self, request, post, form, change):
-        responce = super().save_model(request, post, form, change)
-        if post.images.count() == 0 and post.videos.count() == 0:
-            self.message_user(request, '{} должен иметь хотябы один медиа файл!'.format(post), level=messages.WARNING)
-        return responce
+        if change and 'status' in form.changed_data:
+            if post.status == 0:
+                post.pub_date = timezone.now()
+            post.save(update_fields=['status', 'pub_date'])
+        else:
+            super().save_model(request, post, form, change)
 
     @admin.action(description="Опубликовать")
     def make_published(self, request, queryset):
         for post in queryset:
             if post.status == 1 and post.delay:
                 post.status = 0
-                post.creation_date = post.delay.time
+                post.pub_date = timezone.now()
                 post.delay.delete()
                 post.delay = None
-                post.save()
+                post.save(update_fields=['status'])
+            elif post.status == 2:
+                post.status = 0
+                post.pub_date = timezone.now()
+                post.save(update_fields=['status'])
 
         messages.add_message(request, messages.SUCCESS, "Посты опубликованы")
 
@@ -127,16 +139,26 @@ class UserViewAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'creation_date',
-        'related_post',
+        'related_post_link',
     )
+
+    def related_post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+
+    related_post_link.short_description = "Просмотренный пост"
 
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
     readonly_fields = (
         'creation_date',
-        'related_post',
+        'related_post_link',
     )
+
+    def related_post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+
+    related_post_link.short_description = "Лайкнутый пост"
 
 
 
