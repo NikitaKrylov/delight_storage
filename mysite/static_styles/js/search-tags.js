@@ -154,8 +154,14 @@ class tagSearch {
     //   });
     // });
   };
+
+  tagSort(arrayitem);
 };
 
 
 const search = new tagSearch('.search-input__input', '.tags-list__tag');
 search.start();
+
+document.querySelectorAll('.tags-list__tag').forEach(function(e) {
+  console.log(e.querySelector('.three-pos-inp'))
+});
