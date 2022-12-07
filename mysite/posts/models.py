@@ -5,7 +5,6 @@ from django.db import models
 from accounts.models import User, ClientIP
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.db.models import QuerySet
 from django.urls import reverse
 
 
@@ -52,6 +51,7 @@ class Post(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.delay:
             self.status = 1
+
         return super().save(force_insert, force_update, using, update_fields)
 
     def clean(self):
@@ -82,7 +82,6 @@ class PostDelay(models.Model):
         if self.time < timezone.now():
             raise ValidationError("Время отложенной задачи не может быть меньше текущей!")
         return super().clean()
-
 
     def __str__(self):
         return "Задержка публикации до {}".format(self.time)

@@ -81,3 +81,29 @@ class ClientIP(models.Model):
 
     def __str__(self):
         return self.ip
+
+
+class Subscription(models.Model):
+    STATUS = (
+        (0, 'Неактивная'),
+        (1, 'Активная'),
+    )
+    start_date = models.DateTimeField(_("Дата начала подписки"), auto_now_add=True, editable=False)
+    subscription_object = models.ForeignKey(User, verbose_name=_("Объект подписи"), on_delete=models.CASCADE, related_name='user_subscriptions')
+    subscriber = models.ForeignKey(User, verbose_name=_("Подписчик"), on_delete=models.CASCADE, related_name='subscriptions')
+    status = models.IntegerField(_("статус"), choices=STATUS, default=1)
+
+    class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
+
+    @property
+    def sub_time_delta(self):
+        return timezone.now() - self.start_date if timezone.now() and self.start_date else 'Нет данных'
+
+    def __str__(self):
+        return "Подписка на {} от {}".format(self.subscription_object, self.subscriber)
+
+
+# class StripSubscription(models.Model):
+#    pass

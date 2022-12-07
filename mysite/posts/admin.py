@@ -62,6 +62,8 @@ class PostAdmin(admin.ModelAdmin):
                 image_file.save()
             except IndexError:
                 self.message_user(request, "Ошибка генерации медиа! Список '{}' пуст.".format(cg.last_source_type), level=messages.ERROR)
+            except Exception as e:
+                self.message_user(request, e, level=messages.ERROR)
             else:
                 post.images.add(image_file)
                 post.save()
@@ -82,24 +84,26 @@ class PostAdmin(admin.ModelAdmin):
         return super().response_add(request, post, post_url_continue)
 
     def save_model(self, request, post, form, change):
-        responce = super().save_model(request, post, form, change)
-        if post.images.count() == 0 and post.videos.count() == 0:
-            self.message_user(request, '{} должен иметь хотябы один медиа файл!'.format(post), level=messages.WARNING)
-        return responce
+        if change and 'status' in form.changed_data:
+            if post.status == 0:
+                post.pub_date = timezone.now()
+            post.save(update_fields=['status', 'pub_date'])
+        else:
+            super().save_model(request, post, form, change)
 
     @admin.action(description="Опубликовать")
     def make_published(self, request, queryset):
         for post in queryset:
             if post.status == 1 and post.delay:
                 post.status = 0
-                post.pub_date = post.delay.time
+                post.pub_date = timezone.now()
                 post.delay.delete()
                 post.delay = None
-                post.save()
+                post.save(update_fields=['status'])
             elif post.status == 2:
                 post.status = 0
                 post.pub_date = timezone.now()
-                post.save()
+                post.save(update_fields=['status'])
 
         messages.add_message(request, messages.SUCCESS, "Посты опубликованы")
 
