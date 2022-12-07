@@ -1,33 +1,25 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
-from posts.models import Post
 import os
 from django.utils.translation import gettext_lazy as _
-from .services import compress
 from django.dispatch import receiver
+from mysite.settings import POST_MEDIA_PATH, ALLOWED_EXTENSIONS
 
 file_post_help_text = 'файл обязательно должен быть прикреплен к посту'
 
 
 class ImageFile(models.Model):
-    file = models.ImageField(_('файл'), upload_to="images")
-    use_compression = models.BooleanField(
-        _('использовать компрессию'), default=False)
+    file = models.ImageField(_('файл'), upload_to=POST_MEDIA_PATH, validators=[
+        FileExtensionValidator(allowed_extensions=ALLOWED_EXTENSIONS)
+    ])
     post = models.ForeignKey(
         'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='images')
-    compressed = models.BooleanField(default=False)
+    compressed = models.BooleanField(_('Использование компресии'), default=False)
 
     class Meta:
         verbose_name = "Изображение"
         verbose_name_plural = "Изображения"
-
-    def save(self, *args, **kwargs):
-        if self.use_compression and not self.compressed:
-            new_image = compress(self.file)
-            self.file = new_image
-            self.compressed = True
-
-        return super().save(*args, **kwargs)
 
     def filename(self):
         return os.path.basename(self.file.name)
@@ -43,7 +35,7 @@ class ImageFile(models.Model):
 
 
 class VideoFile(models.Model):
-    file = models.FileField(_('файл'), upload_to="videos")
+    file = models.FileField(_('файл'), upload_to=POST_MEDIA_PATH)
     post = models.ForeignKey(
         'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='videos')
 

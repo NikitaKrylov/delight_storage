@@ -56,8 +56,10 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['images'] = self.object.images.all()
+        context['videos'] = self.object.videos.all()
         context['tags'] = self.object.tags.all()
         context['comments'] = self.object.comments.all()
+        context['title'] = "Пост {}".format(self.object.id)
 
         if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
             context['like_active'] = '_active'
@@ -75,7 +77,8 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
-        context['search_form'] = PostTagsForm()
+        context['search_form'] = PostTagsForm(self.request.GET)
+        context['title'] = "Посты"
         return context
 
     def get_queryset(self):
@@ -95,7 +98,7 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
 
-        return response.exclude(exclude_query).filter(filter_query)
+        return response.exclude(exclude_query).filter(filter_query).distinct()
 
 
 class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):

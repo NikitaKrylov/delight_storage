@@ -8,7 +8,7 @@ from .services import update_post_views
 class PostFilterFormMixin:
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['search_form'] = PostTagsForm()
+        context['search_form'] = PostTagsForm(self.request.GET)
         return context
 
 
@@ -17,12 +17,14 @@ class PostQueryMixin(MultipleObjectMixin):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if not self.request.user.is_authenticated:
-            queryset = queryset.filter(for_autenticated_users=False)
-            queryset = queryset.filter(only_for_adult=False)
+        user = self.request.user
 
-        elif not self.request.user.is_adult():
-            queryset = queryset.filter(only_for_adult=False)
+        if user.is_authenticated:
+            if not user.is_adult():
+                queryset = queryset.filter(only_for_adult=False)
+            queryset = queryset.exclude(tags__in=user.ignored_tags.all())
+        else:
+            queryset = queryset.filter(for_autenticated_users=False).filter(only_for_adult=False)
 
         return queryset.filter(status=0)
 

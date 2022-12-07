@@ -9,10 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
 from pathlib import Path
 import os
-
+from datetime import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
 
@@ -29,7 +28,7 @@ SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.3', '127.0.0.1', '192.168.1.2']
+ALLOWED_HOSTS = ['192.168.1.3', '127.0.0.1', '192.168.1.2', '172.20.10.2']
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     'compressor',
     'posts',
     'social_django',
+    'celerycore',
 
     'debug_toolbar',
 ]
@@ -128,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'ru-RU'
 USE_I18N = True
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -166,7 +166,8 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-
+POST_MEDIA_PATH = datetime.now().strftime('post_media/%Y/%m/%d')
+ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -225,3 +226,10 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+# CELERY
+
+CELERY_BROKER_URL = "redis://127.0.0.1:6379"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+PUBLISH_POST_SCHEDULE = 10.0

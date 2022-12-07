@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 class TelegramChanelSource(models.Model):
     name = models.CharField(_('название канала'), max_length=50, unique=True)
     url = models.URLField(_('ссылка на доступ к каналу'), unique=True)
+    use_in_generation = models.BooleanField(_('использовать в генерации'), default=True)
 
     class Meta:
         verbose_name = _('телеграм канал')

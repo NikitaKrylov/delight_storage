@@ -125,7 +125,7 @@
                         <span>
                             Опубликованно:
                             <time>
-                                {{post.creation_date}}
+                                {{post.pub_date}}
                             </time>
                         </span>
                     </div>
@@ -230,7 +230,9 @@
                         {% if comments %}
                         <div class="comments-list">
                             {% for comment in comments %}
+                            {% if not comment.answered %}
                             {% include 'posts/comment_block.html' %}
+                            {% endif %}
                             {% endfor %}
                         </div>
                         {% endif %}
