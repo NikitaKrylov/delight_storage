@@ -71,7 +71,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
 class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 1
+    paginate_by = 10
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 

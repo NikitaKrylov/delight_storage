@@ -237,6 +237,7 @@
   width: 40px;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 .notification-items__item i {
   font-size: 22px;
