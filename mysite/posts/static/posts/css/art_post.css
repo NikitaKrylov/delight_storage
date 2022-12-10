@@ -154,10 +154,10 @@
 }
 .subscribe-btn::before {
   width: 1px;
-  height: 0;
+  height: 25%;
 }
 .subscribe-btn::after {
-  width: 0%;
+  width: 10%;
   height: 1px;
 }
 .subscribe-btn:hover::before {
@@ -173,11 +173,9 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0;
   background: transparent;
   border: none;
   font-size: 16px;
-  color: var(--primary-pink);
   gap: 10px;
   padding: 14px;
   color: #f4f4f4;
@@ -202,11 +200,11 @@
   transition: all 0.3s ease;
 }
 .subscribe-btn__btn:before {
-  height: 0%;
+  height: 25%;
   width: 1px;
 }
 .subscribe-btn__btn:after {
-  width: 0%;
+  width: 10%;
   height: 1px;
 }
 .subscribe-btn__btn:hover {

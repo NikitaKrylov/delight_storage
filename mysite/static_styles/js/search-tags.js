@@ -13,7 +13,7 @@ function btn(button, closebtn, parent) {
   $(document).on('mouseup', function (e) {
     // let s = $('search-container__wrapper')
     // if (!s.is(e.target) && clsname .has(e.target).length === 0) {
-    if (!e.target.closest('.search-container__wrapper')) {
+    if (!e.target.closest('.search__container')) {
       clsname.removeClass('_active');
       document.body.classList.remove('_lock');
     } else {
@@ -30,8 +30,8 @@ function btn(button, closebtn, parent) {
 };
 
 $('.search-button').on('click',function(e) {
-  btn('.search-button','.search-input__close', '.search-container');
-  setTimeout(() => document.querySelector('.search-input__input').focus(), 100);
+  btn('.search-button','.search__close-btn', '.search');
+  setTimeout(() => document.querySelector('.search__input-form').focus(), 100);
   // document.querySelector('.search-input__input').focus()
 });
 
@@ -210,7 +210,7 @@ $('.search-button').on('click',function(e) {
 
 
 const tagBtn = document.querySelector('.tags-list__tag')
-const searchInput = document.querySelector('.search-input__input')
+const searchInput = document.querySelector('.search__input-form')
 let arrayitem = document.querySelectorAll('.tags-list__tag');
 
 
@@ -261,12 +261,12 @@ tagBtn.parentNode.addEventListener('click', function(e) {
     painButton(clickBtn);
 
     // скрыть кнопку если строка пустая и кнопка пасивна
-    let textInp = searchInput.value.trim().toLowerCase();
-    if (!searchForMatches(clickBtn, textInp)) {
-      if (clickBtn.querySelector('.three-pos-inp').value == '0') {
-        hide(clickBtn);
-      };
-    };
+    // let textInp = searchInput.value.trim().toLowerCase();
+    // if (!searchForMatches(clickBtn, textInp)) {
+    //   if (clickBtn.querySelector('.three-pos-inp').value == '0') {
+    //     hide(clickBtn);
+    //   };
+    // };
 
     tagSort(arrayitem);
   };
@@ -298,7 +298,7 @@ function show(event) {
 }
 
 
-function  inserMark(string, position, fullLen) {
+function inserMark(string, position, fullLen) {
   return string.slice(0, position) + '<mark>' + string.slice(position, position+fullLen) + '</mark>' + string.slice(position+fullLen);
 }
 
@@ -344,7 +344,21 @@ $(document).ready (function() {
 // =====================================================
 
 
+document.querySelector(".search__show-all-btn").addEventListener("click", () => 
+  arrayitem.forEach(function(e) {
+    show(e);
+  })
+);
 
+document.querySelector(".search__hide-all-btn").addEventListener("click", () => 
+  arrayitem.forEach(function(e) {
+    let valueinp = e.querySelector('.three-pos-inp').value;
+    if (valueinp != '0') {
+      e.querySelector('.three-pos-inp').value = '0';
+      painButton(e);
+    }
+  })
+);
 
 
 

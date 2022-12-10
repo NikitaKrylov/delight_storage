@@ -265,11 +265,11 @@ $browser-context: 16; // Default
 	
 	&::before {
 		width: 1px;
-		height: 0;
+		height: 25%;
 	}
 	
 	&::after {
-		width: 0%;
+		width: 10%;
 		height: 1px;
 	}
 	
@@ -286,12 +286,12 @@ $browser-context: 16; // Default
     &__btn {
         align-items: center;
         display: flex;
-        padding: 0;
+        // padding: 0;
         background: transparent;
         border: none;
         // border-radius: 10px;
         @include adaptive-value('font-size', 16, 14, 1);
-        color: var(--primary-pink);
+        // color: var(--primary-pink);
         gap: 10px;
 
         // font-size: 16px;
@@ -318,12 +318,12 @@ $browser-context: 16; // Default
         }
         
         &:before {
-            height: 0%;
+            height: 25%;
             width: 1px;
         }
         
         &:after {
-            width: 0%;
+            width: 10%;
             height: 1px;
         }
         

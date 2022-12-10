@@ -303,6 +303,7 @@ $browser-context: 16; // Default
 
   &__icon {
     line-height: 44px;
+    border-radius: 4px;
 
     &:hover {
       // background-color: var(--hover-btn-default);

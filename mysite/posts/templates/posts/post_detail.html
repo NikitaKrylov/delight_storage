@@ -35,15 +35,15 @@
                     style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
                     <!-- <button class="dynamic-gallery-button button"></button> -->
                     <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
-                        <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video>
-                        <!-- {% for image in images %}
+                        <!-- <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video> -->
+                        {% for image in images %}
                         <div class="image-slider__slide swiper-slide">
                             <div class="image-slider__image">
                                 <img src="{{ image.file.url }}">
 
                             </div>
                         </div>
-                        {% endfor %} -->
+                        {% endfor %}
                     </div>
                 </div>
 
