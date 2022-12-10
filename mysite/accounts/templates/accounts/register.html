@@ -1,41 +1,33 @@
 {% extends 'accounts/base_auth.html' %}
 
 {% block content %}
-<div class="reg-menu">
-    <div class="form-container">
-        <a class="close-btn" href="">
-            <i class="fa-solid fa-xmark"></i>
-        </a>
-        <div class="reg-menu__form pd4048">
-            <h2 class="reg-menu__title">Регистрация</h2>
 
-            <form class="reg-form" method="post">
+<h2 class="reg-menu__title">Регистрация</h2>
 
-                {% csrf_token %}
+<form class="reg-menu__form" method="post">
 
-                <div class="reg-form__inputs">
-                    {% for f in form %}
-                    <div class="form-error">{{f.errors}}</div>
-                    <p>{{f}}</p>
-                    {% endfor %}
-                </div>
-                <div class="reg-form__controls">
-                    <button class="btn-reg button" type="submit">Создать аккаунт</button>
-                    <div class="_1AOkp">
-                        <div class="line"></div>
-                        <div class="or">или</div>
-                        <div class="line"></div>
-                    </div>
+    {% csrf_token %}
 
-                    {% include "accounts/another_auth_block.html" %}
+    <div class="reg-menu__input-list">
+        {% for f in form %}
+        <div class="form-error">{{f.errors}}</div>
+        <p>{{f}}</p>
+        {% endfor %}
+    </div>
+    <div class="reg-menu__controls">
+        <button class="btn-reg button" type="submit">Создать аккаунт</button>
+        <div class="_1AOkp">
+            <div class="line"></div>
+            <div class="or">или</div>
+            <div class="line"></div>
+        </div>
 
-                    <div class="fData">
-                        <a href="{% url 'login' %}">Уже зарегестрирован</a>
-                    </div>
-                </div>
-            </form>
+        {% include "accounts/another_auth_block.html" %}
+
+        <div class="fData">
+            <a class="fData__link" href="{% url 'login' %}">Уже зарегестрирован</a>
         </div>
     </div>
-</div>
+</form>
 
 {% endblock %}

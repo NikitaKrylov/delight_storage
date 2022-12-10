@@ -17,9 +17,16 @@
 <body id="body">
     <div class="wrapper">
         <main class="reg-container">
-
-            {% block content %}{% endblock %}
-
+            <div class="reg-menu">
+                <div class="reg-menu__container">
+                    <a class="close-btn" href="{% url 'home' %}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                    <div class="reg-menu__inner pd4048">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 

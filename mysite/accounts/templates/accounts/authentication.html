@@ -2,48 +2,38 @@
 
 {% block content %}
 
-<div class="reg-menu">
-    <div class="form-container">
-        <a class="close-btn" href="">
-            <i class="fa-solid fa-xmark"></i>
-        </a>
-        <div class="reg-menu__form pd4048">
-            <h2 class="reg-menu__title">Вход</h2>
+<h2 class="reg-menu__title">Вход</h2>
 
-            <form class="reg-form" method="post">
-                {% csrf_token %}
+<form class="reg-menu__form" method="post">
+    {% csrf_token %}
 
-                <div class="reg-form__inputs">
-                    <div class="form-error">{{form.non_field_errors}}</div>
-                    {% for f in form %}
-                    <div class="form-error">{{f.errors}}</div>
-                    <p>{{f}}</p>
-                    {% endfor %}
-                </div>
+    <div class="reg-menu__input-list">
+        <div class="form-error">{{form.non_field_errors}}</div>
+        {% for f in form %}
+        <div class="form-error">{{f.errors}}</div>
+        <p>{{f}}</p>
+        {% endfor %}
+    </div>
 
-                <div class="reg-form__controls">
-                    <button class="btn-reg button" type="submit">Войти</button>
+    <div class="reg-menu__controls">
+        <button class="btn-reg button" type="submit">Войти</button>
 
-                    <div class="fData" style="margin-top: 13px;">
-                        <a href="{% url 'password_reset_form' %}">Я забыл логин/пароль</a>
-                    </div>
+        <div class="fData" style="margin-top: 13px;">
+            <a class="fData__link" href="{% url 'password_reset_form' %}">Я забыл логин/пароль</a>
+        </div>
 
-                    <div class="_1AOkp">
-                        <div class="line"></div>
-                        <div class="or">или</div>
-                        <div class="line"></div>
-                    </div>
+        <div class="_1AOkp">
+            <div class="line"></div>
+            <div class="or">или</div>
+            <div class="line"></div>
+        </div>
 
-                    {% include "accounts/another_auth_block.html" %}
+        {% include "accounts/another_auth_block.html" %}
 
-                    <div class="fData">
-                        <a href="{% url 'signup' %}">Зарегестрироваться</a>
-
-                    </div>
-                </div>
-            </form>
+        <div class="fData">
+            <a class="fData__link" href="{% url 'signup' %}">Зарегестрироваться</a>
         </div>
     </div>
-</div>
+</form>
 
 {% endblock %}
