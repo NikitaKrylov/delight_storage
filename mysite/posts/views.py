@@ -7,6 +7,7 @@ from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
 from .models import Post, Comment
 from .forms import PostTagsForm
 from django.http import HttpResponse
+from accounts.models import Subscription
 
 
 def add_comment(request, *args, **kwargs):
@@ -15,9 +16,17 @@ def add_comment(request, *args, **kwargs):
         comment = Comment(author=request.user, post=post,
                           text=request.POST['input-comments-form'])
 
-        if "reply_comment_pk" in kwargs.values():
-            comment.answered = Comment.objects.get(
-                pk=kwargs['reply_comment_pk'])
+        comment.save()
+        return redirect(post)
+
+
+def add_reply_comment(request, *args, **kwargs):
+    if request.method == "POST" and request.user.is_authenticated:
+        post = Post.objects.get(pk=kwargs.get('pk'))
+        comment = Comment(author=request.user, post=post,
+                          text=request.POST['reply-reply'])
+        comment.answered = Comment.objects.get(
+            pk=kwargs['reply_comment_pk'])
 
         comment.save()
         return redirect(post)
@@ -60,6 +69,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
         context['tags'] = self.object.tags.all()
         context['comments'] = self.object.comments.all()
         context['title'] = "Пост {}".format(self.object.id)
+        context['has_sub'] = Subscription.objects.filter(subscription_object=self.object.author, subscriber=self.request.user).exists()
 
         if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
             context['like_active'] = '_active'
@@ -71,7 +81,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
 class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 30
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 

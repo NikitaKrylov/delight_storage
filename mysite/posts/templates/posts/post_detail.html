@@ -35,15 +35,22 @@
                     style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
                     <!-- <button class="dynamic-gallery-button button"></button> -->
                     <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
-                        <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video>
-                        <!-- {% for image in images %}
+<!--                        <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video>-->
+                        {% for image in images %}
                         <div class="image-slider__slide swiper-slide">
                             <div class="image-slider__image">
                                 <img src="{{ image.file.url }}">
 
                             </div>
                         </div>
-                        {% endfor %} -->
+                        {% endfor %}
+                        {% for video in videos %}
+                        <div class="image-slider__slide swiper-slide">
+                            <div class="image-slider__image">
+                                <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -58,6 +65,11 @@
                         {% for image in images %}
                         <div class="image-slider-2__slide swiper-slide">
                             <img src="{{ image.file.url }}">
+                        </div>
+                        {% endfor %}
+                        {% for video in videos %}
+                        <div class="image-slider-2__slide swiper-slide">
+                            <img src="{{ video.file.url }}">
                         </div>
                         {% endfor %}
                     </div>
@@ -145,10 +157,10 @@
                         </div>
                     </div>
 
-                    <div class="subscribe-btn">
+                    <div class="subscribe-btn {% if has_sub %}_active{% endif %}" data-href="{% url 'subscribe' request.user.pk post.author.pk %}">
                         <button class="subscribe-btn__btn" type="submit">
                             <i class="subscribe-btn__icon"></i>
-                            <span class="subscribe-btn__text">Подписаться</span>
+                            <span class="subscribe-btn__text">{% if has_sub %}отписаться{% else %}подписаться{% endif %}</span>
                         </button>
                     </div>
                 </div>
@@ -248,6 +260,7 @@
 
 
 {% block script %}
+
 <script src="{% static 'posts/libs/autosize.min.js' %}"></script>
 
 <!-- Swiper JS -->
@@ -262,4 +275,5 @@
 <script src="https://unpkg.com/lightgallery@2.7.0/plugins/hash/lg-hash.min.js"></script>
 
 <script src="{% static 'posts/js/post-detail.js' %}"></script>
+
 {% endblock %}

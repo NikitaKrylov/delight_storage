@@ -8,15 +8,24 @@ postInfoActive__com.addEventListener('click', function (e) {
 })
 
 const authorSubscribe = document.querySelector('.subscribe-btn')
-authorSubscribe.addEventListener('click', function (e) {
-    
-    if (authorSubscribe.classList.contains("_active")) {
-        authorSubscribe.classList.remove('_active');
-        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
-    } else {
-        authorSubscribe.classList.add('_active');
-        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
-    }
+    authorSubscribe.addEventListener('click', function (e) {
+    const sub_url = $(authorSubscribe).attr('data-href')
+    $.ajax({
+        type: "GET",
+        url: sub_url,
+        dataType: "json",
+        success: function(response) {
+            if (response.has_sub == false){
+                authorSubscribe.classList.remove('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
+            }
+            else if (response.has_sub == true){
+                authorSubscribe.classList.add('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
+            }
+        }
+    });
+
 })
 
 // кнопка сортировки коментарием

@@ -22,7 +22,8 @@
             <button class="answer-button" data-commentbox="{{comment.pk}}">ответить</button>
         </div>
         <div class="comment-reply" id="{{comment.pk}}" hidden>
-            <form id="reply-reply">
+            <form id="reply-reply" action="{% url 'add_reply_comment' post.id comment.id %}" method="post">
+                {% csrf_token %}
                 <div class="comment-reply__input">
                     <textarea class="comments-form__input-comment" name="reply-reply" placeholder="Написать ответ"
                         required></textarea>

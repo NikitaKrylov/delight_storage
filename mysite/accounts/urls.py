@@ -8,6 +8,7 @@ urlpatterns = [
     path('notifications/', NotificationListView.as_view(), name='user_notifications'),
     path('<int:pk>/profile/', UserProfileView.as_view(), name='profile'),
     path('<int:pk>/liked/', UserProfileView.as_view(), name='user_liked_posts'),
+    path('<int:user_id>/subscribe-to/<int:object_id>/', Signatory.as_view(), name='subscribe'),
 
     # Ввод почты для отправки письма
     path('password/reset/', UserPasswordResetView.as_view(), name='password_reset_form'),
