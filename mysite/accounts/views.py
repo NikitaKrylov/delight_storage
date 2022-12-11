@@ -1,14 +1,40 @@
+import json
+
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from notifications.models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm
-from .models import User
+from .models import User, Subscription
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
+
+
+class Signatory(View):
+    http_method_names = ('get',)
+
+    def get(self, request, *args, **kwargs):
+        ctx = {"has_sub": None}
+        user: User = request.user
+        if user.is_authenticated:
+            if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists(): # подписка уже имеется
+                user.subscriptions.filter(subscription_object__id=kwargs['object_id']).delete() # больше нету
+                ctx["has_sub"] = False
+            else:
+                sub = Subscription(
+                        subscription_object=User.objects.get(id=kwargs['object_id']),
+                        subscriber=user
+                    )
+                sub.save()
+                user.subscriptions.add(sub)
+                ctx["has_sub"] = True
+
+        return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 #--------Authentivation / Register-------

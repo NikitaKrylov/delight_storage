@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-
+from django.utils.translation import gettext_lazy as _
 from .models import *
 from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
@@ -117,8 +117,11 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'author',
-        'text_length',
         'post',
+        'pub_date',
+    )
+    readonly_fields = (
+        'pub_date',
     )
 
 

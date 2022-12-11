@@ -13,14 +13,16 @@
 
                 {% include 'posts/post_card.html' %}
 
-                {% endfor %}
+                {% empty %}
 
-                <!-- <div class="posts-not-found">
-                    <span>Не найдено</span>
+                <div class="posts-not-found">
+                    <span>Ничего не найдено</span>
                     <div class="posts-not-found__icon">
-                        <img src="{% static 'posts/images/icon/posts-not-found.gif' %}" width="70px" height="70px">
+                        <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
                     </div>
-                </div> -->
+                </div>
+
+                {% endfor %}
 
                 <div class="loading-box">
                     <div class="pulse-container">
@@ -30,11 +32,13 @@
                     </div>
                 </div>
             </section>
+
             {% if page_obj.has_next %}
             <div>
                 <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
             </div>
             {% endif %}
+
         </div>
     </div>
 </div>

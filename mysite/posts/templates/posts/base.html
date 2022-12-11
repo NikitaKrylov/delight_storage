@@ -9,7 +9,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#05060C">
-    <!-- <meta name="theme-color" content="#BF8F97"> -->
 
     <link rel="stylesheet" href="{% static '/css/reset.css' %}">
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
@@ -17,14 +16,14 @@
     <link rel="stylesheet" href="{% static 'posts/css/images.css' %}">
     {% block compressible_stylesheet %}{% endblock %}
     {% block uncompressible_stylesheet %}{% endblock %}
-    <!--    <meta name="theme-color" content="#40f">-->
+
     <title>{{title}}</title>
 </head>
 
 <body id="body">
     <div class="search">
         <div class="search__container">
-            <form class="search__inner" action="{% url 'post_list' %}" method="get" id="search-form">
+            <form class="search__inner" action="{% url 'search' %}" method="get" id="search-form">
                 <div class="search__input-wrapper">
                     <div class="search__input-container">
                         <div class="search__input">
@@ -108,8 +107,13 @@
                         <div class="header__profile">
                             {% if request.user.is_authenticated %}
                             <!-- для зареганых -->
+                            {% if request.user.avatar %}
+                            <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}"
+                                alt="Аватар">
+                            {% else %}
                             <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
                                 alt="Аватар">
+                            {% endif %}
                             <ul class="profile-dropdown">
                                 <li><span><a href="{% url 'profile' request.user.pk %}"
                                             class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
@@ -143,7 +147,7 @@
                     <ul class="header__nav-menu">
                         <li><a href="{% url 'home' %}"><span class="header__item-name">Главная</span></a></li>
                         <li><a href="{% url 'post_list' %}"><span class="header__item-name">Арты</span></a></li>
-                        <li><a href=""><span class="header__item-name">Видео</span></a></li>
+                        <li><a href="{% url 'complication' %}"><span class="header__item-name">Подборка</span></a></li>
                         <li><a href=""><span class="header__item-name">Косплей</span></a></li>
                         <li><a href=""><span class="header__item-name">Фото</span></a></li>
                     </ul>
@@ -167,7 +171,7 @@
             <div class="nav-menu-links menu-wrapper menu-section">
                 <a href="{% url 'home' %}" class="nav-menu__link"><i class="fa-solid fa-house"></i>Главня</a>
                 <a href="{% url 'post_list' %}" class="nav-menu__link"><i class="fa-brands fa-artstation"></i>Арты</a>
-                <a href="" class="nav-menu__link"><i class="fa-solid fa-video"></i>Видео</a>
+                <a href="{% url 'complication' %}" class="nav-menu__link"><i class="fa-solid fa-video"></i>Подборка</a>
                 <a href="" class="nav-menu__link"><i class="fa-brands fa-gitlab"></i>Косплей</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-image"></i>Фото</a>
             </div>
