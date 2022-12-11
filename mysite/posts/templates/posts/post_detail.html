@@ -145,19 +145,24 @@
                 <div class="post-info-author">
                     <div class="post-info-author__author">
                         <a href="" class="post-info-author__link">
+                            {% if post.author.avatar %}
+                            <img class="post-info-author__avatar avatar"
+                                src="{{post.author.avatar.url}}" alt="Аватар">
+                            {% else %}
                             <img class="post-info-author__avatar avatar"
                                 src="{% static 'posts/images/icon/avatar.png' %}" alt="Аватар">
+                            {% endif %}
                         </a>
                         <div class="author-name">
                             <span class="author-name__name">{{post.author}}</span>
                             <span class="author-name__subscribers">
                                 Подписчики:
-                                <span>10000</span>
+                                <span>{{post.author.user_subscriptions.count}}</span>
                             </span>
                         </div>
                     </div>
 
-                    <div class="subscribe-btn {% if has_sub %}_active{% endif %}" data-href="{% url 'subscribe' request.user.pk post.author.pk %}">
+                    <div class="subscribe-btn {% if has_sub %}_active{% endif %}" data-href="{% url 'subscribe' post.author.pk %}">
                         <button class="subscribe-btn__btn" type="submit">
                             <i class="subscribe-btn__icon"></i>
                             <span class="subscribe-btn__text">{% if has_sub %}отписаться{% else %}подписаться{% endif %}</span>
@@ -169,7 +174,7 @@
                         <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
                         <div class="post-info-details__content post-tags">
                             {% for tag in tags %}
-                            <form method="get" action="{% url 'post_list' %}">
+                            <form method="get" action="{% url 'search' %}">
                                 <input name="{{tag.slug}}" value="1" style="display: none;">
                                 <button class="post-tags__tag" type="submit"><span>{{tag}}</span></button>
                             </form>

@@ -92,7 +92,7 @@ class PostDelay(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, verbose_name=_("автор"), on_delete=models.CASCADE)
     post = models.ForeignKey(Post, verbose_name=_('комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
-    pub_date = models.DateTimeField(verbose_name=_('Дата комментария'), auto_now_add=True)
+    pub_date = models.DateTimeField(verbose_name=_('Дата создания'), auto_now_add=True, editable=False)
     text = models.TextField(_('текст'))
     answered = models.ForeignKey('Comment', on_delete=models.CASCADE, verbose_name=_('Комментируемый комментарий'), related_name='related_comments', blank=True, null=True)
 

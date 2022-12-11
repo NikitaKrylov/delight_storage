@@ -6,7 +6,6 @@ class PostTagsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         for tag in PostTag.objects.all():
             self.fields[tag.slug] = forms.IntegerField(
                 label=str(tag),

@@ -147,6 +147,7 @@ MIN_IMAGE_BAIT_SIZE = 1024
 
 PAGINATED_AMOUNT = 20
 
+LOGIN_URL = reverse_lazy('login')
 
 LOGIN_REDIRECT_URL = reverse_lazy('post_list')
 LOGOUT_REDIRECT_URL = reverse_lazy('post_list')

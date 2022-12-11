@@ -19,7 +19,6 @@ class Signatory(View):
     http_method_names = ('get',)
 
     def get(self, request, *args, **kwargs):
-        print(1312312312312313)
         ctx = {"has_sub": None}
         user: User = request.user
         if user.is_authenticated:
