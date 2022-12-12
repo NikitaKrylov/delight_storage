@@ -5,10 +5,14 @@ urlpatterns = [
     path('signup/', RegisterView.as_view(), name='signup'),
     path('login/', AuthenticationView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
-    path('notifications/', NotificationListView.as_view(), name='user_notifications'),
-    path('<int:pk>/profile/', UserProfileView.as_view(), name='profile'),
-    path('<int:pk>/liked/', UserProfileView.as_view(), name='user_liked_posts'),
-    path('/subscribe-to/<int:object_id>/', Signatory.as_view(), name='subscribe'),
+
+    path('user/profile/', UserProfileView.as_view(), name='profile'),
+    path('user/profile/edit/', edit_user_form, name='profile_edit'),
+    path('user/self-posts/', SelfUserPostListView.as_view(), name='self_user_posts'),
+    path('user/settings/', UserSettingsFormView.as_view(), name='user_settings'),
+    path('user/notifications/', NotificationListView.as_view(), name='user_notifications'),
+    path('user/likes/', UserProfileView.as_view(), name='user_liked_posts'),
+    path('user/subscribe-to/<int:object_id>/', Signatory.as_view(), name='subscribe'),
 
     # Ввод почты для отправки письма
     path('password/reset/', UserPasswordResetView.as_view(), name='password_reset_form'),

@@ -5,6 +5,35 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <h1>{{user.username}} id-{{user.id}}</h1>
+    <form id="user_profile_form" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" id="submit_form" value="Сохранить">
+    </form>
 </body>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#user_profile_form').on('submit', function(event) {
+        event.preventDefault();
+        console.log(1213123);
+
+        $.ajax({
+            url: '{% url "profile_edit" %}',
+            type: 'POST',
+            data: {
+                username: $('#id_username').val(),
+                email: $('#id_email').val(),
+                avatar: $('#id_avatar').val(),
+                birth_date: $('#id_birth_date').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+
+            success: function(json){
+            },
+        });
+
+    });
+</script>
 </html>

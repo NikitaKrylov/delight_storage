@@ -1,18 +1,21 @@
 import json
 
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.db.models import Q
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect
 from django.views import View
-from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic.edit import CreateView, UpdateView, FormView
 from notifications.models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm
+    UserSetPasswordForm, UserSettingsForm
 from .models import User, Subscription
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
+from posts.models import Post
 
 
 class Signatory(View):
@@ -82,23 +85,39 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'accounts/password_reset/password_reset_complete.html'
 
 
-# --------------User---------------
+# --------------User Page---------------
 
 
-class UserProfileView(LoginRequiredMixin, UpdateView):
-    template_name = 'accounts/profile_edit.html'
-    form_class = EditUserProfileForm
-    model = User
-    success_url = reverse_lazy('profile')
+class UserProfileView(LoginRequiredMixin, FormView):
+    template_name = 'accounts/profile.html'
     login_url = reverse_lazy('login')
+    form_class = EditUserProfileForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = self.object.username
+        context['title'] = 'Профиль'
         return context
 
-    def get_success_url(self):
-        return reverse_lazy('profile', kwargs={'pk': self.object.pk})
+    def get_form(self, form_class=None):
+        user = self.request.user
+        return EditUserProfileForm(initial={
+            'username': user.username,
+            'avatar': user.avatar,
+            'email': user.email,
+            'birth_date': user.birth_date
+        })
+
+
+
+@login_required(login_url=reverse_lazy('login'))
+def edit_user_form(request, *args, **kwargs):
+    ctx = {}
+    form = EditUserProfileForm(request.POST, instance=request.user)
+
+    ctx['has_changed'] = form.has_changed()
+    if form.is_valid() and form.has_changed():
+        form.save()
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 class NotificationListView(LoginRequiredMixin, ListView):
@@ -107,5 +126,42 @@ class NotificationListView(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
     template_name = 'accounts/notifications.html'
 
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, object_list, **kwargs)
+        context['title'] = 'Уведомления'
+        return context
+
     def get_queryset(self):
         return self.model.objects.filter(recipient__id=self.request.user.id)
+
+
+class SelfUserPostListView(LoginRequiredMixin, ListView):
+    model = Post
+    login_url = reverse_lazy('login')
+    context_object_name = 'posts'
+    template_name = 'accounts/self_user_posts.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(Q(status=0) & Q(author=self.request.user)).all()
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, object_list, **kwargs)
+        context['title'] = 'Посты пользователя'
+        return context
+
+
+class UserSettingsFormView(LoginRequiredMixin, FormView):
+    login_url = reverse_lazy('login')
+    form_class = UserSettingsForm
+    template_name = 'accounts/settings.html'
+
+    def get_form(self, form_class=None):
+        return self.form_class(user=self.request.user)
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, object_list, **kwargs)
+        context['title'] = 'Настройки'
+        return context
+
+
+

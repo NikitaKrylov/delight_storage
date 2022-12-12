@@ -115,7 +115,7 @@
                                 alt="Аватар">
                             {% endif %}
                             <ul class="profile-dropdown">
-                                <li><span><a href="{% url 'profile' request.user.pk %}"
+                                <li><span><a href="{% url 'profile' %}"
                                             class="profile-dropdown__Link"><i class="fa-solid fa-user"></i>Мой
                                             профиль</a></span></li>
                                 <li><span><a href="" class="profile-dropdown__Link"><i
@@ -124,13 +124,13 @@
                                                 class="fa-solid fa-bell"></i>Уведомления</a></span></li>
                                 <li><span><a href="" class="profile-dropdown__Link"><i
                                                 class="fa-solid fa-user-group"></i>Подписки</a></span></li>
-                                <li><span><a href="#" class="profile-dropdown__Link"><i
+                                <li><span><a href="{% url 'self_user_posts' %}" class="profile-dropdown__Link"><i
                                                 class="fa-solid fa-clipboard"></i>Мои
                                             посты</a></span></li>
                                 <li><span><a href="" class="profile-dropdown__Link"><i
                                                 class="fa-solid fa-user-xmark"></i>Игнор-лист</a></span></li>
                                 <div class="line"></div>
-                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                <li><span><a href="{% url 'user_settings' %}" class="profile-dropdown__Link"><i
                                                 class="fa-solid fa-gear"></i>Настройки</a></span></li>
                                 <li><span><a href="{% url 'logout' %}" class="profile-dropdown__Link"
                                             style="color:red;"><i
@@ -184,9 +184,9 @@
                 <div class="header-menu__title">Профиль</div>
             </div>
             <div class="nav-menu-links menu-wrapper menu-section">
-                <a href="" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
+                <a href="{% url 'profile' %}" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-heart"></i>Лайки</a>
-                <a href="" class="nav-menu__link"><i class="fa-solid fa-bell"></i>Уведомления</a>
+                <a href="{% url 'user_notifications' %}" class="nav-menu__link"><i class="fa-solid fa-bell"></i>Уведомления</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-user-group"></i>Подписки</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-clipboard"></i>Мои посты</a>
                 <a href="" class="nav-menu__link"><i class="fa-solid fa-user-xmark"></i>Игнор лист</a>

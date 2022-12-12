@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    {% for notification in notifications %}
-    <p>{{notification}}</p>
-    {% endfor %}
+  {% for post in posts %}
+  <a href="{{post.get_absolute_url}}"><h3>{{post}}</h3></a>
+  {% endfor %}
 </body>
 </html>

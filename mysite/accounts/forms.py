@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from .models import User
+from posts.models import PostTag
 
 
 class RegisterUserForm(UserCreationForm):
@@ -40,6 +41,8 @@ class AuthenticationUserForm(AuthenticationForm):
     class Meta:
         model = User
 
+# ------------------- User Page ----------------------
+
 
 class EditUserProfileForm(forms.ModelForm):
     class Meta:
@@ -50,8 +53,31 @@ class EditUserProfileForm(forms.ModelForm):
             'email',
             'birth_date',
         )
-        # widgets = {}
+        widgets = {
+            'birth_date': forms.DateInput(),
+            'username': forms.TextInput(),
+            'email': forms.EmailInput(),
+        }
 
+
+class UserSettingsForm(forms.Form):
+    ignored_tags = forms.ModelMultipleChoiceField(
+        queryset=PostTag.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
+
+    def __init__(self, *args, user: User, **kwargs):
+        super().__init__(*args, **kwargs)
+        initial = []
+
+        for i, choice in enumerate(self.fields['ignored_tags'].choices):
+            if user.ignored_tags.filter(name=choice[1]).exists():
+                initial.append(i+1)
+
+        self.fields['ignored_tags'].initial = initial
+
+
+# ---------------------- Password ----------------------------
 
 class UserPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(
