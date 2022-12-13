@@ -1,6 +1,9 @@
+$width-mobile: 991px;
+
 $font-family-inter: 'inter', sans-serif;
 $font-family-rubik: 'Rubik';
 $font-family-helvetica: 'Helvetica';
+
 
 // перевод px в em
 $browser-context: 16; // Default
@@ -42,7 +45,7 @@ border-radius: 4px; */
   z-index: 999;
   height: 100%; 
   width: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.4);
   transition: all .2s cubic-bezier(.55,.08,.06,.97);
   transform: translate3d(0,100%,0);
 
@@ -84,15 +87,15 @@ border-radius: 4px; */
 
   &__container {
     height: 100%;
-    margin: 0 10% 0 10% ;
+    margin: 0;
     padding-top: 10%;
     // padding: calc(10% + 20px) 0 10px 0;
     // max-width: 700px;
     // margin: 0 auto;
     font-family: $font-family-helvetica;
 
-    @media (max-width: 991px) {
-        margin: 0;
+    @media (min-width: $width-mobile) {
+        margin: 0 10% 0 10%;
         // padding-top: 0;
         // padding: 10px 0 calc(10% + 20px) 0;
     }
@@ -122,11 +125,7 @@ border-radius: 4px; */
 
     transition: transform 0.4s ease;
     transform: scaleX(1);
-
-    @media (max-width: 991px) {
-        max-width: 100%;
-        // margin: 0 15px;
-    }
+    width: 100%;
   }
 
   &__input-form {
@@ -242,8 +241,8 @@ border-radius: 4px; */
     display: inline-block;
     // display: none;
     user-select: none;
-    font-size: 20px;
-    margin: 0.5em;
+    margin: 0.2em;
+    font-size: 16px;
     padding: 0.5em 1em;
     // background: #1A1A1A;
     background-color: var(--bg-tag-color);
@@ -257,12 +256,13 @@ border-radius: 4px; */
     transition: transform 0.4s;
 
     &:hover {
-        // background: rgb(39, 39, 39);
-        background-color: var(--bg-tag-color-hover);
+      // background: rgb(39, 39, 39);
+      background-color: var(--bg-tag-color-hover);
     }
 
-    @media (max-width: 991px) {
-        font-size: 16px;
+    @media (min-width: $width-mobile) {
+      margin: 0.5em;
+      font-size: 20px;
     }
     // @media (max-width: 700px) {
     //     font-size: 14px;
@@ -270,17 +270,11 @@ border-radius: 4px; */
   }
 
   &::-webkit-scrollbar {
-    width:4px;
+    display: none;
   }
-  &::-webkit-scrollbar-track {
-    box-shadow: none;
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    // background-color: #5a4054;
-    background-color: rgb(160, 160, 160);
-    border: 1px solid rgb(71, 71, 71);
+  
+  @-moz-document url-prefix() {
+    scrollbar-width: none;
   }
 }
 

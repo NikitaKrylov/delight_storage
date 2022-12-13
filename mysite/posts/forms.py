@@ -1,15 +1,12 @@
 from django import forms
 from .models import PostTag
 
-POST_TAGS = PostTag.objects.all()
-
 
 class PostTagsForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        for tag in POST_TAGS:
+        for tag in PostTag.objects.all():
             self.fields[tag.slug] = forms.IntegerField(
                 label=str(tag),
                 widget=forms.NumberInput(

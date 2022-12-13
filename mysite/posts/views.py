@@ -1,26 +1,41 @@
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
 from .models import Post, Comment
-from .forms import PostTagsForm
 from django.http import HttpResponse
+from accounts.models import Subscription
 
 
-def add_comment(request, *args, **kwargs):
-    if request.method == "POST" and request.user.is_authenticated:
+class AddComment(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs.get('pk'))
         comment = Comment(author=request.user, post=post,
                           text=request.POST['input-comments-form'])
 
-        if "reply_comment_pk" in kwargs.values():
-            comment.answered = Comment.objects.get(
-                pk=kwargs['reply_comment_pk'])
+        comment.save()
+        return redirect(comment.post)
+
+    def get(self, request, *args, **kwargs):
+        return redirect('post', pk=kwargs['pk'])
+
+
+class AddReplyComment(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        post = Post.objects.get(pk=kwargs.get('pk'))
+        comment = Comment(author=request.user, post=post,
+                          text=request.POST['reply-reply'])
+        comment.answered = Comment.objects.get(
+            pk=kwargs['reply_comment_pk'])
 
         comment.save()
-        return redirect(post)
+        return redirect(comment.post)
+
+    def get(self, request, *args, **kwargs):
+        return redirect('post', pk=kwargs['pk'])
 
 
 class LikePostView(View):
@@ -60,6 +75,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
         context['tags'] = self.object.tags.all()
         context['comments'] = self.object.comments.all()
         context['title'] = "Пост {}".format(self.object.id)
+        context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(subscription_object=self.object.author, subscriber=self.request.user).exists()
 
         if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
             context['like_active'] = '_active'
@@ -71,34 +87,61 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
 class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 10
+    paginate_by = 30
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.GET:
+            request.session['get_query'] = request.GET
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
-        context['search_form'] = PostTagsForm(self.request.GET)
+        context['title'] = "Посты"
+        return context
+
+
+class SearchPostList(PostQueryMixin, PostFilterFormMixin, ListView):
+    model = Post
+    paginate_by = 30
+    template_name = 'posts/images.html'
+    context_object_name = 'posts'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.GET:
+            request.session['get_query'] = request.GET
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
         context['title'] = "Посты"
         return context
 
     def get_queryset(self):
         response = super().get_queryset()
-        form = PostTagsForm(self.request.GET)
 
         filter_query = Q()
         exclude_query = Q()
 
-        for name, value in form.data.lists():
+        for name, value in self.request.session['get_query'].items():
+
             if name == 'search':
                 continue
-
-            value = int(value[0])
+            value = int(value)
             if value == 1:
                 filter_query |= Q(tags__slug=name)
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
 
         return response.exclude(exclude_query).filter(filter_query).distinct()
+
+
+class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
+    model = Post
+    paginate_by = 30
+    template_name = 'posts/images.html'
+    context_object_name = 'posts'
 
 
 class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
@@ -109,3 +152,7 @@ class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(likes__user=self.request.user)
+
+
+class Profile(TemplateView):
+    template_name = 'posts/profile.html'

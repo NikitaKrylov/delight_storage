@@ -8,15 +8,9 @@ postInfoActive__com.addEventListener('click', function (e) {
 })
 
 const authorSubscribe = document.querySelector('.subscribe-btn')
-authorSubscribe.addEventListener('click', function (e) {
-    
-    if (authorSubscribe.classList.contains("_active")) {
-        authorSubscribe.classList.remove('_active');
-        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
-    } else {
+    authorSubscribe.addEventListener('click', function (e) {
         authorSubscribe.classList.add('_active');
         authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
-    }
 })
 
 // кнопка сортировки коментарием

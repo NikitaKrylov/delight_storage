@@ -1,0 +1,97 @@
+{% load static %}
+<header class="header">
+    <div class="header__wrapper">
+        <div class="header__container">
+            <div class="header__logo">
+                <span class="header__logo logo">DelightArt</span>
+            </div>
+            <button class="header__mobile-navigation" type="button" aria-label="открыть меню навигации">
+                <i class="fa-solid fa-bars hamburgerIcon"></i>
+            </button>
+            <div class="header__search">
+                <button class="search-button button">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Поиск</span>
+                </button>
+            </div>
+            <div class="header__account-menu">
+                <div class="header__notification-icons">
+                    <div class="notification-items">
+                        <div class="notification-items__item">
+                            <div class="notification-items__icon">
+                                {% if request.user.is_authenticated %}
+                                {% with nf_amount=request.user.get_unread_notifications.count %}
+                                {% if nf_amount > 0 %}
+                                <span
+                                    class="notification-items__number-of-notifications number-of-notifications">{{nf_amount}}</span>
+
+                                {% endif %}
+                                {% endwith %}
+                                {% endif %}
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+                        </div>
+                        <div class="notification-items__item">
+                            <div class="notification-items__icon">
+                                <span
+                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                <i class=" fa-solid fa-heart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header__profile">
+                    {% if request.user.is_authenticated %}
+                    <!-- для зареганых -->
+                    <a href="{% url 'profile' %}">
+                        <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
+                            alt="Аватар">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
+                    <a href="{% url 'signup' %}" class="button header__signin-link">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <nav class="nav">
+            <div class="nav-list">
+                <div class="nav-list__item">
+                    <a href="{% url 'home' %}" class="nav-list__link">
+                        <span class="nav-list__text">
+                            Главная
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-list__item">
+                    <a href="{% url 'post_list' %}" class="nav-list__link">
+                        <span class="nav-list__text">
+                            Арты
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-list__item">
+                    <a href="" class="nav-list__link">
+                        <span class="nav-list__text">
+                            Видео
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-list__item">
+                    <a href="" class="nav-list__link">
+                        <span class="nav-list__text">
+                            Косплей
+                        </span>
+                    </a>
+                </div>
+                <div class="nav-list__item">
+                    <a href="" class="nav-list__link">
+                        <span class="nav-list__text">
+                            Фото
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

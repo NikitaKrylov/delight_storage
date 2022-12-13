@@ -22,8 +22,8 @@ $svg-like-color-active: rgb(247, 164, 222);
 }
 
 .container-gallery {
-  min-width: $min-width;
-  max-width: $max-width;
+  // min-width: $min-width;
+  // max-width: $max-width;
   // width: 96%;
   // margin: 0 auto;
 }
@@ -58,6 +58,7 @@ $svg-like-color-active: rgb(247, 164, 222);
 // }
 
 .gallery {
+  margin: 0 -8px;
   /* margin-left: 100px; */
   // margin: -2px;
   

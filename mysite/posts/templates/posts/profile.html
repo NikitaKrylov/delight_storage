@@ -1,0 +1,87 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+{% block compressible_stylesheet %}
+<link rel="stylesheet" href="{% static 'posts/css/profile.css' %}">
+{% endblock %}
+
+{% block uncompressible_stylesheet %}
+{% endblock %}
+
+{% block content %}
+<div class="account-container">
+    <div class="account-header">
+        <div class="account-header__hat">
+            <img class="account-hat-image" src="{% static 'posts/images/main_8.Сакура.jpg' %}">
+        </div>
+        <div class="account-header__user">
+            <div class="account-user">
+                <div сlass="account-user__avatar-wrapper">
+                    <img class="account-user__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                </div>
+                <div class="account-user__info">
+                    <span class="account-user__username">
+                        gglin
+                    </span>
+                    <span class="account-user__status">
+                        Admin
+                    </span>
+                </div>
+            </div>
+            <a href="" class="button">Выход</a>
+        </div>
+        <div class="account-header__nav">
+            <div class="account-nav">
+                <div class="account-nav__item _active">
+                    <div class="account-nav__icon">
+                        <i class="fa-regular fa-circle-user"></i>
+                    </div>
+                    <span class="account-nav__text">Профиль</span>
+                </div>
+                <div class="account-nav__item">
+                    <div class="account-nav__icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+                    <span class="account-nav__text">Уведомления</span>
+                </div>
+                <div class="account-nav__item">
+                    <div class="account-nav__icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <span class="account-nav__text">Лайки</span>
+                </div>
+                <div class="account-nav__item">
+                    <div class="account-nav__icon">
+                        <i class="fa-regular fa-image"></i>
+                    </div>
+                    <span class="account-nav__text">Мои посты</span>
+                </div>
+                <div class="account-nav__item">
+                    <div class="account-nav__icon">
+                        <i class="fa-solid fa-user-group"></i>
+                    </div>
+                    <span class="account-nav__text">Подписки</span>
+                </div>
+                <div class="account-nav__item">
+                    <div class="account-nav__icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <span class="account-nav__text">Настройки</span>
+                </div>
+                <div class="account-nav__item" style="color: var(--error-light);">
+                    <div class="account-nav__icon">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </div>
+                    <span class="account-nav__text">Выход</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="account-body">
+
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

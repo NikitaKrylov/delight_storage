@@ -27,223 +27,216 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="page__wrapper">
-        <div class="post-container">
-            <div class="post-images">
-                <div id="lightgallery" class="image-slider swiper" id="product-tab-gallery"
-                    style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
-                    <!-- <button class="dynamic-gallery-button button"></button> -->
-                    <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
-                        <!-- <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video> -->
-                        {% for image in images %}
-                        <div class="image-slider__slide swiper-slide">
-                            <div class="image-slider__image">
-                                <img src="{{ image.file.url }}">
+<div class="post-container">
+    <div class="post-images">
+        <div id="lightgallery" class="image-slider swiper" id="product-tab-gallery"
+            style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
+            <!-- <button class="dynamic-gallery-button button"></button> -->
+            <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
+                <!-- <video width="100%" height="100%" src="{% static 'posts/images/video.mp4' %}" controls></video> -->
+                {% for image in images %}
+                <div class="image-slider__slide swiper-slide">
+                    <div class="image-slider__image">
+                        <img src="{{ image.file.url }}">
 
-                            </div>
-                        </div>
-                        {% endfor %}
                     </div>
                 </div>
-
-                <div class="slider-buttons">
-                    <div class="slider-buttons__button swiper-button-next"></div>
-                    <div class="slider-buttons__button swiper-button-prev"></div>
-                </div>
-
-                {% if post.count_media != 1 %}
-                <div thumbsSlider="" class="image-slider-2 swiper">
-                    <div class="image-slider-2__wrapper swiper-wrapper">
-                        {% for image in images %}
-                        <div class="image-slider-2__slide swiper-slide">
-                            <img src="{{ image.file.url }}">
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% else %}
-                <div thumbsSlider="" class="image-slider-2 swiper" hidden></div>
-                {% endif %}
+                {% endfor %}
             </div>
-            <!-- <div class="post-images mySwiper">
+        </div>
+
+        <div class="slider-buttons">
+            <div class="slider-buttons__button swiper-button-next"></div>
+            <div class="slider-buttons__button swiper-button-prev"></div>
+        </div>
+
+        {% if post.count_media != 1 %}
+        <div thumbsSlider="" class="image-slider-2 swiper">
+            <div class="image-slider-2__wrapper swiper-wrapper">
+                {% for image in images %}
+                <div class="image-slider-2__slide swiper-slide">
+                    <img src="{{ image.file.url }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div thumbsSlider="" class="image-slider-2 swiper" hidden></div>
+        {% endif %}
+    </div>
+    <!-- <div class="post-images mySwiper">
                     <div class="post-images__image">
                         <img src="images/post/im (2).webp">
                     </div>
                 </div> -->
-            <div class="post-info">
-                <div class="like-wrap">
-                    <div class="like-cont">
-                        <div class="post-cont-likes">
-                            <button class="like-btn button {{like_active}}"
-                                data-href="{{ post.get_absolute_like_url }}">
-                                <!-- <i class="fa-regular fa-heart"></i> -->
-                                <div class="_39asK">
-                                    <i class="like-btn__heart">
-                                        <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg'
-                                            viewBox='0 0 512 512'>
-                                            <path
-                                                d='M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z' />
-                                        </svg>
-                                        <svg class="like-btn__pressed" xmlns='http://www.w3.org/2000/svg'
-                                            viewBox='0 0 512 512'>
-                                            <path
-                                                d='M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z' />
-                                        </svg>
-                                    </i>
-                                    <span class="like-cont-info">
-                                        <span class="like-cont__likes-number">{{post.likes.count}}</span>
-                                        <!-- <span>Likes</span> -->
-                                    </span>
-                                </div>
-                            </button>
+    <div class="post-info">
+        <div class="like-wrap">
+            <div class="like-cont">
+                <div class="post-cont-likes">
+                    <button class="like-btn button {{like_active}}" data-href="{{ post.get_absolute_like_url }}">
+                        <!-- <i class="fa-regular fa-heart"></i> -->
+                        <div class="_39asK">
+                            <i class="like-btn__heart">
+                                <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg'
+                                    viewBox='0 0 512 512'>
+                                    <path
+                                        d='M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z' />
+                                </svg>
+                                <svg class="like-btn__pressed" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+                                    <path
+                                        d='M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z' />
+                                </svg>
+                            </i>
+                            <span class="like-cont-info">
+                                <span class="like-cont__likes-number">{{post.likes.count}}</span>
+                                <!-- <span>Likes</span> -->
+                            </span>
                         </div>
-                        <div class="post-cont-com">
-                            <button class="comment-btn">
-                                <div class="_39asK">
-                                    <i class="fa-regular fa-message"></i>
-                                    <span class="like-cont-info">
-                                        <span class="like-cont-com-number">{{post.comments.count}}</span>
-                                        <!-- <span>Comments</span> -->
-                                    </span>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="post-cont-views">
-                            <div class="post-views">
-                                <div class="_39asK">
-                                    <i class="fa-regular fa-eye"></i>
-                                    <span class="like-cont-info">
-                                        <span class="like-cont-views-number">{{post.views.count}}</span>
-                                        <!-- <span>Views</span> -->
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="post-data-published">
-                        <span>
-                            Опубликованно:
-                            <time>
-                                {{post.pub_date}}
-                            </time>
-                        </span>
-                    </div>
+                    </button>
                 </div>
-                <div class="post-info-author">
-                    <div class="post-info-author__author">
-                        <a href="" class="post-info-author__link">
-                            <img class="post-info-author__avatar avatar"
-                                src="{% static 'posts/images/icon/avatar.png' %}" alt="Аватар">
-                        </a>
-                        <div class="author-name">
-                            <span class="author-name__name">{{post.author}}</span>
-                            <span class="author-name__subscribers">
-                                Подписчики:
-                                <span>10000</span>
+                <div class="post-cont-com">
+                    <button class="comment-btn">
+                        <div class="_39asK">
+                            <i class="fa-regular fa-message"></i>
+                            <span class="like-cont-info">
+                                <span class="like-cont-com-number">{{post.comments.count}}</span>
+                                <!-- <span>Comments</span> -->
+                            </span>
+                        </div>
+                    </button>
+                </div>
+                <div class="post-cont-views">
+                    <div class="post-views">
+                        <div class="_39asK">
+                            <i class="fa-regular fa-eye"></i>
+                            <span class="like-cont-info">
+                                <span class="like-cont-views-number">{{post.views.count}}</span>
+                                <!-- <span>Views</span> -->
                             </span>
                         </div>
                     </div>
-
-                    <div class="subscribe-btn">
-                        <button class="subscribe-btn__btn" type="submit">
-                            <i class="subscribe-btn__icon"></i>
-                            <span class="subscribe-btn__text">Подписаться</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="post-info-details">
-                    <div class="post-info-details__body post-info-tags">
-                        <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
-                        <div class="post-info-details__content post-tags">
-                            {% for tag in tags %}
-                            <form method="get" action="{% url 'post_list' %}">
-                                <input name="{{tag.slug}}" value="1" style="display: none;">
-                                <button class="post-tags__tag" type="submit"><span>{{tag}}</span></button>
-                            </form>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% if post.description %}
-                    <div class="post-info-details__body post-info-description">
-                        <h3 class="post-info-details__title post-info-description__title">Описание</h3>
-                        <div class="post-info-details__content post-description">
-                            {{post.description}}<br>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="post-info-comments">
-                    <section class="post-info-comments__container">
-                        {% if post.disable_comments %}
-
-                        <div class="comments-are-forbidden">
-                            <span>Автор запретил комментарии</span>
-                        </div>
-
-                        {% else %}
-                        <div class="comments-form">
-                            <div class="comments-form__sort">
-                                <span class="comments-form__title">КОМЕНТАРИИ</span>
-                                <div class="comments-form-sorting">
-                                    <span class="comments-form-sorting__sort-btn"><i
-                                            class="fa-solid fa-sort"></i>УПОРЯДОЧИТЬ</span>
-                                    <div class="comments-form-sorting__sortlist">
-                                        <label class="custom-radio">
-                                            <input type="radio" name="color" checked value="name-radio-1">
-                                            <span class="custom-radio__radio-btn"></span>
-                                            <span class="custom-radio__radio-text">Новые</span>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <input type="radio" name="color" value="name-radio-1">
-                                            <span class="custom-radio__radio-btn"></span>
-                                            <span class="custom-radio__radio-text">Старые</span>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <input type="radio" name="color" value="name-radio-1">
-                                            <span class="custom-radio__radio-btn"></span>
-                                            <span class="custom-radio__radio-text">Популярные</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <form id="input-comments-form" class="comments-form__form"
-                                action="{% url 'add_comment' post.id %}" method="post">
-                                {% csrf_token %}
-                                <div class="comments-form__pseudo-form">
-                                    Написать комментарий
-                                </div>
-                                <div class="comments-form__reply" hidden>
-                                    <div class="comments-form__input" aria-placeholder="Введите ваш комментарий">
-                                        <textarea class="comments-form__input-comment" name="input-comments-form"
-                                            placeholder="Написать комментарий" required></textarea>
-                                    </div>
-                                    <div class="comments-form__controls">
-                                        <div class="comment-form__send">
-                                            <button class="button-send" type="submit"
-                                                aria-label="отправить коментарий">Оптравить</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        {% if comments %}
-                        <div class="comments-list">
-                            {% for comment in comments %}
-                            {% if not comment.answered %}
-                            {% include 'posts/comment_block.html' %}
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        {% endif %}
-                    </section>
                 </div>
             </div>
+            <div class="post-data-published">
+                <span>
+                    Опубликованно:
+                    <time>
+                        {{post.pub_date}}
+                    </time>
+                </span>
+            </div>
+        </div>
+        <div class="post-info-author">
+            <div class="post-info-author__author">
+                <a href="" class="post-info-author__link">
+                    <img class="post-info-author__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
+                        alt="Аватар">
+                </a>
+                <div class="author-name">
+                    <span class="author-name__name">{{post.author}}</span>
+                    <span class="author-name__subscribers">
+                        Подписчики:
+                        <span>10000</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="subscribe-btn">
+                <button class="subscribe-btn__btn" type="submit">
+                    <i class="subscribe-btn__icon"></i>
+                    <span class="subscribe-btn__text">Подписаться</span>
+                </button>
+            </div>
+        </div>
+        <div class="post-info-details">
+            <div class="post-info-details__body post-info-tags">
+                <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
+                <div class="post-info-details__content post-tags">
+                    {% for tag in tags %}
+                    <form method="get" action="{% url 'post_list' %}">
+                        <input name="{{tag.slug}}" value="1" style="display: none;">
+                        <button class="post-tags__tag" type="submit"><span>{{tag}}</span></button>
+                    </form>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if post.description %}
+            <div class="post-info-details__body post-info-description">
+                <h3 class="post-info-details__title post-info-description__title">Описание</h3>
+                <div class="post-info-details__content post-description">
+                    {{post.description}}<br>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="post-info-comments">
+            <section class="post-info-comments__container">
+                {% if post.disable_comments %}
+
+                <div class="comments-are-forbidden">
+                    <span>Автор запретил комментарии</span>
+                </div>
+
+                {% else %}
+                <div class="comments-form">
+                    <div class="comments-form__sort">
+                        <span class="comments-form__title">КОМЕНТАРИИ</span>
+                        <div class="comments-form-sorting">
+                            <span class="comments-form-sorting__sort-btn"><i
+                                    class="fa-solid fa-sort"></i>УПОРЯДОЧИТЬ</span>
+                            <div class="comments-form-sorting__sortlist">
+                                <label class="custom-radio">
+                                    <input type="radio" name="color" checked value="name-radio-1">
+                                    <span class="custom-radio__radio-btn"></span>
+                                    <span class="custom-radio__radio-text">Новые</span>
+                                </label>
+                                <label class="custom-radio">
+                                    <input type="radio" name="color" value="name-radio-1">
+                                    <span class="custom-radio__radio-btn"></span>
+                                    <span class="custom-radio__radio-text">Старые</span>
+                                </label>
+                                <label class="custom-radio">
+                                    <input type="radio" name="color" value="name-radio-1">
+                                    <span class="custom-radio__radio-btn"></span>
+                                    <span class="custom-radio__radio-text">Популярные</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="input-comments-form" class="comments-form__form" action="{% url 'add_comment' post.id %}"
+                        method="post">
+                        {% csrf_token %}
+                        <div class="comments-form__pseudo-form">
+                            Написать комментарий
+                        </div>
+                        <div class="comments-form__reply" hidden>
+                            <div class="comments-form__input" aria-placeholder="Введите ваш комментарий">
+                                <textarea class="comments-form__input-comment" name="input-comments-form"
+                                    placeholder="Написать комментарий" required></textarea>
+                            </div>
+                            <div class="comments-form__controls">
+                                <div class="comment-form__send">
+                                    <button class="button-send" type="submit"
+                                        aria-label="отправить коментарий">Оптравить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {% if comments %}
+                <div class="comments-list">
+                    {% for comment in comments %}
+                    {% if not comment.answered %}
+                    {% include 'posts/comment_block.html' %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endif %}
+            </section>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 

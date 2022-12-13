@@ -1,5 +1,7 @@
 $font-family-rubik: 'Rubik';
 
+$width-mobile: 991px;
+
 $min-width: 280px;
 $max-width: 1920px;
 
@@ -18,6 +20,8 @@ $max-width: 1920px;
   // display: grid;
   // grid-row-gap: 15px;
   width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
   // min-height: 280px;
   // justify-content: center;
   align-items: center;
@@ -26,6 +30,7 @@ $max-width: 1920px;
 .footer-info {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   gap: 15px;
   width: 100%;
   // display: inherit;
@@ -36,11 +41,12 @@ $max-width: 1920px;
   // max-width: $max-width;
   max-width: 1200px;
   padding: 0 10px;
+  text-align: center;
 
-  @media (max-width: 991px) {
+  @media (min-width: $width-mobile) {
     & {
-      text-align: center;
-      flex-direction: column;
+      // text-align: center;
+      flex-direction: row;
     }
   }
 
@@ -87,6 +93,10 @@ $max-width: 1920px;
     align-items: center;
     color: var(--primary-pink);
     font-size: em(25);
+  }
+
+  &__social-link {
+    color: var(--primary-pink);
   }
 
   &__link {

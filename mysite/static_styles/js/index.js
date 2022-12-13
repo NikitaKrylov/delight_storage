@@ -34,15 +34,11 @@ if (document.body.classList.contains('_touch')) {
         $(this).toggleClass('_active');
     });
 
-    $(document).on('click', function (e) {
-        if (!e.target.closest('.profile-dropdown') && !e.target.closest('.header__profile')) {
-            $('.header__profile._active').removeClass('_active');
-        }
-        // let s = $('.header__profile._active');
-        // if (!s.is(e.target) && s.has(e.target).length === 0) {
-        //     s.removeClass('_active');
-        // }
-    });
+    // $(document).on('click', function (e) {
+    //     if (!e.target.closest('.profile-dropdown') && !e.target.closest('.header__profile')) {
+    //         $('.header__profile._active').removeClass('_active');
+    //     }
+    // });
 }
 
 function rlMenu(rlmenu, close) {

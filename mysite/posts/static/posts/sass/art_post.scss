@@ -17,6 +17,10 @@ $like-cont-size: 22px;
     letter-spacing: $letter-spacing;
 }
 
+$max-width-mobile: 1280px;
+$width-mobile: 991px;
+$min-width-mobile: 700px;
+
 $max-width: 1920;
 $min-width: 280;
 $max-width-сontainer: 1920;
@@ -70,10 +74,10 @@ $browser-context: 16; // Default
     position: relative;
     border-radius: 15px;
     background-color: var(--bg-secondary-default);
-    padding: 10px 100px;
+    padding: 0;
     min-height: 550px;
     // max-height: 850px;
-    height: 90vh;
+    height: 85vh;
     // width: 100%;
     // height: calc( 100vh - 100px );
 
@@ -91,15 +95,15 @@ $browser-context: 16; // Default
     //     }
     // }
 
-    @media (max-width: 700px) {
+    @media (min-width: $min-width-mobile) {
         & {
             // height: calc( 100vh - 130px );
-            height: 85vh;
+            height: 90vh;
         }
     }
-    @media (max-width: 991px) {
+    @media (min-width: $width-mobile) {
         & {
-            padding: 0;
+            padding: 10px 100px;
         }
     }
 }
@@ -110,12 +114,13 @@ $browser-context: 16; // Default
     margin: 0 auto;
     // margin: 0 15px;
     // padding: 0 15px;
+    // padding: 0 7px;
 
-    @media (max-width: 1280px) {
-        & {
-            padding: 0 7px;
-        }
-    }
+    // @media (min-width: $max-width-mobile) {
+    //     & {
+    //         padding: 0;
+    //     }
+    // }
 }
 
 .like-wrap {
@@ -136,6 +141,8 @@ $browser-context: 16; // Default
     // justify-content: space-around;
     // width: 100%;
     color: var(--white);
+    justify-content: space-around;
+    width: 100%;
     
     i {
         font-size: $like-cont-size;
@@ -152,9 +159,9 @@ $browser-context: 16; // Default
         font: inherit;
     }
 
-    @media (max-width: 991px) {
+    @media (min-width: $width-mobile) {
         & {
-            justify-content: space-around;
+            justify-content: flex-start;
             width: 100%;
         }
     }
@@ -420,13 +427,13 @@ $browser-context: 16; // Default
     padding-top: 94px;
     
     &__container {
-        padding: 20px;
+        padding: 0;
         border-radius: 15px;
         // background-color: #0e1016;
         // background-color: var(--bg-secondary-default);
-        @media (max-width: 991px) {
+        @media (min-width: $width-mobile) {
             & {
-                padding: 0;
+                padding: 20px;
             }
         }
     }
@@ -924,6 +931,9 @@ $browser-context: 16; // Default
 }
 
 .slider-buttons {
+    display: none;
+    visibility: hidden;
+    pointer-events: none;
 
     &__button {
         // color: var(--white) !important;
@@ -942,9 +952,12 @@ $browser-context: 16; // Default
         }
     }
 
-    @media (max-width: 991px) {
-        display: none;
-        visibility: hidden;
+    @media (min-width: $width-mobile) {
+        & {
+            display: block;
+            visibility: visible;
+            pointer-events: all;
+        }
     }
 }
 

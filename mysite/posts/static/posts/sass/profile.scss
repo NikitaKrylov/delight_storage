@@ -1,0 +1,75 @@
+$font-family-circeregular: 'CirceRegular';
+
+// перевод px в em
+$browser-context: 16; // Default
+@function em($pixels, $context: $browser-context) {
+    @return #{$pixels/$context}em;
+}
+
+.account-container {
+
+}
+
+.account-header {
+
+		&__hat {
+      height: 200px;
+      overflow: hidden;
+
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+		}
+
+		&__user {
+      display: flex;
+		}
+
+		&__nav {
+      display: flex;
+		}
+}
+
+.account-hat-image {
+  width: 100%;
+  height: 100%;
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+}
+
+.account-user {
+  display: flex;
+
+		&__avatar {
+		}
+
+		&__info {
+		}
+
+		&__username {
+		}
+
+		&__status {
+		}
+}
+
+.account-nav {
+  display: flex;
+
+		&__item {
+      display: inherit;
+
+      &._active {
+      }
+		}
+
+		&__icon {
+		}
+
+		&__text {
+		}
+}
+
+.account-body {
+}

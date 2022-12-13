@@ -182,6 +182,12 @@ body._lock .mobileMenuBackground {
 .wrapper {
   max-width: 1920px;
   margin: 0 auto;
+  padding: 0 8px;
+}
+@media (min-width: 991px) {
+  .wrapper {
+    padding: 0 20px;
+  }
 }
 
 a {
@@ -487,4 +493,29 @@ a {
   z-index: -1;
   opacity: 0;
   width: 0px;
+}
+
+._39asK {
+  font-family: "Helvetica";
+  line-height: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+._39asK span {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }

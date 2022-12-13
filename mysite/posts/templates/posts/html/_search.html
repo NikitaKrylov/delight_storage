@@ -1,0 +1,40 @@
+<div class="search">
+    <div class="search__container">
+        <form class="search__inner" action="{% url 'post_list' %}" method="get" id="search-form">
+            <div class="search__input-wrapper">
+                <div class="search__input-container">
+                    <div class="search__input">
+                        <button class="search__search-btn button search__icon" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <input class="search__input-form" name="search" type="text" placeholder="Поиск..."
+                            autocomplete="off" data-search-input>
+                        <div class="search__close-btn search__icon">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    </div>
+                    <div class="search__controls">
+                        <button class="search__show-all-btn search__controls-button button"
+                            type="button">Показать</button>
+                        <button class="search__hide-all-btn search__controls-button button"
+                            type="button">Очистить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="search-content">
+                <div class="tags-list">
+
+                    {% for field in search_form %}
+
+                    <div class="tags-list__tag" style="display: none;">
+                        {{ field }}
+                        <span>{{ field.label }}</span>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

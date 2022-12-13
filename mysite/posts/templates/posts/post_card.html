@@ -32,8 +32,13 @@
                             <div class="post-gallery">
                                 <div class="post-gallery__author">
                                     <a href="" class="post-gallery__link">
+                                        {% if post.author.avatar %}
+                                        <img class="post-gallery__avatar avatar"
+                                            src="{{post.author.avatar.url}}">
+                                        {% else %}
                                         <img class="post-gallery__avatar avatar"
                                             src="{% static 'posts/images/icon/avatar.png' %}">
+                                        {% endif %}
                                     </a>
                                 </div>
                                 <!-- <div class="gallery__author-name">
