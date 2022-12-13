@@ -15,38 +15,215 @@
     <link rel="stylesheet" href="{% static '/css/page.css' %}">
     {% block compressible_stylesheet %}{% endblock %}
     {% block uncompressible_stylesheet %}{% endblock %}
-    {% block title %}{% endblock %}
+
+    <title>{{title}}</title>
 </head>
 
 <body id="body">
-    {% include "posts/html/_search.html" %}
+    <div class="search">
+        <div class="search__container">
+            <form class="search__inner" action="{% url 'search' %}" method="get" id="search-form">
+                <div class="search__input-wrapper">
+                    <div class="search__input-container">
+                        <div class="search__input">
+                            <button class="search__search-btn button search__icon" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                            <input class="search__input-form" name="search" type="text" placeholder="Поиск..."
+                                autocomplete="off" data-search-input>
+                            <div class="search__close-btn search__icon">
+                                <i class="fa-solid fa-xmark"></i>
+                            </div>
+                        </div>
+                        <div class="search__controls">
+                            <button class="search__show-all-btn search__controls-button button"
+                                type="button">Показать</button>
+                            <button class="search__hide-all-btn search__controls-button button"
+                                type="button">Очистить</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-content">
+                    <div class="tags-list">
+
+                        {% for field in search_form %}
+
+                        <div class="tags-list__tag" style="display: none;">
+                            {{ field }}
+                            <span>{{ field.label }}</span>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="mobileMenuBackground"></div>
     <div class="wrapper">
-        {% include "posts/html/_header.html" %}
-        <main class="page">
-            <div class="container">
-                <div class="page__wrapper">
-                    {% block content %}
-                    {% endblock %}
+        <header class="header">
+            <div class="header__wrapper">
+                <div class="header__container">
+                    <div class="header__logo">
+                        <span class="header__logo logo">DelightArt</span>
+                    </div>
+                    <button class="header__mobile-navigation" type="button" aria-label="открыть меню навигации">
+                        <i class="fa-solid fa-bars hamburgerIcon"></i>
+                    </button>
+                    <div class="header__search">
+                        <button class="search-button button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Поиск</span>
+                        </button>
+                    </div>
+                    <div class="header__account-menu">
+                        <div class="header__notification-icons">
+                            <div class="notification-items">
+                                <div class="notification-items__item">
+                                    <div class="notification-items__icon">
+                                        {% if request.user.is_authenticated %}
+                                        {% with nf_amount=request.user.get_unread_notifications.count %}
+                                        {% if nf_amount > 0 %}
+                                        <span
+                                            class="notification-items__number-of-notifications number-of-notifications">{{nf_amount}}</span>
+
+                                        {% endif %}
+                                        {% endwith %}
+                                        {% endif %}
+                                        <i class="fa-solid fa-bell"></i>
+                                    </div>
+                                </div>
+                                <div class="notification-items__item">
+                                    <div class="notification-items__icon">
+                                        <span
+                                            class="notification-items__number-of-notifications number-of-notifications">0</span>
+                                        <i class=" fa-solid fa-heart"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header__profile">
+                            {% if request.user.is_authenticated %}
+                            <!-- для зареганых -->
+                            {% if request.user.avatar %}
+                            <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}" alt="Аватар">
+                            {% else %}
+                            <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
+                                alt="Аватар">
+                            {% endif %}
+                            <ul class="profile-dropdown">
+                                <li><span><a href="{% url 'profile' %}" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-user"></i>Мой
+                                            профиль</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-heart"></i>Лайки</a></span></li>
+                                <li><span><a href="{% url 'user_notifications' %}" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-bell"></i>Уведомления</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-user-group"></i>Подписки</a></span></li>
+                                <li><span><a href="{% url 'self_user_posts' %}" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-clipboard"></i>Мои
+                                            посты</a></span></li>
+                                <li><span><a href="" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-user-xmark"></i>Игнор-лист</a></span></li>
+                                <div class="line"></div>
+                                <li><span><a href="{% url 'user_settings' %}" class="profile-dropdown__Link"><i
+                                                class="fa-solid fa-gear"></i>Настройки</a></span></li>
+                                <li><span><a href="{% url 'logout' %}" class="profile-dropdown__Link"
+                                            style="color:red;"><i
+                                                class="fa-solid fa-right-from-bracket"></i>Выход</a></span></li>
+                            </ul>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
+                            <a href="{% url 'signup' %}" class="button header__signin-link">Регистрация</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
+                <nav class="header__nav">
+                    <ul class="header__nav-menu">
+                        <li><a href="{% url 'home' %}"><span class="header__item-name">Главная</span></a></li>
+                        <li><a href="{% url 'post_list' %}"><span class="header__item-name">Арты</span></a></li>
+                        <li><a href="{% url 'complication' %}"><span class="header__item-name">Подборка</span></a></li>
+                        <li><a href=""><span class="header__item-name">Косплей</span></a></li>
+                        <li><a href=""><span class="header__item-name">Фото</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main class="page">
+
+            {% block content %}
+
+            {% endblock %}
+
         </main>
-        {% include "posts/html/_nav-mobile.html" %}
-        {% include "posts/html/_profile-menu-mobile.html"%}
-    </div>
-    {% include "posts/html/_footer.html"%}
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
+        <aside id="nav-menu-mobile">
+            <div class="header-menu">
+                <div class="header-menu__title">BestHntArt</div>
+                <span class="close-ham-menu">
+                    <i class="fa-solid fa-xmark close-icon"></i>
+                </span>
+            </div>
+            <div class="nav-menu-links menu-wrapper menu-section">
+                <a href="{% url 'home' %}" class="nav-menu__link"><i class="fa-solid fa-house"></i>Главня</a>
+                <a href="{% url 'post_list' %}" class="nav-menu__link"><i class="fa-brands fa-artstation"></i>Арты</a>
+                <a href="{% url 'complication' %}" class="nav-menu__link"><i class="fa-solid fa-video"></i>Подборка</a>
+                <a href="" class="nav-menu__link"><i class="fa-brands fa-gitlab"></i>Косплей</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-image"></i>Фото</a>
+            </div>
+        </aside>
+        <aside id="profile-menu-mobile">
+            <div class="header-menu">
+                <span class="close-ham-menu-2">
+                    <i class="fa-solid fa-xmark close-icon"></i>
+                </span>
+                <div class="header-menu__title">Профиль</div>
+            </div>
+            <div class="nav-menu-links menu-wrapper menu-section">
+                <a href="{% url 'profile' %}" class="nav-menu__link"><i class="fa-solid fa-user"></i>Мой профиль</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-heart"></i>Лайки</a>
+                <a href="{% url 'user_notifications' %}" class="nav-menu__link"><i
+                        class="fa-solid fa-bell"></i>Уведомления</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-user-group"></i>Подписки</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-clipboard"></i>Мои посты</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-user-xmark"></i>Игнор лист</a>
+                <a href="" class="nav-menu__link"><i class="fa-solid fa-gear"></i>Настройки</a>
+                <a href="{% url 'signup' %}" class="nav-menu__link"><i
+                        class="fa-solid fa-right-from-bracket"></i>Выход</a>
+            </div>
+        </aside>
+        <footer class="footer">
+            <div class="footer-info">
+                <div class="footer-info__title">
+                    <ul>
+                        <li class="footer-info__title-text">В случаях нарушения авторских прав - нам похуй</li>
+                    </ul>
+                </div>
+                <div class="footer-info__title">
+                    <ul>
+                        <li class="footer-info__title-text"><a href="">Поддержать сайт</a></li>
+                    </ul>
+                </div>
+                </main>
+                {% include "posts/html/_nav-mobile.html" %}
+                {% include "posts/html/_profile-menu-mobile.html"%}
+            </div>
+            {% include "posts/html/_footer.html"%}
+            <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
 
-    <script src="{% static '/js/device.js' %}"></script>
-    <script src="{% static '/js/search-tags.js' %}"></script>
-    <script src="{% static '/js/index.js' %}"></script>
-    <script src="{% static '/posts/js/like.js' %}"></script>
+            <script src="{% static '/js/device.js' %}"></script>
+            <script src="{% static '/js/search-tags.js' %}"></script>
+            <script src="{% static '/js/index.js' %}"></script>
+            <script src="{% static '/posts/js/like.js' %}"></script>
 
-    {% block script %}
-    {% endblock %}
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
+            {% block script %}
+            {% endblock %}
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
 </body>
 
 </html>

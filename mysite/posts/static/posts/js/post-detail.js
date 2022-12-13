@@ -9,8 +9,23 @@ postInfoActive__com.addEventListener('click', function (e) {
 
 const authorSubscribe = document.querySelector('.subscribe-btn')
     authorSubscribe.addEventListener('click', function (e) {
-        authorSubscribe.classList.add('_active');
-        authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
+    const sub_url = $(authorSubscribe).attr('data-href')
+    $.ajax({
+        type: "GET",
+        url: sub_url,
+        dataType: "json",
+        success: function(response) {
+            if (response.has_sub == false){
+                authorSubscribe.classList.remove('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
+            }
+            else if (response.has_sub == true){
+                authorSubscribe.classList.add('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
+            }
+        }
+    });
+
 })
 
 // кнопка сортировки коментарием
