@@ -2,8 +2,9 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
 from .models import Post, Comment
 from django.http import HttpResponse
@@ -11,8 +12,14 @@ from accounts.models import Subscription
 
 
 class AddComment(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
     def post(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs.get('pk'))
+
+        if post.disable_comments:
+            raise ValueError("К этому посту нельзя оставлять комментарии")
+
         comment = Comment(author=request.user, post=post,
                           text=request.POST['input-comments-form'])
 
@@ -24,8 +31,14 @@ class AddComment(LoginRequiredMixin, View):
 
 
 class AddReplyComment(LoginRequiredMixin, View):
+    login_url = reverse_lazy('login')
+
     def post(self, request, *args, **kwargs):
         post = Post.objects.get(pk=kwargs.get('pk'))
+
+        if post.disable_comments:
+            raise ValueError("К этому посту нельзя оставлять комментарии")
+
         comment = Comment(author=request.user, post=post,
                           text=request.POST['reply-reply'])
         comment.answered = Comment.objects.get(
@@ -36,6 +49,14 @@ class AddReplyComment(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         return redirect('post', pk=kwargs['pk'])
+
+
+def delete_comment(request, *args, **kwargs):
+    comment = Comment.objects.get(pk=kwargs['pk'])
+
+    if request.user.is_authenticated and request.user == comment.author:
+        comment.delete()
+    return redirect(comment.post)
 
 
 class LikePostView(View):
@@ -61,6 +82,10 @@ class LikePostView(View):
 
 class HomeView(TemplateView):
     template_name = 'posts/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
@@ -146,7 +171,7 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
 
 class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
     model = Post
-    paginate_by = 20
+    paginate_by = 30
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 

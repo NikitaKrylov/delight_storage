@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <form method="post" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{form.as_p}}
+
+        {{delay_form.as_p}}
+
+        {{image_formset.as_p}}
+
+        <input type="submit" value="Создать">
+    </form>
+</body>
+</html>

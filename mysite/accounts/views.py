@@ -1,10 +1,9 @@
 import json
-
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
@@ -15,7 +14,9 @@ from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm
 from .models import User, Subscription
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
-from posts.models import Post
+from posts.models import Post, PostDelay
+from mediacore.forms import ImageFileFormSet
+from posts.forms import CreatePostDelayForm, PostForm
 
 
 class Signatory(View):
@@ -51,11 +52,13 @@ def logout_view(request):
 class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterUserForm
+    success_url = reverse_lazy('post_list')
 
 
 class AuthenticationView(LoginView):
     form_class = AuthenticationUserForm
     template_name = 'accounts/authentication.html'
+    success_url = reverse_lazy('post_list')
 
 
 # -----------------------Password reset-----------------------------
@@ -108,7 +111,6 @@ class UserProfileView(LoginRequiredMixin, FormView):
         })
 
 
-
 @login_required(login_url=reverse_lazy('login'))
 def edit_user_form(request, *args, **kwargs):
     ctx = {}
@@ -120,14 +122,14 @@ def edit_user_form(request, *args, **kwargs):
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-class NotificationListView(LoginRequiredMixin, ListView):
+class UserNotificationListView(LoginRequiredMixin, ListView):
     model = Notification
     context_object_name = 'notifications'
     login_url = reverse_lazy('login')
     template_name = 'accounts/notifications.html'
 
     def get_context_data(self, *args, object_list=None, **kwargs):
-        context = super().get_context_data(*args, object_list, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Уведомления'
         return context
 
@@ -135,7 +137,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(recipient__id=self.request.user.id)
 
 
-class SelfUserPostListView(LoginRequiredMixin, ListView):
+class UserPostListView(LoginRequiredMixin, ListView):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
@@ -145,7 +147,7 @@ class SelfUserPostListView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(Q(status=0) & Q(author=self.request.user)).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
-        context = super().get_context_data(*args, object_list, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Посты пользователя'
         return context
 
@@ -159,9 +161,74 @@ class UserSettingsFormView(LoginRequiredMixin, FormView):
         return self.form_class(user=self.request.user)
 
     def get_context_data(self, *args, object_list=None, **kwargs):
-        context = super().get_context_data(*args, object_list, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Настройки'
         return context
 
 
+@login_required(login_url=reverse_lazy('login'))
+def edit_user_settings(request, *args, **kwargs):
+    ctx = {}
+    form = UserSettingsForm(request.POST, user=request.user)
 
+    if form.is_valid():
+        pass
+
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
+
+
+class UserSubscriptionListView(LoginRequiredMixin, ListView):
+    login_url = reverse_lazy('login')
+    template_name = 'accounts/subscriptions.html'
+    model = Subscription
+    context_object_name = 'subscriptions'
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['title'] = 'Подписки'
+        return context
+
+    def get_queryset(self):
+        return Subscription.objects.filter(subscriber=self.request.user).all()
+
+
+class CreatePostView(LoginRequiredMixin, CreateView):
+
+    login_url = reverse_lazy('login')
+    template_name = 'accounts/post_add.html'
+    form_class = PostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создать пост'
+        context['image_formset'] = ImageFileFormSet()
+        context['delay_form'] = CreatePostDelayForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form_class()(request.POST)
+        image_formset = ImageFileFormSet(request.POST, request.FILES, instance=form.instance)
+        delay_form = CreatePostDelayForm(request.POST)
+
+        if form.is_valid() and image_formset.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+
+            if delay_form.is_valid():
+                delay = delay_form.save()
+                post.delay = delay
+                post.save()
+
+            images = image_formset.save(commit=False)
+            for image in images:
+                image.save()
+
+        return redirect(reverse_lazy('add_post'))
+
+
+class EditPostView(LoginRequiredMixin, UpdateView):
+    model = Post
+    login_url = reverse_lazy('login')
+    template_name = 'accounts/post_add.html'
+    form_class = PostForm

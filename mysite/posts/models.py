@@ -22,8 +22,6 @@ class Post(models.Model):
     only_for_adult = models.BooleanField(_("18+ контент"), default=False)
     for_autenticated_users = models.BooleanField(
         _("для авторизированных пользователей"), default=False)
-    for_premium_users = models.BooleanField(
-        _("для премиум пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
     status = models.IntegerField(_('статус'), choices=STATUS, default=0, help_text=_('При выборе задержки помечается как "отложено"'))
