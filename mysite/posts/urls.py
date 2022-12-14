@@ -9,8 +9,8 @@ urlpatterns = [
     path('posts/complication/', PostCompilationList.as_view(), name='complication'),
     path('posts/liked/', LikedPostList.as_view(), name='liked_posts'),
     path('post/<int:pk>/', PostView.as_view(), name='post'),
-    path('post/<int:pk>/add_comment/', AddComment.as_view(), name='add_comment'),
-    path('post/<int:post_pk>/delete_comment/<int:pk>/', delete_comment, name='delete_comment'),
-    path('post/<int:pk>/add_reply_comment/<int:reply_comment_pk>/', AddReplyComment.as_view(), name='add_reply_comment'),
+    path('post/<int:pk>/comments/add/', AddCommentView.as_view(), name='add_comment'),
+    path('post/<int:post_pk>/comments/delete/<int:pk>/', delete_comment, name='delete_comment'),
+    path('post/<int:pk>/comments/reply/add/<int:reply_comment_pk>/', AddReplyCommentView.as_view(), name='add_reply_comment'),
     path('post/<int:pk>/like/', LikePostView.as_view(), name='post_like'),
 ]

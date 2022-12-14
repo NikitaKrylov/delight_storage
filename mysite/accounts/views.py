@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
@@ -12,7 +12,7 @@ from notifications.models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm
 from .models import User, Subscription
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
@@ -224,11 +224,55 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             for image in images:
                 image.save()
 
-        return redirect(reverse_lazy('add_post'))
+            return redirect(reverse('change_post', kwargs={'pk': post.pk}))
+
+        return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'delay_form': delay_form})
 
 
 class EditPostView(LoginRequiredMixin, UpdateView):
     model = Post
     login_url = reverse_lazy('login')
-    template_name = 'accounts/post_add.html'
+    template_name = 'accounts/post_change.html'
     form_class = PostForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Редактирование'
+
+        post = self.get_object()
+        context['post'] = post
+        context['image_formset'] = ImageFileFormSet(instance=post)
+        context['delay_form'] = CreatePostDelayForm(instance=post.delay or None)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form_class()(request.POST, instance=self.get_object())
+
+        if form.is_valid():
+            post = form.save()
+
+            delay_form = CreatePostDelayForm(request.POST, instance=post.delay or None)
+            if delay_form.is_valid():
+                delay = delay_form.save()
+            else:
+                delay_form = CreatePostDelayForm()
+                if post.delay:
+                    post.delay.delete()
+                    post.delay = None
+                    if post.status == 1: post.status = 0
+                    post.save()
+
+            image_formset = ImageFileFormSet(request.POST, request.FILES, instance=post)
+            images = image_formset.save()
+
+        else:
+            delay_form = CreatePostDelayForm()
+
+        return render(request, self.template_name, {'form': form, 'delay_form': delay_form, 'image_formset': ImageFileFormSet(instance=form.instance)})
+
+    def get_form(self, *args, **kwargs):
+        return self.get_form_class()(instance=self.object)
+
+
+
+

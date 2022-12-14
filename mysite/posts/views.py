@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from accounts.models import Subscription
 
 
-class AddComment(LoginRequiredMixin, View):
+class AddCommentView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
     def post(self, request, *args, **kwargs):
@@ -30,7 +30,7 @@ class AddComment(LoginRequiredMixin, View):
         return redirect('post', pk=kwargs['pk'])
 
 
-class AddReplyComment(LoginRequiredMixin, View):
+class AddReplyCommentView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +54,7 @@ class AddReplyComment(LoginRequiredMixin, View):
 def delete_comment(request, *args, **kwargs):
     comment = Comment.objects.get(pk=kwargs['pk'])
 
-    if request.user.is_authenticated and request.user == comment.author:
+    if request.user.is_authenticated and (request.user == comment.author or request.user.is_superuser):
         comment.delete()
     return redirect(comment.post)
 

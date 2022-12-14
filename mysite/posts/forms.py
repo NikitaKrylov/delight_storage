@@ -32,7 +32,7 @@ class CreatePostDelayForm(forms.ModelForm):
         self.fields['time'].required = False
 
     def is_valid(self):
-        if not self.data['time']:
+        if not self.data['time'] or self.data['time'] is None:
             return False
         return super().is_valid()
 
