@@ -70,7 +70,7 @@ $(document).on('click', function (e) {
     // }
 });
 
-// answer-button
+// answer-button / жалобы-на комы
 $(function() {
     document.querySelector('.comments-list').addEventListener('click', function(e) {
         let currentButton = e.target;
@@ -92,29 +92,81 @@ $(function() {
                 $('.comments-form__input-comment').val('');
             }
         }
+
+        if (currentButton.closest(".comment__control-btn")) {
+            let complaintBtn = currentButton.closest(".comment__control-btn")
+            const complaints = complaintBtn.parentNode.querySelector('.comment__control-dropdown')
+
+            if (!complaintBtn.classList.contains("_active")) {
+                $('.comment__control-dropdown').animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                $(".comment__control-btn").removeClass("_active");
+                $('.comment__control-dropdown').prop("hidden", true);
+                $(complaints).animate({
+                    height: 'show',
+                    opacity: 1,
+                }, animSpeed).slideDown(animSpeed);
+                $(complaintBtn).addClass("_active");
+                $(complaints).prop("hidden", false);
+            } else {
+                $(complaints).animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                $(".comment__control-btn").removeClass("_active");
+                $('.comment__control-dropdown').prop("hidden", true);
+            }
+
+            // при клике на пустое место
+            $(document).on('click', function (e) {
+                if (!e.target.closest('.comment__control')) {
+                    $(".comment__control-btn").removeClass("_active");
+                    $('.comment__control-dropdown').prop("hidden", true);
+                    $('.comment__control-dropdown').animate({
+                        height: 'hide',
+                        opacity: 0,
+                    }, animSpeed).slideUp(animSpeed);
+                }
+            });
+        }
     });
+});
 
-    // $(".answer-button").on('click', function(e) {
-    //     let currentButton = e.target; 
-        
-    //     if (!currentButton.classList.contains("_active")) {
-    //         $(".answer-button").text('ответить').removeClass("_active");
-    //         $('.comment-reply').prop("hidden", true);
-    //         $('.comments-form__input-comment').val('');
+// жалобы поста
+let complaintPostBtn = document.querySelector(".post-complaints__button")
+const complaintsPost = complaintPostBtn.parentNode.querySelector('.post-complaints__dropdown')
+complaintPostBtn.addEventListener("click", (e) => {
+    if (!complaintPostBtn.classList.contains("_active")) {
+        $(complaintPostBtn).addClass("_active");
+        $(complaintsPost).prop("hidden", false);
 
-            
-    //         $(currentButton).addClass("_active");
-    //         currentButton.textContent = 'отмена';
-    //         setTimeout(() => currentButton.closest('.comment__body').querySelector('.comment-reply__input > textarea').focus(), 100);
-    //         var commentboxId= $(this).attr('data-commentbox');
-    //         $('#'+commentboxId).prop("hidden", false);
+        $(complaintsPost).animate({
+            height: 'show',
+            opacity: 1,
+        }, animSpeed).slideDown(animSpeed);        
+    } else {
+        $(complaintPostBtn).removeClass("_active");
+        $(complaintsPost).prop("hidden", true);
 
-    //     } else {
-    //         $(".answer-button").text('ответить').removeClass("_active");
-    //         $('.comment-reply').prop("hidden", true);
-    //         $('.comments-form__input-comment').val('');
-    //     }
-    // });
+        $(complaintsPost).animate({
+            height: 'hide',
+            opacity: 0,
+        }, animSpeed).slideUp(animSpeed); 
+    }
+});
+// при клике на пустое место
+$(document).on('click', function (e) {
+    if (!e.target.closest(".post-complaints__button")) {
+        $(complaintPostBtn).removeClass("_active");
+        $(complaintsPost).prop("hidden", true);
+
+        $(complaintsPost).animate({
+            height: 'hide',
+            opacity: 0,
+        }, animSpeed).slideUp(animSpeed); 
+    }
 });
 
 // input-comment
@@ -201,4 +253,3 @@ const popup = lightGallery(document.getElementById("lightgallery"), {
         rotate: true,
     }
 });
-

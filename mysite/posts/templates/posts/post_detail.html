@@ -24,32 +24,27 @@
 <link rel="stylesheet" href="https://unpkg.com/lightgallery@2.7.0/css/lg-share.css" />
 {% endblock %}
 
-
 {% block content %}
 
-<div class="container">
-    <div class="page__wrapper">
-        <div class="post-container">
-            <div class="post-images">
-                <div id="lightgallery" class="image-slider swiper" id="product-tab-gallery"
-                    style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
-                    <!-- <button class="dynamic-gallery-button button"></button> -->
-                    <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
-                        {% for image in images %}
-                        <div class="image-slider__slide swiper-slide">
-                            <div class="image-slider__image">
-                                <img src="{{ image.file.url }}">
 
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% for video in videos %}
-                        <div class="image-slider__slide swiper-slide">
-                            <div class="image-slider__image">
-                                <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
-                            </div>
-                        </div>
-                        {% endfor %}
+<div class="post-container">
+    <div class="post-images">
+        <div id="lightgallery" class="image-slider swiper" id="product-tab-gallery"
+            style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
+            <!-- <button class="dynamic-gallery-button button"></button> -->
+            <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
+                {% for image in images %}
+                <div class="image-slider__slide swiper-slide">
+                    <div class="image-slider__image">
+                        <img src="{{ image.file.url }}">
+
+                    </div>
+                </div>
+                {% endfor %}
+                {% for video in videos %}
+                <div class="image-slider__slide swiper-slide">
+                    <div class="image-slider__image">
+                        <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
                     </div>
                 </div>
                 {% endfor %}
@@ -80,11 +75,7 @@
         <div thumbsSlider="" class="image-slider-2 swiper" hidden></div>
         {% endif %}
     </div>
-    <!-- <div class="post-images mySwiper">
-                    <div class="post-images__image">
-                        <img src="images/post/im (2).webp">
-                    </div>
-                </div> -->
+
     <div class="post-info">
         <div class="like-wrap">
             <div class="like-cont">
@@ -121,22 +112,26 @@
                         </div>
                     </button>
                 </div>
-                <div class="post-info-author">
-                    <div class="post-info-author__author">
-                        <a href="" class="post-info-author__link">
-                            {% if post.author.avatar %}
-                            <img class="post-info-author__avatar avatar" src="{{post.author.avatar.url}}" alt="Аватар">
-                            {% else %}
-                            <img class="post-info-author__avatar avatar"
-                                src="{% static 'posts/images/icon/avatar.png' %}" alt="Аватар">
-                            {% endif %}
-                        </a>
-                        <div class="author-name">
-                            <span class="author-name__name">{{post.author}}</span>
-                            <span class="author-name__subscribers">
-                                Подписчики:
-                                <span>{{post.author.user_subscriptions.count}}</span>
+                <div class="post-cont-views">
+                    <div class="post-views">
+                        <div class="_39asK">
+                            <i class="fa-regular fa-eye"></i>
+                            <span class="like-cont-info">
+                                <span class="like-cont-views-number">{{post.views.count}}</span>
+                                <!-- <span>Views</span> -->
                             </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-complaints">
+                    <div class="post-complaints__container dropdown-parent">
+                        <div class="post-complaints__button">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </div>
+                        <div class="post-complaints__dropdown dropdown-items" hidden>
+                            <div class="post-complaints__dropdown-item dropdown-item">Пожаловаться</div>
+                            <div class="post-complaints__dropdown-item dropdown-item">Редактировать</div>
+                            <div class="post-complaints__dropdown-item dropdown-item">Удалить</div>
                         </div>
                     </div>
                 </div>
@@ -153,18 +148,21 @@
         <div class="post-info-author">
             <div class="post-info-author__author">
                 <a href="" class="post-info-author__link">
+                    {% if post.author.avatar %}
+                    <img class="post-info-author__avatar avatar" src="{{post.author.avatar.url}}" alt="Аватар">
+                    {% else %}
                     <img class="post-info-author__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
                         alt="Аватар">
+                    {% endif %}
                 </a>
                 <div class="author-name">
                     <span class="author-name__name">{{post.author}}</span>
                     <span class="author-name__subscribers">
                         Подписчики:
-                        <span>10000</span>
+                        <span>{{post.author.user_subscriptions.count}}</span>
                     </span>
                 </div>
             </div>
-
             <div class="subscribe-btn {% if has_sub %}_active{% endif %}"
                 data-href="{% url 'subscribe' post.author.pk %}">
                 <button class="subscribe-btn__btn" type="submit">
@@ -172,29 +170,30 @@
                     <span class="subscribe-btn__text">{% if has_sub %}отписаться{% else %}подписаться{% endif %}</span>
                 </button>
             </div>
-            <div class="post-info-details">
-                <div class="post-info-details__body post-info-tags">
-                    <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
-                    <div class="post-info-details__content post-tags">
-                        {% for tag in tags %}
-                        <form method="get" action="{% url 'search' %}">
-                            <input name="{{tag.slug}}" value="1" style="display: none;">
-                            <button class="post-tags__tag" type="submit"><span>{{tag}}</span></button>
-                        </form>
-                        {% endfor %}
-                    </div>
+        </div>
+
+        <div class="post-info-details">
+            <div class="post-info-details__body post-info-tags">
+                <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
+                <div class="post-info-details__content post-tags">
+                    {% for tag in tags %}
+                    <form method="get" action="{% url 'search' %}">
+                        <input name="{{tag.slug}}" value="1" style="display: none;">
+                        <button class="post-tags__tag button" type="submit"><span>{{tag}}</span></button>
+                    </form>
+                    {% endfor %}
                 </div>
-                {% if post.description %}
-                <div class="post-info-details__body post-info-description">
-                    <h3 class="post-info-details__title post-info-description__title">Описание</h3>
-                    <div class="post-info-details__content post-description">
-                        {{post.description}}<br>
-                    </div>
+            </div>
+            {% if post.description %}
+            <div class="post-info-details__body post-info-description">
+                <h3 class="post-info-details__title post-info-description__title">Описание</h3>
+                <div class="post-info-details__content post-description">
+                    {{post.description}}<br>
                 </div>
-                {% endif %}
             </div>
             {% endif %}
         </div>
+
         <div class="post-info-comments">
             <section class="post-info-comments__container">
                 {% if post.disable_comments %}

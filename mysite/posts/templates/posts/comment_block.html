@@ -20,6 +20,16 @@
         </div>
         <div class="comment__controls">
             <button class="answer-button" data-commentbox="{{comment.pk}}">ответить</button>
+            <div class="comment__control dropdown-parent">
+                <div class="comment__control-btn">
+                    <i class="fa-solid fa-ellipsis"></i>
+                </div>
+                <div class="comment__control-dropdown dropdown-items" hidden>
+                    <div class="comment__control-dropdown-item dropdown-item">Пожаловаться</div>
+                    <div class="comment__control-dropdown-item dropdown-item">Редактировать</div>
+                    <div class="comment__control-dropdown-item dropdown-item">Удалить</div>
+                </div>
+            </div>
         </div>
         <div class="comment-reply" id="{{comment.pk}}" hidden>
             <form id="reply-reply" action="{% url 'add_reply_comment' post.id comment.id %}" method="post">

@@ -1,6 +1,7 @@
 :root {
   --bg-default: #05060C;
   --bg-secondary-default: #0d0f1b;
+  --bg-light-primary-default: #24254A;
   --bg-light-secondary-default: #121423;
   --bg-btn-default: #121420;
   --bg-sidebar-default: #0A0C12;
@@ -30,7 +31,11 @@
   --secondary-pink: #F28CC3;
   --light-pink: #FECBCA;
   --light-secondary-pink: #fce4e6;
+  --dark-purple: #CB73F0;
   --primary-purple: #DCA1F5;
+  --violet: #714cab;
+  --light-violet: #9294f8;
+  --light-secondary-violet: #6466b4;
   --black: black;
   --red: red;
   --light-gray: #aaa;
@@ -159,21 +164,21 @@ body._lock .mobileMenuBackground {
   z-index: 110;
 }
 
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 10px;
 }
-*::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track {
   -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
           box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
   background-color: var(--bg-scrollbar);
 }
-*::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: var(--color-scrollbar-thumb);
   border: 2px solid var(--bg-scrollbar);
 }
 @-moz-document url-prefix() {
-  * {
+  body {
     scrollbar-width: 10px;
     scrollbar-color: var(--color-scrollbar-thumb) var(--bg-scrollbar);
   }

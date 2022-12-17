@@ -72,9 +72,10 @@ $browser-context: 16; // Default
     justify-content: center;
     gap: 2px;
     position: relative;
+    overflow: hidden;
     border-radius: 15px;
     background-color: var(--bg-secondary-default);
-    padding: 0;
+    padding: 5px 0;
     min-height: 550px;
     // max-height: 850px;
     height: 85vh;
@@ -208,9 +209,57 @@ $browser-context: 16; // Default
 .like-cont-com-number {
 }
 
-
-
 .post-cont-views {
+}
+
+
+.dropdown-parent {
+    position: relative;
+}
+.dropdown-items {
+    position: absolute;
+    top: auto;
+    left: 0;
+    z-index: 1;
+}
+.dropdown-item {
+    cursor: pointer;
+}
+
+
+.post-complaints {
+
+    &__container {
+    }
+
+    &__button {
+        cursor: pointer;
+    }
+
+    &__dropdown {
+        background-color: var(--bg-light-primary-default);
+        padding: 10px;
+        border-radius: 5px;
+        margin: 0;
+        min-width: 160px;
+        border: none;
+
+        @media (max-width: $min-width-mobile) {
+            right: 0;
+            left: auto;
+        }
+    }
+
+    &__dropdown-item {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        color: var(--white);
+
+        &:hover {
+            background-color: var(--bg-light-secondary-default);
+        }
+    }
 }
 
 .post-views {
@@ -288,6 +337,16 @@ $browser-context: 16; // Default
 		&::after {
 			width: 100%;
 		}
+
+        .subscribe-btn__btn {
+            &::before {
+                height: 100%;
+            }
+            
+            &::after {
+                width: 100%;
+            }
+        }
 	}
 
     &__btn {
@@ -334,18 +393,18 @@ $browser-context: 16; // Default
             height: 1px;
         }
         
-        &:hover {
-          background: transparent;
-            box-shadow: none;
+        // &:hover {
+        //   background: transparent;
+        //     box-shadow: none;
             
-            &::before {
-                height: 100%;
-            }
+        //     &::before {
+        //         height: 100%;
+        //     }
             
-            &::after {
-                width: 100%;
-            }
-        }
+        //     &::after {
+        //         width: 100%;
+        //     }
+        // }
     }
 
     &._active {
@@ -452,12 +511,14 @@ $browser-context: 16; // Default
     gap: 8px;
 
     &__tag {
-        border: 1px solid var(--border-secondary-light);
+        height: auto;
+        line-height: normal;
+        border: 1px solid var(--bg-light-primary-default);
         padding: em(12) em(15);
         border-radius: 8px;
-        background-color: var(--bg-tag-color);
-        // color: #FCF7F1;
         color: var(--secondary-white);
+
+        background-color: var(--bg-secondary-default);
 
         font-family: $font-family-rubik;
         // @include font-settings(600, 14px, inherit);
@@ -465,8 +526,9 @@ $browser-context: 16; // Default
         font-size: 14px;
 
         &:hover {
-            background-color: var(--bg-tag-color-hover);
-            border: 1px solid var(--border-secondary-light-hover);
+            // background-color: var(--bg-tag-color-hover);
+            background-color: var(--bg-btn-default);
+            // border: 1px solid var(--border-secondary-light-hover);
         }
     }
 }
@@ -704,15 +766,48 @@ $browser-context: 16; // Default
 
     &__children {
         position: relative;
-        margin-left: 8px;
-        padding-left: 17px;
-        border-left: 1px solid #1c1e2c;
+        padding-left: 9px;
+        margin-left: 0;
+        border-left: 1px solid var(--bg-light-secondary-default);
+
+        @media (min-width: $width-mobile) {
+            margin-left: 8px;
+            padding-left: 17px;
+        }
     }
 
     &__controls {
         display: flex;
         align-items: center;
         padding-left: 10px;
+    }
+
+    &__control {
+        color: var(--light-gray);
+    }
+
+    &__control-btn {
+        cursor: pointer;
+    }
+
+    &__control-dropdown {
+        background-color: var(--bg-light-primary-default);
+        padding: 10px;
+        border-radius: 5px;
+        margin: 0;
+        min-width: 160px;
+        border: none;
+    }
+    
+    &__control-dropdown-item {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        color: var(--white);
+
+        &:hover {
+            background-color: var(--bg-light-secondary-default);
+        }
     }
 
     // всплывающее меню с тремя точками

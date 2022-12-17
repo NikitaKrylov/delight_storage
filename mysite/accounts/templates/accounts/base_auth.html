@@ -16,20 +16,26 @@
 
 <body id="body">
     <div class="wrapper">
+        <div class="loading-box">
+            <div class="pulse-container">
+                <div class="pulse-bubble pulse-bubble-1"></div>
+                <div class="pulse-bubble pulse-bubble-2"></div>
+                <div class="pulse-bubble pulse-bubble-3"></div>
+            </div>
+        </div>
         <main class="reg-container">
             <div class="reg-menu">
                 <div class="reg-menu__container">
                     <a class="close-btn" href="{% url 'home' %}">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
-                    <div class="reg-menu__inner pd4048">
+                    <div class="reg-menu__inner">
                         {% block content %}{% endblock %}
                     </div>
                 </div>
             </div>
         </main>
     </div>
-
 
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <script src="{% static 'accounts/js/scripts.js' %}"></script>

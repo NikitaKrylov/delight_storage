@@ -329,7 +329,7 @@ searchInput.addEventListener('input', function() {
 
 
 // действия при загрузке страницы
-$(document).ready (function() {
+$(document).ready(function() {
   arrayitem.forEach(function(e) {
     painButton(e);
     let valueinp = e.querySelector('.three-pos-inp').value;

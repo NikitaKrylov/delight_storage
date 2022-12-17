@@ -128,6 +128,7 @@
 }
 
 .nav {
+  display: none;
   visibility: hidden;
   pointer-events: none;
   height: 40px;
@@ -136,6 +137,7 @@
 }
 @media (min-width: 991px) {
   .nav {
+    display: block;
     visibility: visible;
     pointer-events: all;
   }
@@ -202,6 +204,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  font-family: "CirceRegular";
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -209,11 +212,7 @@
       -ms-flex-align: center;
           align-items: center;
   height: 100%;
-  -webkit-text-decoration: uppercase;
-          text-decoration: uppercase;
-  font-weight: 500;
-  font-size: 18px;
-  letter-spacing: normal;
+  text-transform: uppercase;
   color: var(--white);
 }
 
@@ -229,9 +228,7 @@
 }
 
 .logo {
-  font-weight: 500;
   font-size: 32px;
-  letter-spacing: normal;
   font-style: italic;
   text-align: left;
   color: var(--white);
@@ -263,6 +260,11 @@
 }
 .notification-items__icon:hover {
   background-color: var(--bg-light-secondary-default);
+}
+.notification-items__link {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 .notification-items__number-of-notifications {
   position: absolute;

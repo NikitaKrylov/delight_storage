@@ -3,22 +3,32 @@
 {% block content %}
 
 <h2 class="reg-menu__title">Вход</h2>
-
-<form class="reg-menu__form" method="post">
+<form class="reg-menu__form auth" method="post">
     {% csrf_token %}
 
     <div class="reg-menu__input-list">
         <div class="form-error">{{form.non_field_errors}}</div>
-        {% for f in form %}
-        <div class="form-error">{{f.errors}}</div>
-        <p>{{f}}</p>
-        {% endfor %}
+
+        <div class="reg-menu__input-item">
+            <div class="form-error">{{form.username.errors}}</div>
+            {{form.username}}
+            <div class="reg-menu__placeholder">
+                <div class="reg-menu__placeholder-text">Никнейм или email</div>
+            </div>
+        </div>
+        <div class="reg-menu__input-item">
+            <div class="form-error">{{form.password.errors}}</div>
+            {{form.password}}
+            <div class="reg-menu__placeholder">
+                <div class="reg-menu__placeholder-text">Пароль</div>
+            </div>
+        </div>
     </div>
 
     <div class="reg-menu__controls">
         <button class="btn-reg button" type="submit">Войти</button>
 
-        <div class="fData" style="margin-top: 13px;">
+        <div class="fData">
             <a class="fData__link" href="{% url 'password_reset_form' %}">Я забыл логин/пароль</a>
         </div>
 

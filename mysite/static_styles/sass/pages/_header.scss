@@ -7,6 +7,7 @@ $font-family-rubik: 'Rubik';
 $font-family-helvetica: 'Helvetica';
 $font-family-natasans: 'Noto Sans TC', sans-serif;
 $font-family-roboto: 'Roboto', sans-serif;
+$font-family-circeregular: 'CirceRegular';
 
 $max-width-nav-menu: 764px;
 $max-display-width: 1920px;
@@ -178,6 +179,7 @@ $browser-context: 16; // Default
 
 .nav {
   // padding: 0 30px;
+  display: none;
   visibility: hidden;
   pointer-events: none;
 
@@ -187,6 +189,7 @@ $browser-context: 16; // Default
   
   @media (min-width: $width-mobile) {
     & {
+      display: block;
       visibility: visible;
       pointer-events: all;
     }
@@ -241,12 +244,12 @@ $browser-context: 16; // Default
 
 		&__text {
       display: flex;
+      font-family: $font-family-circeregular;
       justify-content:center;
       align-items: center;
       height: 100%;
-      text-decoration: uppercase;
+      text-transform: uppercase;
       // font-family: $font-family-inter;
-      @include mixins.font-settings(500, 18px, normal);
       color: var(--white);
 		}
 }
@@ -264,7 +267,7 @@ $browser-context: 16; // Default
   
 .logo {
   // font-family: $font-family-inter;
-  @include mixins.font-settings(500, 32px, normal);
+  font-size: 32px;
   font-style: italic;
   text-align: left;
   color: var(--white);
@@ -310,6 +313,12 @@ $browser-context: 16; // Default
       // background-color: var(--bg-secondary-default);
       background-color: var(--bg-light-secondary-default);
     }
+  }
+
+  &__link {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
   &__number-of-notifications {

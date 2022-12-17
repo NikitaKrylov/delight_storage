@@ -23,9 +23,9 @@
 if (document.body.classList.contains('_touch')) {
 
     // profile-menu
-    $(".header-profile-avatar").on('click', function (e) {
-        rlMenu('#profile-menu-mobile', '.close-ham-menu-2');
-    });
+    // $(".header-profile-avatar").on('click', function (e) {
+    //     rlMenu('#profile-menu-mobile', '.close-ham-menu-2');
+    // });
 
 } else {
 

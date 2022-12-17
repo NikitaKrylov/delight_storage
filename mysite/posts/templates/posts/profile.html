@@ -78,10 +78,36 @@
         </div>
     </div>
     <div class="account-body">
-
+        <form id="user_profile_form" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" id="submit_form" value="Сохранить">
+        </form>
     </div>
 </div>
 {% endblock %}
 
 {% block script %}
+<script>
+    $('#user_profile_form').on('submit', function (event) {
+        event.preventDefault();
+        console.log(1213123);
+
+        $.ajax({
+            url: '{% url "profile_edit" %}',
+            type: 'POST',
+            data: {
+                username: $('#id_username').val(),
+                email: $('#id_email').val(),
+                avatar: $('#id_avatar').val(),
+                birth_date: $('#id_birth_date').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+
+            success: function (json) {
+            },
+        });
+
+    });
+</script>
 {% endblock %}
