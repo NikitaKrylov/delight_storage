@@ -5,7 +5,11 @@
         <div class="comment__inner">
             <div class="comment__head">
                 <a href="" class="comment__user">
+                    {% if comment.author.avatar %}
+                    <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
+                    {% else %}
                     <img class="comment__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                    {% endif %}
                     <span class="comment__username">{{comment.author}}</span>
                 </a>
                 <time class="comment__date-time">

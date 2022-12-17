@@ -78,7 +78,6 @@
 <script>
     $('#user_profile_form').on('submit', function (event) {
         event.preventDefault();
-        console.log(1213123);
 
         $.ajax({
             url: '{% url "profile_edit" %}',

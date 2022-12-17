@@ -5,10 +5,29 @@
     <title>Title</title>
 </head>
 <body>
-  <form method="post">
+  <form id="user_settings_form" method="post">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Сохранить">
   </form>
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$('#user_settings_form').on('submit', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: '{% url "user_settings_edit" %}',
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            },
+
+            success: function(json){
+            },
+        });
+
+    });
+</script>
 </html>

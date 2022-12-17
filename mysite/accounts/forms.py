@@ -3,6 +3,7 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from .models import User
 from posts.models import PostTag
+from posts.models import Post
 
 
 class RegisterUserForm(UserCreationForm):
@@ -75,6 +76,8 @@ class UserSettingsForm(forms.Form):
                 initial.append(i+1)
 
         self.fields['ignored_tags'].initial = initial
+
+
 
 
 # ---------------------- Password ----------------------------
