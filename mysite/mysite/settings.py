@@ -181,6 +181,8 @@ ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif', 'webp',)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "accounts.User"
 
+NOTIFICATIONS_NOTIFICATION_MODEL = 'accounts.Notification'
+
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.vk.VKOAuth2',
     'mysite.backends.AuthBackend',
