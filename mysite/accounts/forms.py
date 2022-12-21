@@ -103,3 +103,4 @@ class UserSetPasswordForm(SetPasswordForm):
         widget=forms.PasswordInput(
             attrs={"autocomplete": "new-password", 'placeholder': 'Подтверждение пароля', 'class': 'reg-menu__input'}),
     )
+

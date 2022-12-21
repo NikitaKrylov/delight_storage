@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, ClientIP, Subscription
+from .models import User, ClientIP, Subscription, Complaint
 
 admin.site.register(ClientIP)
 
@@ -44,4 +44,16 @@ class SubscriptionAdmin(admin.ModelAdmin):
         return obj.sub_time_delta
 
     _sub_time_delta.short_description = 'Общая продолжительность подпики'
+
+
+@admin.register(Complaint)
+class ComplaintAdmin(admin.ModelAdmin):
+    list_display = (
+        'status',
+        'creation_date',
+        'recipient',
+    )
+    list_filter = (
+        'status',
+    )
 

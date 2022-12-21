@@ -49,7 +49,6 @@ class Post(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.delay:
             self.status = 1
-
         return super().save(force_insert, force_update, using, update_fields)
 
     def clean(self):
@@ -62,6 +61,9 @@ class Post(models.Model):
         if self.status == 1 and not self.delay:
             raise ValidationError("Укажите время публикации для отложенного поста")
         return super().clean()
+
+    def get_like_percentage(self):
+        return self.likes.count() / self.views.count()
 
     def __str__(self):
         if self.delay:

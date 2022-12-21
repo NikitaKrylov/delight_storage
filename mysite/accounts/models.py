@@ -106,16 +106,11 @@ class Subscription(models.Model):
         return "Подписка на {} от {}".format(self.subscription_object, self.subscriber)
 
 
-# class StripSubscription(models.Model):
-#    pass
-
-# #
 class Notification(AbstractNotification):
     class Types(models.TextChoices):
-        SUBSCRIPTION = 'Subscription'
-        NEW_POST = 'New post'
-        ACCOUNT = 'Account'
-        COMPLAINT = 'Complaint'
+        SUBSCRIPTION = 'SB', _('Подписка')
+        NEW_POST = 'NP', _('Новый пост')
+        ACCOUNT = 'AC', _('Аккаунт')
 
     type = models.CharField(_("тип уведомления"), choices=Types.choices, max_length=20)
 
@@ -124,6 +119,32 @@ class Notification(AbstractNotification):
         verbose_name = "Уведомление"
         verbose_name_plural = "Уведомления"
 
+    def clean(self):
+        if self.type is None:
+            raise ValueError("Тип уведомления должен быть указан")
+        return super().clean()
+
     def __str__(self):
         return self.verb
+
+
+class Complaint(models.Model):
+    class Meta:
+        verbose_name = "Жалоба"
+        verbose_name_plural = "Жалобы"
+
+    class Status(models.TextChoices):
+        CONSIDERATION = 'CN', _('На рассмотрении')
+        ACCEPTED = 'AC', _('Принята')
+        REJECTED = 'RJ', _('Отклонена')
+
+    status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
+    recipient = models.ForeignKey(User, verbose_name=_('отправитель'), on_delete=models.CASCADE, related_name='complaints')
+    creation_date = models.DateTimeField(_('дата создания'), editable=False, auto_now_add=True)
+    text = models.TextField(_('текст'), max_length=200)
+
+    def __str__(self):
+        return 'Жалоба от {}'.format(self.recipient)
+
+
 
