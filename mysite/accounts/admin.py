@@ -49,11 +49,24 @@ class SubscriptionAdmin(admin.ModelAdmin):
 @admin.register(Complaint)
 class ComplaintAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'status',
-        'creation_date',
         'recipient',
+        'creation_date',
     )
     list_filter = (
         'status',
     )
+    actions = (
+        'make_accepted',
+        'make_rejected',
+    )
+
+    @admin.action(description="Принять")
+    def make_accepted(self, request, queryset):
+        queryset.update(status=Complaint.Status.ACCEPTED)
+
+    @admin.action(description="Отклонить")
+    def make_rejected(self, request, queryset):
+        queryset.update(status=Complaint.Status.REJECTED)
 
