@@ -40,6 +40,7 @@
   --red: red;
   --light-gray: #aaa;
   --dark-gray: #85858d;
+  --secondary-dark-gray: #323236;
   --color-scrollbar-thumb: #5a4054;
   --line: #cecece;
   --dark-line: #38383a;
@@ -444,7 +445,7 @@ a {
 }
 @media (max-width: 1920px) {
   .like-cont-info span {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 
@@ -469,7 +470,7 @@ a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding-top: 20%;
+  padding: 30px;
   font-weight: 600;
   letter-spacing: 2px;
   color: var(--white);
@@ -480,7 +481,7 @@ a {
 }
 @media (max-width: 1920px) {
   .posts-not-found {
-    font-size: calc(30px + 12 * ((100vw - 280px) / 1640));
+    font-size: calc(30px + 12 * ((100vw - 248px) / 1640));
   }
 }
 .posts-not-found > span {

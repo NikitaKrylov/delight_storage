@@ -100,7 +100,8 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
         context['tags'] = self.object.tags.all()
         context['comments'] = self.object.comments.all()
         context['title'] = "Пост {}".format(self.object.id)
-        context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(subscription_object=self.object.author, subscriber=self.request.user).exists()
+        context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(
+            subscription_object=self.object.author, subscriber=self.request.user).exists()
 
         if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
             context['like_active'] = '_active'
@@ -169,14 +170,14 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
     context_object_name = 'posts'
 
 
-class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
-    model = Post
-    paginate_by = 30
-    template_name = 'posts/images.html'
-    context_object_name = 'posts'
+# class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
+#     model = Post
+#     paginate_by = 30
+#     template_name = 'posts/images.html'
+#     context_object_name = 'posts'
 
-    def get_queryset(self):
-        return super().get_queryset().filter(likes__user=self.request.user)
+#     def get_queryset(self):
+#         return super().get_queryset().filter(likes__user=self.request.user)
 
 
 class Profile(TemplateView):

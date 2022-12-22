@@ -1,0 +1,85 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+
+{% block compressible_stylesheet %}
+<link rel="stylesheet" href="{% static 'accounts/css/base-profile.css' %}">
+{% block compress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block uncompressible_stylesheet %}
+
+{% block uncompress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block main %}
+<div class="account-container">
+    <div class="account-header">
+        <div class="account-header__hat">
+            <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+        </div>
+        <div class="account-header__user">
+            <div class="account-user">
+                <div сlass="account-user__avatar-wrapper">
+                    <img class="account-user__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                </div>
+                <div class="account-user__info">
+                    <span class="account-user__username">
+                        gglin
+                    </span>
+                    <span class="account-user__status">
+                        Admin
+                    </span>
+                </div>
+            </div>
+
+            <div class="dark-btn button">
+                <a href="{% url 'logout' %}" class="dark-btn__link"></a>
+                <div class="dark-btn__icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
+                <span class="dark-btn__button">Выход</span>
+
+            </div>
+        </div>
+        <div class="account-header__nav">
+            <div class="account-nav">
+                <div class="account-nav__item">
+                    <a href="{% url 'profile' %}" class="account-nav__link">Профиль</a>
+                </div>
+                <div class="account-nav__item">
+                    <a href="{% url 'user_notifications' %}" class="account-nav__link">Уведомления</a>
+                </div>
+                <div class="account-nav__item">
+                    <a href="#" class="account-nav__link">Лайки</a>
+                </div>
+                <div class="account-nav__item">
+                    <a href="{% url 'self_user_posts' %}" class="account-nav__link">Мои посты</a>
+                </div>
+                <div class="account-nav__item">
+                    <a href="#" class="account-nav__link">Подписки</a>
+                </div>
+                <div class="account-nav__item">
+                    <a href="#" class="account-nav__link">Настройки</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="account-body">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block script %}
+
+{% block script-page %}
+{% endblock %}
+{% endblock %}

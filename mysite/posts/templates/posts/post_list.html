@@ -1,7 +1,7 @@
-{% extends 'posts/base.html' %}
+{% extends 'posts/base-posts.html' %}
 {% load static %}
 
-{% block compressible_stylesheet %}
+{% block compress-style-page %}
 <link rel="stylesheet" href="{% static 'posts/css/art_all.css' %}">
 {% endblock %}
 
@@ -40,12 +40,10 @@
     {% endif %}
 
 </div>
-</section>
-</div>
 
 {% endblock %}
 
-{% block script %}
+{% block script-page %}
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'posts/libs/infinite.min.js' %}"></script>

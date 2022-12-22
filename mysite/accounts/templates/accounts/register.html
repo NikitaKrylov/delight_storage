@@ -9,22 +9,22 @@
     {% csrf_token %}
 
     <div class="reg-menu__input-list">
+        <div class="form-error">{{form.username.errors}}</div>
         <div class="reg-menu__input-item">
-            <div class="form-error">{{form.username.errors}}</div>
             {{form.username}}
             <div class="reg-menu__placeholder">
                 <div class="reg-menu__placeholder-text">Никнейм</div>
             </div>
         </div>
+        <div class="form-error">{{form.email.errors}}</div>
         <div class="reg-menu__input-item">
-            <div class="form-error">{{form.email.errors}}</div>
             {{form.email}}
             <div class="reg-menu__placeholder">
                 <div class="reg-menu__placeholder-text">Email</div>
             </div>
         </div>
+        <div class="form-error">{{form.password1.errors}}</div>
         <div class="reg-menu__input-item">
-            <div class="form-error">{{form.password1.errors}}</div>
             {{form.password1}}
             <div class="reg-menu__placeholder">
                 <div class="reg-menu__placeholder-text">Пароль</div>

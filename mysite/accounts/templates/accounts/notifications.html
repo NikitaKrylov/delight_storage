@@ -1,12 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    {% for notification in notifications %}
-    <p>{{notification}}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block compress-style-page %}
+<link rel="stylesheet" href="{% static 'accounts/css/notification.css' %}">
+{% endblock %}
+
+{% block uncompress-style-page %}
+{% endblock %}
+
+{% block content %}
+<div class="notification-container">
+    <div class="notification-menu">
+        <div class="notification-menu__title">
+            Новые
+        </div>
+        <div class="notification-menu__controls">
+            <button class="notification-menu__btn button dark-btn">Прочитать все</button>
+            <button class="notification-menu__btn button button-red dark-btn">Удалить все</button>
+        </div>
+    </div>
+
+    <div class="notification-list grid--masonry">
+        {% for notification in notifications %}
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="blackout"></div><!-- затемнение -->
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="notification-menu">
+        <div class="notification-menu__title">
+            Все
+        </div>
+    </div>
+
+    <div class="notification-list grid--masonry">
+        {% for notification in notifications %}
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="blackout"></div><!-- затемнение -->
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notification-list__item">
+            <div class="notification-list__content">
+                <div class="notification-list__inner">
+                    <div class="notification-list__header">
+                        <div class="notification-list__title">
+                            {{notification.verb}}
+                        </div>
+                        <div class="notification-list__time">
+                            11.09.2005
+                        </div>
+                        <div class="notification-list__controls">
+                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></button>
+                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></button>
+                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
+                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                        </div>
+                    </div>
+                    <div class="notification-list__text">
+                        {{notification}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="posts-not-found">
+        <span>Пусто</span>
+        <div class="posts-not-found__icon">
+            <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script-page %}
+<script src="{% static 'accounts/js/grid-masonry.js' %}"></script>
+{% endblock %}

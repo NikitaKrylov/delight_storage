@@ -1,4 +1,6 @@
-$min-width: 280px;
+$padding-wrapper: 8;
+$min-width: 280-$padding-wrapper*2;
+
 $max-width: 1920;
 
 $width-mobile: 991px;
@@ -39,7 +41,7 @@ body {
 #nav-menu-mobile {
   /* width: 85%; */
   height: 100%;
-  min-width: $min-width;
+  min-width: #{$min-width + px};
   background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
@@ -51,6 +53,7 @@ body {
   visibility: hidden;
   pointer-events: none;
   // padding-bottom: 90px;
+  width: 100%;
 
   &._active {
     display: block;
@@ -60,18 +63,12 @@ body {
     visibility: visible;
     pointer-events: all;
   }
-
-  @media (max-width: $min-width) {
-    & {
-      width: 100%;
-    }
-  }
   @media (min-width: $width-mobile) {
     & {
       display: none;
     }
   }
-  @media (min-width: $min-width) {
+  @media (min-width: #{$min-width + px}) {
     & {
       width: 80%;
   
@@ -145,7 +142,7 @@ body {
 
 #profile-menu-mobile {
   height: 100%;
-  min-width: $min-width;
+  min-width: #{$min-width + px};
   background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
@@ -180,7 +177,7 @@ body {
   //   font-weight: 700;
   // }
 
-  @media (max-width: $min-width) {
+  @media (max-width: #{$min-width + px}) {
     & {
       width: 100%;
     }
@@ -190,7 +187,7 @@ body {
       display: none;
     }
   }
-  @media (min-width: $min-width) {
+  @media (min-width: #{$min-width + px}) {
     & {
       width: 80%;
   

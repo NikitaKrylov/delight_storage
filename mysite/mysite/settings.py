@@ -29,11 +29,11 @@ SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-                '192.168.1.3',
-                 '127.0.0.1',
-                 '192.168.1.2',
-                 '172.20.10.2',
-                 ]
+    '192.168.1.3',
+    '127.0.0.1',
+    '192.168.1.2',
+    '172.20.10.2',
+]
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -86,7 +86,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_ROOT, 'templates'), ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

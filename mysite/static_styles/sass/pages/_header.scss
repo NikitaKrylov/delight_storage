@@ -12,6 +12,9 @@ $font-family-circeregular: 'CirceRegular';
 $max-width-nav-menu: 764px;
 $max-display-width: 1920px;
 
+$padding-wrapper: 8;
+$min-width: 280-$padding-wrapper*2;
+
 $width-mobile: 991px;
 
 // перевод px в em
@@ -61,7 +64,7 @@ $browser-context: 16; // Default
     height: 44px;
     // padding: 0 20px;
     // margin: 0 auto;
-    min-width: 280px;
+    min-width: #{$min-width + px};
     // max-width: 1341px;
     width: inherit;
     // width: 96%;
@@ -204,7 +207,7 @@ $browser-context: 16; // Default
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  min-width: 280px;
+  min-width: #{$min-width + px};
   max-width: $max-width-nav-menu;
 
 		&__item {

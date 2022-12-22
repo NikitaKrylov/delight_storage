@@ -21,7 +21,6 @@ placeholders.forEach(function (el, i) {
     let value = el.innerText,
         html = '';
 
-    console.log(value)
     for (let w of value) {
         // if (!value) {
         //     value = '&nbsp;';
@@ -34,19 +33,6 @@ placeholders.forEach(function (el, i) {
         html += `<span class="letter">${w}</span>`;
     }
     el.innerHTML = html;
-});
-
-inputs.forEach(function (el) {
-    let parent = el.parentNode;
-    el.addEventListener('focus', function () {
-        parent.classList.add('filled');
-        placeholderAnimationIn(parent, true);
-    }, false);
-    el.addEventListener('blur', function () {
-        if (el.value.length) return;
-        parent.classList.remove('filled');
-        placeholderAnimationIn(parent, false);
-    }, false);
 });
 
 function placeholderAnimationIn(parent, action) {
@@ -62,6 +48,23 @@ function placeholderAnimationIn(parent, action) {
         }, (50 * i));
     });
 }
+
+inputs.forEach(function (el) {
+    let parent = el.parentNode;
+    if (el.value) {
+        parent.classList.add('filled');
+        placeholderAnimationIn(parent, true);
+    }
+    el.addEventListener('focus', function () {
+        parent.classList.add('filled');
+        placeholderAnimationIn(parent, true);
+    }, false);
+    el.addEventListener('blur', function () {
+        if (el.value.length) return;
+        parent.classList.remove('filled');
+        placeholderAnimationIn(parent, false);
+    }, false);
+});
 
 // document.body.classList.add('document-loaded');
 

@@ -2,7 +2,9 @@
 
 $font-family-helvetica: 'Helvetica';
 
-$min-width: 280px;
+$padding-wrapper: 8;
+$min-width: 280-$padding-wrapper*2;
+
 $max-width: 1920px;
 $max-width-gallery__author: 100%;
 

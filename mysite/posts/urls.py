@@ -7,7 +7,7 @@ urlpatterns = [
     path('posts/all/', PostList.as_view(), name='post_list'),
     path('posts/search/', SearchPostList.as_view(), name='search'),
     path('posts/complication/', PostCompilationList.as_view(), name='complication'),
-    path('posts/liked/', LikedPostList.as_view(), name='liked_posts'),
+    #     path('posts/liked/', LikedPostList.as_view(), name='liked_posts'),
     path('post/<int:pk>/', PostView.as_view(), name='post'),
     path('post/<int:pk>/comments/add/',
          AddCommentView.as_view(), name='add_comment'),

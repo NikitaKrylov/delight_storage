@@ -1,13 +1,13 @@
-{% extends 'posts/base.html' %}
+{% extends 'posts/base-posts.html' %}
 {% load static %}
 
 
-{% block compressible_stylesheet %}
+{% block compress-style-page %}
 <link rel="stylesheet" href="{% static 'posts/css/art_post.css' %}">
 {% endblock %}
 
 
-{% block uncompressible_stylesheet %}
+{% block uncompress-style-page %}
 <!-- google icon -->
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -26,6 +26,21 @@
 
 {% block content %}
 
+<div id="complaints-window" class="popup">
+    <div class="popup__body">
+        <div class="popup__content">
+            <a href="" class="popup__close close-popup">x</a>
+            <div class="popup__title">Пожаловаться</div>
+            <div class="popup__text">Текст</div>
+            <div class="popup__text">Текст</div>
+            <div class="popup__text">Текст</div>
+            <div class="popup__controls">
+                <button class="popup__btn">Отмена</button>
+                <button class="popup__btn">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="post-container">
     <div class="post-images">
@@ -129,7 +144,9 @@
                             <i class="fa-solid fa-ellipsis"></i>
                         </div>
                         <div class="post-complaints__dropdown dropdown-items" hidden>
-                            <div class="post-complaints__dropdown-item dropdown-item">Пожаловаться</div>
+                            <div class="post-complaints__dropdown-item dropdown-item">
+                                <a href="#complaints-window" class="post-complaints__link popup-link">Пожаловаться</a>
+                            </div>
                             <div class="post-complaints__dropdown-item dropdown-item">Редактировать</div>
                             <div class="post-complaints__dropdown-item dropdown-item">Удалить</div>
                         </div>
@@ -265,7 +282,7 @@
 {% endblock %}
 
 
-{% block script %}
+{% block script-page %}
 
 <script src="{% static 'posts/libs/autosize.min.js' %}"></script>
 

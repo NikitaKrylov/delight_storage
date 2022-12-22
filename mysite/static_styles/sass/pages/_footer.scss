@@ -1,16 +1,13 @@
+@use "../modules/mixins";
+
 $font-family-rubik: 'Rubik';
 
 $width-mobile: 991px;
 
-$min-width: 280px;
 $max-width: 1920px;
 
-@mixin adaptiv-font($pcSize, $mobSize) {
-    $maxWidth: 1920;
-    $addSize: $pcSize - $mobSize;
-    $maxWidth: $maxWidth - 280;
-    font-size: calc(#{$mobSize + px} + #{$addSize} * ((100vw - #{$min-width}) / #{$maxWidth}));
-}
+$padding-wrapper: 8;
+$min-width: 280-$padding-wrapper*2;
 
 .footer {
   background-image: linear-gradient(to bottom, #16171e 100%, var(--bg-default) -13%);
@@ -61,7 +58,7 @@ $max-width: 1920px;
 
   &__title-text {
     // font-family: $font-family-rubik;
-    @include adaptiv-font(18, 14);
+    @include mixins.adaptive-value('font-size', 18, 14, 0);
     // font-size: 1.3rem;
     // font-weight: 600;
     // font-style: italic;
@@ -82,7 +79,7 @@ $max-width: 1920px;
   // grid-template-rows: 1fr;
   margin: 0 auto;
   // min-width: $min-width;
-  max-width: $min-width;
+  max-width: #{$min-width + px};
 
   /* width: 96%; */
   justify-items: center;

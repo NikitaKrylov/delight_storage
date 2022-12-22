@@ -37,9 +37,14 @@
 
 .like-wrap {
   display: grid;
-  padding: 20px;
+  padding: 10px;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
+}
+@media (min-width: 991px) {
+  .like-wrap {
+    padding: 20px;
+  }
 }
 
 .like-cont {
@@ -58,7 +63,7 @@
 }
 @media (max-width: 1920px) {
   .like-cont {
-    gap: calc(15px + 25 * ((100vw - 280px) / 1640));
+    gap: calc(15px + 25 * ((100vw - 264px) / 1656));
   }
 }
 .like-cont i {
@@ -92,7 +97,7 @@
 }
 @media (max-width: 1920px) {
   .like-cont-info span {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 
@@ -115,6 +120,10 @@
   cursor: pointer;
 }
 .post-complaints__dropdown {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   background-color: var(--bg-light-primary-default);
   padding: 10px;
   border-radius: 5px;
@@ -127,6 +136,9 @@
     right: 0;
     left: auto;
   }
+}
+.post-complaints__link {
+  color: var(--white);
 }
 .post-complaints__dropdown-item {
   padding: 10px;
@@ -150,12 +162,13 @@
 
 .post-data-published {
   color: var(--white);
-  font-size: 16px;
+  font-family: "CirceRegular";
+  font-size: 18px;
   margin-left: auto;
 }
 @media (max-width: 1920px) {
   .post-data-published {
-    font-size: calc(12px + 4 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 4 * ((100vw - 264px) / 1656));
   }
 }
 
@@ -231,10 +244,11 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
+  font-family: "CirceRegular";
 }
 @media (max-width: 1920px) {
   .subscribe-btn__btn {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 .subscribe-btn__btn::before, .subscribe-btn__btn::after {
@@ -317,7 +331,9 @@
   padding: 20px 0;
 }
 .post-info-details__title {
+  font-family: "CirceRegular";
   font-weight: 700;
+  font-size: 20px;
   color: var(--light-gray);
 }
 .post-info-details__content {
@@ -330,11 +346,6 @@
 .post-info-comments__container {
   padding: 0;
   border-radius: 15px;
-}
-@media (min-width: 991px) {
-  .post-info-comments__container {
-    padding: 20px;
-  }
 }
 
 .post-tags {
@@ -394,7 +405,7 @@
 }
 @media (max-width: 1920px) {
   .comments-form__title {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 .comments-form__input {
@@ -429,7 +440,7 @@
 }
 @media (max-width: 1920px) {
   .comments-form__input-comment {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 
@@ -443,7 +454,7 @@
 }
 @media (max-width: 1920px) {
   .comments-form-sorting__sort-btn {
-    font-size: calc(14px + 2 * ((100vw - 280px) / 1640));
+    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
   }
 }
 .comments-form-sorting__sort-btn i {
@@ -486,7 +497,7 @@
 }
 @media (max-width: 1920px) {
   .comments-are-forbidden {
-    font-size: calc(16px + 4 * ((100vw - 280px) / 1640));
+    font-size: calc(16px + 4 * ((100vw - 264px) / 1656));
   }
 }
 .comments-are-forbidden > span {
@@ -545,7 +556,6 @@
   margin-right: 4px;
   color: var(--white);
   font-weight: 700;
-  font-family: "inter", sans-serif;
   max-width: 220px;
   font-size: 16px;
 }
@@ -821,4 +831,49 @@
     visibility: visible;
     pointer-events: all;
   }
+}
+
+.popup {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  z-index: 120;
+}
+.popup._active {
+  display: block;
+}
+.popup__body {
+  min-height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 20px;
+}
+.popup__content {
+  position: relative;
+  background-color: white;
+  color: black;
+  max-width: 800px;
+  padding: 30px;
+}
+.popup__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  color: black;
+}
+.popup__title {
+  font-size: 30px;
+  margin-bottom: 10px;
 }

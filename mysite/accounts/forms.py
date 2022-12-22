@@ -15,6 +15,11 @@ class RegisterUserForm(UserCreationForm):
         attrs={"autocomplete": "new-password", 'class': 'reg-menu__input'}))
     password2 = None
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.pop('autofocus', None)
+
     class Meta:
         model = User
         fields = (
@@ -76,8 +81,6 @@ class UserSettingsForm(forms.Form):
                 initial.append(i+1)
 
         self.fields['ignored_tags'].initial = initial
-
-
 
 
 # ---------------------- Password ----------------------------

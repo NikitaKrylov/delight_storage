@@ -26,14 +26,17 @@ class Signatory(View):
         ctx = {"has_sub": None}
         user: User = request.user
         if user.is_authenticated:
-            if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists(): # подписка уже имеется
-                user.subscriptions.filter(subscription_object__id=kwargs['object_id']).delete() # больше нету
+            # подписка уже имеется
+            if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists():
+                user.subscriptions.filter(
+                    subscription_object__id=kwargs['object_id']).delete()  # больше нету
                 ctx["has_sub"] = False
             else:
                 sub = Subscription(
-                        subscription_object=User.objects.get(id=kwargs['object_id']),
-                        subscriber=user
-                    )
+                    subscription_object=User.objects.get(
+                        id=kwargs['object_id']),
+                    subscriber=user
+                )
                 sub.save()
                 user.subscriptions.add(sub)
                 ctx["has_sub"] = True
@@ -41,7 +44,7 @@ class Signatory(View):
         return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-#--------Authentivation / Register-------
+# --------Authentivation / Register-------
 
 
 def logout_view(request):
@@ -207,7 +210,8 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
-        image_formset = ImageFileFormSet(request.POST, request.FILES, instance=form.instance)
+        image_formset = ImageFileFormSet(
+            request.POST, request.FILES, instance=form.instance)
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():
@@ -242,7 +246,8 @@ class EditPostView(LoginRequiredMixin, UpdateView):
         post = self.get_object()
         context['post'] = post
         context['image_formset'] = ImageFileFormSet(instance=post)
-        context['delay_form'] = CreatePostDelayForm(instance=post.delay or None)
+        context['delay_form'] = CreatePostDelayForm(
+            instance=post.delay or None)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -251,7 +256,8 @@ class EditPostView(LoginRequiredMixin, UpdateView):
         if form.is_valid():
             post = form.save()
 
-            delay_form = CreatePostDelayForm(request.POST, instance=post.delay or None)
+            delay_form = CreatePostDelayForm(
+                request.POST, instance=post.delay or None)
             if delay_form.is_valid():
                 delay = delay_form.save()
             else:
@@ -259,10 +265,12 @@ class EditPostView(LoginRequiredMixin, UpdateView):
                 if post.delay:
                     post.delay.delete()
                     post.delay = None
-                    if post.status == 1: post.status = 0
+                    if post.status == 1:
+                        post.status = 0
                     post.save()
 
-            image_formset = ImageFileFormSet(request.POST, request.FILES, instance=post)
+            image_formset = ImageFileFormSet(
+                request.POST, request.FILES, instance=post)
             images = image_formset.save()
 
         else:
@@ -273,6 +281,11 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
 
+# class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
+#     model = Post
+#     paginate_by = 30
+#     template_name = 'posts/images.html'
+#     context_object_name = 'posts'
 
-
-
+#     def get_queryset(self):
+#         return super().get_queryset().filter(likes__user=self.request.user)

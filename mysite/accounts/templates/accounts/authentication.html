@@ -9,15 +9,15 @@
     <div class="reg-menu__input-list">
         <div class="form-error">{{form.non_field_errors}}</div>
 
+        <div class="form-error">{{form.username.errors}}</div>
         <div class="reg-menu__input-item">
-            <div class="form-error">{{form.username.errors}}</div>
             {{form.username}}
             <div class="reg-menu__placeholder">
                 <div class="reg-menu__placeholder-text">Никнейм или email</div>
             </div>
         </div>
+        <div class="form-error">{{form.password.errors}}</div>
         <div class="reg-menu__input-item">
-            <div class="form-error">{{form.password.errors}}</div>
             {{form.password}}
             <div class="reg-menu__placeholder">
                 <div class="reg-menu__placeholder-text">Пароль</div>

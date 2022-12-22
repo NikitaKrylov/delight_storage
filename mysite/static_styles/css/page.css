@@ -42,7 +42,7 @@
           justify-content: space-between;
   gap: 10px;
   height: 44px;
-  min-width: 280px;
+  min-width: 264px;
   width: inherit;
 }
 @media (min-width: 991px) {
@@ -122,7 +122,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: calc(10px + 4 * ((100vw - 280px) / 1640));
+  font-size: calc(10px + 4 * ((100vw - 264px) / 1656));
   padding: 0 1em;
   border: 1px solid var(--pink);
 }
@@ -156,7 +156,7 @@
   height: 100%;
   width: 100%;
   margin: 0 auto;
-  min-width: 280px;
+  min-width: 264px;
   max-width: 764px;
 }
 .nav-list__item {
@@ -642,7 +642,7 @@ body._touch #header-menu::after {
 #nav-menu-mobile {
   /* width: 85%; */
   height: 100%;
-  min-width: 280px;
+  min-width: 264px;
   background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
@@ -654,6 +654,7 @@ body._touch #header-menu::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  width: 100%;
 }
 #nav-menu-mobile._active {
   display: block;
@@ -662,17 +663,12 @@ body._touch #header-menu::after {
   visibility: visible;
   pointer-events: all;
 }
-@media (max-width: 280px) {
-  #nav-menu-mobile {
-    width: 100%;
-  }
-}
 @media (min-width: 991px) {
   #nav-menu-mobile {
     display: none;
   }
 }
-@media (min-width: 280px) {
+@media (min-width: 264px) {
   #nav-menu-mobile {
     width: 80%;
     /* max-width: 300px; */
@@ -743,7 +739,7 @@ body._touch #header-menu::after {
 /* right-menu */
 #profile-menu-mobile {
   height: 100%;
-  min-width: 280px;
+  min-width: 264px;
   background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
@@ -767,7 +763,7 @@ body._touch #header-menu::after {
   visibility: visible;
   pointer-events: all;
 }
-@media (max-width: 280px) {
+@media (max-width: 264px) {
   #profile-menu-mobile {
     width: 100%;
   }
@@ -777,7 +773,7 @@ body._touch #header-menu::after {
     display: none;
   }
 }
-@media (min-width: 280px) {
+@media (min-width: 264px) {
   #profile-menu-mobile {
     width: 80%;
     /* max-width: 300px; */
@@ -852,7 +848,7 @@ body._touch #header-menu::after {
   margin: 0 auto;
 }
 .footer-info__title-text {
-  font-size: calc(14px + 4 * ((100vw - 280px) / 1640));
+  font-size: calc(14px + 4 * ((100vw - 264px) / 1656));
   color: var(--white);
 }
 .footer-info__title-text > a {
@@ -862,7 +858,7 @@ body._touch #header-menu::after {
 
 .footer-link {
   margin: 0 auto;
-  max-width: 280px;
+  max-width: 264px;
   /* width: 96%; */
   justify-items: center;
 }

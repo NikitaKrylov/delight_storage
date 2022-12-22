@@ -1,0 +1,33 @@
+{% extends 'base-page.html' %}
+{% load static %}
+
+
+{% block compressible_stylesheet %}
+
+{% block compress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block uncompressible_stylesheet %}
+
+{% block uncompress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block main %}
+
+{% block content %}
+{% endblock %}
+{% endblock %}
+
+
+
+
+{% block script %}
+<script src="{% static '/posts/js/like.js' %}"></script>
+
+{% block script-page %}
+{% endblock %}
+{% endblock %}

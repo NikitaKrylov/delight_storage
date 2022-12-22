@@ -20,32 +20,30 @@
 </head>
 
 <body id="body">
-    {% include "posts/html/_search.html" %}
+    {% include "html/_search.html" %}
     <div class="mobileMenuBackground"></div>
     <div class="wrapper">
-        {% include "posts/html/_header.html" %}
+        {% include "html/_header.html" %}
         <main class="page">
             <div class="container">
                 <div class="page__wrapper">
-                    {% block content %}
+                    {% block main %}
                     {% endblock %}
                 </div>
             </div>
         </main>
-        {% include "posts/html/_nav-mobile.html" %}
-        {% include "posts/html/_profile-menu-mobile.html" %}
+        {% include "html/_nav-mobile.html" %}
+        {% include "html/_profile-menu-mobile.html" %}
     </div>
-    {% include "posts/html/_footer.html" %}
+    {% include "html/_footer.html" %}
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
 
     <script src="{% static '/js/device.js' %}"></script>
-    <script src="{% static '/js/search-tags.js' %}"></script>
+    <!-- <script src="{% static '/js/search-tags.js' %}"></script> -->
     <script src="{% static '/js/index.js' %}"></script>
-    <script src="{% static '/posts/js/like.js' %}"></script>
-
     {% block script %}
     {% endblock %}
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
