@@ -128,8 +128,8 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(UserView)
 class UserViewAdmin(admin.ModelAdmin):
     search_fields = (
-        'user_id',
-        'client_ip.ip',
+        'user__id',
+        'post__id',
     )
     list_display = (
         'id',

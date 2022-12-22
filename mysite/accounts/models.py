@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from typing import List
 from django.utils.translation import gettext_lazy as _
+from notifications.base.models import AbstractNotification
 
 
 class UserManager(BaseUserManager):
@@ -107,3 +108,22 @@ class Subscription(models.Model):
 
 # class StripSubscription(models.Model):
 #    pass
+
+# #
+class Notification(AbstractNotification):
+    class Types(models.TextChoices):
+        SUBSCRIPTION = 'Subscription'
+        NEW_POST = 'New post'
+        ACCOUNT = 'Account'
+        COMPLAINT = 'Complaint'
+
+    type = models.CharField(_("тип уведомления"), choices=Types.choices, max_length=20)
+
+    class Meta(AbstractNotification.Meta):
+        abstract = False
+        verbose_name = "Уведомление"
+        verbose_name_plural = "Уведомления"
+
+    def __str__(self):
+        return self.verb
+
