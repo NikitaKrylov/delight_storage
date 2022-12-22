@@ -147,7 +147,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(Q(status=0) & Q(author=self.request.user)).all()
+        return self.model.objects.filter(Q(status=Post.STATUS.PUBLISHED) & Q(author=self.request.user)).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -265,8 +265,7 @@ class EditPostView(LoginRequiredMixin, UpdateView):
                 if post.delay:
                     post.delay.delete()
                     post.delay = None
-                    if post.status == 1:
-                        post.status = 0
+                    if post.status == Post.STATUS.DEFERRED: post.status = Post.STATUS.PUBLISHED
                     post.save()
 
             image_formset = ImageFileFormSet(

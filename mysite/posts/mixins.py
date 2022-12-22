@@ -26,7 +26,7 @@ class PostQueryMixin(MultipleObjectMixin):
         else:
             queryset = queryset.filter(for_autenticated_users=False).filter(only_for_adult=False)
 
-        return queryset.filter(status=0)
+        return queryset.filter(status=Post.STATUS.PUBLISHED)
 
 
 class UpdateViewsMixin(SingleObjectMixin):

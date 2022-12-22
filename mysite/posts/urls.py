@@ -15,6 +15,10 @@ urlpatterns = [
          delete_comment, name='delete_comment'),
     path('post/<int:pk>/comments/reply/add/<int:reply_comment_pk>/',
          AddReplyCommentView.as_view(), name='add_reply_comment'),
+    path('post/<int:pk>/complaint/create', create_post_complaint, name='create_post_complaint'),
+    path('post/<int:pk>/comments/add/', AddCommentView.as_view(), name='add_comment'),
+    path('post/<int:post_pk>/comments/delete/<int:pk>/', delete_comment, name='delete_comment'),
+    path('post/<int:pk>/comments/reply/add/<int:reply_comment_pk>/', AddReplyCommentView.as_view(), name='add_reply_comment'),
     path('post/<int:pk>/like/', LikePostView.as_view(), name='post_like'),
     path('post/profile', Profile.as_view(), name='profile'),
 ]

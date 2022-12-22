@@ -85,7 +85,7 @@ class PostAdmin(admin.ModelAdmin):
 
     def save_model(self, request, post, form, change):
         if change and 'status' in form.changed_data:
-            if post.status == 0:
+            if post.status == Post.STATUS.PUBLISHED:
                 post.pub_date = timezone.now()
             post.save(update_fields=['status', 'pub_date'])
         else:
@@ -94,16 +94,18 @@ class PostAdmin(admin.ModelAdmin):
     @admin.action(description="Опубликовать")
     def make_published(self, request, queryset):
         for post in queryset:
-            if post.status == 1 and post.delay:
-                post.status = 0
+            if post.status == Post.STATUS.DEFERRED and post.delay:
+                post.status = Post.STATUS.PUBLISHED
                 post.pub_date = timezone.now()
                 post.delay.delete()
                 post.delay = None
-                post.save(update_fields=['status'])
-            elif post.status == 2:
-                post.status = 0
+            elif post.status == Post.STATUS.CONSIDERATION:
+                post.status = Post.STATUS.PUBLISHED
                 post.pub_date = timezone.now()
-                post.save(update_fields=['status'])
+            else:
+                post.status = Post.STATUS.PUBLISHED
+
+            post.save(update_fields=['status'])
 
         messages.add_message(request, messages.SUCCESS, "Посты опубликованы")
 

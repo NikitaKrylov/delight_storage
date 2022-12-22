@@ -11,6 +11,10 @@ from django.http import HttpResponse
 from accounts.models import Subscription
 
 
+def create_post_complaint(request, *args, **kwargs):
+    pass
+
+
 class AddCommentView(LoginRequiredMixin, View):
     login_url = reverse_lazy('login')
 

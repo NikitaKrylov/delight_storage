@@ -9,11 +9,11 @@ from django.urls import reverse
 
 
 class Post(models.Model):
-    STATUS = (
-        (0, _('Опубликованно')),
-        (1, _('Отложено')),
-        (2, _('На рассмотрении'))
-    )
+
+    class STATUS(models.TextChoices):
+        PUBLISHED = 'PB', _('опубликовано')
+        DEFERRED = 'DF', _('отложено')
+        CONSIDERATION = 'CN', _('на рассмотрении')
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     creation_date = models.DateTimeField(
@@ -24,7 +24,7 @@ class Post(models.Model):
         _("для авторизированных пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
-    status = models.IntegerField(_('статус'), choices=STATUS, default=0, help_text=_('При выборе задержки помечается как "отложено"'))
+    status = models.CharField(_('статус'), choices=STATUS.choices, default=STATUS.CONSIDERATION, help_text=_('При выборе задержки помечается как "отложено"'), max_length=20)
     description = models.CharField(_('описание'), max_length=300, null=True, blank=True)
 
     tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
@@ -48,20 +48,22 @@ class Post(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.delay:
-            self.status = 1
-
+            self.status = self.STATUS.DEFERRED
         return super().save(force_insert, force_update, using, update_fields)
 
     def clean(self):
-        if self.status == 0 and not self.pub_date:
+        if self.status == Post.STATUS.PUBLISHED and not self.pub_date:
             self.pub_date = timezone.now()
 
         if self.delay and self.delay.time < timezone.now():
             raise ValidationError("Время публикации не может быть меньше текущего.")
 
-        if self.status == 1 and not self.delay:
+        if self.status == Post.STATUS.DEFERRED and not self.delay:
             raise ValidationError("Укажите время публикации для отложенного поста")
         return super().clean()
+
+    def get_like_percentage(self):
+        return self.likes.count() / self.views.count()
 
     def __str__(self):
         if self.delay:
