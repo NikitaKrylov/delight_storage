@@ -111,7 +111,7 @@
           flex: 0 1 auto;
   padding: 10px 12px;
   font-size: 14px;
-  height: 35px;
+  height: auto;
   border-radius: 8px;
   border: 1px solid var(--bg-light-primary-default);
   background-color: transparent;
@@ -135,7 +135,6 @@
 }
 @media (min-width: 991px) {
   .dark-btn {
-    height: 50px;
     padding: 13px 15px;
     font-size: 16px;
   }

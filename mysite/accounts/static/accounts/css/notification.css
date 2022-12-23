@@ -162,6 +162,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 
 /* basic masonry styles - same as for the image grid */
