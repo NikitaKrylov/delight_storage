@@ -10,72 +10,57 @@
 
 {% block content %}
 <div class="notification-container">
+
+
     <div class="notification-menu">
+
         <div class="notification-menu__title">
+            {% if unread %}
             Новые
+            {% endif %}
         </div>
+
         <div class="notification-menu__controls">
-            <button class="notification-menu__btn button dark-btn">Прочитать все</button>
-            <button class="notification-menu__btn button button-red dark-btn">Удалить все</button>
+            <a href="{% url 'all_notification_read' %}" class="notification-menu__btn button dark-btn">Прочитать все</a>
+            <a href="{% url 'all_notification_delete' %}" class="notification-menu__btn button button-red dark-btn">Удалить все</a>
         </div>
     </div>
+    {% if unread %}
 
     <div class="notification-list grid--masonry">
-        {% for notification in notifications %}
+        {% for notification in unread %}
         <div class="notification-list__item">
             <div class="notification-list__content">
-                <div class="blackout"></div><!-- затемнение -->
+
                 <div class="notification-list__inner">
                     <div class="notification-list__header">
                         <div class="notification-list__title">
                             {{notification.verb}}
                         </div>
                         <div class="notification-list__time">
-                            11.09.2005
+                            {{notification.timestamp}}
                         </div>
                         <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                            <a href="{% url 'notification_read' notification.pk %}" class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                    class="fa-solid fa-check"></i></a>
+                            <a href="{% url 'notification_delete' notification.pk %}" class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>
+                    {% if notification.description %}
                     <div class="notification-list__text">
-                        {{notification}}
+                        {{notification.description|safe}}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="notification-list__item">
-            <div class="notification-list__content">
-                <div class="notification-list__inner">
-                    <div class="notification-list__header">
-                        <div class="notification-list__title">
-                            {{notification.verb}}
-                        </div>
-                        <div class="notification-list__time">
-                            11.09.2005
-                        </div>
-                        <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
-                        </div>
-                    </div>
-                    <div class="notification-list__text">
-                        {{notification}}
-                    </div>
-                </div>
-            </div>
-        </div>
+
         {% endfor %}
     </div>
+    {% endif %}
 
+    {% if readed %}
     <div class="notification-menu">
         <div class="notification-menu__title">
             Все
@@ -83,7 +68,7 @@
     </div>
 
     <div class="notification-list grid--masonry">
-        {% for notification in notifications %}
+        {% for notification in readed %}
         <div class="notification-list__item">
             <div class="notification-list__content">
                 <div class="blackout"></div><!-- затемнение -->
@@ -93,107 +78,35 @@
                             {{notification.verb}}
                         </div>
                         <div class="notification-list__time">
-                            11.09.2005
+                            {{notification.timestamp}}
                         </div>
                         <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
+                            <a href="{% url 'notification_delete' notification.pk %}" class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                    class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>
+                    {% if notification.description %}
                     <div class="notification-list__text">
-                        {{notification}}
+                        {{notification.description|safe}}
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-        <div class="notification-list__item">
-            <div class="notification-list__content">
-                <div class="notification-list__inner">
-                    <div class="notification-list__header">
-                        <div class="notification-list__title">
-                            {{notification.verb}}
-                        </div>
-                        <div class="notification-list__time">
-                            11.09.2005
-                        </div>
-                        <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
-                        </div>
-                    </div>
-                    <div class="notification-list__text">
-                        {{notification}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="notification-list__item">
-            <div class="notification-list__content">
-                <div class="notification-list__inner">
-                    <div class="notification-list__header">
-                        <div class="notification-list__title">
-                            {{notification.verb}}
-                        </div>
-                        <div class="notification-list__time">
-                            11.09.2005
-                        </div>
-                        <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
-                        </div>
-                    </div>
-                    <div class="notification-list__text">
-                        {{notification}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="notification-list__item">
-            <div class="notification-list__content">
-                <div class="notification-list__inner">
-                    <div class="notification-list__header">
-                        <div class="notification-list__title">
-                            {{notification.verb}}
-                        </div>
-                        <div class="notification-list__time">
-                            11.09.2005
-                        </div>
-                        <div class="notification-list__controls">
-                            <button class="notification-list__btn button button-green" aria-label="Прочитать"><i
-                                    class="fa-solid fa-check"></i></button>
-                            <button class="notification-list__btn button button-red" aria-label="Удалить"><i
-                                    class="fa-solid fa-xmark"></i></button>
-                            <!-- <button class="notification-list__btn button dark-btn">Прочитать</button>
-                            <button class="notification-list__btn button button-red dark-btn">Удалить</button> -->
-                        </div>
-                    </div>
-                    <div class="notification-list__text">
-                        {{notification}}
-                    </div>
-                </div>
-            </div>
-        </div>
+
         {% endfor %}
     </div>
 
+    {% endif %}
+
+    {% if not unread and not readed %}
     <div class="posts-not-found">
-        <span>Пусто</span>
+        <span>Уведомлений нет</span>
         <div class="posts-not-found__icon">
             <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
         </div>
     </div>
+    {% endif %}
 
 </div>
 {% endblock %}

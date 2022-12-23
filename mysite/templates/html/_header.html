@@ -28,16 +28,16 @@
                                 {% endif %}
                                 {% endwith %}
                                 {% endif %}
-                                <a href="#" class="notification-items__link">
+                                <a href="{% url 'user_notifications' %}" class="notification-items__link">
                                     <i class="fa-solid fa-bell"></i>
                                 </a>
                             </div>
                         </div>
                         <div class="notification-items__item">
                             <div class="notification-items__icon">
-                                <span
-                                    class="notification-items__number-of-notifications number-of-notifications">0</span>
-                                <a href="#" class="notification-items__link">
+<!--                                <span-->
+<!--                                    class="notification-items__number-of-notifications number-of-notifications">0</span>-->
+                                <a href="{% url 'user_liked_posts' %}" class="notification-items__link">
                                     <i class=" fa-solid fa-heart"></i>
                                 </a>
                             </div>
@@ -48,8 +48,13 @@
                     {% if request.user.is_authenticated %}
                     <!-- для зареганых -->
                     <a href="{% url 'profile' %}">
+                        {% if request.user.avatar %}
+                        <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}"
+                            alt="Аватар">
+                        {% else %}
                         <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
                             alt="Аватар">
+                        {% endif %}
                     </a>
                     {% else %}
                     <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
@@ -77,7 +82,7 @@
                 <div class="nav-list__item">
                     <a href="" class="nav-list__link">
                         <span class="nav-list__text">
-                            Видео
+                            Подборка
                         </span>
                     </a>
                 </div>
@@ -91,7 +96,7 @@
                 <div class="nav-list__item">
                     <a href="" class="nav-list__link">
                         <span class="nav-list__text">
-                            Фото
+                            Рекомендации
                         </span>
                     </a>
                 </div>

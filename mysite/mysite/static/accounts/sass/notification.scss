@@ -1,0 +1,195 @@
+$font-family-circeregular: 'CirceRegular';
+$font-family-inter: 'inter', sans-serif;
+
+$width-mobile: 991px;
+
+.notification-container {
+}
+
+.notification-menu {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px 0 15px 0;
+
+    &__title {
+        font-family: $font-family-circeregular;
+        font-size: 24px;
+        color: var(--white);
+    }
+
+    &__controls {
+        display: flex;
+        gap: 5px;
+    }
+
+    &__btn {
+        flex: 0 1 auto;
+        padding: 15px 30px;
+    }
+}
+
+.notification-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+    
+    &__item {
+        width: 100%;
+        padding: 0 10px;
+        margin-bottom: 10px;
+
+        // @media (min-width: $width-mobile) {
+        //     width: 50%;
+        // }
+    }
+
+    &__content {
+        position: relative;
+        height: 100%;
+    }
+    
+    &__inner {
+        background-color: var(--bg-secondary-default);
+        // height: 100%;
+        // margin-bottom: 10px;
+        padding: 15px;
+        // padding: 15px 15px 5px 15px;
+        border-radius: 5px;
+
+        @media (min-width: $width-mobile) {
+            padding: 20px;
+            // padding: 20px 20px 10px 20px;
+        }
+    }
+
+    // &__content {
+    //     padding: 10px 0;
+    // }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+        
+        @media (min-width: $width-mobile) {
+            gap: 10px;
+        }
+    }
+
+    &__title {
+        // font-family: $font-family-circeregular;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--white);
+
+        @media (min-width: $width-mobile) {
+            font-size: 20px;
+        }
+    }
+
+    &__time {
+        margin-left: auto;
+        font-size: 14px;
+        color: var(--light-gray);
+
+        @media (min-width: $width-mobile) {
+            font-size: 16px;
+        }
+    }
+
+    &__text {
+        padding: 5px 0 5px 0;
+        // font-family: $font-family-inter;
+        font-size: 14px;
+        color: var(--secondary-white);
+
+        @media (min-width: $width-mobile) {
+            font-size: 18px;
+            padding: 20px 0 10px 0;
+        }
+    }
+
+    &__controls {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+        transform: translate(5px, -10px);
+        // margin-left: auto;
+    }
+
+    &__btn {
+        position: relative;
+        z-index: 1;
+        flex: 0 1 auto;
+        padding: 5px;
+        // padding: 8px 20px;
+        font-size: 16px;
+        // font-size: 14px;
+        height: 100%;
+        line-height: normal;
+        background: transparent;
+
+        &::after {
+            content: attr(aria-label);
+            position: absolute;
+            top: -100%;
+            // left: -50%;
+            right: 0;
+            display: none;
+            padding: 0 10px;
+            line-height: 28px;
+            font-size: 14px;
+            background-color: var(--secondary-dark-gray);
+            color: var(--secondary-white);
+            border-radius: 5px;
+
+            &:hover {
+                display: none;
+            }
+        }
+
+        &:hover {
+            & {
+                background-color: var(--bg-light-secondary-default);
+            }
+            &::after {
+                display: block;
+            }
+        }
+    }
+}
+
+.button-red {
+    color: var(--error-light);
+}
+
+.button-green {
+    color: var(--enable);
+}
+
+.blackout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0, 0.3);
+}
+
+$w: minmax(Min(20em, 100%), 1fr);
+$s: .5em;
+
+/* basic masonry styles - same as for the image grid */
+.grid--masonry {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: masonry;
+    justify-content: center;
+    grid-gap: $s;
+    padding: $s;
+    > * { align-self: start }
+
+    @media (min-width: $width-mobile) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

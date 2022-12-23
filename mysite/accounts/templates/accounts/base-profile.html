@@ -25,15 +25,19 @@
         <div class="account-header__user">
             <div class="account-user">
                 <div сlass="account-user__avatar-wrapper">
+                    {% if request.user.avatar %}
+                    <img class="account-user__avatar avatar" src="{{request.user.avatar.url}}">
+                    {% else %}
                     <img class="account-user__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                    {% endif %}
                 </div>
                 <div class="account-user__info">
-                    <span class="account-user__username">
-                        gglin
-                    </span>
+                    <span class="account-user__username">{{request.user.username}}</span>
+                    {% if request.user.is_superuser %}
                     <span class="account-user__status">
                         Admin
                     </span>
+                    {% endif %}
                 </div>
             </div>
 
@@ -54,13 +58,13 @@
                     <a href="{% url 'user_notifications' %}" class="account-nav__link">Уведомления</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="#" class="account-nav__link">Лайки</a>
+                    <a href="{% url 'user_liked_posts' %}" class="account-nav__link">Лайки</a>
                 </div>
                 <div class="account-nav__item">
                     <a href="{% url 'self_user_posts' %}" class="account-nav__link">Мои посты</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="#" class="account-nav__link">Подписки</a>
+                    <a href="{% url 'user_subscriptions' %}" class="account-nav__link">Подписки</a>
                 </div>
                 <div class="account-nav__item">
                     <a href="#" class="account-nav__link">Настройки</a>

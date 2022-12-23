@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
     <div class="my-post-stats-inner">
@@ -18,19 +19,19 @@
         <div class="my-stats-list__item">
           <div class="stats-info">
             <div class="stats-info__text">Просмотров:</div>
-            <div class="stats-info__value">67868687</div>
+            <div class="stats-info__value">{{views_amount}}</div>
           </div>
         </div>
         <div class="my-stats-list__item">
           <div class="stats-info">
             <div class="stats-info__text">Лайков:</div>
-            <div class="stats-info__value">1349</div>
+            <div class="stats-info__value">{{likes_amount}}</div>
           </div>
         </div>
         <div class="my-stats-list__item">
           <div class="stats-info">
             <div class="stats-info__text">Комментариев:</div>
-            <div class="stats-info__value">9574</div>
+            <div class="stats-info__value">{{comments_amount}}</div>
           </div>
         </div>
       </div>
@@ -149,6 +150,14 @@
     {% endif %}
   </div>
 </div>
+{% else %}
+<div class="posts-not-found">
+  <span>Постов нет</span>
+  <div class="posts-not-found__icon">
+      <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block script-page %}

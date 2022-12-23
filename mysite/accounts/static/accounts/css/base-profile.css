@@ -115,6 +115,7 @@
   border-radius: 8px;
   border: 1px solid var(--bg-light-primary-default);
   background-color: transparent;
+  margin-right: 10px;
 }
 .dark-btn:hover {
   background-color: var(--bg-btn-default);

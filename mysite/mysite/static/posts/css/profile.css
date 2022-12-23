@@ -1,0 +1,36 @@
+.account-header__hat {
+  height: 200px;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.account-header__user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.account-header__nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.account-hat-image {
+  width: 100%;
+  height: 100%;
+}
+
+.account-user {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.account-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.account-nav__item {
+  display: inherit;
+}

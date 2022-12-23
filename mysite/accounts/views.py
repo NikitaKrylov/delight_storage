@@ -2,13 +2,13 @@ import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Variance
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
-from notifications.models import Notification
+from .models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm
 from .models import User, Subscription
@@ -17,6 +17,7 @@ from django.contrib.auth.views import LoginView, PasswordResetConfirmView, Passw
 from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
+from .services import count_posts_elements
 
 
 class Signatory(View):
@@ -134,10 +135,42 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Уведомления'
+        user = self.request.user
+        context['unread'] = user.notifications.filter(unread=True, deleted=False)
+        context['readed'] = user.notifications.filter(unread=False, deleted=False)
         return context
 
     def get_queryset(self):
         return self.model.objects.filter(recipient__id=self.request.user.id)
+
+
+@login_required(login_url=reverse_lazy('login'))
+def delete_notification(request, *args, **kwargs):
+    notification = Notification.objects.get(pk=kwargs['pk'])
+    notification.deleted = True
+    notification.unread = False
+    notification.save()
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def read_notification(request, *args, **kwargs):
+    notification = Notification.objects.get(pk=kwargs['pk'])
+    notification.unread = False
+    notification.save()
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def delete_all_notification(request, *args, **kwargs):
+    request.user.notifications.update(deleted=True, unread=False)
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def read_all_notification(request, *args, **kwargs):
+    request.user.notifications.update(unread=False)
+    return redirect('user_notifications')
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -147,11 +180,17 @@ class UserPostListView(LoginRequiredMixin, ListView):
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(Q(status=0) & Q(author=self.request.user)).all()
+        return self.model.objects.filter(Q(status=Post.STATUS.PUBLISHED) & Q(author=self.request.user)).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
+        user = self.request.user
         context = super().get_context_data(*args, **kwargs)
-        context['title'] = 'Посты пользователя'
+        context['title'] = 'Мои посты'
+        context['likes_amount'] = Post.objects.count_field_elements('likes', user)
+        context['views_amount'] = Post.objects.count_field_elements('views', user)
+        context['comments_amount'] = Post.objects.count_field_elements('comments', user)
+
+        print(Post.objects.best_by('likes', user))
         return context
 
 
@@ -192,7 +231,7 @@ class UserSubscriptionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Subscription.objects.filter(subscriber=self.request.user).all()
+        return self.model.objects.filter(subscriber=self.request.user).all()
 
 
 class CreatePostView(LoginRequiredMixin, CreateView):
@@ -265,8 +304,7 @@ class EditPostView(LoginRequiredMixin, UpdateView):
                 if post.delay:
                     post.delay.delete()
                     post.delay = None
-                    if post.status == 1:
-                        post.status = 0
+                    if post.status == Post.STATUS.DEFERRED: post.status = Post.STATUS.PUBLISHED
                     post.save()
 
             image_formset = ImageFileFormSet(
@@ -281,11 +319,12 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
 
-# class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
-#     model = Post
-#     paginate_by = 30
-#     template_name = 'posts/images.html'
-#     context_object_name = 'posts'
 
-#     def get_queryset(self):
-#         return super().get_queryset().filter(likes__user=self.request.user)
+class LikedPostList(LoginRequiredMixin, ListView):
+    model = Post
+    paginate_by = 30
+    template_name = 'accounts/liked_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return self.model.objects.filter(likes__user=self.request.user)
