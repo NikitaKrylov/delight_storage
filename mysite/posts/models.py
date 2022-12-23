@@ -27,9 +27,11 @@ class Post(models.Model):
         _("для премиум пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
-    description = models.CharField(_('описание'), max_length=300, null=True, blank=True)
+    description = models.CharField(
+        _('описание'), max_length=300, null=True, blank=True)
 
-    tags = models.ManyToManyField("PostTag", verbose_name=_('теги'), blank=True, null=True)
+    tags = models.ManyToManyField(
+        "PostTag", verbose_name=_('теги'), blank=True, null=True)
     comments = GenericRelation("Comment")
     views = models.ManyToManyField(ClientIP, blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
@@ -80,11 +82,15 @@ class Post(models.Model):
 # -----------------------COMMENTS----------------------------
 
 class Comment(models.Model):
-    author = models.ForeignKey(User, verbose_name=_("автор"), on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, verbose_name=_('комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
-    pub_date = models.DateTimeField(verbose_name=_('Дата комментария'), auto_now_add=True)
+    author = models.ForeignKey(User, verbose_name=_(
+        "автор"), on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, verbose_name=_(
+        'комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
+    pub_date = models.DateTimeField(verbose_name=_(
+        'Дата комментария'), auto_now_add=True)
     text = models.TextField(_('текст'))
-    answered = models.ForeignKey('Comment', on_delete=models.CASCADE, verbose_name=_('Комментируемый комментарий'), related_name='related_comments', blank=True, null=True)
+    answered = models.ForeignKey('Comment', on_delete=models.CASCADE, verbose_name=_(
+        'Комментируемый комментарий'), related_name='related_comments', blank=True, null=True)
 
     class Meta:
         verbose_name = "Коментарий"
@@ -97,7 +103,8 @@ class Comment(models.Model):
 # --------------------TAG--------------------------
 
 class PostTag(models.Model):
-    name = models.CharField(_("название тега"), max_length=30, db_index=True, unique=True)
+    name = models.CharField(
+        _("название тега"), max_length=30, db_index=True, unique=True)
     slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
@@ -109,7 +116,8 @@ class PostTag(models.Model):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="likes")
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="likes")
 
     class Meta:
         verbose_name = 'Лайк'
