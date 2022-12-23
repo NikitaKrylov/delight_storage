@@ -134,10 +134,42 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Уведомления'
+        user = self.request.user
+        context['unread'] = user.notifications.filter(unread=True, deleted=False)
+        context['readed'] = user.notifications.filter(unread=False, deleted=False)
         return context
 
     def get_queryset(self):
         return self.model.objects.filter(recipient__id=self.request.user.id)
+
+
+@login_required(login_url=reverse_lazy('login'))
+def delete_notification(request, *args, **kwargs):
+    notification = Notification.objects.get(pk=kwargs['pk'])
+    notification.deleted = True
+    notification.unread = False
+    notification.save()
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def read_notification(request, *args, **kwargs):
+    notification = Notification.objects.get(pk=kwargs['pk'])
+    notification.unread = False
+    notification.save()
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def delete_all_notification(request, *args, **kwargs):
+    request.user.notifications.update(deleted=True, unread=False)
+    return redirect('user_notifications')
+
+
+@login_required(login_url=reverse_lazy('login'))
+def read_all_notification(request, *args, **kwargs):
+    request.user.notifications.update(unread=False)
+    return redirect('user_notifications')
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -151,7 +183,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['title'] = 'Посты пользователя'
+        context['title'] = 'Мои посты'
         return context
 
 
@@ -192,7 +224,7 @@ class UserSubscriptionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        return Subscription.objects.filter(subscriber=self.request.user).all()
+        return self.model.objects.filter(subscriber=self.request.user).all()
 
 
 class CreatePostView(LoginRequiredMixin, CreateView):
@@ -280,11 +312,12 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
 
-# class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
-#     model = Post
-#     paginate_by = 30
-#     template_name = 'posts/images.html'
-#     context_object_name = 'posts'
 
-#     def get_queryset(self):
-#         return super().get_queryset().filter(likes__user=self.request.user)
+class LikedPostList(LoginRequiredMixin, ListView):
+    model = Post
+    paginate_by = 30
+    template_name = 'accounts/liked_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return self.model.objects.filter(likes__user=self.request.user)

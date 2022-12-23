@@ -7,6 +7,27 @@ postInfoActive__com.addEventListener('click', function (e) {
     });
 })
 
+const authorSubscribe = document.querySelector('.subscribe-btn')
+    authorSubscribe.addEventListener('click', function (e) {
+    const sub_url = $(authorSubscribe).attr('data-href')
+    $.ajax({
+        type: "GET",
+        url: sub_url,
+        dataType: "json",
+        success: function(response) {
+            if (response.has_sub == false){
+                authorSubscribe.classList.remove('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "подписаться";
+            }
+            else if (response.has_sub == true){
+                authorSubscribe.classList.add('_active');
+                authorSubscribe.querySelector(".subscribe-btn__text").textContent = "отписаться";
+            }
+        }
+    });
+
+})
+
 // кнопка сортировки коментарием
 const sortBtn = $('.comments-form-sorting')
 const sortlist = $('.comments-form-sorting__sortlist')
@@ -49,93 +70,111 @@ $(document).on('click', function (e) {
     // }
 });
 
-// answer-button
-const InputReplyComment = document.createElement('div');
-InputReplyComment.classList.add("comment-reply");
-InputReplyComment.innerHTML =
-    `<form id="reply-reply">
-        <div class="comment-reply__input">
-            <textarea class="comments-form__input-comment" name="reply-reply" required></textarea>
-        </div>
-        <div class="comment-reply__controls">
-            <div class="comment-reply__send">
-                <button class="button-send" type="submit"
-                    aria-label="отправить коментарий">Оптравить</button>
-            </div>
-        </div>
-    </form>`
+// answer-button / жалобы-на комы
+$(function() {
+    document.querySelector('.comments-list').addEventListener('click', function(e) {
+        let currentButton = e.target;
+        if (currentButton.closest(".answer-button")) {
+            if (!currentButton.classList.contains("_active")) {
+                $(".answer-button").text('ответить').removeClass("_active");
+                $('.comment-reply').prop("hidden", true);
+                $('.comments-form__input-comment').val('');
+                
+                $(currentButton).addClass("_active");
+                currentButton.textContent = 'отмена';
+                setTimeout(() => currentButton.closest('.comment__body').querySelector('.comment-reply__input > textarea').focus(), 100);
+                var commentboxId= $(currentButton).attr('data-commentbox');
+                $('#'+commentboxId).prop("hidden", false);
 
-$(".answer-button").on('click', function (e) {
-    let currentButton = e.target;
-    const parentButton = e.target.parentNode
+            } else {
+                $(".answer-button").text('ответить').removeClass("_active");
+                $('.comment-reply').prop("hidden", true);
+                $('.comments-form__input-comment').val('');
+            }
+        }
 
-    if (!currentButton.classList.contains("_active")) {
-        currentButton.classList.add("_active");
-        currentButton.textContent = 'отмена'
-        // const firstlone = template.content.cloneNode(true);
-        // parentButton.after(firstlone);
-        parentButton.after(InputReplyComment);
-        // document.querySelector('.comment-reply__input > div').focus();
-        document.querySelector('.comment-reply__input > textarea').focus();
+        if (currentButton.closest(".comment__control-btn")) {
+            let complaintBtn = currentButton.closest(".comment__control-btn")
+            const complaints = complaintBtn.parentNode.querySelector('.comment__control-dropdown')
 
-    } else {
-        currentButton.classList.remove("_active");
-        currentButton.textContent = 'ответить'
-        // const clone = document.querySelector('.comment-reply');
-        // clone.remove();
-        InputReplyComment.remove();
-    }
+            if (!complaintBtn.classList.contains("_active")) {
+                $('.comment__control-dropdown').animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                $(".comment__control-btn").removeClass("_active");
+                $('.comment__control-dropdown').prop("hidden", true);
+                $(complaints).animate({
+                    height: 'show',
+                    opacity: 1,
+                }, animSpeed).slideDown(animSpeed);
+                $(complaintBtn).addClass("_active");
+                $(complaints).prop("hidden", false);
+            } else {
+                $(complaints).animate({
+                    height: 'hide',
+                    opacity: 0,
+                }, animSpeed).slideUp(animSpeed);
+                $(".comment__control-btn").removeClass("_active");
+                $('.comment__control-dropdown').prop("hidden", true);
+            }
 
-    $(document).on('click', function (e) {
-        const commentReply = $('.comment-reply')
-        if (!$(currentButton).is(e.target) && $(commentReply).has(e.target).length === 0) {
-            currentButton.classList.remove("_active");
-            currentButton.textContent = 'ответить'
-            commentReply.remove();
+            // при клике на пустое место
+            $(document).on('click', function (e) {
+                if (!e.target.closest('.comment__control')) {
+                    $(".comment__control-btn").removeClass("_active");
+                    $('.comment__control-dropdown').prop("hidden", true);
+                    $('.comment__control-dropdown').animate({
+                        height: 'hide',
+                        opacity: 0,
+                    }, animSpeed).slideUp(animSpeed);
+                }
+            });
         }
     });
+});
 
-    // var textarea = document.querySelector('.comments-form__input-comment');
-    // textarea.addEventListener('keydown', function (e) {
-    //     console.log('autosize');
-    //     setInterval(() => {
-    //         e.target.style.height = 'auto';
-    //         e.target.style.height = `${e.target.scrollHeight}px`;
-    //     }, 0);
-    // });
-    autosize($('.comments-form__input-comment'));
+// жалобы поста
+let complaintPostBtn = document.querySelector(".post-complaints__button")
+const complaintsPost = complaintPostBtn.parentNode.querySelector('.post-complaints__dropdown')
+complaintPostBtn.addEventListener("click", (e) => {
+    if (!complaintPostBtn.classList.contains("_active")) {
+        $(complaintPostBtn).addClass("_active");
+        $(complaintsPost).prop("hidden", false);
+
+        $(complaintsPost).animate({
+            height: 'show',
+            opacity: 1,
+        }, animSpeed).slideDown(animSpeed);        
+    } else {
+        $(complaintPostBtn).removeClass("_active");
+        $(complaintsPost).prop("hidden", true);
+
+        $(complaintsPost).animate({
+            height: 'hide',
+            opacity: 0,
+        }, animSpeed).slideUp(animSpeed); 
+    }
+});
+// при клике на пустое место
+$(document).on('click', function (e) {
+    if (!e.target.closest(".post-complaints__button")) {
+        $(complaintPostBtn).removeClass("_active");
+        $(complaintsPost).prop("hidden", true);
+
+        $(complaintsPost).animate({
+            height: 'hide',
+            opacity: 0,
+        }, animSpeed).slideUp(animSpeed); 
+    }
 });
 
 // input-comment
-const InputNewComment = document.createElement('div');
-InputNewComment.classList.add("comments-form__reply");
-InputNewComment.innerHTML =
-    `<div class="comments-form__input"
-        aria-placeholder="Введите ваш комментарий">
-        <textarea class="comments-form__input-comment" name="input-comments-form" required></textarea>
-    </div>
-    <div class="comments-form__controls">
-        <div class="comment-form__send">
-            <button class="button-send" type="submit"
-                aria-label="отправить коментарий">Оптравить</button>
-        </div>
-    </div>`
-
 $(".comments-form__pseudo-form").on('click', function (e) {
-    // const firstlone = template0.content.cloneNode(true);
     document.querySelector('.comments-form__pseudo-form').remove();
-    document.getElementById('input-comments-form').append(InputNewComment);
-    // document.querySelector('.comment-form__input > div').focus();
+    // document.getElementById('input-comments-form').append(InputNewComment);
+    document.getElementById('input-comments-form').querySelector(".comments-form__reply").hidden = false;
     document.querySelector('.comments-form__input-comment').focus();
-
-    // var textarea = document.querySelector('.comments-form__input-comment');
-    // textarea.addEventListener('keydown', function (e) {
-    //     console.log('autosize');
-    //     setInterval(() => {
-    //         e.target.style.height = 'auto';
-    //         e.target.style.height = `${e.target.scrollHeight}px`;
-    //     }, 0);
-    // });
     autosize($('.comments-form__input-comment'));
 });
 
@@ -208,9 +247,9 @@ const popup = lightGallery(document.getElementById("lightgallery"), {
     selector: '.image-slider__image img',
     plugins: [lgZoom, lgFullscreen, lgRotate, lgHash, lgVideo],
     mobileSettings: {
-        controls: true,
+        controls: false,
         showCloseIcon: true,
         download: true,
-        rotate: true
+        rotate: true,
     }
 });

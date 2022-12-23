@@ -25,10 +25,10 @@ jQuery(window).on('load', function(){
             },
             onAfterPageLoad: function() {
                 container.masonry('reloadItems');
-                container.imagesLoaded().progress( function() {
+                container.imagesLoaded().progress(function() {
                     container.masonry('layout');
-                });
+                })
             },
-        });
-    });
-});
+        })
+    })
+})

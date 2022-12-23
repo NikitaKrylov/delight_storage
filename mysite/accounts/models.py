@@ -106,7 +106,6 @@ class Subscription(models.Model):
         return "Подписка на {} от {}".format(self.subscription_object, self.subscriber)
 
 
-
 class Notification(AbstractNotification):
     class Types(models.TextChoices):
         SUBSCRIPTION = 'SB', _('Подписка')

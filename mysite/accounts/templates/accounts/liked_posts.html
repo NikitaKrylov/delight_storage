@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
-    {% for subscription in subscriptions %}
-        <p>{{subscription}}</p>
+
+    {% for post in posts %}
+    {{post}}
     {% endfor %}
+
 {% endblock %}

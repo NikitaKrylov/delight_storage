@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+{% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
     <div class="my-post-stats-inner">
@@ -149,6 +150,14 @@
     {% endif %}
   </div>
 </div>
+{% else %}
+<div class="posts-not-found">
+  <span>Постов нет</span>
+  <div class="posts-not-found__icon">
+      <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+  </div>
+</div>
+{% endif %}
 {% endblock %}
 
 {% block script-page %}

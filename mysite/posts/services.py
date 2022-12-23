@@ -1,9 +1,10 @@
+from django.urls import reverse
+
 from .models import Post
 from accounts.services import get_client_ip
 from accounts.models import ClientIP
 from django.dispatch import receiver
 from django.db import models
-from notifications.signals import notify
 from accounts.models import Notification
 
 
@@ -23,7 +24,7 @@ def notify_on_post_saved(sender, instance: Post, **kwargs):
     if not instance: return
 
     if kwargs['update_fields'] and 'status' in kwargs['update_fields']:
-        if instance.status == 0:
+        if instance.status == Post.STATUS.PUBLISHED:
             for sub in instance.author.user_subscriptions.filter(status=1):
                 Notification.objects.create(
                             actor=instance.author,
@@ -31,6 +32,7 @@ def notify_on_post_saved(sender, instance: Post, **kwargs):
                             verb="Новый пост от {}".format(instance.author),
                             action_object=instance,
                             target=instance,
-                            type=Notification.Types.NEW_POST
+                            type=Notification.Types.NEW_POST,
+                            description='Смотреть новый <a style="color: #DCA1F5; text-decoration: underline;" href="{}">пост</a>'.format(reverse('post', kwargs={'pk': instance.pk}))
                 )
 

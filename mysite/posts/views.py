@@ -1,4 +1,6 @@
 import json
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -63,6 +65,14 @@ def delete_comment(request, *args, **kwargs):
     return redirect(comment.post)
 
 
+@login_required()
+def delete_post(request, *args, **kwargs):
+    post = Post.objects.get(pk=kwargs['pk'])
+    if request.user == post.author:
+        post.delete()
+    return redirect('post_list')
+
+
 class LikePostView(View):
     http_method_names = ('get',)
 
@@ -84,7 +94,7 @@ class LikePostView(View):
         return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-class HomeView(TemplateView):
+class HomeView(PostFilterFormMixin, TemplateView):
     template_name = 'posts/home.html'
 
     def get_context_data(self, **kwargs):
@@ -184,5 +194,3 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
 #         return super().get_queryset().filter(likes__user=self.request.user)
 
 
-class Profile(TemplateView):
-    template_name = 'posts/profile.html'
