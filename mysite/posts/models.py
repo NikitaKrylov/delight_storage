@@ -3,9 +3,22 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
+from django.db.models import Count
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+
+
+class PostManager(models.Manager):
+    def best_by(self, field: str, user: User = None):
+        if user:
+            return self.filter(author=user).annotate(value=Count(field)).order_by('value').last()
+        return self.annotate(value=Count(field)).order_by('value').last()
+
+    def count_field_elements(self, field: str, user: User = None):
+        if user:
+            return self.filter(author=user).aggregate(value=Count(field))['value']
+        return self.aggregate(value=Count(field))['value']
 
 
 class Post(models.Model):
@@ -31,6 +44,8 @@ class Post(models.Model):
     views = models.ManyToManyField('UserView', blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
     delay = models.OneToOneField('PostDelay', verbose_name=_('время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
+
+    objects = PostManager()
 
     class Meta:
         verbose_name = _('пост')

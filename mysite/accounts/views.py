@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Variance
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -17,6 +17,7 @@ from django.contrib.auth.views import LoginView, PasswordResetConfirmView, Passw
 from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
+from .services import count_posts_elements
 
 
 class Signatory(View):
@@ -182,8 +183,14 @@ class UserPostListView(LoginRequiredMixin, ListView):
         return self.model.objects.filter(Q(status=Post.STATUS.PUBLISHED) & Q(author=self.request.user)).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
+        user = self.request.user
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Мои посты'
+        context['likes_amount'] = Post.objects.count_field_elements('likes', user)
+        context['views_amount'] = Post.objects.count_field_elements('views', user)
+        context['comments_amount'] = Post.objects.count_field_elements('comments', user)
+
+        print(Post.objects.best_by('likes', user))
         return context
 
 
