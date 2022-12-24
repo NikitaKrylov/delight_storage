@@ -18,6 +18,7 @@ from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
 from .services import count_posts_elements
+from django.contrib.auth import login, authenticate
 
 
 class Signatory(View):
@@ -57,6 +58,14 @@ class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('post_list')
+
+    def form_valid(self, form):
+        _redirect = super().form_valid(form)
+        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+        if user is not None and user.is_active:
+            login(self.request, user, backend='mysite.backends.AuthBackend')
+            return _redirect
+        return render(self.request, self.template_name, content={'form': form})
 
 
 class AuthenticationView(LoginView):
@@ -325,6 +334,12 @@ class LikedPostList(LoginRequiredMixin, ListView):
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'
     context_object_name = 'posts'
+    login_url = reverse_lazy('login')
 
     def get_queryset(self):
         return self.model.objects.filter(likes__user=self.request.user)
+
+
+class UserStatistics(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/statistic.html'
+    login_url = reverse_lazy('login')

@@ -13,7 +13,6 @@ class TelegramChanelSource(models.Model):
         verbose_name = _('телеграм канал')
         verbose_name_plural = _('телеграм каналы')
 
-
     @property
     def formated(self):
         if self.url.find('+') != -1:
