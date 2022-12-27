@@ -1,12 +1,12 @@
-import datetime
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
 from django.db.models import Count
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from accounts.models import Notification
 
 
 class PostManager(models.Manager):
@@ -194,3 +194,24 @@ class UserView(models.Model):
 
     def __str__(self):
         return 'Лайкт от {}'.format(self.user or self.client_ip)
+
+
+@receiver(models.signals.post_save, sender=Post)
+def notify_on_post_saved(sender, instance: Post, **kwargs):
+    if not instance: return
+
+    if kwargs['update_fields'] and 'status' in kwargs['update_fields']:
+        if instance.status == Post.STATUS.PUBLISHED:
+            for sub in instance.author.user_subscriptions.filter(status=1):
+                Notification.objects.create(
+                            actor=instance.author,
+                            recipient=sub.subscriber,
+                            verb="Новый пост от {}".format(instance.author),
+                            action_object=instance,
+                            target=instance,
+                            type=Notification.Types.NEW_POST,
+                            description='Смотреть новый <a style="color: #DCA1F5; text-decoration: underline;" href="{}">пост</a>'.format(reverse('post', kwargs={'pk': instance.pk}))
+                )
+
+
+

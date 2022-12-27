@@ -1,10 +1,12 @@
+import datetime
 import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, Variance
+from django.db.models import Q, Variance, Count, F
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
@@ -17,7 +19,6 @@ from django.contrib.auth.views import LoginView, PasswordResetConfirmView, Passw
 from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
-from .services import count_posts_elements
 from django.contrib.auth import login, authenticate
 
 
@@ -242,6 +243,8 @@ class UserSubscriptionListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return self.model.objects.filter(subscriber=self.request.user).all()
 
+# ------------------------- Posts ----------------------------
+
 
 class CreatePostView(LoginRequiredMixin, CreateView):
 
@@ -340,6 +343,39 @@ class LikedPostList(LoginRequiredMixin, ListView):
         return self.model.objects.filter(likes__user=self.request.user)
 
 
-class UserStatistics(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/statistic.html'
+from posts.models import PostTag, Post
+
+
+class UserDashBoard(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/dashboard.html'
     login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tags = PostTag.objects.all()
+
+        # tags
+        context['tlabels'] = [i.name.capitalize() for i in tags]
+        context['tvalues'] = [i.related_posts_amount() for i in tags]
+
+        now = timezone.now()
+        dates = [ now - datetime.timedelta(days=i) for i in range(32)]
+        posts = Post.objects.filter(pub_date__year=now.year, pub_date__month=now.month, author=self.request.user).all()
+
+        # views
+        context['views_labels'] = ['{}.{}'.format(date.month, date.day) for date in dates]
+        context['views_values'] = []
+
+        for date in dates:
+            p = posts.filter(pub_date__day=date.day)
+            context['views_values'].append(p.aggregate(views=Count('views'))['views'])
+
+        # likes
+        context['likes_labels'] = context['views_labels']
+        context['likes_values'] = []
+
+        for date in dates:
+            p = posts.filter(pub_date__day=date.day)
+            context['likes_values'].append(p.aggregate(likes=Count('likes'))['likes'])
+
+        return context

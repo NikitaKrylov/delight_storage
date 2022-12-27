@@ -1,0 +1,103 @@
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div>
+        <canvas id="dashboard1" aria-label="Кол-во тегов"></canvas>
+    </div>
+
+    <div>
+        <canvas id="dashboard2"></canvas>
+    </div>
+
+    <div>
+        <canvas id="dashboard3"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('dashboard1');
+
+        new Chart( ctx, {
+            type: 'bar',
+            data: {
+                labels: {{tlabels|safe}},
+                datasets: [{
+                    label: 'Постов',
+                    data: {{tvalues}},
+                    borderWidth: 1,
+                }],
+            },
+
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+
+        });
+    </script>
+
+    <script>
+        const ctx1 = document.getElementById('dashboard2');
+
+        new Chart( ctx1, {
+            type: 'line',
+            data: {
+                labels: {{views_labels|safe}},
+                datasets: [{
+                    label: 'Количество просмотров за день',
+                    data: {{views_values}},
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                animations: {
+                  tension: {
+                    duration: 2000,
+                    easing: 'linear',
+                    from: 0.5,
+                    to: 0,
+                    loop: true
+                  }
+                },
+
+              }
+
+        });
+    </script>
+
+<script>
+        const ctx2 = document.getElementById('dashboard3');
+
+        new Chart( ctx2, {
+            type: 'line',
+            data: {
+                labels: {{likes_labels|safe}},
+                datasets: [{
+                    label: 'Количество лайков за день',
+                    data: {{likes_values}},
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                animations: {
+                  tension: {
+                    duration: 2000,
+                    easing: 'linear',
+                    from: 0.5,
+                    to: 0,
+                    loop: true
+                  }
+                },
+
+              }
+
+        });
+    </script>
+
+{% endblock %}

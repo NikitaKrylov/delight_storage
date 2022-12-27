@@ -13,7 +13,6 @@ urlpatterns = [
     path('user/self-posts/create/', CreatePostView.as_view(), name='create_post'),
     path('user/self-posts/change/<int:pk>/',
          EditPostView.as_view(), name='change_post'),
-    path('user/self-posts/statistic/', UserStatistics.as_view(), name='user_statistic'),
 
     path('user/settings/', UserSettingsFormView.as_view(), name='user_settings'),
     path('user/settings/edit/', edit_user_settings, name='user_settings_edit'),
@@ -31,6 +30,8 @@ urlpatterns = [
          Signatory.as_view(), name='subscribe'),
 
     path('user/likes/', LikedPostList.as_view(), name='user_liked_posts'),
+
+    path('user/dashboard/', UserDashBoard.as_view(), name='dashboard'),
 
 
     # Ввод почты для отправки письма
