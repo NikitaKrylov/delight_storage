@@ -9,5 +9,11 @@ class ImageFileForm(forms.ModelForm):
         model = ImageFile
         fields = ['file']
 
+        widgets = {
+            'file': forms.ClearableFileInput(attrs={'class': 'add-image__input', }),
+            # 'file': forms.ClearableFileInput(attrs={}),
+        }
 
-ImageFileFormSet = inlineformset_factory(Post, ImageFile, form=ImageFileForm, extra=1)
+
+ImageFileFormSet = inlineformset_factory(
+    Post, ImageFile, form=ImageFileForm, extra=1)

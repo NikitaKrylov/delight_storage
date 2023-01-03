@@ -32,7 +32,8 @@
                     <a class="comment__control-dropdown-item dropdown-item">Пожаловаться</a>
                     {% if request.user == comment.author %}
                     <a class="comment__control-dropdown-item dropdown-item">Редактировать</a>
-                    <a href="{% url 'delete_comment' comment.pk %}" class="comment__control-dropdown-item dropdown-item">Удалить</a>
+                    <a href="{% url 'delete_comment' comment.pk %}"
+                        class="comment__control-dropdown-item dropdown-item">Удалить</a>
                     {% endif %}
                 </div>
             </div>
@@ -41,8 +42,8 @@
             <form id="reply-reply" action="{% url 'add_reply_comment' post.id comment.id %}" method="post">
                 {% csrf_token %}
                 <div class="comment-reply__input">
-                    <textarea class="comments-form__input-comment" name="reply-reply" placeholder="Написать ответ"
-                        required></textarea>
+                    <textarea class="comments-form__input-comment textarea-inp" name="reply-reply"
+                        placeholder="Написать ответ" required></textarea>
                 </div>
                 <div class="comment-reply__controls">
                     <div class="comment-reply__send">

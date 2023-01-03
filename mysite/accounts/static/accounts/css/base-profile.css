@@ -115,7 +115,6 @@
   border-radius: 8px;
   border: 1px solid var(--bg-light-primary-default);
   background-color: transparent;
-  margin-right: 10px;
 }
 .dark-btn:hover {
   background-color: var(--bg-btn-default);
@@ -136,8 +135,8 @@
 }
 @media (min-width: 991px) {
   .dark-btn {
-    padding: 13px 15px;
     font-size: 16px;
+    padding: 10px 15px;
   }
   .dark-btn__icon {
     font-size: 16px;

@@ -30,7 +30,7 @@
     <div class="popup__body">
         <div class="popup__content">
             <a href="" class="popup__close close-popup">x</a>
-            <div class="popup__title">Пожаловаться</div>
+            <div class="popup__title title">Пожаловаться</div>
             <div class="popup__text">Текст</div>
             <div class="popup__text">Текст</div>
             <div class="popup__text">Текст</div>
@@ -149,10 +149,12 @@
                             </div>
                             {% if request.user == post.author %}
                             <div class="post-complaints__dropdown-item dropdown-item">
-                                <a href="{% url 'change_post' post.pk %}" class="post-complaints__link popup-link">Редактировать</a>
+                                <a href="{% url 'change_post' post.pk %}"
+                                    class="post-complaints__link popup-link">Редактировать</a>
                             </div>
                             <div class="post-complaints__dropdown-item dropdown-item">
-                                <a href="{% url 'delete_post' post.pk %}" class="post-complaints__link popup-link">Удалить</a>
+                                <a href="{% url 'delete_post' post.pk %}"
+                                    class="post-complaints__link popup-link">Удалить</a>
                             </div>
                             {% endif %}
                         </div>
@@ -197,7 +199,7 @@
 
         <div class="post-info-details">
             <div class="post-info-details__body post-info-tags">
-                <h3 class="post-info-details__title post-info-tags__title">Теги</h3>
+                <h3 class="post-info-details__title post-info-tags__title title">Теги</h3>
                 <div class="post-info-details__content post-tags">
                     {% for tag in tags %}
                     <form method="get" action="{% url 'search' %}">
@@ -209,7 +211,7 @@
             </div>
             {% if post.description %}
             <div class="post-info-details__body post-info-description">
-                <h3 class="post-info-details__title post-info-description__title">Описание</h3>
+                <h3 class="post-info-details__title post-info-description__title title">Описание</h3>
                 <div class="post-info-details__content post-description">
                     {{post.description}}<br>
                 </div>
@@ -228,7 +230,7 @@
                 {% else %}
                 <div class="comments-form">
                     <div class="comments-form__sort">
-                        <span class="comments-form__title">КОМЕНТАРИИ</span>
+                        <span class="comments-form__title title">КОМЕНТАРИИ</span>
 
                     </div>
                     <form id="input-comments-form" class="comments-form__form" action="{% url 'add_comment' post.id %}"
@@ -239,7 +241,7 @@
                         </div>
                         <div class="comments-form__reply" hidden>
                             <div class="comments-form__input" aria-placeholder="Введите ваш комментарий">
-                                <textarea class="comments-form__input-comment" name="input-comments-form"
+                                <textarea class="comments-form__input-comment textarea-inp" name="input-comments-form"
                                     placeholder="Написать комментарий" required></textarea>
                             </div>
                             <div class="comments-form__controls">

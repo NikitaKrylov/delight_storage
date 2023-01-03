@@ -13,7 +13,7 @@ class PostTagsForm(forms.Form):
             self.fields[tag.slug] = forms.IntegerField(
                 label=str(tag),
                 widget=forms.NumberInput(
-                    attrs={"class": "tags-list__checkbox hidden-checkbox three-pos-inp", "value": 0, "tabindex": -1, "readonly": "", }),
+                    attrs={"class": "tags-list__checkbox hidden-input three-pos-inp", "value": 0, "tabindex": -1, "readonly": "", }),
             )
             self.fields[tag.slug].required = False
 
@@ -49,3 +49,10 @@ class PostForm(forms.ModelForm):
             'description',
             'tags',
         )
+        widgets = {
+            'only_for_adult': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
+            'for_autenticated_users': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
+            'disable_comments': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
+            'description': forms.Textarea(attrs={'class': 'textarea-inp', 'placeholder': 'Придумайте описание', 'cols': '20', 'rows': '2', }),
+            'tags': forms.CheckboxSelectMultiple(attrs={"class": "tags-list__checkbox hidden-input three-pos-inp", "tabindex": -1, "data-state": 0, }),
+        }

@@ -260,13 +260,7 @@ tagBtn.parentNode.addEventListener('click', function(e) {
     valueButton(clickBtn);
     painButton(clickBtn);
 
-    // скрыть кнопку если строка пустая и кнопка пасивна
-    // let textInp = searchInput.value.trim().toLowerCase();
-    // if (!searchForMatches(clickBtn, textInp)) {
-    //   if (clickBtn.querySelector('.three-pos-inp').value == '0') {
-    //     hide(clickBtn);
-    //   };
-    // };
+ 
 
     tagSort(arrayitem);
   };

@@ -13,39 +13,38 @@
 {% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
-    <div class="my-post-stats-inner">
-      <div class="title">Статистика</div>
+    <div class="my-posts-info__item my-post-stats-inner">
+      <div class="my-posts-info__title title">Статистика</div>
       <div class="my-stats-list">
         <div class="my-stats-list__item">
           <div class="stats-info">
-            <div class="stats-info__text">Просмотров:</div>
+            <div class="stats-info__text">Просмотров</div>
             <div class="stats-info__value">{{views_amount}}</div>
           </div>
         </div>
         <div class="my-stats-list__item">
           <div class="stats-info">
-            <div class="stats-info__text">Лайков:</div>
+            <div class="stats-info__text">Лайков</div>
             <div class="stats-info__value">{{likes_amount}}</div>
           </div>
         </div>
         <div class="my-stats-list__item">
           <div class="stats-info">
-            <div class="stats-info__text">Комментариев:</div>
+            <div class="stats-info__text">Комментариев</div>
             <div class="stats-info__value">{{comments_amount}}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="add-post">
-      <div class="title">Добавить пост</div>
+    <div class="my-posts-info__item add-post">
+      <div class="my-posts-info__title title">Добавить пост</div>
 
       <div class="add-post-container">
-        <div class="add-post-inner">
-          <!-- <i class="add-post-inner__icon fa-solid fa-plus"></i> -->
-          <div class="add-post-inner__icon"><img src="{% static 'accounts\images\10527231.png' %}">
-          </div>
-          <button class="add-post-inner__btn"></button>
-        </div>
+        <!-- <div class="add-post-inner"> -->
+        <!-- </div> -->
+        <a href="{% url 'create_post' %}" class="add-post-btn">
+          <i class="add-post-btn__icon fa-solid fa-plus"></i>
+        </a>
       </div>
     </div>
   </div>
@@ -154,7 +153,7 @@
 <div class="posts-not-found">
   <span>Постов нет</span>
   <div class="posts-not-found__icon">
-      <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+    <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
   </div>
 </div>
 {% endif %}

@@ -199,10 +199,8 @@ body {
 
 
 // scrollbar
-body {
-  // scrollbar-width: thin;
-  // scrollbar-color: #0d060c #131118;
-
+body,
+.scrollbar {
   &::-webkit-scrollbar {
     width:10px;
   }
@@ -225,6 +223,16 @@ body {
   @-moz-document url-prefix() {
     scrollbar-width: 10px;
     scrollbar-color: var(--color-scrollbar-thumb) var(--bg-scrollbar);
+  }
+}
+
+.scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  @-moz-document url-prefix() {
+    scrollbar-width: none;
   }
 }
 
@@ -356,6 +364,7 @@ a {
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
+  outline: none !important;
 }
 
 .line {
@@ -466,6 +475,8 @@ a {
   width: 40px;
   height: 40px;
   border-radius: 20%;
+
+  // object-fit: cover;
 }
 
 .posts-not-found {
@@ -498,7 +509,7 @@ a {
   }
 }
 
-.hidden-checkbox {
+.hidden-input {
   position: absolute;
   z-index: -1;
   opacity: 0;
@@ -519,3 +530,77 @@ a {
       justify-content: center;
   }
 }
+
+.title {
+  padding: 5px 0;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: "CirceRegular";
+  color: var(--white);
+}
+
+.textarea-inp {
+  min-height: 80px;
+  width: 100%;
+  word-break: break-word;
+  padding: 15px;
+  resize: none;
+  border: none;
+  color:var(--primary-white);
+  background: transparent;
+}
+
+.checkbox {
+  display: flex;
+  min-width: 50%;
+  padding: 4px 10px 4px 5px;
+  align-items: center;
+  margin-bottom: 0;
+  font-weight: 400;
+  user-select: none;
+  cursor: pointer;
+
+  &__input {
+    &:checked {
+      ~.checkbox__indicator {
+        border-color: var(--bg-button);
+        background-color: var(--bg-button);
+
+        .checkbox__icon {
+          opacity: 1;
+        }
+      }
+
+    }
+  }
+  
+  &__indicator {
+    position: relative;
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease 0s;
+    margin-right: 10px;
+  }
+
+  &__icon {
+    fill: var(--white);
+    opacity: 0;
+    transition: all 0.3s ease 0s;
+  }
+
+  &__passive {
+    border: solid 1px var(--border-secondary-light);
+    border-radius: 4px;
+    // background-color: var(--bg-default);
+  }
+
+  &__text {
+    font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: var(--secondary-white);
+  }
+}
+

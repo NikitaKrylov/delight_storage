@@ -10,34 +10,36 @@ $width-mobile: 991px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 10px 0 15px 0;
+    align-items: center;
+    padding: 15px 0 10px 0;
 
     &__title {
-        font-family: $font-family-circeregular;
         font-size: 24px;
-        color: var(--white);
     }
 
     &__controls {
         display: flex;
         gap: 5px;
+
+        // @media (min-width: $width-mobile) {}
     }
 
     &__btn {
         flex: 0 1 auto;
-        padding: 15px 30px;
+        padding: 10px 30px;
     }
 }
 
 .notification-list {
     display: flex;
+    gap: 10px;
     flex-wrap: wrap;
-    margin: 0 -10px;
+    // margin: 0 -10px;
     
     &__item {
         width: 100%;
-        padding: 0 10px;
-        margin-bottom: 10px;
+        // padding: 0 10px;
+        // margin-bottom: 10px;
 
         // @media (min-width: $width-mobile) {
         //     width: 50%;
@@ -86,10 +88,9 @@ $width-mobile: 991px;
     }
 
     &__title {
-        // font-family: $font-family-circeregular;
+        font-family: inherit;
         font-size: 14px;
         font-weight: bold;
-        color: var(--white);
 
         @media (min-width: $width-mobile) {
             font-size: 20px;
@@ -193,8 +194,8 @@ $s: .5em;
     grid-template-columns: 1fr;
     grid-template-rows: masonry;
     justify-content: center;
-    grid-gap: $s;
-    padding: $s;
+    // grid-gap: $s;
+    // padding: $s;
     > * { align-self: start }
 
     @media (min-width: $width-mobile) {

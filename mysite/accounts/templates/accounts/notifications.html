@@ -14,7 +14,7 @@
 
     <div class="notification-menu">
 
-        <div class="notification-menu__title">
+        <div class="notification-menu__title title">
             {% if unread %}
             Новые
             {% endif %}
@@ -22,7 +22,8 @@
 
         <div class="notification-menu__controls">
             <a href="{% url 'all_notification_read' %}" class="notification-menu__btn button dark-btn">Прочитать все</a>
-            <a href="{% url 'all_notification_delete' %}" class="notification-menu__btn button button-red dark-btn">Удалить все</a>
+            <a href="{% url 'all_notification_delete' %}"
+                class="notification-menu__btn button button-red dark-btn">Удалить все</a>
         </div>
     </div>
     {% if unread %}
@@ -34,16 +35,18 @@
 
                 <div class="notification-list__inner">
                     <div class="notification-list__header">
-                        <div class="notification-list__title">
+                        <div class="notification-list__title title">
                             {{notification.verb}}
                         </div>
                         <div class="notification-list__time">
                             {{notification.timestamp}}
                         </div>
                         <div class="notification-list__controls">
-                            <a href="{% url 'notification_read' notification.pk %}" class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                            <a href="{% url 'notification_read' notification.pk %}"
+                                class="notification-list__btn button button-green" aria-label="Прочитать"><i
                                     class="fa-solid fa-check"></i></a>
-                            <a href="{% url 'notification_delete' notification.pk %}" class="notification-list__btn button button-red" aria-label="Удалить"><i
+                            <a href="{% url 'notification_delete' notification.pk %}"
+                                class="notification-list__btn button button-red" aria-label="Удалить"><i
                                     class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>
@@ -62,7 +65,7 @@
 
     {% if readed %}
     <div class="notification-menu">
-        <div class="notification-menu__title">
+        <div class="notification-menu__title title">
             Все
         </div>
     </div>
@@ -74,14 +77,15 @@
                 <div class="blackout"></div><!-- затемнение -->
                 <div class="notification-list__inner">
                     <div class="notification-list__header">
-                        <div class="notification-list__title">
+                        <div class="notification-list__title title">
                             {{notification.verb}}
                         </div>
                         <div class="notification-list__time">
                             {{notification.timestamp}}
                         </div>
                         <div class="notification-list__controls">
-                            <a href="{% url 'notification_delete' notification.pk %}" class="notification-list__btn button button-red" aria-label="Удалить"><i
+                            <a href="{% url 'notification_delete' notification.pk %}"
+                                class="notification-list__btn button button-red" aria-label="Удалить"><i
                                     class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>

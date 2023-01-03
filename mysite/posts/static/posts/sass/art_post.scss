@@ -576,7 +576,7 @@ $browser-context: 16; // Default
         width: 100%;
         padding: 22px;
         font-family: $font-family-circeregular;
-        background-color: var(--bg-light-secondary-default);
+        background-color: var(--bg-secondary-default);
         border-radius: 3px;
         border: 1px solid var(--border-secondary-light);
         color: var(--dark-gray);
@@ -584,9 +584,8 @@ $browser-context: 16; // Default
     }
 
     &__title {
-        font-family: $font-family-inter;
+        // font-family: $font-family-inter;
         @include adaptive-value('font-size', 16, 14, 1);
-        // font-size: 16px;
     }
 
     &__input {
@@ -622,17 +621,13 @@ $browser-context: 16; // Default
     }
 
     &__input-comment {
-        // display: grid;
-        // justify-items: start;
-        // height: auto;
-        width: 100%;
-        // height: calc(100% - 10px);
-
-        word-break: break-word;
-        resize: none;
-        border: none;
-        color:var(--primary-white);
-        background: transparent;
+        padding: 17px;
+        // width: 100%;
+        // word-break: break-word;
+        // resize: none;
+        // border: none;
+        // color:var(--primary-white);
+        // background: transparent;
 
         @include adaptive-value('font-size', 16, 14, 1);
     }
@@ -816,6 +811,7 @@ $browser-context: 16; // Default
     }
     
     &__control-dropdown-item {
+        display: block;
         padding: 10px;
         font-size: 16px;
         border-radius: 5px;
@@ -870,8 +866,6 @@ $browser-context: 16; // Default
 
     .comments-form__input,
     &__input {
-        padding: 17px;
-        min-height: 80px;
         line-height: 20px;
         word-break: break-word;
 
@@ -880,7 +874,7 @@ $browser-context: 16; // Default
         border: 1px solid #5D5D6C;
         border-radius: 3px;
         color: var(--white);
-        font-family: $font-family-helvetica;
+        // font-family: $font-family-helvetica;
     }
 }
 
@@ -1121,6 +1115,7 @@ $browser-context: 16; // Default
     }
 
     &__title {
+        color: black;
         font-size: 30px;
         margin-bottom: 10px;
     }

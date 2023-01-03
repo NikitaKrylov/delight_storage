@@ -175,7 +175,7 @@ $(".comments-form__pseudo-form").on('click', function (e) {
     // document.getElementById('input-comments-form').append(InputNewComment);
     document.getElementById('input-comments-form').querySelector(".comments-form__reply").hidden = false;
     document.querySelector('.comments-form__input-comment').focus();
-    autosize($('.comments-form__input-comment'));
+    autosize($('.textarea-inp'));
 });
 
 // sidebar-swiper

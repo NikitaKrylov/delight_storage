@@ -38,13 +38,14 @@ class Post(models.Model):
         _("для авторизированных пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
+    status = models.CharField(_('статус'), choices=STATUS.choices, default=STATUS.CONSIDERATION, help_text=_(
+        'При выборе задержки помечается как "отложено"'), max_length=20)
     description = models.CharField(
-        _('описание'), max_length=300, null=True, blank=True)
+        _('описание'), max_length=1500, null=True, blank=True)
 
     tags = models.ManyToManyField(
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
-    comments = GenericRelation("Comment")
-    views = models.ManyToManyField(ClientIP, blank=True)
+    views = models.ManyToManyField('UserView', blank=True)
     likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
     delay = models.OneToOneField('PostDelay', verbose_name=_(
         'время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
@@ -117,7 +118,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, verbose_name=_(
         'комментируемый пост'), on_delete=models.CASCADE, related_name='comments')
     pub_date = models.DateTimeField(verbose_name=_(
-        'Дата комментария'), auto_now_add=True)
+        'Дата создания'), auto_now_add=True, editable=False)
     text = models.TextField(_('текст'))
     answered = models.ForeignKey('Comment', on_delete=models.CASCADE, verbose_name=_(
         'Комментируемый комментарий'), related_name='related_comments', blank=True, null=True)
@@ -143,7 +144,7 @@ class Comment(models.Model):
 class PostTag(models.Model):
     name = models.CharField(
         _("название тега"), max_length=30, db_index=True, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = "Тег"
@@ -159,8 +160,9 @@ class PostTag(models.Model):
 
 
 class Like(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, related_name="likes")
+    creation_date = models.DateTimeField(_('дата лайка'), auto_now_add=True)
+    user = models.ForeignKey(User, verbose_name=_(
+        'пользователь'), on_delete=models.SET_NULL, null=True, related_name="likes")
 
     class Meta:
         verbose_name = 'Лайк'
