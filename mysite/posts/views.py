@@ -2,13 +2,14 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
-from .models import Post, Comment
+from .models import Post, Comment, PostTag
 from django.http import HttpResponse
 from accounts.models import Subscription
 
@@ -59,6 +60,8 @@ class AddReplyCommentView(LoginRequiredMixin, View):
 
 def delete_comment(request, *args, **kwargs):
     comment = Comment.objects.get(pk=kwargs['pk'])
+    if request.user != comment.author:
+        raise PermissionDenied()
 
     if request.user.is_authenticated and (request.user == comment.author or request.user.is_superuser):
         comment.delete()
@@ -68,6 +71,10 @@ def delete_comment(request, *args, **kwargs):
 @login_required()
 def delete_post(request, *args, **kwargs):
     post = Post.objects.get(pk=kwargs['pk'])
+
+    if request.user != post.author:
+        raise PermissionDenied()
+
     if request.user == post.author:
         post.delete()
     return redirect('post_list')
@@ -99,6 +106,9 @@ class HomeView(PostFilterFormMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['popular_tags'] = PostTag.objects.best_by('likes')
+        context['popular_posts'] = None
+       
         return context
 
 

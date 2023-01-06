@@ -11,7 +11,7 @@
 
 {% block content %}
 <div class="profile-container">
-    <form id="user_profile_form" method="post" action="{% url 'profile_edit' %}">
+    <form id="user_profile_form" method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="input-list">
@@ -56,6 +56,6 @@
 {% endblock %}
 
 
-{% block script-page %}
-<script src="{% static 'accounts/js/profile.js' %}"></script>
-{% endblock %}
+<!--{% block script-page %}-->
+<!--<script src="{% static 'accounts/js/profile.js' %}"></script>-->
+<!--{% endblock %}-->

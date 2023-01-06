@@ -56,6 +56,7 @@ class ComplaintAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'status',
+        'type',
     )
     actions = (
         'make_accepted',

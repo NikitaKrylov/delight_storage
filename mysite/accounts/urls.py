@@ -10,7 +10,9 @@ urlpatterns = [
     path('user/profile/edit/', edit_user_form, name='profile_edit'),
 
     path('user/self-posts/', UserPostListView.as_view(), name='self_user_posts'),
+    path('user/self-posts/', UserPostListView.as_view(), name='self_user_posts'),
     path('user/self-posts/create/', CreatePostView.as_view(), name='create_post'),
+    path('user/self-posts/statistic/<int:pk>/', PostStatisticView.as_view(), name='post_stat'),
     path('user/self-posts/change/<int:pk>/',
          EditPostView.as_view(), name='change_post'),
 
@@ -27,7 +29,7 @@ urlpatterns = [
     path('user/subscriptions/', UserSubscriptionListView.as_view(),
          name='user_subscriptions'),
     path('user/subscribe-to/<int:object_id>/',
-         Signatory.as_view(), name='subscribe'),
+         SignatoryView.as_view(), name='subscribe'),
 
     path('user/likes/', LikedPostList.as_view(), name='user_liked_posts'),
 

@@ -1,16 +1,19 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
-from django.db.models import Count
+from django.db.models import Count, ExpressionWrapper, FloatField, F
+from django.db.models.functions import Cast
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from decimal import Decimal
 from accounts.models import Notification
 
 
 class PostManager(models.Manager):
     def best_by(self, field: str, user: User = None):
+        """order posts by views or likes"""
         if user:
             return self.filter(author=user).annotate(value=Count(field)).order_by('value').last()
         return self.annotate(value=Count(field)).order_by('value').last()
@@ -19,6 +22,9 @@ class PostManager(models.Manager):
         if user:
             return self.filter(author=user).aggregate(value=Count(field))['value']
         return self.aggregate(value=Count(field))['value']
+
+    def order_by_like_persent(self, **filter):
+        return self.annotate( distance=ExpressionWrapper( (Count(F('likes')) * 1.0) / (Count(F('views')) * 1.0), FloatField() )  )
 
 
 class Post(models.Model):
@@ -101,7 +107,7 @@ class PostDelay(models.Model):
         verbose_name_plural = "Отложенные задачи"
 
     def clean(self):
-        if self.time < timezone.now():
+        if self.time and self.time < timezone.now():
             raise ValidationError(
                 "Время отложенной задачи не может быть меньше текущей!")
         return super().clean()
@@ -141,6 +147,15 @@ class Comment(models.Model):
 
 # --------------------TAG--------------------------
 
+
+class PostTagManager(models.Manager):
+
+    def best_by(self, field: str, user: User = None):
+        if not user or not user.is_authenticatedr:
+            return self.annotate(value=Count('post__{}'.format(field))).order_by('-value')
+        return self.filter(author=user).annotate(value=Count('post__{}'.format(field))).order_by('-value')
+
+
 class PostTag(models.Model):
     name = models.CharField(
         _("название тега"), max_length=30, db_index=True, unique=True)
@@ -154,6 +169,12 @@ class PostTag(models.Model):
         return self.post_set.count()
 
     related_posts_amount.short_description = _('связаных постов')
+
+    objects = PostTagManager()
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name.capitalize()

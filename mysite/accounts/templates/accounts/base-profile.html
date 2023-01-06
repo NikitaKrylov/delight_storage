@@ -51,24 +51,31 @@
         </div>
         <div class="account-header__nav">
             <div class="account-nav">
+                {% with request.path as url %}
                 <div class="account-nav__item">
-                    <a href="{% url 'profile' %}" class="account-nav__link">Профиль</a>
+                    {% url 'profile' as profile_url%}
+                    <a href="{{profile_url}}" class="account-nav__link {% if url == profile_url %}_active{% endif %}">Профиль</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="{% url 'user_notifications' %}" class="account-nav__link">Уведомления</a>
+                    {% url 'user_notifications' as notifications_url %}
+                    <a href="{{notifications_url}}" class="account-nav__link {% if url == notifications_url %}_active{% endif %}">Уведомления</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="{% url 'user_liked_posts' %}" class="account-nav__link">Лайки</a>
+                    {% url 'user_liked_posts' as user_liked_posts_url %}
+                    <a href="{{ user_liked_posts_url }}" class="account-nav__link {% if url == user_liked_posts_url %}_active{% endif %}">Лайки</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="{% url 'self_user_posts' %}" class="account-nav__link">Мои посты</a>
+                    {% url 'self_user_posts' as self_user_posts_url %}
+                    <a href="{{self_user_posts_url}}" class="account-nav__link {% if url == self_user_posts_url %}_active{% endif %}">Мои посты</a>
                 </div>
                 <div class="account-nav__item">
-                    <a href="{% url 'user_subscriptions' %}" class="account-nav__link">Подписки</a>
+                    {% url 'user_subscriptions' as user_subscriptions_url %}
+                    <a href="{{user_subscriptions_url}}" class="account-nav__link {% if url == user_subscriptions_url %}_active{% endif %}">Подписки</a>
                 </div>
                 <div class="account-nav__item">
                     <a href="#" class="account-nav__link">Настройки</a>
                 </div>
+                {% endwith %}
             </div>
         </div>
     </div>

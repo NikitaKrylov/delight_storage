@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.1.3',
+    '192.168.1.5',
     '127.0.0.1',
     '192.168.1.2',
     '172.20.10.2',
@@ -237,4 +237,4 @@ else:
 
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
-PUBLISH_POST_SCHEDULE = 10.0
+PUBLISH_POST_SCHEDULE = 10.0 # seconds

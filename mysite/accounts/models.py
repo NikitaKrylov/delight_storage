@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(_('имя пользователя'), max_length=50, unique=True)
     email = models.EmailField(_("email addres"), max_length=255, unique=True)
-    avatar = models.ImageField(_("иконка пользователя"), blank=True, null=True)
+    avatar = models.ImageField(_("иконка пользователя"), upload_to='users_avatars/', blank=True, null=True)
     birth_date = models.DateField(
         verbose_name=_("дата рождения"), blank=True, null=True)
     start_date = models.DateField(
@@ -138,10 +138,16 @@ class Complaint(models.Model):
         ACCEPTED = 'AC', _('Принята')
         REJECTED = 'RJ', _('Отклонена')
 
+    class Types(models.TextChoices):
+        BAD_TAG = 'BT', _('Несоответствие тегам')
+        BAD_MEDIA = 'BM', _('Неподходящие/плохие медиа')
+        PLAGIAT = 'PL', _('Плагиат')
+
     status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
+    type = models.CharField(_('тип жалобы'), choices=Types.choices, max_length=40, blank=True)
     recipient = models.ForeignKey(User, verbose_name=_('отправитель'), on_delete=models.CASCADE, related_name='complaints')
     creation_date = models.DateTimeField(_('дата создания'), editable=False, auto_now_add=True)
-    text = models.TextField(_('текст'), max_length=200)
+    description = models.TextField(_('описание'), max_length=200)
 
     def __str__(self):
         return 'Жалоба от {}'.format(self.recipient)

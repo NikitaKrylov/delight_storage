@@ -3,6 +3,7 @@ import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q, Variance, Count, F
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -10,6 +11,8 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
+
+from .mixins import CheckUserConformity
 from .models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm
@@ -22,7 +25,7 @@ from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
 
 
-class Signatory(View):
+class SignatoryView(View):
     http_method_names = ('get',)
 
     def get(self, request, *args, **kwargs):
@@ -124,11 +127,18 @@ class UserProfileView(LoginRequiredMixin, FormView):
             'birth_date': user.birth_date
         })
 
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+
 
 @login_required(login_url=reverse_lazy('login'))
 def edit_user_form(request, *args, **kwargs):
     ctx = {}
-    form = EditUserProfileForm(request.POST, instance=request.user)
+    form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
 
     ctx['has_changed'] = form.has_changed()
     if form.is_valid() and form.has_changed():
@@ -157,6 +167,10 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
 @login_required(login_url=reverse_lazy('login'))
 def delete_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
+
+    if request.user != notification.actor:
+        raise PermissionDenied()
+
     notification.deleted = True
     notification.unread = False
     notification.save()
@@ -166,6 +180,10 @@ def delete_notification(request, *args, **kwargs):
 @login_required(login_url=reverse_lazy('login'))
 def read_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
+
+    if request.user != notification.actor:
+        raise PermissionDenied()
+
     notification.unread = False
     notification.save()
     return redirect('user_notifications')
@@ -266,7 +284,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():
-            post = form.save(commit=False)
+            post = form.save()
             post.author = request.user
             post.save()
 
@@ -279,12 +297,12 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             for image in images:
                 image.save()
 
-            return redirect(reverse('change_post', kwargs={'pk': post.pk}))
+            return redirect('self_user_posts')
 
         return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'delay_form': delay_form})
 
 
-class EditPostView(LoginRequiredMixin, UpdateView):
+class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
     model = Post
     login_url = reverse_lazy('login')
     template_name = 'accounts/post_change.html'
@@ -330,6 +348,24 @@ class EditPostView(LoginRequiredMixin, UpdateView):
 
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
+
+    def get_user(self):
+        return self.get_object().author
+
+
+class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
+    model = Post
+    template_name = 'accounts/post_stat.html'
+    context_object_name = 'post'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Статистика {}'.format(self.object)
+        return context
+
+    def get_user(self):
+        return self.get_object().author
 
 
 class LikedPostList(LoginRequiredMixin, ListView):

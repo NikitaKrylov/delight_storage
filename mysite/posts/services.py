@@ -14,3 +14,4 @@ def update_post_views(request, post: Post):
     else:
         clien_ip, ip_created = ClientIP.objects.get_or_create(ip=get_client_ip(request))
         user_view, created = post.views.get_or_create(client_ip=clien_ip)
+
