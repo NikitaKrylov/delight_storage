@@ -24,6 +24,8 @@ from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
 
+from posts.models import Like
+
 
 class SignatoryView(View):
     http_method_names = ('get',)
@@ -362,6 +364,25 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Статистика {}'.format(self.object)
+
+        now = timezone.now()
+        dates = [now - datetime.timedelta(days=i) for i in range(32)]
+        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
+        views_count = self.object.views.count()
+        likes_count = self.object.likes.count()
+
+        context['llabels'] = fdates
+        context['lvalues'] = [self.object.likes.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+
+        context['vlabels'] = fdates
+        context['vvalues'] = [self.object.views.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+
+        context['clabels'] = fdates
+        context['cvalues'] = [self.object.comments.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count() for date in dates]
+
+        context['user_kpd'] = round(likes_count / views_count, 4)
+        context['views_count'] = views_count
+        context['likes_count'] = likes_count
         return context
 
     def get_user(self):
@@ -396,14 +417,14 @@ class UserDashBoard(LoginRequiredMixin, TemplateView):
 
         now = timezone.now()
         dates = [ now - datetime.timedelta(days=i) for i in range(32)]
-        posts = Post.objects.filter(pub_date__year=now.year, pub_date__month=now.month, author=self.request.user).all()
+        posts = Post.objects.filter(author=self.request.user).all()
 
         # views
         context['views_labels'] = ['{}.{}'.format(date.month, date.day) for date in dates]
         context['views_values'] = []
 
         for date in dates:
-            p = posts.filter(pub_date__day=date.day)
+            p = posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year)
             context['views_values'].append(p.aggregate(views=Count('views'))['views'])
 
         # likes
@@ -411,7 +432,7 @@ class UserDashBoard(LoginRequiredMixin, TemplateView):
         context['likes_values'] = []
 
         for date in dates:
-            p = posts.filter(pub_date__day=date.day)
+            p = posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year)
             context['likes_values'].append(p.aggregate(likes=Count('likes'))['likes'])
 
         return context

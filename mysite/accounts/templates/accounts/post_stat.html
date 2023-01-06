@@ -4,5 +4,94 @@
 
 {% block content %}
 
+    <span> КПД пользователей: {{user_kpd}}</span>
 
+    <div>
+        <canvas id="dashboard1" ></canvas>
+    </div>
+
+    <div>
+        <canvas id="dashboard2" ></canvas>
+    </div>
+
+    <div>
+        <canvas id="dashboard3" ></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('dashboard1');
+
+        new Chart( ctx, {
+            type: 'bar',
+            data: {
+                labels: {{llabels|safe}},
+                datasets: [{
+                    label: 'Лайков',
+                    data: {{lvalues}},
+                    borderWidth: 1,
+                }],
+            },
+
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+
+        });
+    </script>
+
+     <script>
+            const ctx2 = document.getElementById('dashboard2');
+
+            new Chart( ctx2, {
+                type: 'bar',
+                data: {
+                    labels: {{vlabels|safe}},
+                    datasets: [{
+                        label: 'Просмотров',
+                        data: {{vvalues}},
+                        borderWidth: 1,
+                    }],
+                },
+
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+
+            });
+        </script>
+
+        <script>
+            const ctx3 = document.getElementById('dashboard3');
+
+            new Chart( ctx3, {
+                type: 'bar',
+                data: {
+                    labels: {{clabels|safe}},
+                    datasets: [{
+                        label: 'Комментариев',
+                        data: {{cvalues}},
+                        borderWidth: 1,
+                    }],
+                },
+
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+
+            });
+        </script>
 {% endblock %}

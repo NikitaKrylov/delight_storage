@@ -194,7 +194,7 @@ class Like(models.Model):
         return self.post_set.first()
 
     def __str__(self):
-        return "Лайк от {} -> {}".format(self.user.username, self.related_post)
+        return "Лайк от {} -> {}".format(self.user.username if self.user else 'Удален', self.related_post)
 
 
 class UserView(models.Model):
