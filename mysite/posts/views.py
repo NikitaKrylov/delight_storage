@@ -3,13 +3,13 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q
+from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
-from .models import Post, Comment, PostTag
+from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse
 from accounts.models import Subscription
 
@@ -150,6 +150,13 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['title'] = "Посты"
         return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(
+            has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user))
+        )
+        return queryset
 
 
 class SearchPostList(PostQueryMixin, PostFilterFormMixin, ListView):
