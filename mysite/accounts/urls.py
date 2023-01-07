@@ -33,7 +33,7 @@ urlpatterns = [
 
     path('user/likes/', LikedPostList.as_view(), name='user_liked_posts'),
 
-    path('user/dashboard/', UserDashBoard.as_view(), name='dashboard'),
+    path('user/dashboard/', DashBoardView.as_view(), name='dashboard'),
 
 
     # Ввод почты для отправки письма

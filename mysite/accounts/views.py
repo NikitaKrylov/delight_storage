@@ -130,7 +130,6 @@ class UserProfileView(LoginRequiredMixin, FormView):
         })
 
     def post(self, request, *args, **kwargs):
-        print(request.FILES)
         form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
@@ -170,7 +169,7 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
 def delete_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
 
-    if request.user != notification.actor:
+    if request.user != notification.recipient:
         raise PermissionDenied()
 
     notification.deleted = True
@@ -183,7 +182,7 @@ def delete_notification(request, *args, **kwargs):
 def read_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
 
-    if request.user != notification.actor:
+    if request.user != notification.recipient:
         raise PermissionDenied()
 
     notification.unread = False
@@ -403,7 +402,7 @@ class LikedPostList(LoginRequiredMixin, ListView):
 from posts.models import PostTag, Post
 
 
-class UserDashBoard(LoginRequiredMixin, TemplateView):
+class DashBoardView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/dashboard.html'
     login_url = reverse_lazy('login')
 
@@ -416,23 +415,20 @@ class UserDashBoard(LoginRequiredMixin, TemplateView):
         context['tvalues'] = [i.related_posts_amount() for i in tags]
 
         now = timezone.now()
-        dates = [ now - datetime.timedelta(days=i) for i in range(32)]
-        posts = Post.objects.filter(author=self.request.user).all()
+        dates = [now - datetime.timedelta(days=i) for i in range(32)]
+        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
+        posts = Post.objects.filter(author=self.request.user)
+        subscriptions = Subscription.objects.filter(subscription_object=self.request.user, status=1)
 
         # views
-        context['views_labels'] = ['{}.{}'.format(date.month, date.day) for date in dates]
-        context['views_values'] = []
-
-        for date in dates:
-            p = posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year)
-            context['views_values'].append(p.aggregate(views=Count('views'))['views'])
+        context['views_labels'] = fdates
+        context['views_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(views=Count('views'))['views'] for date in dates]
 
         # likes
-        context['likes_labels'] = context['views_labels']
-        context['likes_values'] = []
+        context['likes_labels'] = fdates
+        context['likes_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(likes=Count('likes'))['likes'] for date in dates]
 
-        for date in dates:
-            p = posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year)
-            context['likes_values'].append(p.aggregate(likes=Count('likes'))['likes'])
+        context['sub_labels'] = fdates
+        context['sub_values'] = [subscriptions.filter(start_date__day=date.day, start_date__month=date.month, start_date__year=date.year).count() for date in dates]
 
         return context

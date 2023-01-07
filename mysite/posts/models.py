@@ -51,8 +51,6 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
-    views = models.ManyToManyField('UserView', blank=True)
-    likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
     delay = models.OneToOneField('PostDelay', verbose_name=_(
         'время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -181,6 +179,7 @@ class PostTag(models.Model):
 
 
 class Like(models.Model):
+    post = models.ForeignKey(Post, models.CASCADE, 'likes')
     creation_date = models.DateTimeField(_('дата лайка'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(
         'пользователь'), on_delete=models.SET_NULL, null=True, related_name="likes")
@@ -189,15 +188,12 @@ class Like(models.Model):
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
 
-    @property
-    def related_post(self):
-        return self.post_set.first()
-
     def __str__(self):
-        return "Лайк от {} -> {}".format(self.user.username if self.user else 'Удален', self.related_post)
+        return "Лайк от {} -> {}".format(self.user.username if self.user else 'Удален', self.post)
 
 
 class UserView(models.Model):
+    post = models.ForeignKey(Post, models.CASCADE, 'views')
     creation_date = models.DateTimeField(
         _('дата просмотра'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(
@@ -209,12 +205,13 @@ class UserView(models.Model):
         verbose_name = 'Просмотр пользователя'
         verbose_name_plural = 'Просмотры пользователей'
 
-    @property
-    def related_post(self):
-        return self.post_set.first()
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not (self.user or self.client_ip):
+            raise ValueError("Нужно указать субъекта")
+        return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
-        return 'Лайкт от {}'.format(self.user or self.client_ip)
+        return 'Лайкт от {} -> {}'.format(self.user or self.client_ip, self.post)
 
 
 @receiver(models.signals.post_save, sender=Post)

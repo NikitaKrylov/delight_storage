@@ -16,6 +16,10 @@
         <canvas id="dashboard3"></canvas>
     </div>
 
+    <div>
+        <canvas id="dashboard4"></canvas>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
@@ -82,6 +86,35 @@
                 datasets: [{
                     label: 'Количество лайков за день',
                     data: {{likes_values}},
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                animations: {
+                  tension: {
+                    duration: 2000,
+                    easing: 'linear',
+                    from: 0.5,
+                    to: 0,
+                    loop: true
+                  }
+                },
+
+              }
+
+        });
+    </script>
+
+    <script>
+        const ctx3 = document.getElementById('dashboard4');
+
+        new Chart( ctx3, {
+            type: 'line',
+            data: {
+                labels: {{sub_labels|safe}},
+                datasets: [{
+                    label: 'Количество подписок за день',
+                    data: {{sub_values}},
                     borderWidth: 1,
                 }],
             },

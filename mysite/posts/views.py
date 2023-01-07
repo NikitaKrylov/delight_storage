@@ -91,7 +91,7 @@ class LikePostView(View):
 
             like, created = post.likes.get_or_create(user=request.user)
             if not created:  # already liked the content
-                post.likes.remove(like)  # remove user from likes
+                # post.likes.remove(like)  # remove user from likes
                 like.delete()
                 ctx['liked'] = False
             else:

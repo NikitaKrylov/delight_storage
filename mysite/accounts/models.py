@@ -142,6 +142,7 @@ class Complaint(models.Model):
         BAD_TAG = 'BT', _('Несоответствие тегам')
         BAD_MEDIA = 'BM', _('Неподходящие/плохие медиа')
         PLAGIAT = 'PL', _('Плагиат')
+        ANOTHER = 'AN', _("Еще")
 
     status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
     type = models.CharField(_('тип жалобы'), choices=Types.choices, max_length=40, blank=True)
