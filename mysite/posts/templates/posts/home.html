@@ -3,7 +3,17 @@
 
 {% block content %}
 
-<span>хуй</span>
+{% for tag in popular_tags %}
+<div>{{tag}}</div><br>
+{% endfor %}
+
+{% for post in popular_posts %}
+<a href="{{post.get_absolute_url}}">{{post}}</a><br>
+{% endfor %}
+
+{% for user in popular_authors %}
+<div>{{user}}: <span>{{user.subscribers_amount}}</span></div><br>
+{% endfor %}
 
 {% endblock %}
 

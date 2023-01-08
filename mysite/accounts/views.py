@@ -209,7 +209,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(Q(status=Post.STATUS.PUBLISHED) & Q(author=self.request.user)).all()
+        return self.model.objects.filter(author=self.request.user).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         user = self.request.user
@@ -218,8 +218,6 @@ class UserPostListView(LoginRequiredMixin, ListView):
         context['likes_amount'] = Post.objects.count_field_elements('likes', user)
         context['views_amount'] = Post.objects.count_field_elements('views', user)
         context['comments_amount'] = Post.objects.count_field_elements('comments', user)
-
-        print(Post.objects.best_by('likes', user))
         return context
 
 
@@ -280,8 +278,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
-        image_formset = ImageFileFormSet(
-            request.POST, request.FILES, instance=form.instance)
+        image_formset = ImageFileFormSet(request.POST, request.FILES, instance=form.instance)
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():

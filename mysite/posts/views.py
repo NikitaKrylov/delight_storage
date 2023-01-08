@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef
+from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef, Count
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -11,7 +11,7 @@ from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse
-from accounts.models import Subscription
+from accounts.models import Subscription, User
 
 
 def create_post_complaint(request, *args, **kwargs):
@@ -103,12 +103,16 @@ class LikePostView(View):
 
 class HomeView(PostFilterFormMixin, TemplateView):
     template_name = 'posts/home.html'
+    tags_batch_size = 20
+    post_batch_size = 20
+    author_batch_size = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['popular_tags'] = PostTag.objects.best_by('likes')
-        context['popular_posts'] = None
-       
+        context['popular_tags'] = PostTag.objects.best_by('likes')[:self.tags_batch_size]
+        context['popular_posts'] = Post.objects.annotate(likes_count=Count(F('likes'))).order_by('-likes_count')[:self.post_batch_size]
+        context['popular_authors'] = User.objects.annotate(subscribers_amount=Count(F('user_subscriptions'))).order_by('-subscribers_amount')[:self.author_batch_size]
+
         return context
 
 

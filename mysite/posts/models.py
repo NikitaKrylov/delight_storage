@@ -24,7 +24,7 @@ class PostManager(models.Manager):
         return self.aggregate(value=Count(field))['value']
 
     def order_by_like_persent(self, **filter):
-        return self.annotate( distance=ExpressionWrapper( (Count(F('likes')) * 1.0) / (Count(F('views')) * 1.0), FloatField() )  )
+        return self.annotate( value= Cast(Count(F('likes')), FloatField()) / Cast(Count(F('views')), FloatField())  )
 
 
 class Post(models.Model):
