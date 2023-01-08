@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.1.3',
+    '192.168.1.4',
     '127.0.0.1',
     '192.168.1.2',
     '172.20.10.2',
@@ -170,7 +170,7 @@ STATICFILES_FINDERS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 POST_MEDIA_PATH = datetime.now().strftime('post_media/%Y/%m/%d')
-ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif', 'webp',)
+ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif', 'webp', 'jpeg',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -237,4 +237,4 @@ else:
 
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
-PUBLISH_POST_SCHEDULE = 10.0
+PUBLISH_POST_SCHEDULE = 10.0 # seconds

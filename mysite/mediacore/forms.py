@@ -4,14 +4,16 @@ from .models import ImageFile
 from posts.models import Post
 
 
+class PostImageWidget(forms.ClearableFileInput):
+    template_name = 'mediacore/widgets/post_image_field.html'
+
+
 class ImageFileForm(forms.ModelForm):
     class Meta:
         model = ImageFile
         fields = ['file']
-
         widgets = {
-            'file': forms.ClearableFileInput(attrs={'class': 'add-image__input', }),
-            # 'file': forms.ClearableFileInput(attrs={}),
+            'file': PostImageWidget()
         }
 
 

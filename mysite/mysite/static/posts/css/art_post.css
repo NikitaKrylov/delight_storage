@@ -393,14 +393,13 @@
   width: 100%;
   padding: 22px;
   font-family: "CirceRegular";
-  background-color: var(--bg-light-secondary-default);
+  background-color: var(--bg-secondary-default);
   border-radius: 3px;
   border: 1px solid var(--border-secondary-light);
   color: var(--dark-gray);
   cursor: pointer;
 }
 .comments-form__title {
-  font-family: "inter", sans-serif;
   font-size: 16px;
 }
 @media (max-width: 1920px) {
@@ -430,12 +429,7 @@
   letter-spacing: inherit;
 }
 .comments-form__input-comment {
-  width: 100%;
-  word-break: break-word;
-  resize: none;
-  border: none;
-  color: var(--primary-white);
-  background: transparent;
+  padding: 17px;
   font-size: 16px;
 }
 @media (max-width: 1920px) {
@@ -608,6 +602,7 @@
   border: none;
 }
 .comment__control-dropdown-item {
+  display: block;
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
@@ -650,15 +645,12 @@
 .comments-form__reply .comments-form__input, .comments-form__reply__input,
 .comment-reply .comments-form__input,
 .comment-reply__input {
-  padding: 17px;
-  min-height: 80px;
   line-height: 20px;
   word-break: break-word;
   background-color: var(--bg-light-secondary-default);
   border: 1px solid #5D5D6C;
   border-radius: 3px;
   color: var(--white);
-  font-family: "Helvetica";
 }
 
 #reply-reply {
@@ -874,6 +866,7 @@
   color: black;
 }
 .popup__title {
+  color: black;
   font-size: 30px;
   margin-bottom: 10px;
 }

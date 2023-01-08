@@ -61,7 +61,7 @@ class EditUserProfileForm(forms.ModelForm):
         )
         widgets = {
             'avatar': forms.ClearableFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
-            'birth_date': forms.DateInput(),
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'username': forms.TextInput(),
             'email': forms.EmailInput(),
         }
@@ -107,3 +107,13 @@ class UserSetPasswordForm(SetPasswordForm):
         widget=forms.PasswordInput(
             attrs={"autocomplete": "new-password", 'class': 'reg-menu__input'}),
     )
+
+# ------------------------------ Complaint ----------------------------------
+
+
+class ComplaintForm(forms.ModelForm):
+    fields = (
+        'type',
+        'description',
+    )
+

@@ -24,7 +24,7 @@ class CreatePostDelayForm(forms.ModelForm):
         model = PostDelay
         fields = ('time',)
         widgets = {
-            'time': forms.DateTimeInput(),
+            'time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
 
     def __init__(self, *args, **kwargs):

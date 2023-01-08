@@ -144,26 +144,26 @@ class UserViewAdmin(admin.ModelAdmin):
     )
     readonly_fields = (
         'creation_date',
-        'related_post_link',
+        'post_link',
     )
 
-    def related_post_link(self, obj):
-        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+    def post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.post.get_absolute_url(), obj.post))
 
-    related_post_link.short_description = "Просмотренный пост"
+    post_link.short_description = "Просмотренный пост"
 
 
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
     readonly_fields = (
         'creation_date',
-        'related_post_link',
+        'post_link',
     )
 
-    def related_post_link(self, obj):
-        return mark_safe("<a href='{}'>{}</a>".format(obj.related_post.get_absolute_url(), obj.related_post))
+    def post_link(self, obj):
+        return mark_safe("<a href='{}'>{}</a>".format(obj.post.get_absolute_url(), obj.post))
 
-    related_post_link.short_description = "Лайкнутый пост"
+    post_link.short_description = "Лайкнутый пост"
 
 
 

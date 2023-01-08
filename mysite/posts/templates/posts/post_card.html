@@ -53,7 +53,7 @@
                                     <span><i class="fa-regular fa-eye"></i></span>
                                 </div>
                             </div>
-                            <button class="cover-item-gallery__like like-btn button {{like_active}}"
+                            <button class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
                                 data-href="{{ post.get_absolute_like_url }}">
                                 <!-- <i class="fa-regular fa-heart"></i> -->
                                 <div class="_39asK">

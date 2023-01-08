@@ -1,16 +1,19 @@
-import datetime
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
-from django.db.models import Count
+from django.db.models import Count, ExpressionWrapper, FloatField, F
+from django.db.models.functions import Cast
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from decimal import Decimal
+from accounts.models import Notification
 
 
 class PostManager(models.Manager):
     def best_by(self, field: str, user: User = None):
+        """order posts by views or likes"""
         if user:
             return self.filter(author=user).annotate(value=Count(field)).order_by('value').last()
         return self.annotate(value=Count(field)).order_by('value').last()
@@ -19,6 +22,9 @@ class PostManager(models.Manager):
         if user:
             return self.filter(author=user).aggregate(value=Count(field))['value']
         return self.aggregate(value=Count(field))['value']
+
+    def order_by_like_persent(self, **filter):
+        return self.annotate( value= Cast(Count(F('likes')), FloatField()) / Cast(Count(F('views')), FloatField())  )
 
 
 class Post(models.Model):
@@ -45,8 +51,6 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
-    views = models.ManyToManyField('UserView', blank=True)
-    likes = models.ManyToManyField("Like", verbose_name=_('лайки'), blank=True)
     delay = models.OneToOneField('PostDelay', verbose_name=_(
         'время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
 
@@ -101,7 +105,7 @@ class PostDelay(models.Model):
         verbose_name_plural = "Отложенные задачи"
 
     def clean(self):
-        if self.time < timezone.now():
+        if self.time and self.time < timezone.now():
             raise ValidationError(
                 "Время отложенной задачи не может быть меньше текущей!")
         return super().clean()
@@ -141,6 +145,15 @@ class Comment(models.Model):
 
 # --------------------TAG--------------------------
 
+
+class PostTagManager(models.Manager):
+
+    def best_by(self, field: str, user: User = None):
+        if not user or not user.is_authenticatedr:
+            return self.annotate(value=Count('post__{}'.format(field))).order_by('-value')
+        return self.filter(author=user).annotate(value=Count('post__{}'.format(field))).order_by('-value')
+
+
 class PostTag(models.Model):
     name = models.CharField(
         _("название тега"), max_length=30, db_index=True, unique=True)
@@ -155,11 +168,18 @@ class PostTag(models.Model):
 
     related_posts_amount.short_description = _('связаных постов')
 
+    objects = PostTagManager()
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.lower()
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name.capitalize()
 
 
 class Like(models.Model):
+    post = models.ForeignKey(Post, models.CASCADE, 'likes')
     creation_date = models.DateTimeField(_('дата лайка'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(
         'пользователь'), on_delete=models.SET_NULL, null=True, related_name="likes")
@@ -168,15 +188,12 @@ class Like(models.Model):
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
 
-    @property
-    def related_post(self):
-        return self.post_set.first()
-
     def __str__(self):
-        return "Лайк от {} -> {}".format(self.user.username, self.related_post)
+        return "Лайк от {} -> {}".format(self.user.username if self.user else 'Удален', self.post)
 
 
 class UserView(models.Model):
+    post = models.ForeignKey(Post, models.CASCADE, 'views')
     creation_date = models.DateTimeField(
         _('дата просмотра'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(
@@ -188,9 +205,31 @@ class UserView(models.Model):
         verbose_name = 'Просмотр пользователя'
         verbose_name_plural = 'Просмотры пользователей'
 
-    @property
-    def related_post(self):
-        return self.post_set.first()
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if not (self.user or self.client_ip):
+            raise ValueError("Нужно указать субъекта")
+        return super().save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
-        return 'Лайкт от {}'.format(self.user or self.client_ip)
+        return 'Лайкт от {} -> {}'.format(self.user or self.client_ip, self.post)
+
+
+@receiver(models.signals.post_save, sender=Post)
+def notify_on_post_saved(sender, instance: Post, **kwargs):
+    if not instance: return
+
+    if kwargs['update_fields'] and 'status' in kwargs['update_fields']:
+        if instance.status == Post.STATUS.PUBLISHED:
+            for sub in instance.author.user_subscriptions.filter(status=1):
+                Notification.objects.create(
+                            actor=instance.author,
+                            recipient=sub.subscriber,
+                            verb="Новый пост от {}".format(instance.author),
+                            action_object=instance,
+                            target=instance,
+                            type=Notification.Types.NEW_POST,
+                            description='Смотреть новый <a style="color: #DCA1F5; text-decoration: underline;" href="{}">пост</a>'.format(reverse('post', kwargs={'pk': instance.pk}))
+                )
+
+
+

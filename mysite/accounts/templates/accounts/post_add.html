@@ -118,9 +118,12 @@
                     </div>
 
                     <div class="add-image-container" style="color: white;">
+                        {{image_formset.management_form}}
+                        {% for image_form in image_formset %}
                         <div class="add-image-form">
-                            {{image_formset}}
+                            {{image_form}}
                         </div>
+                        {% endfor %}
                         <button id="add-form" type="button">Add Image</button>
                     </div>
                 </div>

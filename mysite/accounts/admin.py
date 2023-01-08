@@ -37,7 +37,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    readonly_fields = ('_sub_time_delta',)
+    readonly_fields = ('start_date', '_sub_time_delta',)
     list_filter = ('subscriber', 'subscription_object', 'status',)
 
     def _sub_time_delta(self, obj):
@@ -56,6 +56,7 @@ class ComplaintAdmin(admin.ModelAdmin):
     )
     list_filter = (
         'status',
+        'type',
     )
     actions = (
         'make_accepted',

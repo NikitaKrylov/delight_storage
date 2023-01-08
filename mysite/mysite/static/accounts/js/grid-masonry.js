@@ -31,12 +31,14 @@ if (grids.length && getComputedStyle(grids[0]).gridTemplateRows !== 'masonry') {
                 /* revert to initial positioning, no margin */
                 grid.items.forEach(c => c.style.removeProperty('margin-top'));
 
+                console.log('penis')
                 /* if we have more than one column */
                 if (grid.ncol > 1) {
                     grid.items.slice(ncol).forEach((c, i) => {
                         let prev_fin = grid.items[i].getBoundingClientRect().bottom /* bottom edge of item above */,
                             curr_ini = c.getBoundingClientRect().top /* top edge of current item */;
 
+    
                         c.style.marginTop = `${prev_fin + grid.gap - curr_ini}px`
                     })
                 }

@@ -1,13 +1,18 @@
+import datetime
 import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, Variance
+from django.core.exceptions import PermissionDenied
+from django.db.models import Q, Variance, Count, F
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.utils import timezone
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
+
+from .mixins import CheckUserConformity
 from .models import Notification
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm
@@ -17,10 +22,12 @@ from django.contrib.auth.views import LoginView, PasswordResetConfirmView, Passw
 from posts.models import Post, PostDelay
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
-from .services import count_posts_elements
+from django.contrib.auth import login, authenticate
+
+from posts.models import Like
 
 
-class Signatory(View):
+class SignatoryView(View):
     http_method_names = ('get',)
 
     def get(self, request, *args, **kwargs):
@@ -57,6 +64,14 @@ class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('post_list')
+
+    def form_valid(self, form):
+        _redirect = super().form_valid(form)
+        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+        if user is not None and user.is_active:
+            login(self.request, user, backend='mysite.backends.AuthBackend')
+            return _redirect
+        return render(self.request, self.template_name, content={'form': form})
 
 
 class AuthenticationView(LoginView):
@@ -114,11 +129,17 @@ class UserProfileView(LoginRequiredMixin, FormView):
             'birth_date': user.birth_date
         })
 
+    def post(self, request, *args, **kwargs):
+        form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+
 
 @login_required(login_url=reverse_lazy('login'))
 def edit_user_form(request, *args, **kwargs):
     ctx = {}
-    form = EditUserProfileForm(request.POST, instance=request.user)
+    form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
 
     ctx['has_changed'] = form.has_changed()
     if form.is_valid() and form.has_changed():
@@ -147,6 +168,10 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
 @login_required(login_url=reverse_lazy('login'))
 def delete_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
+
+    if request.user != notification.recipient:
+        raise PermissionDenied()
+
     notification.deleted = True
     notification.unread = False
     notification.save()
@@ -156,6 +181,10 @@ def delete_notification(request, *args, **kwargs):
 @login_required(login_url=reverse_lazy('login'))
 def read_notification(request, *args, **kwargs):
     notification = Notification.objects.get(pk=kwargs['pk'])
+
+    if request.user != notification.recipient:
+        raise PermissionDenied()
+
     notification.unread = False
     notification.save()
     return redirect('user_notifications')
@@ -180,7 +209,7 @@ class UserPostListView(LoginRequiredMixin, ListView):
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(Q(status=Post.STATUS.PUBLISHED) & Q(author=self.request.user)).all()
+        return self.model.objects.filter(author=self.request.user).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         user = self.request.user
@@ -189,8 +218,6 @@ class UserPostListView(LoginRequiredMixin, ListView):
         context['likes_amount'] = Post.objects.count_field_elements('likes', user)
         context['views_amount'] = Post.objects.count_field_elements('views', user)
         context['comments_amount'] = Post.objects.count_field_elements('comments', user)
-
-        print(Post.objects.best_by('likes', user))
         return context
 
 
@@ -233,6 +260,8 @@ class UserSubscriptionListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return self.model.objects.filter(subscriber=self.request.user).all()
 
+# ------------------------- Posts ----------------------------
+
 
 class CreatePostView(LoginRequiredMixin, CreateView):
 
@@ -249,12 +278,11 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
-        image_formset = ImageFileFormSet(
-            request.POST, request.FILES, instance=form.instance)
+        image_formset = ImageFileFormSet(request.POST, request.FILES, instance=form.instance)
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():
-            post = form.save(commit=False)
+            post = form.save()
             post.author = request.user
             post.save()
 
@@ -267,12 +295,12 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             for image in images:
                 image.save()
 
-            return redirect(reverse('change_post', kwargs={'pk': post.pk}))
+            return redirect('self_user_posts')
 
         return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'delay_form': delay_form})
 
 
-class EditPostView(LoginRequiredMixin, UpdateView):
+class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
     model = Post
     login_url = reverse_lazy('login')
     template_name = 'accounts/post_change.html'
@@ -319,12 +347,85 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
 
+    def get_user(self):
+        return self.get_object().author
+
+
+class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
+    model = Post
+    template_name = 'accounts/post_stat.html'
+    context_object_name = 'post'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Статистика {}'.format(self.object)
+
+        now = timezone.now()
+        dates = [now - datetime.timedelta(days=i) for i in range(32)]
+        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
+        views_count = self.object.views.count()
+        likes_count = self.object.likes.count()
+
+        context['llabels'] = fdates
+        context['lvalues'] = [self.object.likes.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+
+        context['vlabels'] = fdates
+        context['vvalues'] = [self.object.views.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+
+        context['clabels'] = fdates
+        context['cvalues'] = [self.object.comments.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count() for date in dates]
+
+        context['user_kpd'] = round(likes_count / views_count, 4)
+        context['views_count'] = views_count
+        context['likes_count'] = likes_count
+        return context
+
+    def get_user(self):
+        return self.get_object().author
+
 
 class LikedPostList(LoginRequiredMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'
     context_object_name = 'posts'
+    login_url = reverse_lazy('login')
 
     def get_queryset(self):
         return self.model.objects.filter(likes__user=self.request.user)
+
+
+from posts.models import PostTag, Post
+
+
+class DashBoardView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/dashboard.html'
+    login_url = reverse_lazy('login')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tags = PostTag.objects.all()
+
+        # tags
+        context['tlabels'] = [i.name.capitalize() for i in tags]
+        context['tvalues'] = [i.related_posts_amount() for i in tags]
+
+        now = timezone.now()
+        dates = [now - datetime.timedelta(days=i) for i in range(32)]
+        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
+        posts = Post.objects.filter(author=self.request.user)
+        subscriptions = Subscription.objects.filter(subscription_object=self.request.user, status=1)
+
+        # views
+        context['views_labels'] = fdates
+        context['views_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(views=Count('views'))['views'] for date in dates]
+
+        # likes
+        context['likes_labels'] = fdates
+        context['likes_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(likes=Count('likes'))['likes'] for date in dates]
+
+        context['sub_labels'] = fdates
+        context['sub_values'] = [subscriptions.filter(start_date__day=date.day, start_date__month=date.month, start_date__year=date.year).count() for date in dates]
+
+        return context
