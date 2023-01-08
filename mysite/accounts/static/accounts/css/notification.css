@@ -114,7 +114,6 @@
           transform: translate(5px, -10px);
 }
 .notification-list__btn {
-  position: relative;
   z-index: 1;
   -webkit-box-flex: 0;
       -ms-flex: 0 1 auto;
@@ -125,35 +124,8 @@
   line-height: normal;
   background: transparent;
 }
-.notification-list__btn::after {
-  content: attr(aria-label);
-  position: absolute;
-  top: -100%;
-  right: 0;
-  display: none;
-  padding: 0 10px;
-  line-height: 28px;
-  font-size: 14px;
-  background-color: var(--secondary-dark-gray);
-  color: var(--secondary-white);
-  border-radius: 5px;
-}
-.notification-list__btn::after:hover {
-  display: none;
-}
 .notification-list__btn:hover {
   background-color: var(--bg-light-secondary-default);
-}
-.notification-list__btn:hover::after {
-  display: block;
-}
-
-.button-red {
-  color: var(--error-light);
-}
-
-.button-green {
-  color: var(--enable);
 }
 
 .blackout {

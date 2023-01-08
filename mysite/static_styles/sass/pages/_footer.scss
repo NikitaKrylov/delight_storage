@@ -67,8 +67,8 @@ $min-width: 280-$padding-wrapper*2;
 
     > a {
       outline-style: none;
-      // color: var(--footer-title-text);
-      color: var(--primary-pink);
+      // color: var(--primary-pink);
+      color: var(--primary-color);
     }
   }
 }
@@ -88,12 +88,14 @@ $min-width: 280-$padding-wrapper*2;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    color: var(--primary-pink);
+    // color: var(--primary-pink);
+    color: var(--primary-color);
     font-size: em(25);
   }
 
   &__social-link {
-    color: var(--primary-pink);
+    // color: var(--primary-pink);
+    color: var(--primary-color);
   }
 
   &__link {

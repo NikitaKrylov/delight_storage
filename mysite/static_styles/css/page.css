@@ -124,7 +124,7 @@
           align-items: center;
   font-size: calc(10px + 4 * ((100vw - 264px) / 1656));
   padding: 0 1em;
-  border: 1px solid var(--pink);
+  border: 1px solid var(--primary-color);
 }
 
 .nav {
@@ -175,8 +175,9 @@
   left: 0px;
   width: 100%;
   height: 2px;
+  border-radius: 10px;
   pointer-events: none;
-  background-color: var(--light-pink);
+  background-color: var(--primary-color);
   content: "";
   opacity: 0;
   -webkit-transition: all 0.3s;
@@ -219,7 +220,7 @@
 .hamburgerIcon {
   font-size: 20px;
   line-height: 44px;
-  color: var(--light-pink);
+  color: var(--primary-color);
 }
 @media (min-width: 991px) {
   .hamburgerIcon {
@@ -543,7 +544,7 @@ border-radius: 4px; */
           justify-content: center;
 }
 .search-button > i {
-  color: var(--light-pink);
+  color: var(--primary-color);
 }
 .search-button:hover {
   background-color: var(--bg-light-secondary-default);
@@ -631,6 +632,44 @@ border-radius: 4px; */
           transform: scale(1);
 }
 
+.search-sort__btn {
+  padding-right: 0;
+  border-radius: 5px 0 0 5px;
+}
+.search-sort__list {
+  z-index: 1;
+  background-color: var(--bg-dropdown);
+  left: 0;
+}
+.search-sort__item {
+  border-radius: 0;
+}
+.search-sort__item:hover {
+  background-color: var(--bg-dropdown-hover);
+}
+.search-sort__text {
+  padding: 5px;
+  font-size: 14px;
+}
+.search-sort__control {
+  padding-left: 10px;
+  border-radius: 0 5px 5px 0;
+}
+.search-sort__desc-asc {
+  display: -webkit-inline-box !important;
+  display: -ms-inline-flexbox !important;
+  display: inline-flex !important;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.search-sort__desc-asc::before {
+  content: "\f063";
+}
+.search-sort__desc-asc._active::before {
+  content: "\f062";
+}
+
 body._touch #header-menu::before {
   display: table;
 }
@@ -712,7 +751,7 @@ body._touch #header-menu::after {
   left: inherit;
   z-index: 1;
   font-size: 34px;
-  color: var(--light-pink);
+  color: var(--primary-color);
 }
 
 .menu-wrapper {
@@ -853,7 +892,7 @@ body._touch #header-menu::after {
 }
 .footer-info__title-text > a {
   outline-style: none;
-  color: var(--primary-pink);
+  color: var(--primary-color);
 }
 
 .footer-link {
@@ -871,9 +910,9 @@ body._touch #header-menu::after {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  color: var(--primary-pink);
+  color: var(--primary-color);
   font-size: 1.5625em;
 }
 .footer-link__social-link {
-  color: var(--primary-pink);
+  color: var(--primary-color);
 }

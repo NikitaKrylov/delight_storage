@@ -15,6 +15,21 @@
                 <time class="comment__date-time">
                     <time datetime="Fri Sep 1 1939 00:00:01 GMT+000">{{comment.pub_date}}</time>
                 </time>
+
+                <div class="comment__control dropdown">
+                    <div class="comment__control-btn">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+                    <div class="comment__control-list dropdown__list">
+                        <a href="#complaints-comment-window"
+                            class="comment__control-item dropdown__item popup-link">Пожаловаться</a>
+                        {% if request.user == comment.author %}
+                        <a class="comment__control-item dropdown__item">Редактировать</a>
+                        <a href="{% url 'delete_comment' comment.pk %}"
+                            class="comment__control-item dropdown__item">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             <div class="comment__content">
                 <div>
@@ -24,25 +39,12 @@
         </div>
         <div class="comment__controls">
             <button class="answer-button" data-commentbox="{{comment.pk}}">ответить</button>
-            <div class="comment__control dropdown-parent">
-                <div class="comment__control-btn">
-                    <i class="fa-solid fa-ellipsis"></i>
-                </div>
-                <div class="comment__control-dropdown dropdown-items" hidden>
-                    <a class="comment__control-dropdown-item dropdown-item">Пожаловаться</a>
-                    {% if request.user == comment.author %}
-                    <a class="comment__control-dropdown-item dropdown-item">Редактировать</a>
-                    <a href="{% url 'delete_comment' comment.pk %}"
-                        class="comment__control-dropdown-item dropdown-item">Удалить</a>
-                    {% endif %}
-                </div>
-            </div>
         </div>
         <div class="comment-reply" id="{{comment.pk}}" hidden>
             <form id="reply-reply" action="{% url 'add_reply_comment' post.id comment.id %}" method="post">
                 {% csrf_token %}
-                <div class="comment-reply__input">
-                    <textarea class="comments-form__input-comment textarea-inp" name="reply-reply"
+                <div class="comment-reply__input textarea">
+                    <textarea class="comments-form__input-comment textarea__input textarea-autosize" name="reply-reply"
                         placeholder="Написать ответ" required></textarea>
                 </div>
                 <div class="comment-reply__controls">

@@ -102,8 +102,7 @@ window.addEventListener('scroll', () => {
     lastScroll = scrollPosition();
 });
 
-// показать/скрыть popup
-
+// показать/скрыть popup(всплывающее окно)
 function popupOpen(curentPopup) {
     body.classList.add('_lock')
     curentPopup.classList.add('_active')
@@ -118,6 +117,10 @@ function popupOpen(curentPopup) {
 function popupClose(curentPopup) {
     curentPopup.classList.remove('_active')
     body.classList.remove('_lock')
+
+    document.querySelectorAll('.radio__input').forEach(function (e) {
+        e.checked = false;
+    });
 }
 
 const popupLinks = document.querySelectorAll('.popup-link');
@@ -136,6 +139,7 @@ if (popupLinks.length > 0) {
 
 const popupCloseIcon = document.querySelectorAll('.close-popup');
 if (popupCloseIcon.length > 0) {
+
     for (let i = 0; i < popupCloseIcon.length; i++) {
         const el = popupCloseIcon[i];
         el.addEventListener("click", function(e) {
@@ -154,3 +158,4 @@ document.addEventListener("keydown", (e) => {
 });
 
 
+autosize($('.textarea-autosize'));

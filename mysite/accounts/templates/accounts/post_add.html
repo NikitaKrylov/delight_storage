@@ -68,7 +68,7 @@
                         <div class="description-post__title title">
                             {{form.description.label}}
                         </div>
-                        <div class="description-post__input">
+                        <div class="description-post__input textarea">
                             {{form.description}}
                         </div>
                     </div>
@@ -173,10 +173,12 @@
         }
     </script> -->
 
-    <script src="{% static 'posts/libs/autosize.min.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
+    <script src="{% static '/libs/autosize.min.js' %}"></script>
     <script src="{% static '/js/device.js' %}"></script>
+
+    <script src="{% static '/js/index.js' %}"></script>
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
 </body>
 

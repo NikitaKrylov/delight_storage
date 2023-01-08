@@ -185,7 +185,7 @@
           justify-content: center;
 }
 .search-button > i {
-  color: var(--light-pink);
+  color: var(--primary-color);
 }
 .search-button:hover {
   background-color: var(--bg-light-secondary-default);
@@ -322,7 +322,7 @@
   border-radius: 3px;
 }
 .add-image__icon {
-  fill: var(--secondary-pink);
+  fill: var(--primary-color);
   width: 80px;
   height: 80px;
 }
@@ -349,15 +349,6 @@
   -o-object-fit: cover;
      object-fit: cover;
   border-radius: 3px;
-}
-
-.description-post__input {
-  line-height: 20px;
-  word-break: break-word;
-  background-color: var(--bg-light-secondary-default);
-  border: 1px solid var(--border-secondary-light);
-  border-radius: 3px;
-  color: var(--white);
 }
 
 .checkbox__indicator {

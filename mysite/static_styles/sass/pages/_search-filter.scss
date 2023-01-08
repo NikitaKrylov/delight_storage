@@ -207,7 +207,8 @@ border-radius: 4px; */
   justify-content: center;
 
   >i {
-    color: var(--light-pink);
+    // color: var(--light-pink);
+    color: var(--primary-color);
   }
 
   &:hover {
@@ -306,5 +307,59 @@ border-radius: 4px; */
   //     transform: scale(1);
   //   }
   // }
+}
+
+
+.search-sort {
+  &__btn {
+    padding-right: 0;
+    border-radius: 5px 0 0 5px;
+  }
+
+  &__list {
+    z-index: 1;
+    // background-color: var(--bg-light-primary-default);
+    background-color: var(--bg-dropdown);
+    left: 0;
+  }
+
+  &__item {
+    // padding: 5px 10px;
+    border-radius: 0;
+
+    &:hover {
+      // background-color: var(--bg-btn-default);
+      background-color: var(--bg-dropdown-hover);
+    }
+  }
+
+  &__text {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  &__control {
+    padding-left: 10px;
+    border-radius: 0 5px 5px 0;
+
+    // &::before {
+    //   content: "\f063";
+    // }
+  }
+
+  &__desc-asc {
+    display: inline-flex !important;
+    align-items: center;
+
+    &::before {
+      content: "\f063";
+    }
+
+    &._active {
+      &::before {
+        content: "\f062";
+      }
+    }
+  }
 }
 

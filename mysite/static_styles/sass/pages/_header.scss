@@ -172,11 +172,9 @@ $browser-context: 16; // Default
     display: flex;
     align-items: center;
     @include mixins.adaptive-value('font-size', 14, 10, 0);
-    // @include adaptive-value(padding-left, 16, 10, 0);
-    // @include adaptive-value(padding-right, 16, 10, 0);
     padding: 0 em(16);
-    // font-size: em(8);
-    border: 1px solid var(--pink);
+    // border: 1px solid var(--pink);
+    border: 1px solid var(--primary-color);
   }
 }
 
@@ -217,22 +215,27 @@ $browser-context: 16; // Default
       align-items: center;
       position: relative;
       transition: all 0.3s ease;
+
       &::before, &::after {
         position: absolute;
         left: 0px;
         width: 100%;
         height: 2px;
+        border-radius: 10px;
         pointer-events: none;
         // background-color: rgb(247, 190, 237);
-        background-color: var(--light-pink);
+        // background-color: var(--light-pink);
+        background-color: var(--primary-color);
         content: "";
         opacity: 0;
         transition: all 0.3s;
       }
+
       &::after {
         bottom: 0px;
         transform: translateY(10px);
       }
+
       &:hover::after {
         opacity: 1;
         transform: translateY(0px);
@@ -260,8 +263,8 @@ $browser-context: 16; // Default
 .hamburgerIcon {
   font-size: 20px;
   line-height: 44px;
-  // color: #fd96cf;
-  color: var(--light-pink);
+  // color: var(--light-pink);
+  color: var(--primary-color);
 
   @media (min-width: $width-mobile) {
     display: none;

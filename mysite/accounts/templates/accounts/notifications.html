@@ -43,10 +43,10 @@
                         </div>
                         <div class="notification-list__controls">
                             <a href="{% url 'notification_read' notification.pk %}"
-                                class="notification-list__btn button button-green" aria-label="Прочитать"><i
+                                class="notification-list__btn button button-green tooltip" aria-label="Прочитать"><i
                                     class="fa-solid fa-check"></i></a>
                             <a href="{% url 'notification_delete' notification.pk %}"
-                                class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                class="notification-list__btn button button-red tooltip" aria-label="Удалить"><i
                                     class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="notification-list__controls">
                             <a href="{% url 'notification_delete' notification.pk %}"
-                                class="notification-list__btn button button-red" aria-label="Удалить"><i
+                                class="notification-list__btn button button-red tooltip" aria-label="Удалить"><i
                                     class="fa-solid fa-xmark"></i></a>
                         </div>
                     </div>

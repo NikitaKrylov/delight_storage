@@ -354,6 +354,31 @@ document.querySelector(".search__hide-all-btn").addEventListener("click", () =>
   })
 );
 
+$(".search-sort").on('click', function (e) {
+  if (e.target.closest(".search-sort__btn")) {
+    $(".search-sort__list").stop(false, true).queue('fx', function() {
+      $(this).slideToggle('fast').dequeue('fx');
+    });
+  }
+
+  if (e.target.closest(".search-sort__item")) {
+    // console.log($(e.target).text());
+    $(".search-sort__btn").text($(e.target).text())
+  }
+});
+
+$(".search-sort__desc-asc").on('change', function (e) {
+  $(e.target.closest(".search-sort__desc-asc")).toggleClass("_active")
+});
 
 
+// $(".search-sort__btn").on('click', function(e) {
+//   $(".search-sort__list").slideToggle('fast');
+// });
+
+$(document).on('click', function(e) {
+  if (!e.target.closest('.search-sort')) {
+    $(".search-sort__list").hide();
+	}
+});
 

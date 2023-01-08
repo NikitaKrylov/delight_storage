@@ -220,38 +220,24 @@ $browser-context: 16; // Default
 .post-cont-views {
 }
 
-
-.dropdown-parent {
-    position: relative;
+.post-cont-complaints {
 }
-.dropdown-items {
-    position: absolute;
-    top: auto;
-    left: 0;
-    z-index: 1;
-}
-.dropdown-item {
-    cursor: pointer;
-}
-
 
 .post-complaints {
-
-    &__container {
-    }
 
     &__button {
         cursor: pointer;
     }
 
-    &__dropdown {
+    &__list {
         flex-direction: column;
         background-color: var(--bg-light-primary-default);
-        padding: 10px;
+        padding: 10px 0;
         border-radius: 5px;
         margin: 0;
         min-width: 160px;
         border: none;
+        left: 0;
 
         @media (max-width: $min-width-mobile) {
             right: 0;
@@ -259,14 +245,15 @@ $browser-context: 16; // Default
         }
     }
 
-    &__link {
-        color: var(--white);
+    &__item {
+
     }
 
-    &__dropdown-item {
-        padding: 10px;
+    &__link {
+        display: block;
+        padding: 10px 15px;
         font-size: 16px;
-        border-radius: 5px;
+        // border-radius: 5px;
         color: var(--white);
 
         &:hover {
@@ -329,6 +316,7 @@ $browser-context: 16; // Default
 		left: 0;
 		bottom: 0;
 		background: var(--primary-purple);
+		// background: var(--primary-color);
 		transition: all 0.3s ease;
 	}
 	
@@ -394,6 +382,7 @@ $browser-context: 16; // Default
             right: 0;
             top: 0;
             background: var(--primary-purple);
+            // background: var(--primary-color);
             transition: all 0.3s ease;
         }
         
@@ -444,7 +433,8 @@ $browser-context: 16; // Default
             left: 0;
             width: 100%;
             height: 2px;
-            background: var(--primary-pink);
+            // background: var(--primary-pink);
+            background: var(--primary-color);
             border-radius: 10px;
         }
 
@@ -486,10 +476,8 @@ $browser-context: 16; // Default
     &__body {}
 
     &__title {
-        font-family: $font-family-circeregular;
-        font-weight: 700;
-        font-size: 20px;
         color: var(--light-gray);
+        font-size: 20px;
     }
 
     &__content {
@@ -585,7 +573,9 @@ $browser-context: 16; // Default
 
     &__title {
         // font-family: $font-family-inter;
-        @include adaptive-value('font-size', 16, 14, 1);
+        color: var(--light-gray);
+        font-size: 20px;
+        // @include adaptive-value('font-size', 16, 14, 1);
     }
 
     &__input {
@@ -664,8 +654,8 @@ $browser-context: 16; // Default
     padding: 5px 10px;
     // background: #0e1016;
     // background: rgb(199, 138, 162);
-    // background-color: var(--pink);
-    background-color: var(--primary-pink);
+    // background-color: var(--primary-pink);
+    background-color: var(--primary-color);
     color: var(--white);
     // color: #06070d;
     // border: 1px solid pink;
@@ -794,6 +784,7 @@ $browser-context: 16; // Default
     }
 
     &__control {
+        margin-left: auto;
         color: var(--light-gray);
     }
 
@@ -801,16 +792,17 @@ $browser-context: 16; // Default
         cursor: pointer;
     }
 
-    &__control-dropdown {
+    &__control-list {
         background-color: var(--bg-light-primary-default);
         padding: 10px;
         border-radius: 5px;
         margin: 0;
         min-width: 160px;
         border: none;
+        right: 0;
     }
     
-    &__control-dropdown-item {
+    &__control-item {
         display: block;
         padding: 10px;
         font-size: 16px;
@@ -840,7 +832,8 @@ $browser-context: 16; // Default
     font-weight: 400;
     line-height: 20px;
     // color: rgb(255, 158, 190);
-    color: var(--primary-pink);
+    // color: var(--primary-pink);
+    color: var(--primary-color);
     height: auto;
     cursor: pointer;
 
@@ -866,14 +859,7 @@ $browser-context: 16; // Default
 
     .comments-form__input,
     &__input {
-        line-height: 20px;
-        word-break: break-word;
-
         // caret-color: pink;
-        background-color: var(--bg-light-secondary-default);
-        border: 1px solid #5D5D6C;
-        border-radius: 3px;
-        color: var(--white);
         // font-family: $font-family-helvetica;
     }
 }
@@ -881,69 +867,6 @@ $browser-context: 16; // Default
 #reply-reply {
     margin-left: 10px;
 }
-
-.custom-radio {
-    display: flex;
-    gap: 5px;
-    cursor: pointer;
-
-    input {
-        position: absolute;
-        z-index: -1;
-        opacity: 0;
-    }
-
-    span.custom-radio__radio-btn {
-        display: inline-flex;
-        align-items: center;
-        user-select: none;
-        vertical-align: bottom;
-
-        &::before {
-            content: '';
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            flex-shrink: 0;
-            flex-grow: 0;
-            border: 1px solid var(--border-secondary-light);
-            border-radius: 50%;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-size: 50% 50%;
-            background-color: var(--black);
-            vertical-align: bottom;
-        }
-    }
-  
-    padding: 7px;
-    border-radius: 5px;
-  
-    &:hover {
-    //   background-color: #1f2535;
-      background-color: var(--bg-dropdown-hover);
-    }
-  
-    > input {
-      &:focus:not(:checked) + span.custom-radio__radio-btn::before {
-        border-color: #80bdff;
-      }
-  
-      &:checked + span.custom-radio__radio-btn::before {
-        border-color: var(--pink);
-        background-color: var(--pink);
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-      }
-    }
-
-    &__radio-text {
-        font-size: 16px;
-        font-family: $font-family-helvetica;
-    }
-}
-
-
-
 
 // ---------- slider ----------
 
@@ -998,6 +921,7 @@ $browser-context: 16; // Default
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        cursor: zoom-in;
     }
 }
 
@@ -1075,13 +999,13 @@ $browser-context: 16; // Default
 
 // -------- end-slider --------
 
-// -------- окно жалоб ----------
+// -------- всплывающее окно ----------
 .popup {
     position: fixed;
     display: none;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    // background-color: rgba(0, 0, 0, 0.8);
     top: 0;
     left: 0;
     z-index: 120;
@@ -1090,7 +1014,7 @@ $browser-context: 16; // Default
         display: block;
     }
 
-    &__body {
+    &__inner {
         min-height: 100%;
         display: flex;
         align-items: center;
@@ -1100,36 +1024,67 @@ $browser-context: 16; // Default
 
     &__content {
         position: relative;
-        background-color: white;
-        color: black;
-        max-width: 800px;
-        padding: 30px;
+        background-color: var(--bg-secondary-default);
+        color: var(--white);
+        max-width: 500px;
+        // min-height: 300px;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+}
+
+.modal {
+
+    &__header {
+    }
+
+    &__title {
+        font-size: 20px;
     }
 
     &__close {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        top: 15px;
+        right: 20px;
         font-size: 20px;
         color: black;
+        cursor: pointer;
+        font-size: 24px;
+        color: var(--primary-color);
     }
 
-    &__title {
-        color: black;
-        font-size: 30px;
-        margin-bottom: 10px;
-    }
-
-    &__text {
+    &__body {
+        padding-bottom: 15px;
+        margin: 15px 0 15px 0;
+        border-bottom: 1px solid var(--dark-line);
     }
 
     &__controls {
+        margin-bottom: 20px;
+    }
+
+    &__control {
+        padding: 5px 0;
+    }
+
+    &__input {
+        font-size: 16px;
     }
 
     &__btn {
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        // color: var(--bg-light-primary-default);
+        color: var(--white);
+        background-color: var(--primary-color);
+
+        &:hover {
+            background-color: var(--secondary-pink);
+        }
     }
 }
 
-// -------- конец окно жалоб ----------
-
+// -------- конец всплывающее окно ----------
 

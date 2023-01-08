@@ -179,7 +179,8 @@ $browser-context: 16; // Default
   justify-content: center;
 
   >i {
-    color: var(--light-pink);
+    // color: var(--light-pink);
+    color: var(--primary-color);
   }
 
   &:hover {
@@ -337,7 +338,8 @@ $browser-context: 16; // Default
   }
 
   &__icon {
-    fill: var(--secondary-pink);
+    // fill: var(--secondary-pink);
+    fill: var(--primary-color);
     width: 80px;
     height: 80px;
   }
@@ -371,12 +373,6 @@ $browser-context: 16; // Default
   }
 
   &__input {
-    line-height: 20px;
-    word-break: break-word;
-    background-color: var(--bg-light-secondary-default);
-    border: 1px solid var(--border-secondary-light);
-    border-radius: 3px;
-    color: var(--white);
   }
 }
 
