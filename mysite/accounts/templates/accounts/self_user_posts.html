@@ -10,6 +10,17 @@
 {% endblock %}
 
 {% block content %}
+<div class="my-posts-info__item add-post">
+  <div class="my-posts-info__title title">Добавить пост</div>
+
+  <div class="add-post-container">
+    <!-- <div class="add-post-inner"> -->
+    <!-- </div> -->
+    <a href="{% url 'create_post' %}" class="add-post-btn">
+      <i class="add-post-btn__icon fa-solid fa-plus"></i>
+    </a>
+  </div>
+</div>
 {% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
@@ -36,17 +47,7 @@
         </div>
       </div>
     </div>
-    <div class="my-posts-info__item add-post">
-      <div class="my-posts-info__title title">Добавить пост</div>
 
-      <div class="add-post-container">
-        <!-- <div class="add-post-inner"> -->
-        <!-- </div> -->
-        <a href="{% url 'create_post' %}" class="add-post-btn">
-          <i class="add-post-btn__icon fa-solid fa-plus"></i>
-        </a>
-      </div>
-    </div>
   </div>
 
   <div class="container-gallery">
@@ -56,7 +57,11 @@
       <div class="item-masonry infinite-item sizer4">
         <div class="item-masonry__wrapper">
           <div class="item-media-container">
+            {% if post.status != post.STATUS.PUBLISHED %}
+            <a class="item-media-container__link" href="{% url 'change_post' post.pk %}">
+            {% else %}
             <a class="item-media-container__link" href="{{post.get_absolute_url}}">
+            {% endif %}
               <div class="item-media-container__item">
                 <img style="object-fit: cover;" class="item-media-container__content lazy"
                   src="{{post.images.first.file.url}}" loading="lazy" alt="">
@@ -104,7 +109,7 @@
                         <span><i class="fa-regular fa-eye"></i></span>
                       </div>
                     </div>
-                    <button class="cover-item-gallery__like like-btn button {{like_active}}"
+                    <button class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
                       data-href="{{ post.get_absolute_like_url }}">
                       <!-- <i class="fa-regular fa-heart"></i> -->
                       <div class="_39asK">

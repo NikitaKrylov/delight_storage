@@ -26,6 +26,8 @@ from django.contrib.auth import login, authenticate
 
 from posts.models import Like
 
+from posts.mixins import AnnotateUserLikesMixin
+
 
 class SignatoryView(View):
     http_method_names = ('get',)
@@ -202,14 +204,14 @@ def read_all_notification(request, *args, **kwargs):
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, ListView):
+class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesMixin):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return self.model.objects.filter(author=self.request.user).all()
+        return super().get_queryset().filter(author=self.request.user).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         user = self.request.user
@@ -282,14 +284,15 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
             post.author = request.user
-            post.save()
 
             if delay_form.is_valid():
                 delay = delay_form.save()
                 post.delay = delay
-                post.save()
+
+            post.save()
+            form.save_m2m()
 
             images = image_formset.save(commit=False)
             for image in images:
@@ -368,13 +371,13 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         likes_count = self.object.likes.count()
 
         context['llabels'] = fdates
-        context['lvalues'] = [self.object.likes.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+        context['lvalues'] = [self.object.likes.filter(creation_date__date=date).count() for date in dates]
 
         context['vlabels'] = fdates
-        context['vvalues'] = [self.object.views.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+        context['vvalues'] = [self.object.views.filter(creation_date__date=date).count() for date in dates]
 
         context['clabels'] = fdates
-        context['cvalues'] = [self.object.comments.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count() for date in dates]
+        context['cvalues'] = [self.object.comments.filter(pub_date__date=date).count() for date in dates]
 
         context['user_kpd'] = round(likes_count / views_count, 4)
         context['views_count'] = views_count
@@ -385,7 +388,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         return self.get_object().author
 
 
-class LikedPostList(LoginRequiredMixin, ListView):
+class LikedPostList(LoginRequiredMixin, ListView, AnnotateUserLikesMixin):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'
@@ -393,7 +396,7 @@ class LikedPostList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('login')
 
     def get_queryset(self):
-        return self.model.objects.filter(likes__user=self.request.user)
+        return super().get_queryset().filter(likes__user=self.request.user)
 
 
 from posts.models import PostTag, Post

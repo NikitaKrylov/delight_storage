@@ -43,11 +43,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("дата рождения"), blank=True, null=True)
     start_date = models.DateField(
         verbose_name=_("дата регистрации"), auto_now_add=True)
-    ignored_tags = models.ManyToManyField(
-        "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    ignored_tags = models.ManyToManyField(
+                "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+
+    # settings = models.OneToOneField('UserSettings', verbose_name=_("Настройки пользователя"), on_delete=models.PROTECT, related_name='user')
 
     objects = UserManager()
 
@@ -71,6 +73,18 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+# class UserSettings(models.Model):
+#     class Meta:
+#         verbose_name = _("Настройки пользователя")
+#         verbose_name_plural = _("Настройки пользователей")
+#
+#     ignored_tags = models.ManyToManyField(
+#         "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+#
+#     def __str__(self):
+#         return "Настройки пользователя {}".format(self.user.username)
 
 
 class ClientIP(models.Model):
@@ -111,8 +125,9 @@ class Notification(AbstractNotification):
         SUBSCRIPTION = 'SB', _('Подписка')
         NEW_POST = 'NP', _('Новый пост')
         ACCOUNT = 'AC', _('Аккаунт')
+        COMMENT = 'CM', _('Комментарий')
 
-    type = models.CharField(_("тип уведомления"), choices=Types.choices, max_length=20)
+    type = models.CharField(_("тип уведомления"), choices=Types.choices, max_length=10)
 
     class Meta(AbstractNotification.Meta):
         abstract = False

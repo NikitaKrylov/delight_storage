@@ -8,10 +8,12 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
-from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin
+from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesMixin
 from .models import Post, Comment, PostTag, Like
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
+
+from accounts.services import get_client_ip
 
 
 def create_post_complaint(request, *args, **kwargs):
@@ -138,8 +140,20 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
 
-class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
+        if request.user.is_authenticated:
+            if self.object.author == request.user and self.object.status != Post.STATUS.PUBLISHED:
+                return redirect('change_post', pk=self.object.pk)
+
+            elif self.object.status != Post.STATUS.PUBLISHED:
+                raise Http404
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+class PostList(PostQueryMixin, AnnotateUserLikesMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -155,15 +169,16 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
         context['title'] = "Посты"
         return context
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.annotate(
-            has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user))
-        )
-        return queryset
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     if self.request.user.is_authenticated:
+    #         queryset = queryset.annotate(
+    #             has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user ))
+    #         )
+    #     return queryset
 
 
-class SearchPostList(PostQueryMixin, PostFilterFormMixin, ListView):
+class SearchPostList(PostQueryMixin, AnnotateUserLikesMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
