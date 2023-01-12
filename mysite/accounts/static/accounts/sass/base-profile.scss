@@ -145,7 +145,7 @@ $max-width-сontainer: 1920;
 		height: 100%;
 	}
 	
-	&__button {
+	&__text {
 		color: var(--white);
 	}
 
@@ -163,6 +163,13 @@ $max-width-сontainer: 1920;
 				font-size: 16px;
 			}
 		}
+	}
+}
+
+.logout-btn {
+	padding: 0px 12px;
+	@media (min-width: $width-mobile) {
+		padding: 10px 12px;
 	}
 }
 

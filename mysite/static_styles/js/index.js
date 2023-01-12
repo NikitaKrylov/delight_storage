@@ -157,5 +157,101 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
-
 autosize($('.textarea-autosize'));
+
+// создание всплывающих сообщений
+function customAlert(message) {
+
+    // let alertText = $(`<div class="alert">
+    //                         <div class="alert__inner">
+    //                             <div class="alert__content">
+    //                                 ${message}
+    //                             </div>
+    //                         </div>
+    //                     </div>`)
+
+    // $(body).prepend(alertText)
+
+    // if (wait && typeof wait === 'boolean') {
+    //     $('.alert__content').prepend($('<div class="alert__close">X</div>'))
+
+    //     $('.alert__close').on('click', () => {
+    //         alertText.remove()
+    //     })
+
+    //     document.querySelector('.alert').addEventListener('swiped-up', function (e) {
+    //         alertText.remove()
+    //     })
+
+    // } else {
+    //     alertText.delay(2000).slideUp('fast', () => alertText.remove())
+    // }
+
+    let baseAlert = $(`<div class="alert">
+                            <div class="alert__inner">
+                                <div class="alert__content">
+                                    ${message}
+                                </div>
+                            </div>
+                        </div>`)
+
+    return baseAlert;
+
+}
+
+function hideAlert(alert, time) {
+    alert.css('transform', 'translate(0px, -100%')
+    alert.animate({
+        'opacity': '0',
+    }, time / 100)
+}
+
+function messagePopup(message, wait = false, viewTime = 2000) {
+
+    let alertText = customAlert(`<div class="flash-message">
+                                    <span>${message}</span>
+                                </div>`)
+
+    // alertText.css('transition', `${viewTime / 10000}s`)
+
+    alertText.css('transition', `transform ${viewTime / 10000}s, opacity ${viewTime / 10000}s`)
+    // alertText.css('transition', `opacity 10s`)
+
+    $(body).prepend(alertText)
+
+    if (wait && typeof wait === 'boolean') {
+        $('.alert__content').prepend($('<div class="alert__close"><i class="fa-solid fa-xmark"></i></div>'))
+
+        $('.alert__close').on('click', () => {
+            alertText.remove()
+        })
+
+        document.querySelector('.alert').addEventListener('swiped-up', function (e) {
+            // alertText.css('transform', 'translate(0px, -100%')
+            // alertText.animate({
+            //     'opacity': '0',
+            // }, viewTime / 100)
+            hideAlert(alertText, viewTime)
+            setTimeout(() => alertText.remove(), viewTime / 10)
+        })
+
+    } else {
+        // alertText.delay(viewTime).slideUp(viewTime, () => alertText.remove())
+
+        setTimeout(function () {
+            // alertText.css('transform', 'translate(0px, -100%')
+            // alertText.animate({
+            //     'opacity': '0',
+            // }, viewTime / 100)
+            hideAlert(alertText, viewTime)
+            setTimeout(() => alertText.remove(), viewTime / 10)
+        }, viewTime)
+
+        // alertText.delay(viewTime).css('transform', 'translate(0px, -100%')
+        // alertText.animate({
+        //     'opacity': '0',
+        // }, viewTime / 1000)
+
+        // setTimeout(() => alertText.remove(), viewTime)
+    }
+}

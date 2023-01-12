@@ -1,3 +1,4 @@
+from posts.models import PostTag, Post
 import datetime
 import json
 from django.contrib.auth import logout
@@ -67,7 +68,8 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         _redirect = super().form_valid(form)
-        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+        user = authenticate(
+            username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
         if user is not None and user.is_active:
             login(self.request, user, backend='mysite.backends.AuthBackend')
             return _redirect
@@ -130,7 +132,8 @@ class UserProfileView(LoginRequiredMixin, FormView):
         })
 
     def post(self, request, *args, **kwargs):
-        form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = EditUserProfileForm(
+            request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
         return redirect('profile')
@@ -139,7 +142,8 @@ class UserProfileView(LoginRequiredMixin, FormView):
 @login_required(login_url=reverse_lazy('login'))
 def edit_user_form(request, *args, **kwargs):
     ctx = {}
-    form = EditUserProfileForm(request.POST, request.FILES, instance=request.user)
+    form = EditUserProfileForm(
+        request.POST, request.FILES, instance=request.user)
 
     ctx['has_changed'] = form.has_changed()
     if form.is_valid() and form.has_changed():
@@ -157,8 +161,10 @@ class UserNotificationListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Уведомления'
         user = self.request.user
-        context['unread'] = user.notifications.filter(unread=True, deleted=False)
-        context['readed'] = user.notifications.filter(unread=False, deleted=False)
+        context['unread'] = user.notifications.filter(
+            unread=True, deleted=False)
+        context['readed'] = user.notifications.filter(
+            unread=False, deleted=False)
         return context
 
     def get_queryset(self):
@@ -215,9 +221,12 @@ class UserPostListView(LoginRequiredMixin, ListView):
         user = self.request.user
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Мои посты'
-        context['likes_amount'] = Post.objects.count_field_elements('likes', user)
-        context['views_amount'] = Post.objects.count_field_elements('views', user)
-        context['comments_amount'] = Post.objects.count_field_elements('comments', user)
+        context['likes_amount'] = Post.objects.count_field_elements(
+            'likes', user)
+        context['views_amount'] = Post.objects.count_field_elements(
+            'views', user)
+        context['comments_amount'] = Post.objects.count_field_elements(
+            'comments', user)
         return context
 
 
@@ -278,7 +287,8 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST)
-        image_formset = ImageFileFormSet(request.POST, request.FILES, instance=form.instance)
+        image_formset = ImageFileFormSet(
+            request.POST, request.FILES, instance=form.instance)
         delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and image_formset.is_valid():
@@ -332,7 +342,8 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
                 if post.delay:
                     post.delay.delete()
                     post.delay = None
-                    if post.status == Post.STATUS.DEFERRED: post.status = Post.STATUS.PUBLISHED
+                    if post.status == Post.STATUS.DEFERRED:
+                        post.status = Post.STATUS.PUBLISHED
                     post.save()
 
             image_formset = ImageFileFormSet(
@@ -368,13 +379,16 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         likes_count = self.object.likes.count()
 
         context['llabels'] = fdates
-        context['lvalues'] = [self.object.likes.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+        context['lvalues'] = [self.object.likes.filter(
+            creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
 
         context['vlabels'] = fdates
-        context['vvalues'] = [self.object.views.filter(creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
+        context['vvalues'] = [self.object.views.filter(
+            creation_date__day=date.day, creation_date__month=date.month, creation_date__year=date.year).count() for date in dates]
 
         context['clabels'] = fdates
-        context['cvalues'] = [self.object.comments.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count() for date in dates]
+        context['cvalues'] = [self.object.comments.filter(
+            pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count() for date in dates]
 
         context['user_kpd'] = round(likes_count / views_count, 4)
         context['views_count'] = views_count
@@ -396,9 +410,6 @@ class LikedPostList(LoginRequiredMixin, ListView):
         return self.model.objects.filter(likes__user=self.request.user)
 
 
-from posts.models import PostTag, Post
-
-
 class DashBoardView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts/dashboard.html'
     login_url = reverse_lazy('login')
@@ -415,17 +426,21 @@ class DashBoardView(LoginRequiredMixin, TemplateView):
         dates = [now - datetime.timedelta(days=i) for i in range(32)]
         fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
         posts = Post.objects.filter(author=self.request.user)
-        subscriptions = Subscription.objects.filter(subscription_object=self.request.user, status=1)
+        subscriptions = Subscription.objects.filter(
+            subscription_object=self.request.user, status=1)
 
         # views
         context['views_labels'] = fdates
-        context['views_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(views=Count('views'))['views'] for date in dates]
+        context['views_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
+            views=Count('views'))['views'] for date in dates]
 
         # likes
         context['likes_labels'] = fdates
-        context['likes_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(likes=Count('likes'))['likes'] for date in dates]
+        context['likes_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
+            likes=Count('likes'))['likes'] for date in dates]
 
         context['sub_labels'] = fdates
-        context['sub_values'] = [subscriptions.filter(start_date__day=date.day, start_date__month=date.month, start_date__year=date.year).count() for date in dates]
+        context['sub_values'] = [subscriptions.filter(
+            start_date__day=date.day, start_date__month=date.month, start_date__year=date.year).count() for date in dates]
 
         return context

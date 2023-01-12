@@ -24,7 +24,7 @@
         </div>
         <div class="account-header__user">
             <div class="account-user">
-                <div сlass="account-user__avatar-wrapper">
+                <div class="account-user__avatar-wrapper">
                     {% if request.user.avatar %}
                     <img class="account-user__avatar avatar" src="{{request.user.avatar.url}}">
                     {% else %}
@@ -41,12 +41,11 @@
                 </div>
             </div>
 
-            <div class="dark-btn button">
+            <div class="logout-btn dark-btn button">
                 <a href="{% url 'logout' %}" class="dark-btn__link"></a>
                 <div class="dark-btn__icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                 <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
-                <span class="dark-btn__button">Выход</span>
-
+                <span class="dark-btn__text">Выход</span>
             </div>
         </div>
         <div class="account-header__nav">
@@ -54,23 +53,28 @@
                 <div class="account-nav__item">
 
                     {% url 'profile' as profile_url%}
-                    <a href="{{profile_url}}" class="account-nav__link {{request|mark_current_page:profile_url}}">Профиль</a>
+                    <a href="{{profile_url}}"
+                        class="account-nav__link {{request|mark_current_page:profile_url}}">Профиль</a>
                 </div>
                 <div class="account-nav__item">
                     {% url 'user_notifications' as notifications_url %}
-                    <a href="{{notifications_url}}" class="account-nav__link {{request|mark_current_page:notifications_url}}}">Уведомления</a>
+                    <a href="{{notifications_url}}"
+                        class="account-nav__link {{request|mark_current_page:notifications_url}}}">Уведомления</a>
                 </div>
                 <div class="account-nav__item">
                     {% url 'user_liked_posts' as user_liked_posts_url %}
-                    <a href="{{ user_liked_posts_url }}" class="account-nav__link {{request|mark_current_page:user_liked_posts_url}}">Лайки</a>
+                    <a href="{{ user_liked_posts_url }}"
+                        class="account-nav__link {{request|mark_current_page:user_liked_posts_url}}">Лайки</a>
                 </div>
                 <div class="account-nav__item">
                     {% url 'self_user_posts' as self_user_posts_url %}
-                    <a href="{{self_user_posts_url}}" class="account-nav__link {{request|mark_current_page:self_user_posts_url}}">Мои посты</a>
+                    <a href="{{self_user_posts_url}}"
+                        class="account-nav__link {{request|mark_current_page:self_user_posts_url}}">Мои посты</a>
                 </div>
                 <div class="account-nav__item">
                     {% url 'user_subscriptions' as user_subscriptions_url %}
-                    <a href="{{user_subscriptions_url}}" class="account-nav__link {{request|mark_current_page:user_subscriptions_url}}">Подписки</a>
+                    <a href="{{user_subscriptions_url}}"
+                        class="account-nav__link {{request|mark_current_page:user_subscriptions_url}}">Подписки</a>
                 </div>
                 <div class="account-nav__item">
                     <a href="#" class="account-nav__link">Настройки</a>

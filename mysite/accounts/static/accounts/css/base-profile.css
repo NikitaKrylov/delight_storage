@@ -126,7 +126,7 @@
   width: 100%;
   height: 100%;
 }
-.dark-btn__button {
+.dark-btn__text {
   color: var(--white);
 }
 .dark-btn__icon {
@@ -140,6 +140,15 @@
   }
   .dark-btn__icon {
     font-size: 16px;
+  }
+}
+
+.logout-btn {
+  padding: 0px 12px;
+}
+@media (min-width: 991px) {
+  .logout-btn {
+    padding: 10px 12px;
   }
 }
 

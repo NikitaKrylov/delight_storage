@@ -761,3 +761,46 @@ a {
   padding: 10px 0;
   border-radius: 5px;
 }
+
+.alert {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 120;
+}
+.alert__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 5px;
+  margin-top: 20px;
+}
+.alert__content {
+  position: relative;
+  background-color: var(--light-violet);
+  border: 1px solid white;
+  color: var(--white);
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+          box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+}
+.alert__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.flash-message {
+  text-align: center;
+}

@@ -3,135 +3,44 @@
 
 {% block content %}
 
+<!-- <div>
+    <canvas id="all-dashboard" aria-label="Общая статистика"></canvas>
+</div> -->
 
-    <div>
-        <canvas id="dashboard1" aria-label="Кол-во тегов"></canvas>
-    </div>
+<div>
+    <canvas id="dashboard1" aria-label="Кол-во тегов"></canvas>
+</div>
 
-    <div>
-        <canvas id="dashboard2"></canvas>
-    </div>
+<div>
+    <canvas id="dashboard2"></canvas>
+</div>
 
-    <div>
-        <canvas id="dashboard3"></canvas>
-    </div>
+<div>
+    <canvas id="dashboard3"></canvas>
+</div>
 
-    <div>
-        <canvas id="dashboard4"></canvas>
-    </div>
+<div>
+    <canvas id="dashboard4"></canvas>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        const ctx = document.getElementById('dashboard1');
-
-        new Chart( ctx, {
-            type: 'bar',
-            data: {
-                labels: {{tlabels|safe}},
-                datasets: [{
-                    label: 'Постов',
-                    data: {{tvalues}},
-                    borderWidth: 1,
-                }],
-            },
-
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-
-        });
-    </script>
-
-    <script>
-        const ctx1 = document.getElementById('dashboard2');
-
-        new Chart( ctx1, {
-            type: 'line',
-            data: {
-                labels: {{views_labels|safe}},
-                datasets: [{
-                    label: 'Количество просмотров за день',
-                    data: {{views_values}},
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                animations: {
-                  tension: {
-                    duration: 2000,
-                    easing: 'linear',
-                    from: 0.5,
-                    to: 0,
-                    loop: true
-                  }
-                },
-
-              }
-
-        });
-    </script>
+{% block script-page %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'accounts/js/statistics.js' %}"></script>
 
 <script>
-        const ctx2 = document.getElementById('dashboard3');
+    const tlabelsList = {{ tlabels| safe}};
+    const tvaluesList = {{ tvalues| safe}};
 
-        new Chart( ctx2, {
-            type: 'line',
-            data: {
-                labels: {{likes_labels|safe}},
-                datasets: [{
-                    label: 'Количество лайков за день',
-                    data: {{likes_values}},
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                animations: {
-                  tension: {
-                    duration: 2000,
-                    easing: 'linear',
-                    from: 0.5,
-                    to: 0,
-                    loop: true
-                  }
-                },
+    const views_labelsList = {{ views_labels| safe}};
+    const views_valuesList = {{ views_values| safe}};
 
-              }
+    const likes_labelsList = {{ likes_labels| safe}};
+    const likes_valuesList = {{ likes_values| safe}};
 
-        });
-    </script>
-
-    <script>
-        const ctx3 = document.getElementById('dashboard4');
-
-        new Chart( ctx3, {
-            type: 'line',
-            data: {
-                labels: {{sub_labels|safe}},
-                datasets: [{
-                    label: 'Количество подписок за день',
-                    data: {{sub_values}},
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                animations: {
-                  tension: {
-                    duration: 2000,
-                    easing: 'linear',
-                    from: 0.5,
-                    to: 0,
-                    loop: true
-                  }
-                },
-
-              }
-
-        });
-    </script>
+    const sub_labelsList = {{ sub_labels| safe}};
+    const sub_valuesList = {{ sub_values| safe}};
+</script>
+{% endblock %}
 
 {% endblock %}

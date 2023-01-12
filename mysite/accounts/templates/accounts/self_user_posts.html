@@ -37,6 +37,9 @@
           </div>
         </div>
       </div>
+      <!-- <div>
+        <canvas id="all-dashboard" aria-label="Общая статистика"></canvas>
+      </div> -->
     </div>
     <div class="my-posts-info__item add-post">
       <div class="my-posts-info__title title">
@@ -141,6 +144,21 @@
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'posts/libs/infinite.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'posts/js/gallery.js' %}"></script>
 <script src="{% static 'accounts/js/user-posts.js' %}"></script>
+
+<script>
+  const tlabelsList = {{ tlabels| safe}};
+  const tvaluesList = {{ tvalues| safe}};
+
+  const views_labelsList = {{ views_labels| safe}};
+  const views_valuesList = {{ views_values| safe}};
+
+  const likes_labelsList = {{ likes_labels| safe}};
+  const likes_valuesList = {{ likes_values| safe}};
+
+  const sub_labelsList = {{ sub_labels| safe}};
+  const sub_valuesList = {{ sub_values| safe}};
+</script>
 {% endblock %}

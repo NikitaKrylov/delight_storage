@@ -109,9 +109,12 @@ class HomeView(PostFilterFormMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['popular_tags'] = PostTag.objects.best_by('likes')[:self.tags_batch_size]
-        context['popular_posts'] = Post.objects.annotate(likes_count=Count(F('likes'))).order_by('-likes_count')[:self.post_batch_size]
-        context['popular_authors'] = User.objects.annotate(subscribers_amount=Count(F('user_subscriptions'))).order_by('-subscribers_amount')[:self.author_batch_size]
+        context['popular_tags'] = PostTag.objects.best_by('likes')[
+            :self.tags_batch_size]
+        context['popular_posts'] = Post.objects.annotate(likes_count=Count(
+            F('likes'))).order_by('-likes_count')[:self.post_batch_size]
+        context['popular_authors'] = User.objects.annotate(subscribers_amount=Count(
+            F('user_subscriptions'))).order_by('-subscribers_amount')[:self.author_batch_size]
 
         return context
 
@@ -157,9 +160,11 @@ class PostList(PostQueryMixin, PostFilterFormMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.annotate(
-            has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user))
-        )
+        if self.request.user.is_authenticated:
+            queryset = queryset.annotate(
+                has_like=Exists(Like.objects.filter(
+                    post=OuterRef('pk'), user=self.request.user))
+            )
         return queryset
 
 
@@ -213,5 +218,3 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
 
 #     def get_queryset(self):
 #         return super().get_queryset().filter(likes__user=self.request.user)
-
-
