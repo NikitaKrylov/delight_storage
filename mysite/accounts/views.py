@@ -26,7 +26,7 @@ from django.contrib.auth import login, authenticate
 
 from posts.models import Like
 
-from posts.mixins import AnnotateUserLikesMixin
+from posts.mixins import AnnotateUserLikesAndViewsMixin
 
 
 class SignatoryView(View):
@@ -204,7 +204,7 @@ def read_all_notification(request, *args, **kwargs):
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesMixin):
+class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
@@ -388,7 +388,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         return self.get_object().author
 
 
-class LikedPostList(LoginRequiredMixin, ListView, AnnotateUserLikesMixin):
+class LikedPostList(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'

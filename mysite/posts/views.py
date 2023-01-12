@@ -8,7 +8,9 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
-from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesMixin
+
+from .forms import SearchForm
+from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
@@ -153,7 +155,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class PostList(PostQueryMixin, AnnotateUserLikesMixin, PostFilterFormMixin, ListView):
+class PostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -169,16 +171,8 @@ class PostList(PostQueryMixin, AnnotateUserLikesMixin, PostFilterFormMixin, List
         context['title'] = "Посты"
         return context
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     if self.request.user.is_authenticated:
-    #         queryset = queryset.annotate(
-    #             has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user ))
-    #         )
-    #     return queryset
 
-
-class SearchPostList(PostQueryMixin, AnnotateUserLikesMixin, PostFilterFormMixin, ListView):
+class SearchPostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'

@@ -2,6 +2,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from .models import ImageFile
 from posts.models import Post
+from django.forms import BaseInlineFormSet
 
 
 class PostImageWidget(forms.ClearableFileInput):
@@ -13,9 +14,13 @@ class ImageFileForm(forms.ModelForm):
         model = ImageFile
         fields = ['file']
         widgets = {
-            'file': PostImageWidget()
+            'file': PostImageWidget
         }
 
 
+class ImageInlineFormSet(BaseInlineFormSet):
+    deletion_widget = forms.CheckboxInput(attrs={"class": "huiii"})
+
+
 ImageFileFormSet = inlineformset_factory(
-    Post, ImageFile, form=ImageFileForm, extra=1)
+    Post, ImageFile, form=ImageFileForm, formset=ImageInlineFormSet, extra=1)

@@ -121,7 +121,12 @@
                         {{image_formset.management_form}}
                         {% for image_form in image_formset %}
                         <div class="add-image-form">
-                            {{image_form}}
+                            <div class="bighui">{{image_form.file.label}}</div>
+                            {{image_form.file}}
+                            {% if image_formset.can_delete %}
+                            <div class="penis">{{image_form.DELETE.label}}</div>
+                            {{image_form.DELETE}}
+                            {% endif %}
                         </div>
                         {% endfor %}
                         <button id="add-form" type="button">Add Image</button>
@@ -181,6 +186,7 @@
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <script src="{% static '/js/device.js' %}"></script>
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
+
 </body>
 
 </html>

@@ -7,8 +7,6 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
-from decimal import Decimal
-from accounts.models import Notification
 
 
 class PostManager(models.Manager):
@@ -32,7 +30,7 @@ class Post(models.Model):
     class STATUS(models.TextChoices):
         PUBLISHED = 'PB', _('опубликовано')
         DEFERRED = 'DF', _('отложено')
-        CONSIDERATION = 'CN', _('на рассмотрении')
+        CONSIDERATION = 'CN', _('черновик')
 
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     creation_date = models.DateTimeField(
