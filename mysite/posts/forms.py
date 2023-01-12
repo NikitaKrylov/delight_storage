@@ -56,3 +56,11 @@ class PostForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'textarea__input textarea-autosize', 'placeholder': 'Придумайте описание', 'cols': '20', 'rows': '2', }),
             'tags': forms.CheckboxSelectMultiple(attrs={"class": "tags-list__checkbox hidden-input three-pos-inp", "tabindex": -1, "data-state": 0, }),
         }
+
+
+class SearchForm(forms.Form):
+    ORDER_TYPES = (
+        ('asc', 'asc'),
+        ('desc', 'desc'),
+    )
+    order_by = forms.ChoiceField(choices=ORDER_TYPES)

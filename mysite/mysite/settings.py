@@ -9,8 +9,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import datetime
+import configparser
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
+
+
+config = configparser.ConfigParser(interpolation=None)
+config.read("config.ini")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4a=)p69rmcfa4$xm*d!wha)67wro8nypofk3yc_(r(@%g(-**j'
+SECRET_KEY = config['DEFAULT_DJANGO']['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -186,8 +191,8 @@ AUTHENTICATION_BACKENDS = [
 
 ]
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = '51463304'
-SOCIAL_AUTH_VK_OAUTH2_SECRET = '0qzM47xgGKNWrDJ2YXuT'
+SOCIAL_AUTH_VK_OAUTH2_KEY = config['SOCIAL_AUTH']['SOCIAL_AUTH_VK_OAUTH2_KEY']
+SOCIAL_AUTH_VK_OAUTH2_SECRET = config['SOCIAL_AUTH']['SOCIAL_AUTH_VK_OAUTH2_SECRET']
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 # memcache
@@ -234,7 +239,11 @@ else:
 
 
 # CELERY
-
-CELERY_BROKER_URL = "redis://127.0.0.1:6379"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
+CELERY_BROKER_URL = config['CELERY']['CELERY_BROKER_URL']
+CELERY_RESULT_BACKEND = config['CELERY']['CELERY_RESULT_BACKEND']
 PUBLISH_POST_SCHEDULE = 10.0 # seconds
+
+# TELETHON
+API_ID = config['TELETHON']['API_ID']
+API_HASH = config['TELETHON']['API_HASH']
+USERNAME = config['TELETHON']['USERNAME']

@@ -10,6 +10,17 @@
 {% endblock %}
 
 {% block content %}
+<div class="my-posts-info__item add-post">
+  <div class="my-posts-info__title title">Добавить пост</div>
+
+  <div class="add-post-container">
+    <!-- <div class="add-post-inner"> -->
+    <!-- </div> -->
+    <a href="{% url 'create_post' %}" class="add-post-btn">
+      <i class="add-post-btn__icon fa-solid fa-plus"></i>
+    </a>
+  </div>
+</div>
 {% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
@@ -61,16 +72,20 @@
       <div class="item-masonry infinite-item sizer4">
         <div class="item-masonry__wrapper">
           <div class="item-media-container">
-            <a class="item-media-container__link" href="{{post.get_absolute_url}}">
-              <div class="item-media-container__item">
-                <img style="object-fit: cover;" class="item-media-container__content lazy"
-                  src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                <!-- <video class="item-media-container__content video" width=100% height="100%"
+            {% if post.status != post.STATUS.PUBLISHED %}
+            <a class="item-media-container__link" href="{% url 'change_post' post.pk %}">
+              {% else %}
+              <a class="item-media-container__link" href="{{post.get_absolute_url}}">
+                {% endif %}
+                <div class="item-media-container__item">
+                  <img style="object-fit: cover;" class="item-media-container__content lazy"
+                    src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                  <!-- <video class="item-media-container__content video" width=100% height="100%"
                               src="{% static 'posts/images/video.mp4' %}"></video> -->
-                <div class="item-media-container__media-hover">
+                  <div class="item-media-container__media-hover">
+                  </div>
                 </div>
-              </div>
-            </a>
+              </a>
           </div>
           <div class="cover-item-gallery-container">
             {% if post.count_media > 1 %}
