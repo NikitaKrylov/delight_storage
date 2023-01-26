@@ -20,15 +20,21 @@
                     <div class="comment__control-btn">
                         <i class="fa-solid fa-ellipsis"></i>
                     </div>
-                    <div class="comment__control-list dropdown__list">
-                        <a href="#complaints-comment-window"
-                            class="comment__control-item dropdown__item popup-link">Пожаловаться</a>
+                    <ul class="comment__control-list dropdown__list">
+                        <li class="comment__control-item dropdown__item">
+                            <a href="#complaints-comment-window"
+                                class="comment__control-link dropdown__subitem popup-link">Пожаловаться</a>
+                        </li>
                         {% if request.user == comment.author %}
-                        <a class="comment__control-item dropdown__item">Редактировать</a>
-                        <a href="{% url 'delete_comment' comment.pk %}"
-                            class="comment__control-item dropdown__item">Удалить</a>
+                        <li class="comment__control-item dropdown__item">
+                            <a class="comment__control-link dropdown__subitem">Редактировать</a>
+                        </li>
+                        <li class="comment__control-item dropdown__item">
+                            <a href="{% url 'delete_comment' comment.pk %}"
+                                class="comment__control-link dropdown__subitem">Удалить</a>
+                        </li>
                         {% endif %}
-                    </div>
+                    </ul>
                 </div>
             </div>
             <div class="comment__content">

@@ -49,37 +49,36 @@
             </div>
         </div>
         <div class="account-header__nav">
-            <div class="account-nav">
-                <div class="account-nav__item">
-
+            <ul class="account-nav">
+                <li class="account-nav__item">
                     {% url 'profile' as profile_url%}
                     <a href="{{profile_url}}"
                         class="account-nav__link {{request|mark_current_page:profile_url}}">Профиль</a>
-                </div>
-                <div class="account-nav__item">
+                </li>
+                <li class="account-nav__item">
                     {% url 'user_notifications' as notifications_url %}
                     <a href="{{notifications_url}}"
                         class="account-nav__link {{request|mark_current_page:notifications_url}}}">Уведомления</a>
-                </div>
-                <div class="account-nav__item">
+                </li>
+                <li class="account-nav__item">
                     {% url 'user_liked_posts' as user_liked_posts_url %}
                     <a href="{{ user_liked_posts_url }}"
                         class="account-nav__link {{request|mark_current_page:user_liked_posts_url}}">Лайки</a>
-                </div>
-                <div class="account-nav__item">
+                </li>
+                <li class="account-nav__item">
                     {% url 'self_user_posts' as self_user_posts_url %}
                     <a href="{{self_user_posts_url}}"
                         class="account-nav__link {{request|mark_current_page:self_user_posts_url}}">Мои посты</a>
-                </div>
-                <div class="account-nav__item">
+                </li>
+                <li class="account-nav__item">
                     {% url 'user_subscriptions' as user_subscriptions_url %}
                     <a href="{{user_subscriptions_url}}"
                         class="account-nav__link {{request|mark_current_page:user_subscriptions_url}}">Подписки</a>
-                </div>
-                <div class="account-nav__item">
+                </li>
+                <li class="account-nav__item">
                     <a href="#" class="account-nav__link">Настройки</a>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="account-body">

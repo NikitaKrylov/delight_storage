@@ -19,7 +19,8 @@ class ImageFileForm(forms.ModelForm):
 
 
 class ImageInlineFormSet(BaseInlineFormSet):
-    deletion_widget = forms.CheckboxInput(attrs={"class": "huiii"})
+    deletion_widget = forms.CheckboxInput(
+        attrs={"class": "add-image__del-btn checkbox__input hidden-input"})
 
 
 ImageFileFormSet = inlineformset_factory(

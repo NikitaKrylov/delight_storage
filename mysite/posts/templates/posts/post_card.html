@@ -1,20 +1,19 @@
 {% load static %}
 
-<div class="item-masonry infinite-item sizer4">
-    <div class="item-masonry__wrapper">
-        <div class="item-media-container">
-            <a class="item-media-container__link" href="{{post.get_absolute_url}}">
-                <div class="item-media-container__item">
-                    <img style="object-fit: cover;" class="item-media-container__content lazy"
-                        src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                    <!-- <video class="item-media-container__content video" width=100% height="100%"
+<div class="gallery__item item-masonry infinite-item">
+    <div class="gallery__content">
+        <div class="gallery__box-media">
+            <a class="gallery__link" href="{{post.get_absolute_url}}">
+                <div class="gallery__thumbnail">
+                    <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                    <!-- <video class="gallery__media video" width=100% height="100%"
                         src="{% static 'posts/images/video.mp4' %}"></video> -->
-                    <div class="item-media-container__media-hover">
+                    <div class="gallery__media-overlay">
                     </div>
                 </div>
             </a>
         </div>
-        <div class="cover-item-gallery-container">
+        <div class="gallery__actions cover-item-gallery-container">
             {% if post.count_media > 1 %}
             <div class="dots-container">
                 <ul class="dots-items">
@@ -33,8 +32,7 @@
                                 <div class="post-gallery__author">
                                     <a href="" class="post-gallery__link">
                                         {% if post.author.avatar %}
-                                        <img class="post-gallery__avatar avatar"
-                                            src="{{post.author.avatar.url}}">
+                                        <img class="post-gallery__avatar avatar" src="{{post.author.avatar.url}}">
                                         {% else %}
                                         <img class="post-gallery__avatar avatar"
                                             src="{% static 'posts/images/icon/avatar.png' %}">
@@ -53,7 +51,8 @@
                                     <span><i class="fa-regular fa-eye"></i></span>
                                 </div>
                             </div>
-                            <button class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
+                            <button
+                                class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
                                 data-href="{{ post.get_absolute_like_url }}">
                                 <!-- <i class="fa-regular fa-heart"></i> -->
                                 <div class="_39asK">

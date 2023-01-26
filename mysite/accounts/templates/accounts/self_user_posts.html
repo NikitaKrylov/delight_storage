@@ -10,18 +10,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="my-posts-info__item add-post">
-  <div class="my-posts-info__title title">Добавить пост</div>
 
-  <div class="add-post-container">
-    <!-- <div class="add-post-inner"> -->
-    <!-- </div> -->
-    <a href="{% url 'create_post' %}" class="add-post-btn">
-      <i class="add-post-btn__icon fa-solid fa-plus"></i>
-    </a>
-  </div>
-</div>
-{% if posts %}
 <div class="my-posts-container">
   <div class="my-posts-info">
     <div class="my-posts-info__item my-post-stats">
@@ -65,29 +54,31 @@
       </div>
     </div>
   </div>
+  {% if posts %}
+
   <div class="container-gallery">
     <section class="gallery infinite-container">
       {% for post in posts %}
 
-      <div class="item-masonry infinite-item sizer4">
-        <div class="item-masonry__wrapper">
-          <div class="item-media-container">
-            {% if post.status != post.STATUS.PUBLISHED %}
-            <a class="item-media-container__link" href="{% url 'change_post' post.pk %}">
-              {% else %}
-              <a class="item-media-container__link" href="{{post.get_absolute_url}}">
-                {% endif %}
-                <div class="item-media-container__item">
-                  <img style="object-fit: cover;" class="item-media-container__content lazy"
-                    src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                  <!-- <video class="item-media-container__content video" width=100% height="100%"
-                              src="{% static 'posts/images/video.mp4' %}"></video> -->
-                  <div class="item-media-container__media-hover">
-                  </div>
-                </div>
-              </a>
+      <div class="gallery__item item-masonry infinite-item">
+        <div class="gallery__content">
+          {% if post.status != post.STATUS.PUBLISHED %}
+          <div class="gallery__status">
+            черновик
           </div>
-          <div class="cover-item-gallery-container">
+          {% endif %}
+          <div class="gallery__box-media">
+            <a class="gallery__link" href="{{post.get_absolute_url}}">
+              <div class="gallery__thumbnail">
+                <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                <!-- <video class="gallery__media video" width=100% height="100%"
+                            src="{% static 'posts/images/video.mp4' %}"></video> -->
+                <div class="gallery__media-overlay">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="gallery__actions cover-item-gallery-container">
             {% if post.count_media > 1 %}
             <div class="dots-container">
               <ul class="dots-items">
@@ -101,6 +92,22 @@
             <div class="cover-item-gallery">
               <div>
                 <div class="cover-item-gallery__items">
+                  <div class="cover-item-gallery__author">
+                    <div class="post-gallery">
+                      <div class="post-gallery__author">
+                        <a href="" class="post-gallery__link">
+                          {% if post.author.avatar %}
+                          <img class="post-gallery__avatar avatar" src="{{post.author.avatar.url}}">
+                          {% else %}
+                          <img class="post-gallery__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                          {% endif %}
+                        </a>
+                      </div>
+                      <!-- <div class="gallery__author-name">
+                                            <span style="display: contents;">nickname</span>
+                                        </div> -->
+                    </div>
+                  </div>
                   <div class="cover-item-gallery__LC">
                     <div class="post-views">
                       <div class="_39asK">
@@ -108,17 +115,26 @@
                         <span><i class="fa-regular fa-eye"></i></span>
                       </div>
                     </div>
-                  </div>
-                  <div class="cover-item-gallery__items-control">
-                    <a href="#" class="cover-item-gallery__item-control tooltip" aria-label="Редактировать">
-                      <span><i class="fa-solid fa-pen-to-square"></i></span>
-                    </a>
-                    <a href="#" class="cover-item-gallery__item-control tooltip" aria-label="Статистика">
-                      <span><i class="fa-solid fa-chart-simple"></i></span>
-                    </a>
-                    <a href="#" class="cover-item-gallery__item-control button-red tooltip" aria-label="Удалить">
-                      <span><i class="fa-solid fa-trash-can"></i></span>
-                    </a>
+                    <button
+                      class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
+                      data-href="{{ post.get_absolute_like_url }}">
+                      <!-- <i class="fa-regular fa-heart"></i> -->
+                      <div class="_39asK">
+                        <span class="like-cont-info">
+                          <span class="like-cont__likes-number">{{post.likes.count}}</span>
+                        </span>
+                        <i class="like-btn__heart">
+                          <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+                            <path
+                              d='M244 84L255.1 96L267.1 84.02C300.6 51.37 347 36.51 392.6 44.1C461.5 55.58 512 115.2 512 185.1V190.9C512 232.4 494.8 272.1 464.4 300.4L283.7 469.1C276.2 476.1 266.3 480 256 480C245.7 480 235.8 476.1 228.3 469.1L47.59 300.4C17.23 272.1 0 232.4 0 190.9V185.1C0 115.2 50.52 55.58 119.4 44.1C164.1 36.51 211.4 51.37 244 84C243.1 84 244 84.01 244 84L244 84zM255.1 163.9L210.1 117.1C188.4 96.28 157.6 86.4 127.3 91.44C81.55 99.07 48 138.7 48 185.1V190.9C48 219.1 59.71 246.1 80.34 265.3L256 429.3L431.7 265.3C452.3 246.1 464 219.1 464 190.9V185.1C464 138.7 430.4 99.07 384.7 91.44C354.4 86.4 323.6 96.28 301.9 117.1L255.1 163.9z' />
+                          </svg>
+                          <svg class="like-btn__pressed" xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+                            <path
+                              d='M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z' />
+                          </svg>
+                        </i>
+                      </div>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -144,26 +160,28 @@
     </div>
     {% endif %}
   </div>
-</div>
-{% else %}
-<div class="posts-not-found">
-  <span>Постов нет</span>
-  <div class="posts-not-found__icon">
-    <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+
+  {% else %}
+  <div class="posts-not-found">
+    <span>Постов нет</span>
+    <div class="posts-not-found__icon">
+      <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+    </div>
   </div>
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}
 
 {% block script-page %}
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'posts/libs/infinite.min.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 <script src="{% static 'posts/js/gallery.js' %}"></script>
+<script src="{% static 'posts/js/like.js' %}"></script>
 <script src="{% static 'accounts/js/user-posts.js' %}"></script>
 
-<script>
+<!-- <script>
   const tlabelsList = {{ tlabels| safe}};
   const tvaluesList = {{ tvalues| safe}};
 
@@ -175,5 +193,5 @@
 
   const sub_labelsList = {{ sub_labels| safe}};
   const sub_valuesList = {{ sub_values| safe}};
-</script>
+</script> -->
 {% endblock %}

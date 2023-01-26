@@ -29,3 +29,10 @@ Array.prototype.forEach.call(inputs, function (input) {
         input.querySelector('.input-file__text').innerText = 'Красавчик'
     });
 });
+
+
+// инициализации календаря
+if (body.classList.contains('_pc')) {
+    $('#id_birth_date').attr('type', 'text')
+    new AirDatepicker('#id_birth_date');
+}

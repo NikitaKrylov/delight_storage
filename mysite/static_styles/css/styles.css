@@ -201,12 +201,6 @@ body::-webkit-scrollbar-thumb,
 .wrapper {
   max-width: 1920px;
   margin: 0 auto;
-  padding: 0 8px;
-}
-@media (min-width: 991px) {
-  .wrapper {
-    padding: 0 20px;
-  }
 }
 
 a {
@@ -337,6 +331,52 @@ a {
 
 .button-green {
   color: var(--enable) !important;
+}
+
+.dark-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  gap: 10px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+  padding: 10px 12px;
+  font-size: 14px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--bg-light-primary-default);
+  background-color: transparent;
+}
+.dark-btn:hover {
+  background-color: var(--bg-btn-default);
+}
+.dark-btn__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.dark-btn__text {
+  color: var(--white);
+}
+.dark-btn__icon {
+  font-size: 14px;
+  color: var(--error-light);
+}
+@media (min-width: 991px) {
+  .dark-btn {
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+  .dark-btn__icon {
+    font-size: 16px;
+  }
 }
 
 .line {
@@ -554,7 +594,9 @@ a {
 }
 
 .title {
-  padding: 5px 0;
+  display: inline-block;
+  padding: 3px 0;
+  margin: 5px 0;
   font-size: 24px;
   font-weight: 600;
   font-family: "CirceRegular";
@@ -584,6 +626,8 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
   min-width: 50%;
   padding: 4px 10px 4px 5px;
   -webkit-box-align: center;
@@ -614,6 +658,9 @@ a {
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   margin-right: 10px;
+}
+.checkbox__indicator:hover {
+  border: 2px solid var(--light-violet);
 }
 .checkbox__icon {
   fill: var(--white);
@@ -744,14 +791,25 @@ a {
   padding: 10px 0;
   border-radius: 5px;
   margin-top: 5px;
+  background-color: var(--bg-light-primary-default);
+  min-width: 160px;
+  border: none;
 }
 .dropdown__item {
   cursor: pointer;
   position: relative;
-  padding: 5px 20px;
+}
+.dropdown__item:hover {
+  background-color: var(--bg-light-secondary-default);
 }
 .dropdown__item:hover .dropdown__sublist {
   display: block;
+}
+.dropdown__subitem {
+  display: block;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: var(--white);
 }
 .dropdown__sublist {
   display: none;

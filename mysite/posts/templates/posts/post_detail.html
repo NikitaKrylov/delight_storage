@@ -201,28 +201,28 @@
                         <div class="post-complaints__button">
                             <i class="fa-solid fa-ellipsis"></i>
                         </div>
-                        <div class="post-complaints__list dropdown__list">
+                        <ul class="post-complaints__list dropdown__list">
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
-                            <div class="post-complaints__item">
+                            <li class="post-complaints__item dropdown__item">
                                 <a href="#complaints-post-window"
-                                    class="post-complaints__link dropdown__item popup-link">Пожаловаться</a>
-                            </div>
+                                    class="post-complaints__link dropdown__subitem popup-link">Пожаловаться</a>
+                            </li>
                             {% if request.user == post.author %}
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
-                            <div class="post-complaints__item">
+                            <li class="post-complaints__item dropdown__item">
                                 <a href="{% url 'change_post' post.pk %}"
-                                    class="post-complaints__link dropdown__item">Редактировать</a>
-                            </div>
+                                    class="post-complaints__link dropdown__subitem">Редактировать</a>
+                            </li>
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
-                            <div class="post-complaints__item">
+                            <li class="post-complaints__item dropdown__item">
                                 <a href="{% url 'delete_post' post.pk %}"
-                                    class="post-complaints__link dropdown__item">Удалить</a>
-                            </div>
+                                    class="post-complaints__link dropdown__subitem">Удалить</a>
+                            </li>
                             {% endif %}
-                        </div>
+                        </ul>
                     </div>
                 </div>
             </div>

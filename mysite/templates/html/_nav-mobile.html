@@ -1,15 +1,56 @@
-<aside id="nav-menu-mobile">
-    <div class="header-menu">
-        <div class="header-menu__title">BestHntArt</div>
-        <span class="close-ham-menu">
-            <i class="fa-solid fa-xmark close-icon"></i>
-        </span>
-    </div>
-    <div class="nav-menu-links menu-wrapper menu-section">
-        <a href="{% url 'home' %}" class="nav-menu__link"><i class="fa-solid fa-house"></i>Главня</a>
-        <a href="{% url 'post_list' %}" class="nav-menu__link"><i class="fa-brands fa-artstation"></i>Арты</a>
-        <a href="" class="nav-menu__link"><i class="fa-solid fa-video"></i>Видео</a>
-        <a href="" class="nav-menu__link"><i class="fa-brands fa-gitlab"></i>Косплей</a>
-        <a href="" class="nav-menu__link"><i class="fa-solid fa-image"></i>Фото</a>
+<aside class="sidebar-mobile" id="nav-sidebar-mobile">
+    <div class="sidebar-mobile__inner">
+        <div class="sidebar-mobile__container">
+            <header class="sidebar-mobile__header header-menu">
+                <div class="header-menu__title">DelightArt</div>
+                <span class="sidebar-mobile__btn">
+                    <i class="fa-solid fa-xmark close-icon"></i>
+                </span>
+            </header>
+            <nav class="sidebar-mobile__nav-mobile nav-mobile">
+                <ul class="nav-mobile__list">
+                    <li class="nav-mobile__item">
+                        <a href="{% url 'home' %}" class="nav-mobile__link">
+                            <!-- <i class="fa-solid fa-house"></i> -->
+                            <span class="nav-mobile__text">
+                                Главня
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-mobile__item">
+                        <a href="{% url 'post_list' %}" class="nav-mobile__link">
+                            <!-- <i class="fa-brands fa-artstation"></i> -->
+                            <span class="nav-mobile__text">
+                                Арты
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-mobile__item">
+                        <a href="" class="nav-mobile__link">
+                            <!-- <i class="fa-solid fa-video"></i> -->
+                            <span class="nav-mobile__text">
+                                Подборка
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-mobile__item">
+                        <a href="" class="nav-mobile__link">
+                            <!-- <i class="fa-brands fa-gitlab"></i> -->
+                            <span class="nav-mobile__text">
+                                Косплей
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-mobile__item">
+                        <a href="" class="nav-mobile__link">
+                            <!-- <i class="fa-solid fa-image"></i> -->
+                            <span class="nav-mobile__text">
+                                Рекомендации
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </aside>

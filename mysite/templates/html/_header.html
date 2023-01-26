@@ -5,7 +5,8 @@
             <div class="header__logo">
                 <span class="header__logo logo">DelightArt</span>
             </div>
-            <button class="header__mobile-navigation" type="button" aria-label="открыть меню навигации">
+            <button class="header__mobile-navigation" href="#nav-sidebar-mobile" type="button"
+                aria-label="открыть меню навигации">
                 <i class="fa-solid fa-bars hamburgerIcon"></i>
             </button>
             <div class="header__search">
@@ -35,8 +36,8 @@
                         </div>
                         <div class="notification-items__item">
                             <div class="notification-items__icon">
-<!--                                <span-->
-<!--                                    class="notification-items__number-of-notifications number-of-notifications">0</span>-->
+                                <!--                                <span-->
+                                <!--                                    class="notification-items__number-of-notifications number-of-notifications">0</span>-->
                                 <a href="{% url 'user_liked_posts' %}" class="notification-items__link">
                                     <i class=" fa-solid fa-heart"></i>
                                 </a>
@@ -49,8 +50,7 @@
                     <!-- для зареганых -->
                     <a href="{% url 'profile' %}">
                         {% if request.user.avatar %}
-                        <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}"
-                            alt="Аватар">
+                        <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}" alt="Аватар">
                         {% else %}
                         <img class="header-profile-avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}"
                             alt="Аватар">
@@ -64,43 +64,43 @@
             </div>
         </div>
         <nav class="nav">
-            <div class="nav-list">
-                <div class="nav-list__item">
+            <ul class="nav-list">
+                <li class="nav-list__item">
                     <a href="{% url 'home' %}" class="nav-list__link">
                         <span class="nav-list__text">
                             Главная
                         </span>
                     </a>
-                </div>
-                <div class="nav-list__item">
+                </li>
+                <li class="nav-list__item">
                     <a href="{% url 'post_list' %}" class="nav-list__link">
                         <span class="nav-list__text">
                             Арты
                         </span>
                     </a>
-                </div>
-                <div class="nav-list__item">
+                </li>
+                <li class="nav-list__item">
                     <a href="" class="nav-list__link">
                         <span class="nav-list__text">
                             Подборка
                         </span>
                     </a>
-                </div>
-                <div class="nav-list__item">
+                </li>
+                <li class="nav-list__item">
                     <a href="" class="nav-list__link">
                         <span class="nav-list__text">
                             Косплей
                         </span>
                     </a>
-                </div>
-                <div class="nav-list__item">
+                </li>
+                <li class="nav-list__item">
                     <a href="" class="nav-list__link">
                         <span class="nav-list__text">
                             Рекомендации
                         </span>
                     </a>
-                </div>
-            </div>
+                </li>
+            </ul>
         </nav>
     </div>
 </header>

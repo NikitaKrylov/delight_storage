@@ -120,52 +120,6 @@ $max-width-сontainer: 1920;
 		}
 }
 
-.dark-btn {
-	display: flex;
-	position: relative;
-	gap: 10px;
-	align-items: center;
-	flex: 0 1 auto;
-	padding: 10px 12px;
-	font-size: 14px;
-	height: auto;
-	border-radius: 8px;
-	border: 1px solid var(--bg-light-primary-default);
-	background-color: transparent;
-
-	&:hover {
-		background-color: var(--bg-btn-default);
-	}
-
-	&__link {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-	}
-	
-	&__text {
-		color: var(--white);
-	}
-
-	&__icon {
-		font-size: 14px;
-		color: var(--error-light);
-	}
-
-	@media (min-width: $width-mobile) {
-		& {
-			font-size: 16px;
-			padding: 10px 15px;
-
-			&__icon {
-				font-size: 16px;
-			}
-		}
-	}
-}
-
 .logout-btn {
 	padding: 0px 12px;
 	@media (min-width: $width-mobile) {
@@ -180,7 +134,7 @@ $max-width-сontainer: 1920;
   font-family: $font-family-circeregular;
 
 		&__item {
-			display: inherit;
+			// display: inherit;
 			
 			&._active {
 				.account-nav__link {
@@ -199,6 +153,7 @@ $max-width-сontainer: 1920;
 			color: var(--light-gray);
 			@include adaptive-value('font-size', 18, 14, 1);
 
+			&._current,
 			&:hover {
 				color: var(--secondary-white);
 			}

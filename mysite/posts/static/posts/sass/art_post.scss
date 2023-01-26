@@ -230,13 +230,10 @@ $browser-context: 16; // Default
     }
 
     &__list {
-        flex-direction: column;
-        background-color: var(--bg-light-primary-default);
-        padding: 10px 0;
-        border-radius: 5px;
+        // background-color: var(--bg-light-primary-default);
         margin: 0;
-        min-width: 160px;
-        border: none;
+        // min-width: 160px;
+        // border: none;
         left: 0;
 
         @media (max-width: $min-width-mobile) {
@@ -250,15 +247,14 @@ $browser-context: 16; // Default
     }
 
     &__link {
-        display: block;
-        padding: 10px 15px;
-        font-size: 16px;
-        // border-radius: 5px;
-        color: var(--white);
+        // display: block;
+        // padding: 10px 15px;
+        // font-size: 16px;
+        // color: var(--white);
 
-        &:hover {
-            background-color: var(--bg-light-secondary-default);
-        }
+        // &:hover {
+        //     background-color: var(--bg-light-secondary-default);
+        // }
     }
 }
 
@@ -543,9 +539,11 @@ $browser-context: 16; // Default
 }
 
 .post-description {
-    color: var(--primary-white);
+    word-wrap: break-word;
+    word-break: break-word;
     font-family: $font-family-inter;
     font-size: 16px;
+    color: var(--primary-white);
 }
 
 .comments-form {
@@ -793,25 +791,26 @@ $browser-context: 16; // Default
     }
 
     &__control-list {
-        background-color: var(--bg-light-primary-default);
-        padding: 10px;
-        border-radius: 5px;
+        // background-color: var(--bg-light-primary-default);
         margin: 0;
-        min-width: 160px;
-        border: none;
+        // min-width: 160px;
+        // border: none;
         right: 0;
     }
     
     &__control-item {
-        display: block;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        color: var(--white);
 
-        &:hover {
-            background-color: var(--bg-light-secondary-default);
-        }
+    }
+
+    &__control-link {
+        // display: block;
+        // padding: 10px 15px;
+        // font-size: 16px;
+        // color: var(--white);
+
+        // &:hover {
+        //     background-color: var(--bg-light-secondary-default);
+        // }
     }
 
     // всплывающее меню с тремя точками

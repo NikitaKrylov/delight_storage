@@ -116,4 +116,3 @@ class ComplaintForm(forms.ModelForm):
         'type',
         'description',
     )
-

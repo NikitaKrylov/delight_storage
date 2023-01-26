@@ -22,7 +22,7 @@ class PostManager(models.Manager):
         return self.aggregate(value=Count(field))['value']
 
     def order_by_like_persent(self, **filter):
-        return self.annotate( value= Cast(Count(F('likes')), FloatField()) / Cast(Count(F('views')), FloatField())  )
+        return self.annotate(value=Cast(Count(F('likes')), FloatField()) / Cast(Count(F('views')), FloatField()))
 
 
 class Post(models.Model):
@@ -45,7 +45,7 @@ class Post(models.Model):
     status = models.CharField(_('статус'), choices=STATUS.choices, default=STATUS.CONSIDERATION, help_text=_(
         'При выборе задержки помечается как "отложено"'), max_length=20)
     description = models.CharField(
-        _('описание'), max_length=1500, null=True, blank=True)
+        _('описание'), max_length=500, null=True, blank=True)
 
     tags = models.ManyToManyField(
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
@@ -210,6 +210,3 @@ class UserView(models.Model):
 
     def __str__(self):
         return 'Лайкт от {} -> {}'.format(self.user or self.client_ip, self.post)
-
-
-

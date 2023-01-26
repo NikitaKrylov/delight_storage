@@ -27,8 +27,8 @@ $browser-context: 16; // Default
   // display: grid;
   // position: fixed;
   position: sticky;
-  max-width: $max-display-width;
-  // margin: 0 auto;
+  // max-width: $max-display-width;
+  margin: 0 auto;
   // top: 0;
   // left: 0;
   width: 100%;
@@ -45,9 +45,15 @@ $browser-context: 16; // Default
     display: flex;
     flex-direction: column;
     width: inherit;
-    // padding: 0 110px;
+    padding: 0 #{$padding-wrapper + px};
     margin: 0 auto;
     background-color: var(--bg-default);
+
+    @media (min-width: $width-mobile) {
+      & {
+        padding: 0 20px;
+      }
+    }
   }
 
   &__container {
@@ -198,7 +204,6 @@ $browser-context: 16; // Default
 }
 
 .nav-list {
-
   display: flex;
   justify-content:center;
   align-items: center;
@@ -243,8 +248,8 @@ $browser-context: 16; // Default
 		}
 
 		&__link {
-      text-transform: uppercase;
-      outline-style: none;
+      // text-transform: uppercase;
+      // outline-style: none;
       text-align: center;
 		}
 

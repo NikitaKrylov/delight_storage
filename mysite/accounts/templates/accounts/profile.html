@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block uncompress-style-page %}
+<link rel="stylesheet" href="{% static '/css/air-datepicker.css' %}">
 {% endblock %}
 
 
@@ -46,32 +47,26 @@
             </div>
             <div class="input-list__item">
                 <div class="input-list__text">{{form.birth_date.label}}</div>
-                <div class="input-list__input">{{form.birth_date}}</div>
+                <div class="input-list__input">
+                    {{form.birth_date}}
+                    <span class="date-inp-icon">
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </span>
+                </div>
             </div>
         </div>
         <!-- <div class="form-error">{{f.errors}}</div> -->
         <button class="dark-btn button">Сохранить</button>
     </form>
 </div>
-
-<!-- <div class="alert">
-    <div class="alert__inner">
-        <div class="alert__content">
-            <div class="flash-message">
-                <span>Профиль успешно обновлен</span>
-            </div>
-        </div>
-    </div>
-</div> -->
 {% endblock %}
 
 
 {% block script-page %}
+<script src="{% static '/libs/air-datepicker.js' %}"></script>
 <script src="{% static 'accounts/js/profile.js' %}"></script>
 
 <script>
-
-    messagePopup('Это алерт');
-
+    messagePopup('Это алерт', true);
 </script>
 {% endblock %}
