@@ -20,13 +20,10 @@ from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
-from posts.models import Post, PostDelay
+from posts.models import Post, PostDelay, Comment
 from mediacore.forms import ImageFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
-
-from posts.models import Like
-
 from posts.mixins import AnnotateUserLikesAndViewsMixin
 
 
@@ -220,6 +217,7 @@ class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMi
         return super().get_queryset().filter(author=self.request.user).all()
 
     def get_context_data(self, *args, object_list=None, **kwargs):
+        self.queryset = self.get_queryset()
         user = self.request.user
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Мои посты'
@@ -229,6 +227,27 @@ class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMi
             'views', user)
         context['comments_amount'] = Post.objects.count_field_elements(
             'comments', user)
+
+        now = timezone.now()
+        dates = [now - datetime.timedelta(days=i) for i in range(16)]
+        context['dates'] = ['{}.{}'.format(date.month, date.day) for date in dates]
+
+        # views
+        context['views_values'] = [
+            self.queryset.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
+                views=Count('views'))['views'] for date in dates]
+
+        # likes
+        context['likes_values'] = [
+            self.queryset.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
+                likes=Count('likes'))['likes'] for date in dates]
+
+        context['comments_values'] = [
+            Comment.objects.filter(post__author=user, pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).count()
+            for date in dates
+        ]
+
+
         return context
 
 
@@ -338,8 +357,11 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
             delay_form = CreatePostDelayForm(
                 request.POST, instance=post.delay or None)
+
+            print(delay_form.is_valid())
             if delay_form.is_valid():
                 delay = delay_form.save()
+
             else:
                 delay_form = CreatePostDelayForm()
                 if post.delay:
@@ -355,8 +377,10 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
         else:
             delay_form = CreatePostDelayForm()
+            return render(request, self.template_name, {'form': form, 'delay_form': delay_form,
+                                                        'image_formset': ImageFileFormSet(instance=form.instance)})
 
-        return render(request, self.template_name, {'form': form, 'delay_form': delay_form, 'image_formset': ImageFileFormSet(instance=form.instance)})
+        return redirect('self_user_posts')
 
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
-from .models import User
+from .models import User, PostComplaint
 from posts.models import PostTag
 from posts.models import Post
 
@@ -112,7 +112,13 @@ class UserSetPasswordForm(SetPasswordForm):
 
 
 class ComplaintForm(forms.ModelForm):
-    fields = (
-        'type',
-        'description',
-    )
+    class Meta:
+        model = PostComplaint
+        fields = (
+            'type',
+            'description',
+        )
+        widgets = {
+            'type': forms.RadioSelect(),
+            'description': forms.Textarea(attrs={"class": 'textarea__input', 'placeholder': 'Опишите подробнее', 'cols': 20, 'rows': 2})
+        }
