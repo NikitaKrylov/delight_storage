@@ -39,8 +39,13 @@ class UpdateViewsMixin(SingleObjectMixin):
 
 class AnnotateUserLikesAndViewsMixin(MultipleObjectMixin):
     def get_queryset(self):
+        queryset = super().get_queryset()
         if self.request.user.is_authenticated:
-            return super().get_queryset().annotate(
+            queryset = queryset.annotate(
                 has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user)),
+
             )
-        return super().get_queryset()
+        return queryset.annotate(
+            views_amount=Count('views', distinct=True),
+            likes_amount=Count('likes', distinct=True)
+        ).order_by('-creation_date')

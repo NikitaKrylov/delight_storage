@@ -3,7 +3,7 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
 from .models import User, PostComplaint
 from posts.models import PostTag
-from posts.models import Post
+from mediacore.forms import ClearableAvatarFileInput
 
 
 class RegisterUserForm(UserCreationForm):
@@ -60,7 +60,7 @@ class EditUserProfileForm(forms.ModelForm):
             'birth_date',
         )
         widgets = {
-            'avatar': forms.ClearableFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
+            'avatar': ClearableAvatarFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'username': forms.TextInput(),
             'email': forms.EmailInput(),

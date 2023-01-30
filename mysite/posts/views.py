@@ -211,12 +211,7 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return context
 
     def get_queryset(self):
-        response = super().get_queryset().annotate(likes_amount=Count('likes')).all().annotate(views_amount=Count('views'))
-
-        for i in response.all():
-            print(f"{i} -> l: {i.likes_amount} v: {i.views_amount}")
-
-
+        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True), views_amount=Count('views', distinct=True))
 
         filter_query = Q()
         exclude_query = Q()
@@ -225,11 +220,17 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
 
             if name == 'search':
                 continue
+
+            if name == 'sort_by':
+                print(value)
             value = int(value)
             if value == 1:
                 filter_query |= Q(tags__slug=name)
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
+
+        response = response.order_by('-likes_amount')
+        # response = response.order_by('-views_amount')
 
         return response.exclude(exclude_query).filter(filter_query).distinct()
 

@@ -74,9 +74,12 @@
           <div class="gallery__box-media">
             <a class="gallery__link" href="{{post.get_absolute_url}}">
               <div class="gallery__thumbnail">
-                <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                <!-- <video class="gallery__media video" width=100% height="100%"
-                            src="{% static 'posts/images/video.mp4' %}"></video> -->
+                {% if post.images.count > 0 %}
+                    <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                    {% else %}
+                    <video class="gallery__media video" width=100% height="100%"
+                        src="{{post.videos.first.file.url}}"></video>
+                    {% endif %}
                 <div class="gallery__media-overlay">
 
                 </div>
@@ -180,13 +183,6 @@
 {% block script-page %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-    const views_labelsList = {{dates| safe}};
-    const views_valuesList = {{ views_values| safe}};
-
-    const likes_labelsList = {{dates| safe}};
-    const likes_valuesList = {{ likes_values| safe}};
-</script>
 
 <script>
 

@@ -1,7 +1,15 @@
+from collections import namedtuple
+from datetime import datetime, date, timedelta
+from typing import List
+
+from django.db.models import QuerySet, Count
 from django.dispatch import receiver
 from django.db import models
 from django.urls import reverse
 from .models import PostComplaint, Notification
+from posts.models import Post
+
+from posts.models import Comment
 
 
 def get_client_ip(request):
@@ -39,5 +47,45 @@ def notify_on_post_complaint_created(sender, instance: PostComplaint, created: b
 
 
         )
+
+
+class ChartStatistic:
+    Chart = namedtuple('Chart', 'labels values')
+
+    def __init__(self, queryset: QuerySet, date_field_name: str, start: date, end: date):
+        self._queryset = queryset
+        self.field = date_field_name
+
+        now = datetime.now().date()
+        if start > now or end > now or start > end:
+            raise ValueError()
+
+        self._start = start
+        self._end = end
+
+    def set_period(self, start, end):
+        self._start = start
+        self._end = end
+
+    def create(self) -> Chart:
+        return self.Chart(self._format_dates(self.dates), self.values)
+
+    def _format_dates(self, dates: List[date]) -> List[str]:
+        return [f"{date.day}.{date.month}" for date in dates]
+
+    @property
+    def dates(self) -> List[date]:
+        return [self._start + timedelta(days=i) for i in range((self._end - self._start).days + 1)]
+
+    @property
+    def values(self) -> List[float]:
+        # if self._queryset.model == Post:
+        return [
+            self._queryset.filter(**{self.field + "__date": date}).count()
+            for date in self.dates
+        ]
+        # elif self._queryset.model == Comment and self.field == "count":
+        #     return self._queryset.count()
+
 
 
