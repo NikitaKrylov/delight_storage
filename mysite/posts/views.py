@@ -4,22 +4,39 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef, Count
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
-
 from .forms import SearchForm
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
 
-from accounts.services import get_client_ip
+from accounts.forms import ComplaintForm
 
 
-def create_post_complaint(request, *args, **kwargs):
-    pass
+class CreateComplaint(View, LoginRequiredMixin):
+    def post(self, request, *args, **kwargs):
+        form = ComplaintForm(request.POST)
+
+        if form.is_valid():
+            post = Post.objects.get(pk=kwargs['pk'])
+
+            complaint = form.save(commit=False)
+            complaint.sender = request.user
+            complaint.post = post
+            complaint.save()
+
+        return redirect(post)
+
+
+def get_tags(request, *args, **kwargs):
+    # needs split
+    string = request.GET.get('operation').lower()
+    ctx = {'tags':  list(PostTag.objects.filter(name__icontains=string).values("name", "slug").all())}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 class AddCommentView(LoginRequiredMixin, View):
@@ -88,19 +105,20 @@ class LikePostView(View):
     http_method_names = ('get',)
 
     def get(self, request, *args, **kwargs):
-        ctx = {"liked": None}
+        ctx = {"liked": None, "add_view": None}
 
         if request.user.is_authenticated:
             post = Post.objects.get(pk=kwargs['pk'])
 
             like, created = post.likes.get_or_create(user=request.user)
             if not created:  # already liked the content
-                # post.likes.remove(like)  # remove user from likes
                 like.delete()
                 ctx['liked'] = False
             else:
                 post.likes.add(like)
+                view, created = post.views.get_or_create(user=request.user)
                 ctx['liked'] = True
+                ctx['add_view'] = created
 
         return HttpResponse(json.dumps(ctx), content_type='application/json')
 
@@ -130,6 +148,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['complaint_form'] = ComplaintForm()
         context['images'] = self.object.images.all()
         context['videos'] = self.object.videos.all()
         context['tags'] = self.object.tags.all()
@@ -158,7 +177,7 @@ class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class PostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+class PostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -175,7 +194,7 @@ class PostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFil
         return context
 
 
-class SearchPostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -192,7 +211,7 @@ class SearchPostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, P
         return context
 
     def get_queryset(self):
-        response = super().get_queryset()
+        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True), views_amount=Count('views', distinct=True))
 
         filter_query = Q()
         exclude_query = Q()
@@ -201,11 +220,17 @@ class SearchPostList(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, P
 
             if name == 'search':
                 continue
+
+            if name == 'sort_by':
+                print(value)
             value = int(value)
             if value == 1:
                 filter_query |= Q(tags__slug=name)
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
+
+        response = response.order_by('-likes_amount')
+        # response = response.order_by('-views_amount')
 
         return response.exclude(exclude_query).filter(filter_query).distinct()
 
@@ -216,12 +241,3 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
     template_name = 'posts/images.html'
     context_object_name = 'posts'
 
-
-# class LikedPostList(PostQueryMixin, PostFilterFormMixin, ListView):
-#     model = Post
-#     paginate_by = 30
-#     template_name = 'posts/images.html'
-#     context_object_name = 'posts'
-
-#     def get_queryset(self):
-#         return super().get_queryset().filter(likes__user=self.request.user)

@@ -126,6 +126,7 @@ class Notification(AbstractNotification):
         NEW_POST = 'NP', _('Новый пост')
         ACCOUNT = 'AC', _('Аккаунт')
         COMMENT = 'CM', _('Комментарий')
+        COMPLAINT = 'CP', _("Жалоба")
 
     type = models.CharField(_("тип уведомления"), choices=Types.choices, max_length=10)
 
@@ -143,10 +144,10 @@ class Notification(AbstractNotification):
         return self.verb
 
 
-class Complaint(models.Model):
+class PostComplaint(models.Model):
     class Meta:
-        verbose_name = "Жалоба"
-        verbose_name_plural = "Жалобы"
+        verbose_name = "Жалоба на пост"
+        verbose_name_plural = "Жалобы на посты"
 
     class Status(models.TextChoices):
         CONSIDERATION = 'CN', _('На рассмотрении')
@@ -160,11 +161,12 @@ class Complaint(models.Model):
         ANOTHER = 'AN', _("Еще")
 
     status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
-    type = models.CharField(_('тип жалобы'), choices=Types.choices, max_length=40, blank=True)
-    recipient = models.ForeignKey(User, verbose_name=_('отправитель'), on_delete=models.CASCADE, related_name='complaints')
+    type = models.CharField(_('тип жалобы'), choices=Types.choices, default=Types.BAD_TAG, max_length=40)
+    post = models.ForeignKey('posts.Post', on_delete=models.CASCADE, related_name='complaints', verbose_name=_('пост'))
+    sender = models.ForeignKey(User, verbose_name=_('отправитель'), on_delete=models.CASCADE, related_name='complaints')
     creation_date = models.DateTimeField(_('дата создания'), editable=False, auto_now_add=True)
-    description = models.TextField(_('описание'), max_length=200)
+    description = models.TextField(_('описание'), max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return 'Жалоба от {}'.format(self.recipient)
+        return 'Жалоба на {} от {}'.format(self.post, self.sender)
 

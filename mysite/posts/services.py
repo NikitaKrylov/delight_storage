@@ -1,7 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
-
 from .models import Post, Comment
 from accounts.services import get_client_ip
 from accounts.models import ClientIP, Notification
@@ -39,7 +38,9 @@ def notify_on_post_saved(sender, instance: Post, created: bool, raw, using, upda
 
 @receiver(models.signals.post_save, sender=Comment)
 def notify_on_comment_replied(sender, instance: Comment, created: bool, raw, using, update_fields, **kwargs):
-    if not instance: return
+    if not instance:return
+
+    if instance.author == instance.post.author: return
 
     if created and instance.answered:
         Notification.objects.create(
@@ -71,3 +72,5 @@ def notify_on_comment_replied(sender, instance: Comment, created: bool, raw, usi
             )
 
         )
+
+

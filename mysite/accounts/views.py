@@ -20,14 +20,13 @@ from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
-from posts.models import Post, PostDelay
-from mediacore.forms import ImageFileFormSet
+from posts.models import Post, PostDelay, Comment, Like, UserView
+from mediacore.forms import ImageFileFormSet, VideoFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
-
-from posts.models import Like
-
 from posts.mixins import AnnotateUserLikesAndViewsMixin
+
+from .services import ChartStatistic
 
 
 class SignatoryView(View):
@@ -217,9 +216,10 @@ class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMi
     template_name = 'accounts/self_user_posts.html'
 
     def get_queryset(self):
-        return super().get_queryset().filter(author=self.request.user).all()
+        return super().get_queryset().filter(author=self.request.user)
 
     def get_context_data(self, *args, object_list=None, **kwargs):
+        self.queryset = self.get_queryset()
         user = self.request.user
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Мои посты'
@@ -229,6 +229,14 @@ class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMi
             'views', user)
         context['comments_amount'] = Post.objects.count_field_elements(
             'comments', user)
+
+        end = timezone.now().date()
+        start = end - datetime.timedelta(days=7)
+        # views
+        context['dates'], context['views_values'] = ChartStatistic(Like.objects.filter(post__author=user), 'creation_date', start, end).create()
+        context['likes_values'] = ChartStatistic(UserView.objects.filter(post__author=user), 'creation_date', start, end).create().values
+        context['comments_values'] = ChartStatistic(Comment.objects.filter(post__author=user), 'pub_date', start, end).create().values
+
         return context
 
 
@@ -284,6 +292,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Создать пост'
         context['image_formset'] = ImageFileFormSet()
+        context['video_formset'] = VideoFileFormSet()
         context['delay_form'] = CreatePostDelayForm()
         return context
 
@@ -291,22 +300,29 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         form = self.get_form_class()(request.POST)
         image_formset = ImageFileFormSet(
             request.POST, request.FILES, instance=form.instance)
+        video_formset = VideoFileFormSet(
+            request.POST, request.FILES, instance=form.instance)
         delay_form = CreatePostDelayForm(request.POST)
 
-        if form.is_valid() and image_formset.is_valid():
+        if form.is_valid() and (image_formset.is_valid() or video_formset.is_valid()):
             post = form.save(commit=False)
             post.author = request.user
+            post.save()
 
             if delay_form.is_valid():
                 delay = delay_form.save()
                 post.delay = delay
+                post.save()
 
-            post.save()
             form.save_m2m()
 
-            images = image_formset.save(commit=False)
-            for image in images:
-                image.save()
+            if image_formset.is_valid():
+                for image in image_formset.save(commit=False):
+                    image.save()
+
+            if video_formset.is_valid():
+                for video in video_formset.save(commit=False):
+                    video.save()
 
             return redirect('self_user_posts')
 
@@ -326,6 +342,8 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         post = self.get_object()
         context['post'] = post
         context['image_formset'] = ImageFileFormSet(instance=post)
+        context['video_formset'] = VideoFileFormSet(instance=post)
+
         context['delay_form'] = CreatePostDelayForm(
             instance=post.delay or None)
         return context
@@ -338,8 +356,12 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
             delay_form = CreatePostDelayForm(
                 request.POST, instance=post.delay or None)
+
             if delay_form.is_valid():
                 delay = delay_form.save()
+                post.delay = delay
+                post.save()
+
             else:
                 delay_form = CreatePostDelayForm()
                 if post.delay:
@@ -353,10 +375,16 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
                 request.POST, request.FILES, instance=post)
             images = image_formset.save()
 
+            video_formset = VideoFileFormSet(
+                request.POST, request.FILES, instance=post)
+            videos = video_formset.save()
+
         else:
             delay_form = CreatePostDelayForm()
+            return render(request, self.template_name, {'form': form, 'delay_form': delay_form,
+                                                        'image_formset': ImageFileFormSet(instance=form.instance)})
 
-        return render(request, self.template_name, {'form': form, 'delay_form': delay_form, 'image_formset': ImageFileFormSet(instance=form.instance)})
+        return redirect('self_user_posts')
 
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
@@ -377,7 +405,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
 
         now = timezone.now()
         dates = [now - datetime.timedelta(days=i) for i in range(32)]
-        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
+        fdates = ['{}.{}'.format(date.day, date.month) for date in dates]
         views_count = self.object.views.count()
         likes_count = self.object.likes.count()
 
@@ -419,31 +447,17 @@ class DashBoardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
         tags = PostTag.objects.all()
 
-        # tags
         context['tlabels'] = [i.name.capitalize() for i in tags]
         context['tvalues'] = [i.related_posts_amount() for i in tags]
 
-        now = timezone.now()
-        dates = [now - datetime.timedelta(days=i) for i in range(32)]
-        fdates = ['{}.{}'.format(date.month, date.day) for date in dates]
-        posts = Post.objects.filter(author=self.request.user)
-        subscriptions = Subscription.objects.filter(
-            subscription_object=self.request.user, status=1)
+        end = timezone.now().date()
+        start = end - datetime.timedelta(days=31)
 
-        # views
-        context['views_labels'] = fdates
-        context['views_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
-            views=Count('views'))['views'] for date in dates]
-
-        # likes
-        context['likes_labels'] = fdates
-        context['likes_values'] = [posts.filter(pub_date__day=date.day, pub_date__month=date.month, pub_date__year=date.year).aggregate(
-            likes=Count('likes'))['likes'] for date in dates]
-
-        context['sub_labels'] = fdates
-        context['sub_values'] = [subscriptions.filter(
-            start_date__day=date.day, start_date__month=date.month, start_date__year=date.year).count() for date in dates]
+        context['views_labels'], context['views_values'] = ChartStatistic(UserView.objects.filter(post__author=user), 'creation_date', start, end).create()
+        context['likes_labels'], context['likes_values'] = ChartStatistic(Like.objects.filter(post__author=user), 'creation_date', start, end).create()
+        context['sub_labels'], context['sub_values'] = ChartStatistic(Subscription.objects.filter(subscription_object=user), 'start_date', start, end).create()
 
         return context

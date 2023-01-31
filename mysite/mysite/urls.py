@@ -13,17 +13,15 @@ urlpatterns = [
     path('', include('social_django.urls')),
 ]
 
-# handler400 = 'my_app.views.bad_request'
-# handler403 = 'my_app.views.permission_denied'
-# handler404 = 'my_app.views.page_not_found'
-# handler500 = 'my_app.views.server_error'
 
+urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
+handler404 = 'mysite.views.heandler404'
+handler500 = 'mysite.views.heandler500'
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
     import debug_toolbar
-
     urlpatterns = [
                       path('__debug__/', include(debug_toolbar.urls)),
                   ] + urlpatterns

@@ -5,9 +5,12 @@
         <div class="gallery__box-media">
             <a class="gallery__link" href="{{post.get_absolute_url}}">
                 <div class="gallery__thumbnail">
+                    {% if post.images.count > 0 %}
                     <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                    <!-- <video class="gallery__media video" width=100% height="100%"
-                        src="{% static 'posts/images/video.mp4' %}"></video> -->
+                    {% else %}
+                    <video class="gallery__media video" width=100% height="100%"
+                        src="{{post.videos.first.file.url}}"></video>
+                    {% endif %}
                     <div class="gallery__media-overlay">
                     </div>
                 </div>
@@ -47,7 +50,7 @@
                         <div class="cover-item-gallery__LC">
                             <div class="post-views">
                                 <div class="_39asK">
-                                    <div class="gallery__numcom">{{ post.views.count }}</div>
+                                    <div class="gallery__numcom">{{ post.views_amount}}</div>
                                     <span><i class="fa-regular fa-eye"></i></span>
                                 </div>
                             </div>
@@ -57,7 +60,7 @@
                                 <!-- <i class="fa-regular fa-heart"></i> -->
                                 <div class="_39asK">
                                     <span class="like-cont-info">
-                                        <span class="like-cont__likes-number">{{post.likes.count}}</span>
+                                        <span class="like-cont__likes-number">{{post.likes_amount}}</span>
                                     </span>
                                     <i class="like-btn__heart">
                                         <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg'

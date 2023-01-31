@@ -1,4 +1,4 @@
-from django.db.models import Exists, OuterRef, Count
+from django.db.models import Exists, OuterRef, Count, F
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 from .forms import PostTagsForm
@@ -39,10 +39,13 @@ class UpdateViewsMixin(SingleObjectMixin):
 
 class AnnotateUserLikesAndViewsMixin(MultipleObjectMixin):
     def get_queryset(self):
+        queryset = super().get_queryset()
         if self.request.user.is_authenticated:
-            return super().get_queryset().order_by('-creation_date').annotate(
-                has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user))
-                # likes_amount=Count('likes'),
-                # views_amount=Count('views')
+            queryset = queryset.annotate(
+                has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user)),
+
             )
-        return super().get_queryset().all()
+        return queryset.annotate(
+            views_amount=Count('views', distinct=True),
+            likes_amount=Count('likes', distinct=True)
+        ).order_by('-creation_date')

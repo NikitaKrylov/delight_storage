@@ -137,6 +137,7 @@ class UserViewAdmin(admin.ModelAdmin):
         'id',
         'user',
         'client_ip',
+        'creation_date',
     )
     list_filter = (
         'user',
@@ -158,6 +159,11 @@ class LikeAdmin(admin.ModelAdmin):
     readonly_fields = (
         'creation_date',
         'post_link',
+    )
+    list_display = (
+        'id',
+        'user',
+        'creation_date',
     )
 
     def post_link(self, obj):

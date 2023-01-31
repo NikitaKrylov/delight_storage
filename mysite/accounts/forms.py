@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
-from .models import User
+from .models import User, PostComplaint
 from posts.models import PostTag
-from posts.models import Post
+from mediacore.forms import ClearableAvatarFileInput
 
 
 class RegisterUserForm(UserCreationForm):
@@ -60,7 +60,7 @@ class EditUserProfileForm(forms.ModelForm):
             'birth_date',
         )
         widgets = {
-            'avatar': forms.ClearableFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
+            'avatar': ClearableAvatarFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'username': forms.TextInput(),
             'email': forms.EmailInput(),
@@ -112,7 +112,13 @@ class UserSetPasswordForm(SetPasswordForm):
 
 
 class ComplaintForm(forms.ModelForm):
-    fields = (
-        'type',
-        'description',
-    )
+    class Meta:
+        model = PostComplaint
+        fields = (
+            'type',
+            'description',
+        )
+        widgets = {
+            'type': forms.RadioSelect(),
+            'description': forms.Textarea(attrs={"class": 'textarea__input', 'placeholder': 'Опишите подробнее', 'cols': 20, 'rows': 2})
+        }

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, ClientIP, Subscription, Complaint
+from .models import User, ClientIP, Subscription, PostComplaint
 
 admin.site.register(ClientIP)
 
@@ -46,12 +46,13 @@ class SubscriptionAdmin(admin.ModelAdmin):
     _sub_time_delta.short_description = 'Общая продолжительность подпики'
 
 
-@admin.register(Complaint)
-class ComplaintAdmin(admin.ModelAdmin):
+@admin.register(PostComplaint)
+class PostComplaintAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'status',
-        'recipient',
+        'sender',
+        'post',
         'creation_date',
     )
     list_filter = (
@@ -62,12 +63,16 @@ class ComplaintAdmin(admin.ModelAdmin):
         'make_accepted',
         'make_rejected',
     )
+    readonly_fields = (
+        'post',
+        'creation_date',
+    )
 
     @admin.action(description="Принять")
     def make_accepted(self, request, queryset):
-        queryset.update(status=Complaint.Status.ACCEPTED)
+        queryset.update(status=PostComplaint.Status.ACCEPTED)
 
     @admin.action(description="Отклонить")
     def make_rejected(self, request, queryset):
-        queryset.update(status=Complaint.Status.REJECTED)
+        queryset.update(status=PostComplaint.Status.REJECTED)
 

@@ -37,9 +37,9 @@
           </div>
         </div>
       </div>
-      <!-- <div>
+      <div>
         <canvas id="all-dashboard" aria-label="Общая статистика"></canvas>
-      </div> -->
+      </div>
     </div>
     <div class="my-posts-info__item add-post">
       <div class="my-posts-info__title title">
@@ -64,16 +64,24 @@
         <div class="gallery__content">
           {% if post.status != post.STATUS.PUBLISHED %}
           <div class="gallery__status">
+            {% if post.status == post.STATUS.DEFERRED and post.delay %}
+              {{post.delay.time}}
+            {% else %}
             черновик
+            {% endif %}
           </div>
           {% endif %}
           <div class="gallery__box-media">
             <a class="gallery__link" href="{{post.get_absolute_url}}">
               <div class="gallery__thumbnail">
-                <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                <!-- <video class="gallery__media video" width=100% height="100%"
-                            src="{% static 'posts/images/video.mp4' %}"></video> -->
+                {% if post.images.count > 0 %}
+                    <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                    {% else %}
+                    <video class="gallery__media video" width=100% height="100%"
+                        src="{{post.videos.first.file.url}}"></video>
+                    {% endif %}
                 <div class="gallery__media-overlay">
+
                 </div>
               </div>
             </a>
@@ -148,6 +156,51 @@
 {% endblock %}
 
 {% block script-page %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+
+  new Chart(document.getElementById('all-dashboard'), {
+     type: 'line',
+     data: {
+         labels: {{dates| safe}},
+         datasets: [
+
+             {
+                 label: 'Количество просмотров за день',
+                 data: {{views_values| safe}},
+                borderWidth: 1,
+             },
+             {
+                 label: 'Количество лайков за день',
+                 data: {{ likes_values| safe}},
+                 borderWidth: 1,
+             },
+             {
+                 label: 'Количество комментариев за день',
+                 data: {{ comments_values| safe}},
+                 borderWidth: 1,
+             },
+
+         ],
+     },
+
+     options: {
+         animations: {
+             tension: {
+                 duration: 5000,
+                 easing: 'linear',
+                 from: 0.5,
+                 to: 0,
+                 loop: true
+             }
+         },
+     }
+ });
+</script>
+
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'posts/libs/infinite.min.js' %}"></script>
@@ -156,17 +209,4 @@
 <script src="{% static 'posts/js/like.js' %}"></script>
 <script src="{% static 'accounts/js/user-posts.js' %}"></script>
 
-<!-- <script>
-  const tlabelsList = {{ tlabels| safe}};
-  const tvaluesList = {{ tvalues| safe}};
-
-  const views_labelsList = {{ views_labels| safe}};
-  const views_valuesList = {{ views_values| safe}};
-
-  const likes_labelsList = {{ likes_labels| safe}};
-  const likes_valuesList = {{ likes_values| safe}};
-
-  const sub_labelsList = {{ sub_labels| safe}};
-  const sub_valuesList = {{ sub_values| safe}};
-</script> -->
 {% endblock %}
