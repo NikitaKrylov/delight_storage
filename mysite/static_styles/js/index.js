@@ -30,7 +30,6 @@ function menuOverlayOpen(menu, content) {
     menu.classList.add('_active');
     body.classList.add('_lock');
 
-    console.log(menu)
     menu.addEventListener('click', function (e) {
         if (!e.target.closest(content)) {
             menuOverlayClose(menu);
@@ -207,28 +206,25 @@ function messagePopup(message, wait = false, viewTime = 2000) {
     let alertText = customAlert(`<div class="flash-message">
                                     <span>${message}</span>
                                 </div>`)
-
-    // alertText.css('transition', `${viewTime / 10000}s`)
-
-    alertText.css('transition', `transform ${viewTime / 10000}s, opacity ${viewTime / 10000}s`)
-    // alertText.css('transition', `opacity 10s`)
-
     $(body).prepend(alertText)
+    
+    // alertText.css('transition', `${viewTime / 10000}s`)
+    // alertText.css('transition', `opacity 10s`)
+    alertText.css('transition', `transform 0.2s, opacity 0.2s`)
+    document.querySelector('.alert').addEventListener('swiped-up', function (e) {
+        // alertText.css('transform', 'translate(0px, -100%')
+        // alertText.animate({
+        //     'opacity': '0',
+        // }, viewTime / 100)
+        hideAlert(alertText, viewTime)
+        setTimeout(() => alertText.remove(), 200)
+    })
 
     if (wait && typeof wait === 'boolean') {
         $('.alert__content').prepend($('<div class="alert__close"><i class="fa-solid fa-xmark"></i></div>'))
 
         $('.alert__close').on('click', () => {
             alertText.remove()
-        })
-
-        document.querySelector('.alert').addEventListener('swiped-up', function (e) {
-            // alertText.css('transform', 'translate(0px, -100%')
-            // alertText.animate({
-            //     'opacity': '0',
-            // }, viewTime / 100)
-            hideAlert(alertText, viewTime)
-            setTimeout(() => alertText.remove(), viewTime / 10)
         })
 
     } else {

@@ -548,14 +548,12 @@ $browser-context: 16; // Default
 
 .comments-form {
     display: grid;
-    padding-bottom: 20px;
+    // padding-bottom: 20px;
     margin-bottom: 20px;
-    // display: grid;
     // grid-template-columns: 3fr 0.3fr;
     align-items: start;
-    // border-bottom: 1px solid #1c1e2c;
     // background-color: var(--bg-secondary-default);
-    // border-bottom: 1px solid var(--dark-line);
+    // border-bottom: 1px solid var(--bg-light-secondary-default);
 
     &__pseudo-form {
         // padding: 12px;
@@ -714,6 +712,7 @@ $browser-context: 16; // Default
 
     &__head {
         display: flex;
+        gap: 5px;
         align-items: center;
         position: relative;
         padding-left: 32px;
@@ -723,12 +722,13 @@ $browser-context: 16; // Default
     &__user {
         display: inline-flex;
         align-items: center;
+        gap: 5px;
     }
 
     &__avatar {
         width: 24px;
         height: 24px;
-        margin-right: 8px;
+        // margin-right: 8px;
         display: block;
         // border-radius: 3px;
         border: 0;
@@ -739,7 +739,7 @@ $browser-context: 16; // Default
     &__username {
         white-space: nowrap;
         text-overflow: ellipsis;
-        margin-right: 4px;
+        // margin-right: 4px;
         color: var(--white);
         font-weight: 700;
         // font-family: $font-family-inter;

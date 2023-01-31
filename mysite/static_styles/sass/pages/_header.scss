@@ -241,9 +241,12 @@ $browser-context: 16; // Default
         transform: translateY(10px);
       }
 
-      &:hover::after {
-        opacity: 1;
-        transform: translateY(0px);
+      &._current,
+      &:hover {
+        &::after {
+          opacity: 1;
+          transform: translateY(0px);
+        }
       }
 		}
 

@@ -22,7 +22,7 @@
             <div class="container">
                 <div class="page__wrapper">
                     <div class="post-add-wrapper">
-                        <form id="form-container" method="post" action="." enctype="multipart/form-data">
+                        <form id="form-container" method="post" action="" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="post-add">
@@ -36,9 +36,9 @@
                                 </div>
 
                                 <div class="post-add__body option-post">
-                                    <label class="checkbox">
+                                    <label class="option-post__checkbox checkbox">
                                         {{form.only_for_adult}}
-                                        <i class="checkbox__indicator checkbox__passive">
+                                        <i class="option-post__checkbox-icon checkbox__indicator checkbox__passive">
                                             <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                                                 <path
@@ -47,9 +47,9 @@
                                         </i>
                                         <span class="checkbox__text">{{form.only_for_adult.label}}</span>
                                     </label>
-                                    <label class="checkbox">
+                                    <label class="option-post__checkbox checkbox">
                                         {{form.disable_comments}}
-                                        <i class="checkbox__indicator checkbox__passive">
+                                        <i class="option-post__checkbox-icon checkbox__indicator checkbox__passive">
                                             <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                                                 <path
@@ -58,9 +58,9 @@
                                         </i>
                                         <span class="checkbox__text">{{form.disable_comments.label}}</span>
                                     </label>
-                                    <label class="checkbox">
+                                    <label class="option-post__checkbox checkbox">
                                         {{form.for_autenticated_users}}
-                                        <i class="checkbox__indicator checkbox__passive">
+                                        <i class="option-post__checkbox-icon checkbox__indicator checkbox__passive">
                                             <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                                                 <path
@@ -81,7 +81,7 @@
                                 </div> -->
 
                                 <div class="post-add__body status-post">
-                                    <span class="title underline">
+                                    <span class="title">
                                         {{form.status.label}}
                                     </span>
 
@@ -107,7 +107,7 @@
                                         <div class="search">
                                             <div class="search__container">
                                                 <div class="search__input-wrapper">
-                                                    <div class="search__title title underline">
+                                                    <div class="search__title title">
                                                         Теги
                                                     </div>
                                                     <div class="search__body">
@@ -133,7 +133,7 @@
                                                 </div>
                                                 <div class="selected-tags">
                                                     <div class="selected-tags__title">
-                                                        <div class="selected-tags__text title underline">
+                                                        <div class="selected-tags__text title">
                                                             Выбранные теги
                                                         </div>
 
@@ -210,7 +210,7 @@
     <script src="{% static '/libs/air-datepicker.js' %}"></script>
     <script src="{% static '/js/device.js' %}"></script>
 
-    <script src="{% static '/js/index.js' %}"></script>
+    <!-- <script src="{% static '/js/index.js' %}"></script> -->
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
 
 

@@ -641,6 +641,9 @@ a {
           user-select: none;
   cursor: pointer;
 }
+.checkbox:hover .checkbox__indicator {
+  border: 2px solid var(--light-violet);
+}
 .checkbox__input:checked + .checkbox__indicator {
   border-color: var(--bg-button);
   background-color: var(--bg-button);
@@ -658,9 +661,6 @@ a {
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
   margin-right: 10px;
-}
-.checkbox__indicator:hover {
-  border: 2px solid var(--light-violet);
 }
 .checkbox__icon {
   fill: var(--white);

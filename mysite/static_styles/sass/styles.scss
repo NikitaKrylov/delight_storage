@@ -630,6 +630,12 @@ a {
   user-select: none;
   cursor: pointer;
 
+  &:hover {
+    .checkbox__indicator {
+      border: 2px solid var(--light-violet);
+    }
+  }
+
   &__input {
     &:checked {
       +.checkbox__indicator {
@@ -652,9 +658,9 @@ a {
     transition: all 0.3s ease 0s;
     margin-right: 10px;
 
-    &:hover {
-      border: 2px solid var(--light-violet);
-    }
+    // &:hover {
+    //   border: 2px solid var(--light-violet);
+    // }
   }
 
   &__icon {

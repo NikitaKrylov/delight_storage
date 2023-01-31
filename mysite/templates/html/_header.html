@@ -1,4 +1,6 @@
 {% load static %}
+{% load pages %}
+
 <header class="header">
     <div class="header__wrapper">
         <div class="header__container">
@@ -65,14 +67,16 @@
         </div>
         <nav class="nav">
             <ul class="nav-list">
-                <li class="nav-list__item">
+                {% url 'home' as home_url %}
+                <li class="nav-list__item {{request|mark_current_page:home_url}}">
                     <a href="{% url 'home' %}" class="nav-list__link">
                         <span class="nav-list__text">
                             Главная
                         </span>
                     </a>
                 </li>
-                <li class="nav-list__item">
+                {% url 'post_list' as post_list_url %}
+                <li class="nav-list__item {{request|mark_current_page:post_list_url}}">
                     <a href="{% url 'post_list' %}" class="nav-list__link">
                         <span class="nav-list__text">
                             Арты

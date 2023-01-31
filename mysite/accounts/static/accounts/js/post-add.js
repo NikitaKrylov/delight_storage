@@ -24,6 +24,8 @@ function btn(button, closebtn, parent) {
     });
 };
 
+
+// поиск и пвыбор тегов
 $('.search__input-form').on('click',function(e) {
   btn('.search__input-form','.search__close-btn', '.search');
   setTimeout(() => document.querySelector('.search__input-form').focus(), 100);
@@ -202,93 +204,78 @@ function formatBytes(bytes, decimals = 2) {
 addButton.addEventListener("click", function (e) {
     e.preventDefault()
 
-    let newForm = addImgForm[0].cloneNode(true)
-    let formRegex = RegExp(`images-(\\d){1}-`, 'g')
-    imgFormNum++
-    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `images-${imgFormNum}-`)
+    let newForm = addImgForm[0].cloneNode(true);
+    let formRegex = RegExp(`images-(\\d){1}-`, 'g');
+    imgFormNum += 1;
+    newForm.innerHTML = newForm.innerHTML.replace(formRegex, `images-${imgFormNum}-`);
 
-    // newForm.querySelector('.images-container').innerHTML = ''
-    let imgCont = newForm.querySelector('.images-container')
-    if (imgCont) {
-      imgCont.remove()
-      // imgCont.innerHTML = ''
+    if (newForm.querySelectorAll('.images-container').length) {
+      newForm.querySelector('.add-image__btn').textContent = 'Выбрать файл';
+      newForm.querySelector('.images-container').remove();
     }
-    
-    newForm.querySelector('.add-image__text').textContent = 'Выбрать файл'
 
     cont.insertBefore(newForm, addButton)
     totalForms.setAttribute('value', `${imgFormNum + 1}`)
 });
 
+function createImageInfo(linkImg, file) {
+  newimg = new Image;
+  newimg.src = linkImg;
+  
+  let imgName = file.name;
+  let imgSize = formatBytes(file.size, 2);
+  let imgWidth = newimg.width;
+  let imgHeight = newimg.height;
+
+  let imgInfo = $(`
+    <div class="images-container__image-info image-info">
+      <div class="image-info__item">
+        <div class="image-info__title title">Имя: </div>
+        <div class="image-info__value">${imgName}</div>
+      </div>
+      <div class="image-info__item">
+        <div class="image-info__title title">Размер: </div>
+        <div class="image-info__value">${imgSize}</div>
+      </div>
+      <div class="image-info__item">
+        <div class="image-info__title title">Разрешение: </div>
+        <div class="image-info__value">${imgHeight} x ${imgWidth}</div>
+      </div>
+    </div>
+  `);
+
+  return imgInfo;
+}
 
 $('.add-image-container').on('change', '.add-image__input', function (e) {
-  const currAddImg = e.target.closest('.add-image')
-  let imagesCont;
-  let imgName;
-  let imgSize;
-  let imgWidth;
-  let imgHeight;
+  const currAddImg = e.target.closest('.add-image');
+  const [file] = currAddImg.querySelector('.add-image__input').files;
 
-  if (currAddImg.querySelectorAll('.images-container').length) {
-    currAddImg.querySelector('.images-container').remove()
-  }
-  
-  let imgCont = document.createElement('div')
-  imgCont.className = 'images-container'
-  currAddImg.prepend(imgCont)
-  imagesCont = currAddImg.querySelector('.images-container')
-    
-    // let imgCont = document.createElement('div')
-    // imgCont.className = 'images-container'
-    // currAddImg.prepend(imgCont)
-    
-    // const imagesCont = currAddImg.querySelector('.images-container')
-    // imagesCont.innerHTML = ''
+  if (file) {
 
-    const [file] = currAddImg.querySelector('.add-image__input').files
-
-    if (file) {
-        let srcLink = URL.createObjectURL(file);
-
-        let imgCont = document.createElement('div');
-        imgCont.className = 'images-container__image-item';
-        imgCont.innerHTML = '<img class="images-container__image" src=' + srcLink + ' >';
-        imagesCont.append(imgCont);
-
-
-        let imgInfo = document.createElement('div');
-        var currImg  = imgCont.getElementsByTagName('img')[0];
-
-        currImg.onload = function() {
-          newimg = new Image;
-          newimg.src = srcLink
-          
-          imgName = file.name
-          imgSize = formatBytes(file.size, 2)
-          imgWidth = newimg.width
-          imgHeight = newimg.height
-          
-          imgInfo.className = 'images-container__image-info image-info';
-          imgInfo.innerHTML = `<div class="image-info__item">
-                                   <div class="image-info__title title">Имя: </div>
-                                   <div class="image-info__value">${imgName}</div>
-                               </div>
-                               <div class="image-info__item">
-                                   <div class="image-info__title title">Размер: </div>
-                                   <div class="image-info__value">${imgSize}</div>
-                               </div>
-                               <div class="image-info__item">
-                                  <div class="image-info__title title">Разрешение: </div>
-                                  <div class="image-info__value">${imgHeight} x ${imgWidth}</div>
-                              </div>`;
-        }
-
-        imagesCont.append(imgInfo);
-
-        currAddImg.querySelector('.add-image__text').textContent = 'Другой файл'
+    if (currAddImg.querySelectorAll('.images-container').length) {
+      currAddImg.querySelector('.images-container').remove();
     }
+
+    let srcLink = URL.createObjectURL(file);
+
+    let imageCont = $(`
+      <div class="images-container">
+        <div class="images-container__image-box">
+          <img class="images-container__image" src=${srcLink}>
+        </div>
+      </div>
+    `);
+    $(currAddImg).prepend(imageCont);
+
+    let currImg  = $(imageCont).find('img');
+    currImg.on('load', function () {
+      imageCont.append(createImageInfo(srcLink, file));
+    })
+
+    currAddImg.querySelector('.add-image__btn').textContent = 'Другой файл';
+  }
 })
-  
 
 $('.add-image-container').on('click', '.del-btn', function (e) {
   const currAddImg = e.target.closest('.add-image')
@@ -297,7 +284,6 @@ $('.add-image-container').on('click', '.del-btn', function (e) {
 
 
 // инициализации календаря
-
 if ($('body').hasClass('_pc')) {
   let todayBtn = {
     content: 'Сегодня',

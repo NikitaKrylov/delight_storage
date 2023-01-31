@@ -347,7 +347,6 @@
 
 .comments-form {
   display: grid;
-  padding-bottom: 20px;
   margin-bottom: 20px;
   -webkit-box-align: start;
       -ms-flex-align: start;
@@ -479,6 +478,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 5px;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -493,11 +493,11 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 5px;
 }
 .comment__avatar {
   width: 24px;
   height: 24px;
-  margin-right: 8px;
   display: block;
   border: 0;
   overflow: hidden;
@@ -507,7 +507,6 @@
   white-space: nowrap;
   -o-text-overflow: ellipsis;
      text-overflow: ellipsis;
-  margin-right: 4px;
   color: var(--white);
   font-weight: 700;
   max-width: 220px;
