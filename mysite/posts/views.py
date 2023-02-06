@@ -1,5 +1,4 @@
 import json
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -8,13 +7,16 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
-from .forms import SearchForm
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
 
 from accounts.forms import ComplaintForm
+
+
+def is_ajax(request) -> bool:
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
 class CreateComplaint(View, LoginRequiredMixin):
@@ -33,9 +35,19 @@ class CreateComplaint(View, LoginRequiredMixin):
 
 
 def get_tags(request, *args, **kwargs):
-    # needs split
-    string = request.GET.get('operation').lower()
-    ctx = {'tags':  list(PostTag.objects.filter(name__icontains=string).values("name", "slug").all())}
+    if not is_ajax(request): raise PermissionDenied()
+
+    strings: str = request.GET.get('operation').lower().split()
+
+    if strings:
+        query = Q()
+        for string in strings:
+            query |= Q(name__icontains=string)
+
+        ctx = {'tags': list(PostTag.objects.filter(query).values("name", "slug"))}
+    else:
+        ctx = {'tags': list()}
+
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
@@ -131,8 +143,9 @@ class HomeView(PostFilterFormMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['title'] = "Главная"
         context['popular_tags'] = PostTag.objects.best_by('likes')[
-            :self.tags_batch_size]
+                                  :self.tags_batch_size]
         context['popular_posts'] = Post.objects.annotate(likes_count=Count(
             F('likes'))).order_by('-likes_count')[:self.post_batch_size]
         context['popular_authors'] = User.objects.annotate(subscribers_amount=Count(
@@ -211,7 +224,8 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return context
 
     def get_queryset(self):
-        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True), views_amount=Count('views', distinct=True))
+        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True),
+                                                   views_amount=Count('views', distinct=True))
 
         filter_query = Q()
         exclude_query = Q()
@@ -229,15 +243,16 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
 
-        response = response.order_by('-likes_amount')
+        # response = response.order_by('-likes_amount')
         # response = response.order_by('-views_amount')
 
         return response.exclude(exclude_query).filter(filter_query).distinct()
 
 
-class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
-    model = Post
-    paginate_by = 30
-    template_name = 'posts/images.html'
-    context_object_name = 'posts'
+class PostCompilationsList(PostFilterFormMixin, TemplateView):
+    template_name = 'posts/compilations.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostCompilationsList, self).get_context_data(*args, **kwargs)
+        context['title'] = "Подборки"
+        return context
