@@ -69,18 +69,6 @@ $('.search-button').on('click',function(e) {
 
 
 
-function createTag(text, id) {
-  let tag = document.createElement('div');
-  tag.className = 'tags-list__tag';
-  tag.style = 'display: none;';
-  tag.innerHTML = `
-    <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_${id}" name="${id}"
-    readonly tabindex="-1" type="number" value="0">
-    <span>${text}</span>`
-
-  return tag;
-}
-
 const tagList = document.querySelector('.tags-list');
 const tagBtn = document.querySelector('.tags-list__tag')
 const searchInput = document.querySelector('.search__input-form')
@@ -128,7 +116,15 @@ $(searchInput).on("input", function() {
         let name = e['name'];
         let slug = e['slug'];
 
-        tagList.append(createTag(name, slug));
+        let tag = document.createElement('div');
+        tag.className = 'tags-list__tag';
+        tag.style = 'display: none;';
+        tag.innerHTML = `
+          <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_${slug}" name="${slug}"
+          readonly tabindex="-1" type="number" value="0">
+          <span>${name}</span>`
+
+        tagList.append(tag);
 
         // tag.getElementsByTagName('span')[0].innerHTML = inserMark(name, name.toLowerCase().search(textInp), textInp.length);
         show(tag);
