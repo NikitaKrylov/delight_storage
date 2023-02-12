@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(_('имя пользователя'), max_length=50, unique=True)
-    email = models.EmailField(_("email addres"), max_length=255, unique=True)
+    email = models.EmailField(_("почта"), max_length=255, unique=True)
     avatar = models.ImageField(_("иконка пользователя"), upload_to='users_avatars/', blank=True, null=True)
     birth_date = models.DateField(
         verbose_name=_("дата рождения"), blank=True, null=True)
