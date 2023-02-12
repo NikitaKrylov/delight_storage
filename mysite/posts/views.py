@@ -15,6 +15,7 @@ from accounts.models import Subscription, User
 from accounts.forms import ComplaintForm
 
 
+
 def is_ajax(request) -> bool:
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
@@ -258,4 +259,18 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
+
+        # from sklearn.metrics import jaccard_score
+        # from .services.base import tags_vector
+        #
+        # test_post = Like.objects.filter(user=self.request.user)[2].post
+        # test_tags_vector = tags_vector(test_post.tags.values_list('id', flat=True))
+        #
+        # res = []
+        # for post in Post.objects.exclude(id=5).all():
+        #     v = tags_vector(post.tags.values_list('id', flat=True))
+        #     res.append((str(post), jaccard_score(test_tags_vector, v, average='macro')))
+        #
+        # print(max(res, key=lambda x: x[1]))
+
         return context

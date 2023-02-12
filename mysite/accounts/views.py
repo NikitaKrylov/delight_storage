@@ -25,7 +25,7 @@ from mediacore.forms import ImageFileFormSet, VideoFileFormSet
 from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
 from posts.mixins import AnnotateUserLikesAndViewsMixin
-from .services import ChartStatistic
+from accounts.services.base import ChartStatistic
 
 
 class SignatoryView(View):

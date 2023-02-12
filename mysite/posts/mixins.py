@@ -3,7 +3,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 from .forms import PostTagsForm
 from .models import Post, Like
-from .services import update_post_views
+from .services.base import update_post_views
 
 
 class PostFilterFormMixin:

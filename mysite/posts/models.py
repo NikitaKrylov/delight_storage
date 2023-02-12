@@ -86,9 +86,6 @@ class Post(models.Model):
                 "Укажите время публикации для отложенного поста")
         return super().clean()
 
-    def get_like_percentage(self):
-        return self.likes.count() / self.views.count()
-
     def __str__(self):
         if self.delay:
             return "Отложенный пост id - {}".format(self.pk)
