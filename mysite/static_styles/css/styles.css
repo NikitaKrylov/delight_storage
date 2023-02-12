@@ -593,7 +593,8 @@ a {
           justify-content: center;
 }
 
-.title {
+.title,
+.title-block {
   display: inline-block;
   padding: 3px 0;
   margin: 5px 0;
@@ -601,6 +602,10 @@ a {
   font-weight: 600;
   font-family: "CirceRegular";
   color: var(--white);
+}
+
+.title-block {
+  display: block;
 }
 
 .textarea {

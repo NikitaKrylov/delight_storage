@@ -48,25 +48,9 @@
     {% block script %}
     {% endblock %}
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script> -->
-<script>
-
-    $(".search__input-form").on("input", (e) => {
-    console.log($(".search__input-form").val().toLowerCase());
-
-    $.ajax({
-            type: "GET",
-            url: {% url 'get_tags' %},
-            data: {'operation': $(".search__input-form").val().toLowerCase() },
-            dataType: "json",
-            success: function(response) {
-                console.log(response)
-            }
-        })
-    })
-
-</script>
+    <script>
+        let urlTag = {% url 'get_tags' %};
+    </script>
 </body>
-
-
 
 </html>

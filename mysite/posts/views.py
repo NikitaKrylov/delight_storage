@@ -35,7 +35,8 @@ class CreateComplaint(View, LoginRequiredMixin):
 def get_tags(request, *args, **kwargs):
     # needs split
     string = request.GET.get('operation').lower()
-    ctx = {'tags':  list(PostTag.objects.filter(name__icontains=string).values("name", "slug").all())}
+    ctx = {'tags':  list(PostTag.objects.filter(
+        name__icontains=string).values("name", "slug").all())}
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
@@ -211,7 +212,8 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return context
 
     def get_queryset(self):
-        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True), views_amount=Count('views', distinct=True))
+        response = super().get_queryset().annotate(likes_amount=Count(
+            'likes', distinct=True), views_amount=Count('views', distinct=True))
 
         filter_query = Q()
         exclude_query = Q()
@@ -240,4 +242,3 @@ class PostCompilationList(PostQueryMixin, PostFilterFormMixin, ListView):
     paginate_by = 30
     template_name = 'posts/images.html'
     context_object_name = 'posts'
-

@@ -1,38 +1,38 @@
 <div class="post-add">
     <div class="post-add__body option-post">
-      <label class="checkbox">
-          {{form.only_for_adult}}
-          <i class="checkbox__indicator checkbox__passive">
-              <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                  <path
-                      d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-              </svg>
-          </i>
-          <span class="checkbox__text">{{form.only_for_adult.label}}</span>
-      </label>
-      <label class="checkbox">
-          {{form.disable_comments}}
-          <i class="checkbox__indicator checkbox__passive">
-              <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                  <path
-                      d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-              </svg>
-          </i>
-          <span class="checkbox__text">{{form.disable_comments.label}}</span>
-      </label>
-      <label class="checkbox">
-          {{form.for_autenticated_users}}
-          <i class="checkbox__indicator checkbox__passive">
-              <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                  <path
-                      d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-              </svg>
-          </i>
-          <span class="checkbox__text">{{form.for_autenticated_users.label}}</span>
-      </label>
+        <label class="option-post__checkbox checkbox">
+            {{form.only_for_adult}}
+            <i class="option-post__checkbox-indicator checkbox__indicator checkbox__passive">
+                <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path
+                        d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                </svg>
+            </i>
+            <span class="checkbox__text">{{form.only_for_adult.label}}</span>
+        </label>
+        <label class="option-post__checkbox checkbox">
+            {{form.disable_comments}}
+            <i class="option-post__checkbox-indicator checkbox__indicator checkbox__passive">
+                <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path
+                        d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                </svg>
+            </i>
+            <span class="checkbox__text">{{form.disable_comments.label}}</span>
+        </label>
+        <label class="option-post__checkbox checkbox">
+            {{form.for_autenticated_users}}
+            <i class="option-post__checkbox-indicator checkbox__indicator checkbox__passive">
+                <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path
+                        d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                </svg>
+            </i>
+            <span class="checkbox__text">{{form.for_autenticated_users.label}}</span>
+        </label>
     </div>
 
     <!-- <div class="post-add__body" style="color: white;">
@@ -45,128 +45,137 @@
     </div> -->
 
     <div class="post-add__body status-post">
-      <span class="title underline">
-          {{form.status.label}}
-      </span>
+        <span class="title">
+            {{form.status.label}}
+        </span>
 
-      <div class="status-post__dropdown dropdown">
-          <!-- <span class="status-post__btn button"><i
+        <div class="status-post__dropdown dropdown">
+            <!-- <span class="status-post__btn button"><i
                   class="status-post__icon fa-solid fa-angle-down"></i></span> -->
-          <span class="status-post__btn button"></span>
+            <span class="status-post__btn button"></span>
 
-          <ul class="status-post__list dropdown__list">
-              {% for s in form.status %}
-              <div class="status-post__item dropdown__item">{{s}}</div>
+            <ul class="status-post__list dropdown__list">
+                {% for s in form.status %}
+                <div class="status-post__item dropdown__item">{{s}}</div>
 
-              {% endfor %}
-          </ul>
-      </div>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     <div class="post-add__body delay-form">
-      <div class="delay-form__title title underline">
-          {{delay_form.time.label}}
-      </div>
-      <div class="delay-form__form">
-          {{delay_form.time}}
-      </div>
+        <div class="delay-form__title title">
+            {{delay_form.time.label}}
+        </div>
+        <div class="delay-form__form">
+            {{delay_form.time}}
+        </div>
     </div>
 
     <div class="post-add__body add-tags">
-      <!-- <div class="add-tags__title title">
+        <!-- <div class="add-tags__title title">
           {{form.tags.label}}
       </div> -->
-      <div class="add-tag__content">
-          <div class="search">
-              <div class="search__container">
-                  <div class="search__input-wrapper">
-                      <div class="search__title title underline">
-                          Теги
-                      </div>
-                      <div class="search__body">
-                          <div class="search__input-container">
-                              <div class="search__input">
-                                  <input class="search__input-form" name="search"
-                                      type="text" placeholder="Поиск" autocomplete="off"
-                                      data-search-input>
-                              </div>
-                          </div>
-                          <div class="search-content">
-                              <div class="tags-list scrollbar-hidden">
-                                  {% for tag in form.tags %}
-                                  <div class="tags-list__tag">
-                                      {{tag}}
-                                      <!-- <span class="tags-list__btn" title="Удалить"><i
+        <div class="add-tag__content">
+            <div class="search">
+                <div class="search__container">
+                    <div class="search__input-wrapper">
+                        <div class="search__title title">
+                            Теги
+                        </div>
+                        <div class="search__body">
+                            <div class="search__input-container">
+                                <div class="search__input">
+                                    <input class="search__input-form" name="search" type="text" placeholder="Поиск"
+                                        autocomplete="off" data-search-input>
+                                </div>
+                            </div>
+                            <div class="search-content">
+                                <div class="tags-list scrollbar-hidden">
+                                    {% for tag in form.tags %}
+                                    <div class="tags-list__tag">
+                                        {{tag}}
+                                        <!-- <span class="tags-list__btn" title="Удалить"><i
                                               class="fa-solid fa-xmark"></i></span> -->
-                                  </div>
-                                  {% endfor %}
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="selected-tags">
-                      <div class="selected-tags__title">
-                          <div class="selected-tags__text title underline">
-                              Выбранные теги
-                          </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="selected-tags">
+                        <div class="selected-tags__title">
+                            <div class="selected-tags__text title">
+                                Выбранные теги
+                            </div>
 
-                          <div class="selected-tags__text">
-                              <span class="selected-tags__btn add-tag-btn"
-                                  title="Добавить свой тег">
-                                  <i class="fa-solid fa-plus"></i>
-                              </span>
-                          </div>
-                      </div>
-                      <div class="selected-tags__content search-tags">
-                          <div class="selected-tags__list scrollbar-hidden"></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+                            <div class="selected-tags__text">
+                                <span class="selected-tags__btn add-tag-btn" title="Добавить свой тег">
+                                    <i class="fa-solid fa-plus"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="selected-tags__content search-tags">
+                            <div class="selected-tags__list scrollbar-hidden"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="post-add__body description-post">
-      <!-- <div class="description-post__title title underline">
+        <!-- <div class="description-post__title title">
           {{form.description.label}}
       </div> -->
-      <div class="description-post__input textarea">
-          {{form.description}}
-      </div>
+        <div class="description-post__input textarea">
+            {{form.description}}
+        </div>
     </div>
-
 
     <div class="post-add__body add-image-container">
-      {{image_formset.management_form}}
-      {% for image_form in image_formset %}
-      <div class="add-image">
+        <div class="add-image-container__title title">Фото</div>
 
-          <!-- <div class="images-container"></div> -->
-          <!-- <div class="add-image__file-text">{{image_form.file.label}}</div> -->
-          <div class="add-image__controls">
-              {{image_form.file}}
-              {% if image_formset.can_delete %}
-              <span class="add-image__control del-btn button">
-                  <!-- <i class="fa-solid fa-circle-xmark"></i> -->
-                  Удалить
-              </span>
-              <!-- <label class="checkbox">
-                  {{image_form.DELETE}}
-                  <i class="checkbox__indicator checkbox__passive">
-                      <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 512 512">! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-              <!-- <path
-                              d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-                      </svg>
-                  </i>
-                  <span class="checkbox__text">{{image_form.DELETE.label}}</span>
-              </label> -->
-              {% endif %}
-          </div>
-      </div>
-      {% endfor %}
-      <button id="add-form" class="add-form-btn button" type="button">Добавить
-          фото</button>
+        {{image_formset.management_form}}
+        {% for image_form in image_formset %}
+        <div class="add-file add-image">
+
+            <!-- <div class="images-container"></div> -->
+            <!-- <div class="add-image__file-text">{{image_form.file.label}}</div> -->
+            <div class="add-file__controls">
+                {{image_form.file}}
+                {% if image_formset.can_delete %}
+                <span class="add-file__control del-btn button">
+                    <!-- <i class="fa-solid fa-circle-xmark"></i> -->
+                    Удалить
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <button id="add-form-image" class="add-form-btn button" type="button">Добавить
+            фото</button>
     </div>
-    {{video_formset.as_p}}
+
+    <div class="post-add__body add-video-container">
+        <div class="add-video-container__title title">Видео</div>
+
+        {{video_formset.management_form}}
+
+        {% for video_form in video_formset %}
+        <div class="add-file add-video">
+            <div class="add-file__controls">
+                {{video_form.file}}
+                {% if video_formset.can_delete %}
+                <span class="add-file__control del-btn button">
+                    Удалить
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <button id="add-form-video" class="add-form-btn button" type="button">Добавить
+            видео</button>
+    </div>
 </div>

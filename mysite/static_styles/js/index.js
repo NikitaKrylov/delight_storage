@@ -109,19 +109,22 @@ if (sidebarMobClose.length > 0) {
 let lastScroll = 0;
 const defaultOffset = 200;
 const header = document.querySelector('.header');
-const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
-const containHide = () => header.classList.contains('_hide-header');
-window.addEventListener('scroll', () => {
-    if (scrollPosition() > lastScroll && !containHide() && scrollPosition() > defaultOffset) {
-        // scroll down
-        header.classList.add('_hide-header');
-    } else if (scrollPosition() < lastScroll && containHide()) {
-        // scroll up
-        header.classList.remove('_hide-header');
-    }
 
-    lastScroll = scrollPosition();
-});
+if (header) {
+    const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+    const containHide = () => header.classList.contains('_hide-header');
+    window.addEventListener('scroll', () => {
+        if (scrollPosition() > lastScroll && !containHide() && scrollPosition() > defaultOffset) {
+            // scroll down
+            header.classList.add('_hide-header');
+        } else if (scrollPosition() < lastScroll && containHide()) {
+            // scroll up
+            header.classList.remove('_hide-header');
+        }
+
+        lastScroll = scrollPosition();
+    });
+}
 
 // показать/скрыть popup(всплывающее окно)
 // function popupOpen(curentPopup) {

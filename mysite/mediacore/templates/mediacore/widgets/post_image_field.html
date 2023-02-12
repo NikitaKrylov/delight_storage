@@ -12,10 +12,10 @@
 {{ widget.input_text }}:
 {% endif %}
 <!--выбор файла главное поле-->
-<label class="add-image__control add-image__file">
-    <input class="add-image__input hidden-input" type="{{ widget.type }}" name="{{ widget.name }}"
+<label class="add-file__control add-image-file">
+    <input class="add-file__input add-image-file__input hidden-input" type="{{ widget.type }}" name="{{ widget.name }}"
         {%include "django/forms/widgets/attrs.html" %}>
-    <span class="add-image__btn button">
+    <span class="add-file__btn add-image-file__btn button">
         <!-- <i class="add-image__icon"></i> -->
         Выбрать файл
     </span>

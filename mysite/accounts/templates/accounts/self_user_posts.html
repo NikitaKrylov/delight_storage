@@ -12,38 +12,43 @@
 {% block content %}
 
 <div class="my-posts-container">
-  <div class="my-posts-info">
-    <div class="my-posts-info__item my-post-stats">
-      <div class="my-posts-info__title title">
-        <span class="my-posts-info__text">Статистика</span>
+  <div class="my-stats page-block">
+    <div class="my-stats__body">
+      <div class="my-stats__content my-post-stats">
+        <div class="my-stats__title title">
+          <span class="my-stats__text">Статистика</span>
+        </div>
+        <ul class="my-stats-list">
+          <li class="my-stats-list__item">
+            <div class="stats-info">
+              <div class="stats-info__text">Просмотров</div>
+              <div class="stats-info__value">{{views_amount}}</div>
+            </div>
+          </li>
+          <li class="my-stats-list__item">
+            <div class="stats-info">
+              <div class="stats-info__text">Лайков</div>
+              <div class="stats-info__value">{{likes_amount}}</div>
+            </div>
+          </li>
+          <li class="my-stats-list__item">
+            <div class="stats-info">
+              <div class="stats-info__text">Комментариев</div>
+              <div class="stats-info__value">{{comments_amount}}</div>
+            </div>
+          </li>
+        </ul>
       </div>
-      <div class="my-stats-list">
-        <div class="my-stats-list__item">
-          <div class="stats-info">
-            <div class="stats-info__text">Просмотров</div>
-            <div class="stats-info__value">{{views_amount}}</div>
-          </div>
+      <div class="my-stats__content charts">
+        <canvas id="all-dashboard" class="my-stats__charts" aria-label="Общая статистика"></canvas>
+        <div class="my-stats__controls">
+          <a href="#" class="my-stats__btn">Подробнее</a>
         </div>
-        <div class="my-stats-list__item">
-          <div class="stats-info">
-            <div class="stats-info__text">Лайков</div>
-            <div class="stats-info__value">{{likes_amount}}</div>
-          </div>
-        </div>
-        <div class="my-stats-list__item">
-          <div class="stats-info">
-            <div class="stats-info__text">Комментариев</div>
-            <div class="stats-info__value">{{comments_amount}}</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <canvas id="all-dashboard" aria-label="Общая статистика"></canvas>
       </div>
     </div>
-    <div class="my-posts-info__item add-post">
-      <div class="my-posts-info__title title">
-        <span class="my-posts-info__text">Добавить пост</span>
+    <div class="add-post">
+      <div class="my-stats__title title">
+        <span class="my-posts__text">Добавить пост</span>
       </div>
       <div class="add-post-container">
         <!-- <div class="add-post-inner"> -->
@@ -65,7 +70,7 @@
           {% if post.status != post.STATUS.PUBLISHED %}
           <div class="gallery__status">
             {% if post.status == post.STATUS.DEFERRED and post.delay %}
-              {{post.delay.time}}
+            {{post.delay.time}}
             {% else %}
             черновик
             {% endif %}
@@ -75,11 +80,11 @@
             <a class="gallery__link" href="{{post.get_absolute_url}}">
               <div class="gallery__thumbnail">
                 {% if post.images.count > 0 %}
-                    <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                    {% else %}
-                    <video class="gallery__media video" width=100% height="100%"
-                        src="{{post.videos.first.file.url}}"></video>
-                    {% endif %}
+                <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                {% else %}
+                <video class="gallery__media video" width=100% height="100%"
+                  src="{{post.videos.first.file.url}}"></video>
+                {% endif %}
                 <div class="gallery__media-overlay">
 
                 </div>
@@ -163,41 +168,50 @@
 
 
   new Chart(document.getElementById('all-dashboard'), {
-     type: 'line',
-     data: {
-         labels: {{dates| safe}},
-         datasets: [
+    type: 'line',
+    data: {
+      labels: {{ dates| safe}},
+    datasets: [
 
-             {
-                 label: 'Количество просмотров за день',
-                 data: {{views_values| safe}},
-                borderWidth: 1,
+    {
+      label: 'Количество просмотров за день',
+      data: {{ views_values| safe}},
+    borderWidth: 1,
              },
-             {
-                 label: 'Количество лайков за день',
-                 data: {{ likes_values| safe}},
-                 borderWidth: 1,
+    {
+      label: 'Количество лайков за день',
+      data: {{ likes_values| safe}},
+    borderWidth: 1,
              },
-             {
-                 label: 'Количество комментариев за день',
-                 data: {{ comments_values| safe}},
-                 borderWidth: 1,
+    {
+      label: 'Количество комментариев за день',
+      data: {{ comments_values| safe}},
+    borderWidth: 1,
              },
 
-         ],
+  ],
      },
 
-     options: {
-         animations: {
-             tension: {
-                 duration: 5000,
-                 easing: 'linear',
-                 from: 0.5,
-                 to: 0,
-                 loop: true
-             }
-         },
-     }
+    options: {
+    maintainAspectRatio: false,
+    resizeDelay: 0.5,
+    scales: {
+      y: {
+        ticks: {
+          display: false,
+        }
+      }
+    },
+    animations: {
+      tension: {
+        duration: 5000,
+        easing: 'linear',
+        from: 0.5,
+        to: 0,
+        loop: true
+      }
+    },
+  }
  });
 </script>
 

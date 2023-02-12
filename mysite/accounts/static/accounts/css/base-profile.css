@@ -140,3 +140,9 @@
 .account-body {
   padding-top: 10px;
 }
+
+.page-block {
+  padding: 15px;
+  border-radius: 5px;
+  background-color: var(--bg-secondary-default);
+}

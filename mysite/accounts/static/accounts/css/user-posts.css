@@ -1,22 +1,59 @@
-.my-posts-info {
-  padding: 10px;
+.my-stats {
   margin-bottom: 20px;
-  border-radius: 5px;
-  background-color: var(--bg-secondary-default);
 }
-.my-posts-info__item {
+.my-stats__title {
+  font-size: 24px;
+}
+.my-stats__body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 15px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  margin-bottom: 10px;
 }
-.my-posts-info__title {
-  font-size: 24px;
+@media (min-width: 991px) {
+  .my-stats__body {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+  }
+}
+.my-stats__content {
+  width: 100%;
+}
+.my-stats__charts {
+  padding-bottom: 20px;
+}
+.my-stats__controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.my-stats__btn {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--white);
 }
 
+.charts {
+  position: relative;
+  height: 30vh;
+  width: 90vw;
+  margin: auto;
+}
 .my-stats-list__item {
   padding: 20px 0;
   color: var(--secondary-white);
@@ -27,9 +64,9 @@
   display: -ms-flexbox;
   display: flex;
   gap: 5px;
-}
-.stats-info__text {
-  width: 50%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 .cover-item-gallery__items-control {
   display: -webkit-box;

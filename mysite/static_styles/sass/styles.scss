@@ -589,7 +589,8 @@ a {
   }
 }
 
-.title {
+.title,
+.title-block {
   display: inline-block;
   padding: 3px 0;
   margin: 5px 0;
@@ -598,6 +599,11 @@ a {
   font-family: "CirceRegular";
   color: var(--white);
 }
+
+.title-block {
+  display: block;
+}
+
 
 .textarea {
   line-height: 20px;

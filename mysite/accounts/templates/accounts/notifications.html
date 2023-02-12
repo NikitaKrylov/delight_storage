@@ -14,11 +14,11 @@
 
     <div class="notification-menu">
 
+        {% if unread %}
         <div class="notification-menu__title title">
-            {% if unread %}
             Новые
-            {% endif %}
         </div>
+        {% endif %}
 
         <div class="notification-menu__controls">
             <a href="{% url 'all_notification_read' %}" class="notification-menu__btn button dark-btn">Прочитать все</a>

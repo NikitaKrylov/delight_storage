@@ -1,9 +1,3 @@
-.profile-container {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: var(--bg-secondary-default);
-}
-
 .input-list {
   display: -webkit-box;
   display: -ms-flexbox;

@@ -1,27 +1,73 @@
+$width-mobile: 991px;
+
 .my-posts-container {
 }
 
-.my-posts-info {
-    // display: grid;
-    // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    // gap: 20px;
-    padding: 10px;
+.my-stats {
     margin-bottom: 20px;
-    border-radius: 5px;
-    background-color: var(--bg-secondary-default);
-
-    &__item {
-        display: flex;
-        flex-direction: column;
-    }
 
     &__title {
         font-size: 24px;
-        // color: var(--light-gray);
+    }
+
+    &__body {
+        display: flex;
+        gap: 15px;
+        flex-direction: column;
+        margin-bottom: 10px;
+
+        @media (min-width: $width-mobile) {
+            flex-direction: row;
+        }
+    }
+
+    &__content {
+        width: 100%;
+    }
+
+    &__test {
+
+    }
+
+    &__charts {
+        padding-bottom: 20px;
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    &__btn {
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--white);
+        // border: none;
+        // background: transparent;
+
+    }
+}
+
+.charts {
+    position: relative;
+    height: 30vh;
+    width: 90vw;
+    margin: auto;
+    // max-height: 300px;
+    >canvas {
+        // width: 100% !important;
+        // height: 100% !important;
+        // min-height: 300px;
     }
 }
 
 .my-post-stats {
+    // display: flex;
 }
 
 .my-stats-list {
@@ -35,10 +81,10 @@
 .stats-info {
     display: flex;
     gap: 5px;
-    // justify-content: space-between;
+    justify-content: space-between;
 
 		&__text {
-            width: 50%;
+            // width: 50%;
 		}
 
 		&__value {
