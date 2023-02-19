@@ -2,14 +2,23 @@ from django.db.models import Exists, OuterRef, Count, F
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
 from .forms import PostTagsForm
-from .models import Post, Like
+from .models import Post, Like, PostTag
 from .services.base import update_post_views
 
 
 class PostFilterFormMixin:
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['search_form'] = PostTagsForm(self.request.session.get('get_query', None))
+        context['session_tags'] = []
+
+        for key, value in self.request.session['tags_query'].items():
+            context['session_tags'].append({
+                'name': PostTag.objects.get(slug=key).name,
+                'slug': key,
+                'value': value
+            })
+        context['search_input'] = self.request.session.get('search_input', '')
+
         return context
 
 

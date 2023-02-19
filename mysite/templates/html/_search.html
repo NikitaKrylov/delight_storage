@@ -8,7 +8,7 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                         <input class="search__input-form" name="search" type="text" placeholder="Поиск..."
-                            autocomplete="off" data-search-input>
+                            autocomplete="off" data-search-input value="{{search_input}}">
                         <div class="search__close-btn search__icon">
                             <i class="fa-solid fa-xmark"></i>
                         </div>
@@ -87,14 +87,12 @@
             <div class="search-content">
                 <div class="tags-list">
 
-                    <!-- {% for field in search_form %}
-
-                    <div class="tags-list__tag" style="display: none;">
-                        {{ field }}
-                        <span>{{ field.label }}</span>
+                    {% for tag in session_tags %}
+                    <div class="tags-list__tag _show {% if tag.value == 1 %}_enabled{% endif %}" style="">
+                        <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_{{tag.slug}}" name="{{tag.slug}}" readonly="" tabindex="-1" type="number" value="{{tag.value}}">
+                        <span>{{tag.name}}</span>
                     </div>
-
-                    {% endfor %} -->
+                    {% endfor %}
 
                 </div>
             </div>

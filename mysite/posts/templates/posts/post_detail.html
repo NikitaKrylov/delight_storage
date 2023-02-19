@@ -130,12 +130,12 @@
             </div>
         </div>
 
+        {% if post.count_media > 1 %}
         <div class="slider-buttons">
             <div class="slider-buttons__button swiper-button-next"></div>
             <div class="slider-buttons__button swiper-button-prev"></div>
         </div>
 
-        {% if post.count_media != 1 %}
         <div thumbsSlider="" class="image-slider-2 swiper">
             <div class="image-slider-2__wrapper swiper-wrapper">
                 {% for image in images %}
@@ -150,8 +150,7 @@
                 {% endfor %}
             </div>
         </div>
-        {% else %}
-        <div thumbsSlider="" class="image-slider-2 swiper" hidden></div>
+
         {% endif %}
     </div>
 
@@ -236,7 +235,7 @@
                 <span>
                     Опубликованно:
                     <time>
-                        {{post.pub_date}}
+                        {{post.pub_date|date:"SHORT_DATE_FORMAT"}}
                     </time>
                 </span>
             </div>

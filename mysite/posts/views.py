@@ -1,4 +1,6 @@
 import json
+
+import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -7,6 +9,8 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
+from sklearn.cluster import AgglomerativeClustering
+
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse, Http404
@@ -217,8 +221,16 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
     context_object_name = 'posts'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.GET:
-            request.session['get_query'] = request.GET
+        responce: dict = request.GET.dict()
+        search_input = responce.pop('search')
+        sort_by = responce.pop('sort_by') if 'sort_by' in responce else None
+
+        request.session['search_input'] = search_input if search_input.replace(' ', '') else ''
+        request.session['tags_query'] = dict(filter(lambda pair: int(pair[1]) != 0, responce.items()))
+
+        if not request.session['tags_query']:
+            return redirect('post_list')
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -233,13 +245,14 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         filter_query = Q()
         exclude_query = Q()
 
-        for name, value in self.request.session['get_query'].items():
+        for name, value in self.request.session['tags_query'].items():
 
             if name == 'search':
                 continue
 
             if name == 'sort_by':
-                print(value)
+                continue
+
             value = int(value)
             if value == 1:
                 filter_query |= Q(tags__slug=name)
@@ -259,18 +272,5 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
-
-        # from sklearn.metrics import jaccard_score
-        # from .services.base import tags_vector
-        #
-        # test_post = Like.objects.filter(user=self.request.user)[2].post
-        # test_tags_vector = tags_vector(test_post.tags.values_list('id', flat=True))
-        #
-        # res = []
-        # for post in Post.objects.exclude(id=5).all():
-        #     v = tags_vector(post.tags.values_list('id', flat=True))
-        #     res.append((str(post), jaccard_score(test_tags_vector, v, average='macro')))
-        #
-        # print(max(res, key=lambda x: x[1]))
 
         return context
