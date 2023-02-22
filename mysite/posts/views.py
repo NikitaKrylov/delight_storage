@@ -60,7 +60,8 @@ class AddCommentView(LoginRequiredMixin, View):
         post = Post.objects.get(pk=kwargs.get('pk'))
 
         if post.disable_comments:
-            raise ValueError("К этому посту нельзя оставлять комментарии")
+            raise ValueError(
+                "К этому посту нельзя оставлять комментарии")
 
         comment = Comment(author=request.user, post=post,
                           text=request.POST['input-comments-form'])
@@ -79,7 +80,8 @@ class AddReplyCommentView(LoginRequiredMixin, View):
         post = Post.objects.get(pk=kwargs.get('pk'))
 
         if post.disable_comments:
-            raise ValueError("К этому посту нельзя оставлять комментарии")
+            raise ValueError(
+                "К этому посту нельзя оставлять комментарии")
 
         comment = Comment(author=request.user, post=post,
                           text=request.POST['reply-reply'])

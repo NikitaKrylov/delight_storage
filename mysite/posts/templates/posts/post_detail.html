@@ -64,36 +64,36 @@
     </div>
 </div>
 <div id="complaints-post-window" class="popup">
-<!--    <form>-->
-<!--        {% csrf_token %}-->
-        <div class="popup__inner">
-            <div class="popup__content">
-                <div class="modal">
-                    <div class="modal__header">
-                        <div class="modal__title title">Жалоба</div>
-                        <div class="modal__close close-popup">
-                            <i class="fa-solid fa-xmark"></i>
-                        </div>
+    <!--    <form>-->
+    <!--        {% csrf_token %}-->
+    <div class="popup__inner">
+        <div class="popup__content">
+            <div class="modal">
+                <div class="modal__header">
+                    <div class="modal__title title">Жалоба</div>
+                    <div class="modal__close close-popup">
+                        <i class="fa-solid fa-xmark"></i>
                     </div>
-                    <form action="{% url 'create_post_complaint' post.id %}" method="post">
-                        {% csrf_token %}
+                </div>
+                <form action="{% url 'create_post_complaint' post.id %}" method="post">
+                    {% csrf_token %}
                     <div class="modal__body">
                         <div class="modal__controls">
-<!--                            <label class="modal__control radio">-->
-<!--                                <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
-<!--                                <span class="radio__btn"></span>-->
-<!--                                <span class="radio__text">Запрещенный контент</span>-->
-<!--                            </label>-->
-<!--                            <label class="modal__control radio">-->
-<!--                                <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
-<!--                                <span class="radio__btn"></span>-->
-<!--                                <span class="radio__text">Нет метки 18+</span>-->
-<!--                            </label>-->
-<!--                            <label class="modal__control radio">-->
-<!--                                <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
-<!--                                <span class="radio__btn"></span>-->
-<!--                                <span class="radio__text">Не соответствует теме</span>-->
-<!--                            </label>-->
+                            <!-- <label class="modal__control radio">
+                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
+                                <span class="radio__btn"></span>
+                                <span class="radio__text">Запрещенный контент</span>
+                            </label>
+                            <label class="modal__control radio">
+                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
+                                <span class="radio__btn"></span>
+                                <span class="radio__text">Нет метки 18+</span>
+                            </label>
+                            <label class="modal__control radio">
+                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
+                                <span class="radio__btn"></span>
+                                <span class="radio__text">Не соответствует теме</span>
+                            </label> -->
                             {{complaint_form.type}}
                         </div>
                         <div class="modal__input textarea">
@@ -101,10 +101,10 @@
                         </div>
                     </div>
                     <button class="modal__btn button" type="submit">Отправить</button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
 </div>
 
 <div class="post-container">

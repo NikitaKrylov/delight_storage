@@ -59,8 +59,13 @@
                         {% endif %}
                     </a>
                     {% else %}
-                    <a href="{% url 'login' %}" class="button header__login-link">Войти</a>
-                    <a href="{% url 'signup' %}" class="button header__signin-link">Регистрация</a>
+                    <a href="{% url 'login' %}" class="header__link lock-link">
+                        <div class="lock">
+                            <div class="lock__icon"></div>
+                        </div>
+                    </a>
+                    <a href="{% url 'login' %}" class="button header__link login-link">Войти</a>
+                    <a href="{% url 'signup' %}" class="button header__link signin-link">Регистрация</a>
                     {% endif %}
                 </div>
             </div>

@@ -1,16 +1,17 @@
-{% if widget.is_initial %}
-{{ widget.initial_text }}:
+<!-- {% if widget.is_initial %}
+{{ widget.initial_text }} -->
 <!--  когда файл уже сохранен здесь показывается ссылка на файл (в редактировании поста)  -->
-<a href="{{ widget.value.url }}">{{ widget.value }}</a>
-{% if not widget.required %}
+<!-- <a href="{{ widget.value.url }}">{{ widget.value }}</a>
+{% if not widget.required %} -->
 <!--вроде бы это чекбокс удаления-->
-<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}
+<!-- <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}
     disabled{% endif %}>
 <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
 {% endif %}
 <br>
-{{ widget.input_text }}:
-{% endif %}
+{{ widget.input_text }}
+{% endif %} -->
+
 <!--выбор файла главное поле-->
-<h1>Huy bilshoi chernii</h1>
+<!-- <h1>Huy bilshoi chernii</h1> -->
 <input type="{{ widget.type }}" name="{{ widget.name }}" {% include "django/forms/widgets/attrs.html" %}>
