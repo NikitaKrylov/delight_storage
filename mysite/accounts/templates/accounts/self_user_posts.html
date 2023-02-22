@@ -42,7 +42,7 @@
       <div class="my-stats__content charts">
         <canvas id="all-dashboard" class="my-stats__charts" aria-label="Общая статистика"></canvas>
         <div class="my-stats__controls">
-          <a href="#" class="my-stats__btn">Подробнее</a>
+          <a href="{% url 'dashboard' %}" class="my-stats__btn">Подробнее</a>
         </div>
       </div>
     </div>
@@ -114,10 +114,10 @@
                     </div>
                   </div>
                   <div class="cover-item-gallery__items-control">
-                    <a href="#" class="cover-item-gallery__item-control tooltip" title="Редактировать">
+                    <a href="{% url 'change_post' post.id %}" class="cover-item-gallery__item-control tooltip" title="Редактировать">
                       <span><i class="fa-solid fa-pen-to-square"></i></span>
                     </a>
-                    <a href="#" class="cover-item-gallery__item-control tooltip" title="Статистика">
+                    <a href="{% url 'post_stat' post.id %}" class="cover-item-gallery__item-control tooltip" title="Статистика">
                       <span><i class="fa-solid fa-chart-simple"></i></span>
                     </a>
                     <a href="#" class="cover-item-gallery__item-control button-red tooltip" title="Удалить">

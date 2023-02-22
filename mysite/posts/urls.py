@@ -6,6 +6,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('posts/all/', PostList.as_view(), name='post_list'),
     path('posts/search/', SearchPostList.as_view(), name='search'),
+    path('posts/search/<slug:slug>/', SearchPostTagListView.as_view(), name='search_by_tag'),
     path('posts/complication/', PostCompilationsList.as_view(), name='complication'),
     #     path('posts/liked/', LikedPostList.as_view(), name='liked_posts'),
     path('post/<int:pk>/', PostView.as_view(), name='post'),

@@ -1,4 +1,6 @@
 import json
+
+import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -7,12 +9,15 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
+from sklearn.cluster import AgglomerativeClustering
+
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
 from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
 
 from accounts.forms import ComplaintForm
+
 
 
 def is_ajax(request) -> bool:
@@ -218,8 +223,16 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
     context_object_name = 'posts'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.GET:
-            request.session['get_query'] = request.GET
+        responce: dict = request.GET.dict()
+        search_input = responce.pop('search')
+        sort_by = responce.pop('sort_by') if 'sort_by' in responce else None
+
+        request.session['search_input'] = search_input if search_input.replace(' ', '') else ''
+        request.session['tags_query'] = dict(filter(lambda pair: pair[1] != '0', responce.items()))
+
+        if not request.session['tags_query']:
+            return redirect('post_list')
+
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -234,13 +247,14 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         filter_query = Q()
         exclude_query = Q()
 
-        for name, value in self.request.session['get_query'].items():
+        for name, value in self.request.session['tags_query'].items():
 
             if name == 'search':
                 continue
 
             if name == 'sort_by':
-                print(value)
+                continue
+
             value = int(value)
             if value == 1:
                 filter_query |= Q(tags__slug=name)
@@ -253,6 +267,20 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return response.exclude(exclude_query).filter(filter_query).distinct()
 
 
+class SearchPostTagListView(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+    model = Post
+    paginate_by = 30
+    template_name = 'posts/images.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(tags__slug=self.kwargs['slug'])
+
+
+from .services.base import tags_vector
+from sklearn.metrics import jaccard_score
+
+
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
     template_name = 'posts/compilations.html'
 
@@ -260,4 +288,30 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
+        from itertools import combinations
+        import numpy as np
+        from sklearn.cluster import AgglomerativeClustering
+
+        posts = Post.objects.all()
+        m = create_distance_matrix(list(posts), posts.count())
+        print(m)
+        model = AgglomerativeClustering(affinity='precomputed', linkage='complete', distance_threshold=0.5, n_clusters=None, compute_full_tree=True).fit(m)
+        print(model.n_clusters)
+        print(model.distances_)
+
+        for i in zip(list(posts), model.labels_):
+            print(i)
+
         return context
+
+
+def create_distance_matrix(posts, square_size):
+    matrix = np.zeros((square_size, square_size))
+    posts_tags = [ tags_vector(i.tags.values_list('id', flat=True)) for i in posts ]
+
+    for i in range(square_size):
+        for j in range(square_size):
+            matrix[i, j] = 1.0 - jaccard_score(posts_tags[i], posts_tags[j], average='macro')
+
+    return matrix
+
