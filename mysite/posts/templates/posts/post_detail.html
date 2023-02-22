@@ -274,10 +274,7 @@
                 </div>
                 <div class="post-info-details__content post-tags">
                     {% for tag in tags %}
-                    <form method="get" action="{% url 'search' %}">
-                        <input name="{{tag.slug}}" value="1" style="display: none;">
-                        <button class="post-tags__tag button" type="submit"><span>{{tag}}</span></button>
-                    </form>
+                        <a href="{% url 'search_by_tag' tag.slug%}" class="post-tags__tag">{{tag}}</a>
                     {% endfor %}
                 </div>
             </div>

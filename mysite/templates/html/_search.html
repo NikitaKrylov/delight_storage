@@ -88,7 +88,7 @@
                 <div class="tags-list">
 
                     {% for tag in session_tags %}
-                    <div class="tags-list__tag _show {% if tag.value == 1 %}_enabled{% endif %}" style="">
+                    <div class="tags-list__tag _show {% if tag.value == '1' %}_enabled{% elif tag.value == '-1' %}_disable{% endif %}" style="">
                         <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_{{tag.slug}}" name="{{tag.slug}}" readonly="" tabindex="-1" type="number" value="{{tag.value}}">
                         <span>{{tag.name}}</span>
                     </div>

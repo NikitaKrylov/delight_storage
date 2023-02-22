@@ -11,12 +11,13 @@ class PostFilterFormMixin:
         context = super().get_context_data(*args, **kwargs)
         context['session_tags'] = []
 
-        for key, value in self.request.session['tags_query'].items():
-            context['session_tags'].append({
-                'name': PostTag.objects.get(slug=key).name,
-                'slug': key,
-                'value': value
-            })
+        if 'tags_query' in self.request.session:
+            for key, value in self.request.session['tags_query'].items():
+                context['session_tags'].append({
+                    'name': PostTag.objects.get(slug=key).name,
+                    'slug': key,
+                    'value': value
+                })
         context['search_input'] = self.request.session.get('search_input', '')
 
         return context
