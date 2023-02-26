@@ -1,3 +1,5 @@
+from sklearn.metrics import jaccard_score
+from .services.base import tags_vector
 import json
 
 import numpy as np
@@ -17,7 +19,6 @@ from django.http import HttpResponse, Http404
 from accounts.models import Subscription, User
 
 from accounts.forms import ComplaintForm
-
 
 
 def is_ajax(request) -> bool:
@@ -224,11 +225,14 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
 
     def dispatch(self, request, *args, **kwargs):
         responce: dict = request.GET.dict()
+        print(request.GET)
         search_input = responce.pop('search')
         sort_by = responce.pop('sort_by') if 'sort_by' in responce else None
 
-        request.session['search_input'] = search_input if search_input.replace(' ', '') else ''
-        request.session['tags_query'] = dict(filter(lambda pair: pair[1] != '0', responce.items()))
+        request.session['search_input'] = search_input if search_input.replace(
+            ' ', '') else ''
+        request.session['tags_query'] = dict(
+            filter(lambda pair: pair[1] != '0', responce.items()))
 
         if not request.session['tags_query']:
             return redirect('post_list')
@@ -277,10 +281,6 @@ class SearchPostTagListView(ListView, PostQueryMixin, AnnotateUserLikesAndViewsM
         return super().get_queryset().filter(tags__slug=self.kwargs['slug'])
 
 
-from .services.base import tags_vector
-from sklearn.metrics import jaccard_score
-
-
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
     template_name = 'posts/compilations.html'
 
@@ -295,7 +295,8 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         posts = Post.objects.all()
         m = create_distance_matrix(list(posts), posts.count())
         print(m)
-        model = AgglomerativeClustering(affinity='precomputed', linkage='complete', distance_threshold=0.5, n_clusters=None, compute_full_tree=True).fit(m)
+        model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
+                                        distance_threshold=0.5, n_clusters=None, compute_full_tree=True).fit(m)
         print(model.n_clusters)
         print(model.distances_)
 
@@ -307,11 +308,12 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
 
 def create_distance_matrix(posts, square_size):
     matrix = np.zeros((square_size, square_size))
-    posts_tags = [ tags_vector(i.tags.values_list('id', flat=True)) for i in posts ]
+    posts_tags = [tags_vector(i.tags.values_list('id', flat=True))
+                  for i in posts]
 
     for i in range(square_size):
         for j in range(square_size):
-            matrix[i, j] = 1.0 - jaccard_score(posts_tags[i], posts_tags[j], average='macro')
+            matrix[i, j] = 1.0 - \
+                jaccard_score(posts_tags[i], posts_tags[j], average='macro')
 
     return matrix
-

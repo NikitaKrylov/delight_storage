@@ -50,7 +50,7 @@
                                 Сортировать по
                             </span>
                             <label class="search-sort__control search-sort__desc-asc button fa-solid">
-                                <input type="checkbox" class="hidden-input" name="sort_by">
+                                <input type="checkbox" class="hidden-input" name="sort_by" value="sort_by">
                                 <!-- <i class="search__desc fa-solid fa-arrow-down"></i>
                                 <i class="search__asc fa-solid fa-arrow-up"></i> -->
                             </label>
@@ -59,7 +59,7 @@
                                     <label for="best-post" class="search-sort__text dropdown__subitem">
                                         Лучшее
                                         <input id="best-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search">
+                                            name="sort-search" value="by-bests">
                                     </label>
                                     <!-- <label class="radio">
                                         <input class="radio__input hidden-input" type="radio" name="radio-btn">
@@ -71,7 +71,7 @@
                                     <label for="liked-post" class="search-sort__text dropdown__subitem">
                                         Лайкам
                                         <input id="liked-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search">
+                                            name="sort-search" value="by-likes">
                                     </label>
                                     <!-- <label class="radio">
                                         <input class="radio__input hidden-input" type="radio" name="radio-btn">
@@ -83,7 +83,7 @@
                                     <label for="best-views-post" class="search-sort__text dropdown__subitem">
                                         Просмотрам
                                         <input id="best-views-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search">
+                                            name="sort-search" value="by-views">
                                     </label>
                                     <!-- <label class="radio">
                                         <input class="radio__input hidden-input" type="radio" name="radio-btn">
@@ -100,8 +100,10 @@
                 <div class="tags-list">
 
                     {% for tag in session_tags %}
-                    <div class="tags-list__tag _show {% if tag.value == '1' %}_enabled{% elif tag.value == '-1' %}_disable{% endif %}" style="">
-                        <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_{{tag.slug}}" name="{{tag.slug}}" readonly="" tabindex="-1" type="number" value="{{tag.value}}">
+                    <div
+                        class="tags-list__tag _show {% if tag.value == '1' %}_enabled{% elif tag.value == '-1' %}_disabled{% endif %}">
+                        <input class="tags-list__checkbox hidden-input three-pos-inp" id="id_{{tag.slug}}"
+                            name="{{tag.slug}}" readonly tabindex="-1" type="number" value="{{tag.value}}">
                         <span>{{tag.name}}</span>
                     </div>
                     {% endfor %}
