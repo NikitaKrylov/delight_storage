@@ -1,12 +1,10 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import modelform_factory
-
 from .models import PostTag, PostDelay, Post
 
 
 class PostTagsForm(forms.Form):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for tag in PostTag.objects.all():
@@ -60,8 +58,12 @@ class PostForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    ORDER_TYPES = (
-        ('asc', 'asc'),
-        ('desc', 'desc'),
+    TYPE_CHOICES = (
+        ('likes_amount', "Лайкам"),
+        ('views_amount', 'Просмотрам'),
+        ('pub_date', 'Дате')
     )
-    order_by = forms.ChoiceField(choices=ORDER_TYPES)
+    text = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={'class': 'search__input-form', 'autocomplete': 'off', 'placeholder': 'Поиск...'}))
+    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='pub_date', widget=forms.RadioSelect(attrs={'class': 'search-sort__input hidden-input'}), required=False)
+    is_desc = forms.BooleanField(required=False, initial=False,  widget=forms.CheckboxInput(attrs={'class': 'hidden-input', 'value': '-'}))
+

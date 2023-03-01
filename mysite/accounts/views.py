@@ -27,6 +27,8 @@ from django.contrib.auth import login, authenticate
 from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
 
+from posts.mixins import PostFilterFormMixin
+
 
 class SignatoryView(View):
     http_method_names = ('get',)
@@ -112,7 +114,7 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
 # --------------User Page---------------
 
 
-class UserProfileView(LoginRequiredMixin, FormView):
+class UserProfileView(LoginRequiredMixin, PostFilterFormMixin, FormView):
     template_name = 'accounts/profile.html'
     login_url = reverse_lazy('login')
     form_class = EditUserProfileForm
@@ -208,7 +210,7 @@ def read_all_notification(request, *args, **kwargs):
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin):
+class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
@@ -239,7 +241,7 @@ class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMi
         return context
 
 
-class UserSettingsFormView(LoginRequiredMixin, FormView):
+class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, FormView):
     login_url = reverse_lazy('login')
     form_class = UserSettingsForm
     template_name = 'accounts/settings.html'
@@ -264,7 +266,7 @@ def edit_user_settings(request, *args, **kwargs):
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-class UserSubscriptionListView(LoginRequiredMixin, ListView):
+class UserSubscriptionListView(LoginRequiredMixin, PostFilterFormMixin, ListView):
     login_url = reverse_lazy('login')
     template_name = 'accounts/subscriptions.html'
     model = Subscription
