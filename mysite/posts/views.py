@@ -1,4 +1,6 @@
 from sklearn.metrics import jaccard_score
+
+from .forms import SearchForm
 from .services.base import tags_vector
 import json
 
@@ -225,14 +227,11 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
 
     def dispatch(self, request, *args, **kwargs):
         responce: dict = request.GET.dict()
-        print(request.GET)
-        search_input = responce.pop('search')
-        sort_by = responce.pop('sort_by') if 'sort_by' in responce else None
+        form = SearchForm(request.GET)
+        [responce.pop(i) for i in form.fields.keys() if i in responce]
 
-        request.session['search_input'] = search_input if search_input.replace(
-            ' ', '') else ''
-        request.session['tags_query'] = dict(
-            filter(lambda pair: pair[1] != '0', responce.items()))
+        request.session['tags_query'] = dict(filter(lambda pair: pair[1] != '0', responce.items()))
+        request.session['search_form'] = form.data.dict()
 
         if not request.session['tags_query']:
             return redirect('post_list')
@@ -265,8 +264,16 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
 
-        # response = response.order_by('-likes_amount')
-        # response = response.order_by('-views_amount')
+
+        search_form = SearchForm(self.request.session.get('search_form', None))
+        print(search_form.data)
+        order = search_form.data.get('type', 'pub_date')
+        direction = search_form.data.get('is_desc', '')
+        response = response.order_by(direction + order)
+        # if sort_type == 'by-likes':
+        #     response = response.order_by('{}likes_amount'.format(sort_direction))
+        # elif sort_type == 'by-views':
+        #     response = response.order_by('{}views_amount'.format(sort_direction))
 
         return response.exclude(exclude_query).filter(filter_query).distinct()
 
@@ -296,7 +303,7 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         m = create_distance_matrix(list(posts), posts.count())
         print(m)
         model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
-                                        distance_threshold=0.5, n_clusters=None, compute_full_tree=True).fit(m)
+                                        distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(m)
         print(model.n_clusters)
         print(model.distances_)
 

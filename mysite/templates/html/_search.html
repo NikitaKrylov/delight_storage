@@ -7,8 +7,9 @@
                         <button class="search__search-btn button search__icon" type="submit">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <input class="search__input-form" name="search" type="text" placeholder="Поиск..."
-                            autocomplete="off" value="{{search_input}}">
+                        <!--                        <input class="search__input-form" name="search" type="text" placeholder="Поиск..."-->
+                        <!--                            autocomplete="off" data-search-input value="{{search_input}}">-->
+                        {{search_form.text}}
                         <div class="search__close-btn search__icon">
                             <i class="fa-solid fa-xmark"></i>
                         </div>
@@ -19,80 +20,80 @@
                         <button class="search__hide-all-btn search__controls-button button"
                             type="button">Очистить</button>
 
-                        <!-- <div class="search-sort search__controls-button button dropdown-parent">
-                            <span class="search-sort__text">Сортировать по</span>
-                            <div class="search-sort__dropdown dropdown-items">
-                                <div class="search-sort__dropdown-item dropdown-item">
-                                    <label class="search-sort__btn radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Лайкам</span>
-                                    </label>
-                                </div>
-                                <div class="search-sort__dropdown-item dropdown-item">
-                                    <label class="search-sort__btn radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Просмотрам</span>
-                                    </label>
-                                </div>
-                                <div class="search-sort__dropdown-item dropdown-item">
-                                    <label class="search-sort__btn radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Лучшее</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
+
                         <div class="search-sort dropdown">
                             <span class="search-sort__btn search__controls-button button">
-                                Сортировать по
+                                {{search_form.type.value}}
                             </span>
-                            <label class="search-sort__control search-sort__desc-asc button fa-solid">
-                                <input type="checkbox" class="hidden-input" name="sort_by" value="sort_by">
-                                <!-- <i class="search__desc fa-solid fa-arrow-down"></i>
-                                <i class="search__asc fa-solid fa-arrow-up"></i> -->
+                            <label
+                                class="search-sort__control search-sort__desc-asc button fa-solid {% if not search_form.is_desc.value %}_active{% endif %}">
+                                <!--                                <input type="checkbox" class="hidden-input" name="sort-direction" value="1">-->
+                                {{search_form.is_desc}}
                             </label>
+
                             <ul class="search-sort__list dropdown__list">
-                                <li class="search-sort__item dropdown__item">
-                                    <label for="best-post" class="search-sort__text dropdown__subitem">
-                                        Лучшее
-                                        <input id="best-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search" value="by-bests">
-                                    </label>
-                                    <!-- <label class="radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Лучшее</span>
-                                    </label> -->
-                                </li>
-                                <li class="search-sort__item dropdown__item">
-                                    <label for="liked-post" class="search-sort__text dropdown__subitem">
-                                        Лайкам
-                                        <input id="liked-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search" value="by-likes">
-                                    </label>
-                                    <!-- <label class="radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Лайкам</span>
-                                    </label> -->
-                                </li>
-                                <li class="search-sort__item dropdown__item">
-                                    <label for="best-views-post" class="search-sort__text dropdown__subitem">
-                                        Просмотрам
-                                        <input id="best-views-post" type="radio" class="search-sort__input hidden-input"
-                                            name="sort-search" value="by-views">
-                                    </label>
-                                    <!-- <label class="radio">
-                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                        <span class="radio__btn"></span>
-                                        <span class="radio__text">Просмотрам</span>
-                                    </label> -->
-                                </li>
+                                {% for s in search_form.type %}
+                                <li class="search-sort__item dropdown__item">{{s}}</li>
+                                {% endfor %}
                             </ul>
                         </div>
+
+
+
+
+
+
+
+
+
+                        <!--                        <div class="search-sort dropdown">-->
+                        <!--                            <span class="search-sort__btn search__controls-button button">-->
+                        <!--                                {% if sort_type %}{{sort_type}}{% else %}Сортировать по{% endif %}-->
+                        <!--                            </span>-->
+                        <!--                            <label class="search-sort__control search-sort__desc-asc button fa-solid {% if sort_direction %}_active{% endif %}">-->
+                        <!--                                <input type="checkbox" class="hidden-input" name="sort-direction" value="1">-->
+                        <!--                                &lt;!&ndash; <i class="search__desc fa-solid fa-arrow-down"></i>-->
+                        <!--                                <i class="search__asc fa-solid fa-arrow-up"></i> &ndash;&gt;-->
+                        <!--                            </label>-->
+                        <!--                            <ul class="search-sort__list dropdown__list">-->
+                        <!--                                <li class="search-sort__item dropdown__item">-->
+                        <!--                                    <label for="best-post" class="search-sort__text dropdown__subitem">-->
+                        <!--                                        Лучшее-->
+                        <!--                                        <input id="best-post" type="radio" class="search-sort__input hidden-input"-->
+                        <!--                                            name="sort-type" value="by-bests">-->
+                        <!--                                    </label>-->
+                        <!--                                    &lt;!&ndash; <label class="radio">-->
+                        <!--                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
+                        <!--                                        <span class="radio__btn"></span>-->
+                        <!--                                        <span class="radio__text">Лучшее</span>-->
+                        <!--                                    </label> &ndash;&gt;-->
+                        <!--                                </li>-->
+                        <!--                                <li class="search-sort__item dropdown__item">-->
+                        <!--                                    <label for="liked-post" class="search-sort__text dropdown__subitem">-->
+                        <!--                                        Лайкам-->
+                        <!--                                        <input id="liked-post" type="radio" class="search-sort__input hidden-input"-->
+                        <!--                                            name="sort-type" value="by-likes">-->
+                        <!--                                    </label>-->
+                        <!--                                    &lt;!&ndash; <label class="radio">-->
+                        <!--                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
+                        <!--                                        <span class="radio__btn"></span>-->
+                        <!--                                        <span class="radio__text">Лайкам</span>-->
+                        <!--                                    </label> &ndash;&gt;-->
+                        <!--                                </li>-->
+                        <!--                                <li class="search-sort__item dropdown__item">-->
+                        <!--                                    <label for="best-views-post" class="search-sort__text dropdown__subitem">-->
+                        <!--                                        Просмотрам-->
+                        <!--                                        <input id="best-views-post" type="radio" class="search-sort__input hidden-input"-->
+                        <!--                                            name="sort-type" value="by-views">-->
+                        <!--                                    </label>-->
+                        <!--                                    &lt;!&ndash; <label class="radio">-->
+                        <!--                                        <input class="radio__input hidden-input" type="radio" name="radio-btn">-->
+                        <!--                                        <span class="radio__btn"></span>-->
+                        <!--                                        <span class="radio__text">Просмотрам</span>-->
+                        <!--                                    </label> &ndash;&gt;-->
+                        <!--                                </li>-->
+                        <!--                            </ul>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
             </div>

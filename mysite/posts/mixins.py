@@ -1,7 +1,7 @@
 from django.db.models import Exists, OuterRef, Count, F
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.list import MultipleObjectMixin
-from .forms import PostTagsForm
+from .forms import PostTagsForm, SearchForm
 from .models import Post, Like, PostTag
 from .services.base import update_post_views
 
@@ -18,8 +18,11 @@ class PostFilterFormMixin:
                     'slug': key,
                     'value': value
                 })
-        context['search_input'] = self.request.session.get('search_input', '')
-
+        # context['search_input'] = self.request.session.get('search_input', '')
+        # context['sort_direction'] = self.request.session.get('sort_direction', '')
+        # sort_type = self.request.session.get('sort_type', '')
+        # context['sort_type'] = {'by-likes':'Лайкам', 'by-views': 'Просмотрам'}.get(sort_type, None) if sort_type else None
+        context['search_form'] = SearchForm(self.request.session.get('search_form', None))
         return context
 
 
