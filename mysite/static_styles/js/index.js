@@ -1,40 +1,36 @@
 const body = document.body;
 
-if (body.classList.contains('_touch')) {
-
-    // profile-menu
-    // $(".header-profile-avatar").on('click', function (e) {
-    //     rlMenu('#profile-menu-mobile', '.close-ham-menu-2');
-    // });
-
+if (body.classList.contains("_touch")) {
+	// profile-menu
+	// $(".header-profile-avatar").on('click', function (e) {
+	//     rlMenu('#profile-menu-mobile', '.close-ham-menu-2');
+	// });
 } else {
-
-    // меню профиля
-    // $('.header__profile').on('click', function () {
-    //     $(this).toggleClass('_active');
-    // });
-
-    // $(document).on('click', function (e) {
-    //     if (!e.target.closest('.profile-dropdown') && !e.target.closest('.header__profile')) {
-    //         $('.header__profile._active').removeClass('_active');
-    //     }
-    // });
+	// меню профиля
+	// $('.header__profile').on('click', function () {
+	//     $(this).toggleClass('_active');
+	// });
+	// $(document).on('click', function (e) {
+	//     if (!e.target.closest('.profile-dropdown') && !e.target.closest('.header__profile')) {
+	//         $('.header__profile._active').removeClass('_active');
+	//     }
+	// });
 }
 
 function menuOverlayClose(menu) {
-    menu.classList.remove('_active')
-    body.classList.remove('_lock')
+	menu.classList.remove("_active");
+	body.classList.remove("_lock");
 }
 
-function menuOverlayOpen(menu, content) {
-    menu.classList.add('_active');
-    body.classList.add('_lock');
+function menuOverlayOpen(menu) {
+	menu.classList.add("_active");
+	body.classList.add("_lock");
 
-    menu.addEventListener('click', function (e) {
-        if (!e.target.closest(content)) {
-            menuOverlayClose(menu);
-        }
-    })
+	// menu.addEventListener("click", function (e) {
+	// 	if (!e.target.closest(content)) {
+	// 		menuOverlayClose(menu);
+	// 	}
+	// });
 }
 
 // function rlMenu(rlmenu, close) {
@@ -80,57 +76,60 @@ function menuOverlayOpen(menu, content) {
 //     menuOverlayOpen('.sidebar-mobile', '.sidebar-mobile__btn')
 // });
 
-
 // кнопка бурегр
-const sidebarMobBtn = document.querySelector(".header__mobile-navigation")
+const sidebarMobBtn = document.querySelector(".header__mobile-navigation");
 if (sidebarMobBtn) {
-    sidebarMobBtn.addEventListener('click', function(e) {
-        const currBtn = sidebarMobBtn.getAttribute('href').replace('#', '');
-        const currSidebar = document.getElementById(currBtn);
-    
-        menuOverlayOpen(currSidebar, '.sidebar-mobile__inner')
-    })
+	const currBtn = sidebarMobBtn.getAttribute("href").replace("#", "");
+	const currSidebar = document.getElementById(currBtn);
+
+	sidebarMobBtn.addEventListener("click", function (e) {
+		menuOverlayOpen(currSidebar);
+	});
+
+	currSidebar.addEventListener("click", function (e) {
+		if (!e.target.closest(".sidebar-mobile__inner")) {
+			menuOverlayClose(currSidebar);
+		}
+	});
 }
 
-const sidebarMobClose = document.querySelectorAll('.sidebar-mobile__btn');
+const sidebarMobClose = document.querySelectorAll(".sidebar-mobile__btn");
 if (sidebarMobClose.length > 0) {
-    sidebarMobClose.forEach(function(val, index) {
-        const sidebarClose = sidebarMobClose[index];
-        sidebarClose.addEventListener("click", function(e) {
-            
-            menuOverlayClose(sidebarClose.closest('.sidebar-mobile'))
-            e.preventDefault();
-        });
-    })
+	sidebarMobClose.forEach(function (val, index) {
+		const sidebarClose = sidebarMobClose[index];
+		sidebarClose.addEventListener("click", function (e) {
+			menuOverlayClose(sidebarClose.closest(".sidebar-mobile"));
+			e.preventDefault();
+		});
+	});
 }
-
 
 // view-hide-header
 let lastScroll = 0;
 const defaultOffset = 200;
-const header = document.querySelector('.header');
+const header = document.querySelector(".header");
 
 if (header) {
-    const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
-    const containHide = () => header.classList.contains('_hide-header');
-    window.addEventListener('scroll', () => {
-        if (scrollPosition() > lastScroll && !containHide() && scrollPosition() > defaultOffset) {
-            // scroll down
-            header.classList.add('_hide-header');
-        } else if (scrollPosition() < lastScroll && containHide()) {
-            // scroll up
-            header.classList.remove('_hide-header');
-        }
+	const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+	const containHide = () => header.classList.contains("_hide-header");
+	window.addEventListener("scroll", () => {
+		if (scrollPosition() > lastScroll && !containHide() && scrollPosition() > defaultOffset) {
+			// scroll down
+			header.classList.add("_hide-header");
+		} else if (scrollPosition() < lastScroll && containHide()) {
+			// scroll up
+			header.classList.remove("_hide-header");
+		}
 
-        lastScroll = scrollPosition();
-    });
+		lastScroll = scrollPosition();
+	});
 }
 
 // показать/скрыть popup(всплывающее окно)
 // function popupOpen(curentPopup) {
 //     body.classList.add('_lock')
 //     curentPopup.classList.add('_active')
-    
+
 //     curentPopup.addEventListener('click', function (e) {
 //         if (!e.target.closest('.popup__content')) {
 //             popupClose(e.target.closest('.popup'))
@@ -147,106 +146,121 @@ if (header) {
 //     });
 // }
 
-const popupLinks = document.querySelectorAll('.popup-link');
+let isPopupOpen = false;
+
+const popupLinks = document.querySelectorAll(".popup-link");
 if (popupLinks.length > 0) {
-    popupLinks.forEach(function(val, index) {
-        const popupLink = popupLinks[index];
-        popupLink.addEventListener("click", function(e) {
-            const popupName = popupLink.getAttribute('href').replace('#', '');
-            const curentPopup = document.getElementById(popupName);
-            
-            // popupOpen(curentPopup);
-            menuOverlayOpen(curentPopup, '.popup__content')
-            e.preventDefault();
-        });
-    })
+	popupLinks.forEach(function (val, index) {
+		const popupLink = popupLinks[index];
+
+		const popupName = popupLink.getAttribute("href").replace("#", "");
+		const curentPopup = document.getElementById(popupName);
+		popupLink.addEventListener("click", function (e) {
+			// popupOpen(curentPopup);
+			isPopupOpen = true;
+			menuOverlayOpen(curentPopup);
+			e.preventDefault();
+		});
+
+		curentPopup.addEventListener("click", function (e) {
+			if (!e.target.closest(".popup__content")) {
+				isPopupOpen = false;
+				menuOverlayClose(curentPopup);
+			}
+		});
+	});
 }
 
-const popupCloseIcon = document.querySelectorAll('.close-popup');
+const popupCloseIcon = document.querySelectorAll(".close-popup");
 if (popupCloseIcon.length > 0) {
-    popupCloseIcon.forEach(function(val, index) {
-        const popupClose = popupCloseIcon[index];
-        popupClose.addEventListener("click", function(e) {
-            
-            // popupClose(el.closest('.popup'));
-            menuOverlayClose(popupClose.closest('.popup'))
-            e.preventDefault();
-        });
-    })
+	popupCloseIcon.forEach(function (val, index) {
+		const popupClose = popupCloseIcon[index];
+		popupClose.addEventListener("click", function (e) {
+			// popupClose(el.closest('.popup'));
+			isPopupOpen = false;
+			menuOverlayClose(popupClose.closest(".popup"));
+			e.preventDefault();
+		});
+	});
 }
 
-document.addEventListener("keydown", (e) => {
-    if (e.code == "Escape") {
-        const popupActive = document.querySelector('.popup._active');
-        popupClose(popupActive);
-    }
-});
+if (!isMobile.any()) {
+	document.addEventListener("keydown", (e) => {
+		if (e.code == "Escape" && isPopupOpen) {
+			const popupActive = document.querySelector(".popup._active");
+			menuOverlayClose(popupActive);
+		}
+	});
+}
 
-autosize($('.textarea-autosize'));
+autosize($(".textarea-autosize"));
 
 // создание всплывающих сообщений
 function customAlert(message) {
-    let baseAlert = $(`<div class="alert">
+	let baseAlert = $(`<div class="alert">
                             <div class="alert__inner">
                                 <div class="alert__content">
                                     ${message}
                                 </div>
                             </div>
-                        </div>`)
+                        </div>`);
 
-    return baseAlert;
+	return baseAlert;
 }
 
 function hideAlert(alert, time) {
-    alert.css('transform', 'translate(0px, -100%')
-    alert.animate({
-        'opacity': '0',
-    }, time / 100)
+	alert.css("transform", "translate(0px, -100%");
+	alert.animate(
+		{
+			opacity: "0",
+		},
+		time / 100,
+	);
 }
 
 function messagePopup(message, wait = false, viewTime = 2000) {
-
-    let alertText = customAlert(`<div class="flash-message">
+	let alertText = customAlert(`<div class="flash-message">
                                     <span>${message}</span>
-                                </div>`)
-    $(body).prepend(alertText)
-    
-    // alertText.css('transition', `${viewTime / 10000}s`)
-    // alertText.css('transition', `opacity 10s`)
-    alertText.css('transition', `transform 0.2s, opacity 0.2s`)
-    document.querySelector('.alert').addEventListener('swiped-up', function (e) {
-        // alertText.css('transform', 'translate(0px, -100%')
-        // alertText.animate({
-        //     'opacity': '0',
-        // }, viewTime / 100)
-        hideAlert(alertText, viewTime)
-        setTimeout(() => alertText.remove(), 200)
-    })
+                                </div>`);
+	$(body).prepend(alertText);
 
-    if (wait && typeof wait === 'boolean') {
-        $('.alert__content').prepend($('<div class="alert__close"><i class="fa-solid fa-xmark"></i></div>'))
+	// alertText.css('transition', `${viewTime / 10000}s`)
+	// alertText.css('transition', `opacity 10s`)
+	alertText.css("transition", `transform 0.2s, opacity 0.2s`);
+	document.querySelector(".alert").addEventListener("swiped-up", function (e) {
+		// alertText.css('transform', 'translate(0px, -100%')
+		// alertText.animate({
+		//     'opacity': '0',
+		// }, viewTime / 100)
+		hideAlert(alertText, viewTime);
+		setTimeout(() => alertText.remove(), 200);
+	});
 
-        $('.alert__close').on('click', () => {
-            alertText.remove()
-        })
+	if (wait && typeof wait === "boolean") {
+		$(".alert__content").prepend(
+			$('<div class="alert__close"><i class="fa-solid fa-xmark"></i></div>'),
+		);
 
-    } else {
-        // alertText.delay(viewTime).slideUp(viewTime, () => alertText.remove())
+		$(".alert__close").on("click", () => {
+			alertText.remove();
+		});
+	} else {
+		// alertText.delay(viewTime).slideUp(viewTime, () => alertText.remove())
 
-        setTimeout(function () {
-            // alertText.css('transform', 'translate(0px, -100%')
-            // alertText.animate({
-            //     'opacity': '0',
-            // }, viewTime / 100)
-            hideAlert(alertText, viewTime)
-            setTimeout(() => alertText.remove(), viewTime / 10)
-        }, viewTime)
+		setTimeout(function () {
+			// alertText.css('transform', 'translate(0px, -100%')
+			// alertText.animate({
+			//     'opacity': '0',
+			// }, viewTime / 100)
+			hideAlert(alertText, viewTime);
+			setTimeout(() => alertText.remove(), viewTime / 10);
+		}, viewTime);
 
-        // alertText.delay(viewTime).css('transform', 'translate(0px, -100%')
-        // alertText.animate({
-        //     'opacity': '0',
-        // }, viewTime / 1000)
+		// alertText.delay(viewTime).css('transform', 'translate(0px, -100%')
+		// alertText.animate({
+		//     'opacity': '0',
+		// }, viewTime / 1000)
 
-        // setTimeout(() => alertText.remove(), viewTime)
-    }
+		// setTimeout(() => alertText.remove(), viewTime)
+	}
 }

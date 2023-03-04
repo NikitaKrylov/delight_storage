@@ -16,6 +16,7 @@ function btn(button, closebtn, parent) {
 		if (!e.target.closest(".search__container")) {
 			clsname.removeClass("_active");
 			document.body.classList.remove("_lock");
+			console.log("d");
 		} else {
 			if (clsbtn) {
 				clsbtn.click(function (e) {
@@ -29,11 +30,41 @@ function btn(button, closebtn, parent) {
 	});
 }
 
-$(".search-button").on("click", function (e) {
-	btn(".search-button", ".search__close-btn", ".search");
+let searchBtn = $(".search-button");
+let closeSearchBtn = $(".search__close-btn");
+let isSearchOpen = false;
+
+searchBtn.on("click", function (e) {
+	// $(".search").addClass("_active");
+	// document.body.classList.add("_lock");
+	isSearchOpen = true;
+	menuOverlayOpen(document.querySelector(".search"));
+	// btn(".search-button", ".search__close-btn", ".search");
 	setTimeout(() => document.querySelector(".search__input-form").focus(), 100);
 	// document.querySelector('.search-input__input').focus()
 });
+
+closeSearchBtn.on("click", function (e) {
+	// $(".search").removeClass("_active");
+	// document.body.classList.remove("_lock");
+	isSearchOpen = false;
+	menuOverlayClose(document.querySelector(".search"));
+});
+
+document.querySelector(".search").addEventListener("click", function (e) {
+	if (!(e.target.closest(".search__input-container") ?? e.target.closest(".tags-list__tag"))) {
+		isSearchOpen = false;
+		menuOverlayClose(document.querySelector(".search"));
+	}
+});
+
+if (!isMobile.any()) {
+	document.addEventListener("keydown", (e) => {
+		if (e.code == "Escape" && isSearchOpen) {
+			menuOverlayClose(document.querySelector(".search"));
+		}
+	});
+}
 
 // // желательно чтобы кнопки имели общий родитель который имеет селетор или id
 // function threeBtn(btnName) {
@@ -333,6 +364,7 @@ document.querySelector(".search__show-all-btn").addEventListener("click", () =>
 // кнопка очистки выбранных тегов
 document.querySelector(".search__hide-all-btn").addEventListener("click", () => {
 	arrayitem = document.querySelectorAll(".tags-list__tag");
+
 	arrayitem.forEach(function (e) {
 		let valueinp = e.querySelector(".three-pos-inp").value;
 		if (valueinp != "0") {
@@ -340,9 +372,6 @@ document.querySelector(".search__hide-all-btn").addEventListener("click", () => 
 			painButton(e);
 		}
 	});
-
-	enabledTags = [];
-	disabledTags = [];
 });
 
 $(".search-sort").on("click", function (e) {
@@ -368,8 +397,12 @@ $(".search-sort__desc-asc").on("change", function (e) {
 //   $(".search-sort__list").slideToggle('fast');
 // });
 
-$(document).on("click", function (e) {
-	if (!e.target.closest(".search-sort")) {
-		$(".search-sort__list").hide();
-	}
+$(".search _active").on("click", function (e) {
+	console.log("d");
 });
+
+// $(document).on("click", function (e) {
+// 	if (!e.target.closest(".search-sort")) {
+// 		$(".search-sort__list").hide();
+// 	}
+// });

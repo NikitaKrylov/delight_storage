@@ -1,16 +1,17 @@
-{% if widget.is_initial %}
-{{ widget.initial_text }}:
+<!-- {% if widget.is_initial %}
+{{ widget.initial_text }}: -->
 <!--  когда файл уже сохранен здесь показывается ссылка на файл (в редактировании поста)  -->
-<a href="{{ widget.value.url }}">{{ widget.value }}</a>
-{% if not widget.required %}
+<a href="{{ widget.value.url }}" class="imageEditingLink" style="display: none;">{{ widget.value }}</a>
+
+<!-- {% if not widget.required %} -->
 <!--вроде бы это чекбокс удаления-->
-<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}
+<!-- <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}" {% if widget.attrs.disabled %}
     disabled{% endif %}>
 <label class="huesos" for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
 {% endif %}
 <br>
 {{ widget.input_text }}:
-{% endif %}
+{% endif %} -->
 <!--выбор файла главное поле-->
 <label class="add-file__control add-image-file">
     <input class="add-file__input add-image-file__input hidden-input" type="{{ widget.type }}" name="{{ widget.name }}"

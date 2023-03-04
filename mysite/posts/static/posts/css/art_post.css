@@ -20,7 +20,7 @@
 }
 @media (min-width: 700px) {
   .post-images {
-    height: 90vh;
+    height: 80vh;
   }
 }
 @media (min-width: 991px) {

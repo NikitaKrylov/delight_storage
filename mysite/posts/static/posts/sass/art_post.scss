@@ -101,7 +101,7 @@ $browser-context: 16; // Default
     @media (min-width: $min-width-mobile) {
         & {
             // height: calc( 100vh - 130px );
-            height: 90vh;
+            height: 80vh;
         }
     }
     @media (min-width: $width-mobile) {

@@ -150,7 +150,10 @@
                 {% endfor %}
             </div>
         </div>
-
+        {% else %}
+        <div thumbsSlider="" class="image-slider-2 swiper" style="display:none;">
+            <div class="image-slider-2__wrapper swiper-wrapper"></div>
+        </div>
         {% endif %}
     </div>
 
@@ -159,7 +162,6 @@
             <div class="like-cont">
                 <div class="post-cont-likes">
                     <button class="like-btn button {{like_active}}" data-href="{{ post.get_absolute_like_url }}">
-                        <!-- <i class="fa-regular fa-heart"></i> -->
                         <div class="_39asK">
                             <i class="like-btn__heart">
                                 <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg'
@@ -174,7 +176,6 @@
                             </i>
                             <span class="like-cont-info">
                                 <span class="like-cont__likes-number">{{post.likes.count}}</span>
-                                <!-- <span>Likes</span> -->
                             </span>
                         </div>
                     </button>
@@ -185,7 +186,6 @@
                             <i class="fa-regular fa-message"></i>
                             <span class="like-cont-info">
                                 <span class="like-cont-com-number">{{post.comments.count}}</span>
-                                <!-- <span>Comments</span> -->
                             </span>
                         </div>
                     </button>
@@ -196,7 +196,6 @@
                             <i class="fa-regular fa-eye"></i>
                             <span class="like-cont-info">
                                 <span class="like-cont-views-number">{{post.views.count}}</span>
-                                <!-- <span>Views</span> -->
                             </span>
                         </div>
                     </div>
@@ -274,7 +273,7 @@
                 </div>
                 <div class="post-info-details__content post-tags">
                     {% for tag in tags %}
-                        <a href="{% url 'search_by_tag' tag.slug%}" class="post-tags__tag">{{tag}}</a>
+                    <a href="{% url 'search_by_tag' tag.slug%}" class="post-tags__tag">{{tag}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -339,6 +338,7 @@
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 

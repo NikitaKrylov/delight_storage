@@ -257,7 +257,7 @@ const swiper2 = new Swiper(".image-slider", {
 	spaceBetween: 10,
 	// freeMode: true,
 	slidesPerView: 1,
-	// watchOverflow: true,
+	watchOverflow: true,
 	grabCursor: true,
 
 	// preloadImages: false,
