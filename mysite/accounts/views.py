@@ -111,6 +111,38 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'accounts/password_reset/password_reset_complete.html'
 
 
+# --------------- User Folders-----------------
+
+
+class UserFolderView(LoginRequiredMixin, ListView):
+    template_name = ''
+    context_object_name = 'posts'
+    login_url = reverse_lazy('login')
+
+    def get_queryset(self):
+        return super(UserFolderView, self).get_queryset()
+
+
+def delete_folder(request, *args, **kwargs):
+    pass
+
+
+def edit_folder(request, *args, **kwargs):
+    pass
+
+
+def create_folder(request, *args, **kwargs):
+    pass
+
+
+def add_to_folder(request, *args, **kwargs):
+    pass
+
+
+def remove_from_folder(request, *args, **kwargs):
+    pass
+
+
 # --------------User Page---------------
 
 

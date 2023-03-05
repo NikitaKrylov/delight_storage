@@ -19,6 +19,13 @@ urlpatterns = [
     path('user/settings/', UserSettingsFormView.as_view(), name='user_settings'),
     path('user/settings/edit/', edit_user_settings, name='user_settings_edit'),
 
+    # path('user/folders/', UserFoldersView.as_view(), name='user_folders'),
+    # path('user/folders/<int:pk>/', UserFolderView.as_view(), name='user_folder'),
+    # path('user/folders/<int:pk>/edit/', _, name='edit_user_folder'),
+    # path('user/folders/<int:pk>/delete/', _, name='delete_user_folder'),
+    # path('user/folders/<int:folder>/add/<int:post>/', _, name='add_to_folder')
+    # path('user/folders/<int:folder>/remove/<int:post>/', _, name='remove_from_folder')
+
     path('user/notifications/', UserNotificationListView.as_view(),
          name='user_notifications'),
     path('user/notification/<int:pk>/delete/', delete_notification, name='notification_delete'),
@@ -26,10 +33,8 @@ urlpatterns = [
     path('user/notifications/all/delete/', delete_all_notification, name='all_notification_delete'),
     path('user/notifications/all/read/', read_all_notification, name='all_notification_read'),
 
-    path('user/subscriptions/', UserSubscriptionListView.as_view(),
-         name='user_subscriptions'),
-    path('user/subscribe-to/<int:object_id>/',
-         SignatoryView.as_view(), name='subscribe'),
+    path('user/subscriptions/', UserSubscriptionListView.as_view(),name='user_subscriptions'),
+    path('user/subscribe-to/<int:object_id>/', SignatoryView.as_view(), name='subscribe'),
 
     path('user/likes/', LikedPostList.as_view(), name='user_liked_posts'),
 

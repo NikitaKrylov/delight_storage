@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, ClientIP, Subscription, PostComplaint
+from .models import User, ClientIP, Subscription, PostComplaint, Folder, FolderPost
 
 admin.site.register(ClientIP)
 
@@ -33,6 +33,26 @@ class UserAdmin(admin.ModelAdmin):
         return obj.user_subscriptions.count()
 
     subscribers_amount.short_description = "Кол-во подписчиков"
+
+
+@admin.register(Folder)
+class FolderAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'user',
+        'created',
+    )
+    readonly_fields = ('created',)
+
+
+@admin.register(FolderPost)
+class FolderPostAdmin(admin.ModelAdmin):
+    list_display = (
+        'post',
+        'folder',
+        'created',
+    )
+    readonly_fields = ('created',)
 
 
 @admin.register(Subscription)
