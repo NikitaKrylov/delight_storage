@@ -77,6 +77,11 @@
                         class="account-nav__link {{request|mark_current_page:user_subscriptions_url}}">Подписки</a>
                 </li>
                 <li class="account-nav__item">
+                    {% url 'user_folders' as user_folders_url %}
+                    <a href="{{ user_folders_url }}"
+                        class="account-nav__link {{request|mark_current_page:user_folders_url}}">Папки</a>
+                </li>
+                <li class="account-nav__item">
                     <a href="#" class="account-nav__link">Настройки</a>
                 </li>
             </ul>

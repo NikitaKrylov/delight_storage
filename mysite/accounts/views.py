@@ -1,3 +1,4 @@
+from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
 import json
@@ -14,9 +15,9 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
 
 from .mixins import CheckUserConformity
-from .models import Notification
+from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm, UserSettingsForm
+    UserSetPasswordForm, UserSettingsForm, UserFolderForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
@@ -114,34 +115,73 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
 # --------------- User Folders-----------------
 
 
-class UserFolderView(LoginRequiredMixin, ListView):
-    template_name = ''
-    context_object_name = 'posts'
-    login_url = reverse_lazy('login')
+class UserFoldersListView(LoginRequiredMixin, ListView):
+    template_name = 'accounts/folders/user_folders.html'
+    context_object_name = 'folders'
+    model = Folder
 
     def get_queryset(self):
-        return super(UserFolderView, self).get_queryset()
+        return self.request.user.folders.all()
 
 
+class UserFolderView(LoginRequiredMixin, DetailView):
+    template_name = 'accounts/folders/user_folder.html'
+    context_object_name = 'folder'
+    model = Folder
+
+    def get_context_data(self, **kwargs):
+        context = super(UserFolderView, self).get_context_data(**kwargs)
+        context['folder_posts'] = self.get_object().posts.all()
+        context['folder_form'] = UserFolderForm(instance=self.get_object())
+        return context
+
+
+class CreateUserFolderView(LoginRequiredMixin, CreateView):
+    model = Folder
+    form_class = UserFolderForm
+    template_name = 'accounts/folders/create_folder.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+@login_required
 def delete_folder(request, *args, **kwargs):
-    pass
+    request.user.folders.filter(pk=kwargs['pk']).delete()
+    return redirect('user_folders')
 
 
+@require_http_methods(["POST"])
 def edit_folder(request, *args, **kwargs):
-    pass
+    form = UserFolderForm(request.POST, instance=request.user.folders.get(pk=kwargs['pk']))
+    if form.is_valid():
+        folder = form.save()
+        return redirect('user_folder', pk=folder.pk)
 
 
-def create_folder(request, *args, **kwargs):
-    pass
-
-
+@login_required
 def add_to_folder(request, *args, **kwargs):
-    pass
+    folder = request.user.folders.get(id=kwargs['folder'])
+    post = Post.objects.get(id=kwargs['post'])
+
+    if post not in folder:
+        folder.add(post)
+
+    return None
 
 
+@login_required
 def remove_from_folder(request, *args, **kwargs):
-    pass
+    folder = request.user.folders.get(id=kwargs['folder'])
+    post = Post.objects.get(id=kwargs['post'])
 
+    if post in folder:
+        folder.remove(post)
+
+    return redirect('user_folder', pk=folder.id)
 
 # --------------User Page---------------
 

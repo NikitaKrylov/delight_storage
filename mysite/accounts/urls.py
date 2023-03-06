@@ -19,12 +19,13 @@ urlpatterns = [
     path('user/settings/', UserSettingsFormView.as_view(), name='user_settings'),
     path('user/settings/edit/', edit_user_settings, name='user_settings_edit'),
 
-    # path('user/folders/', UserFoldersView.as_view(), name='user_folders'),
-    # path('user/folders/<int:pk>/', UserFolderView.as_view(), name='user_folder'),
-    # path('user/folders/<int:pk>/edit/', _, name='edit_user_folder'),
-    # path('user/folders/<int:pk>/delete/', _, name='delete_user_folder'),
-    # path('user/folders/<int:folder>/add/<int:post>/', _, name='add_to_folder')
-    # path('user/folders/<int:folder>/remove/<int:post>/', _, name='remove_from_folder')
+    path('user/folders/', UserFoldersListView.as_view(), name='user_folders'),
+    path('user/folders/create/', CreateUserFolderView.as_view(), name='create_user_folder'),
+    path('user/folders/<int:pk>/', UserFolderView.as_view(), name='user_folder'),
+    path('user/folders/<int:pk>/edit/', edit_folder, name='edit_user_folder'),
+    path('user/folders/<int:pk>/delete/', delete_folder, name='delete_user_folder'),
+    path('user/folders/<int:folder>/add/<int:post>/', add_to_folder, name='add_to_folder'),
+    path('user/folders/<int:folder>/remove/<int:post>/', remove_from_folder, name='remove_from_folder'),
 
     path('user/notifications/', UserNotificationListView.as_view(),
          name='user_notifications'),

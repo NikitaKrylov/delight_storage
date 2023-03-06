@@ -1,0 +1,23 @@
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block content %}
+
+<form action="{% url 'edit_user_folder' folder.id %}" method="POST">
+    {% csrf_token %}
+    {{folder_form.as_p}}
+    <button type="submit">Сохранить</button>
+</form>
+
+{% for folder_post in folder_posts %}
+
+<a href="{{folder_post.post.get_absolute_url}}">{{folder_post}}</a>
+<a href="{% url 'remove_from_folder' folder.id folder_post.post.id %}">Удалить из папки</a>
+
+{% empty %}
+
+<span>папка пуста(</span>
+
+{% endfor %}
+
+{% endblock %}

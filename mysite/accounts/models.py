@@ -114,8 +114,23 @@ class Folder(models.Model):
         else:
             FolderPost.objects.create(post=obj, folder=self)
 
+    def remove(self, obj):
+        if isinstance(obj, FolderPost):
+            obj.delete()
+        else:
+            self.posts.filter(post__id=obj.id).delete()
+
+    def __contains__(self, item):
+        if isinstance(item, FolderPost):
+            return self.posts.filter(id=item.id).exists()
+
+        return self.posts.filter(post__id=item.id).exists()
+
+    def get_absolute_url(self):
+        return reverse('user_folder', kwargs={'pk': self.pk})
+
     def __str__(self):
-        return "Папка {} пользователя {}".format(self.name, str(self.user))
+        return "Папка '{}' пользователя {}".format(self.name, str(self.user))
 
 
 class ClientIP(models.Model):

@@ -213,6 +213,10 @@
                                 <a href="#complaints-post-window"
                                     class="post-complaints__link dropdown__subitem popup-link">Пожаловаться</a>
                             </li>
+                            <li class="post-complaints__item dropdown__item">
+                                <a href="#"
+                                    class="post-complaints__link dropdown__subitem">В папку</a>
+                            </li>
                             {% if request.user == post.author %}
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
@@ -220,6 +224,7 @@
                                 <a href="{% url 'change_post' post.pk %}"
                                     class="post-complaints__link dropdown__subitem">Редактировать</a>
                             </li>
+
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
                             <li class="post-complaints__item dropdown__item">

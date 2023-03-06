@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
-from .models import User, PostComplaint
+from .models import User, PostComplaint, Folder
 from posts.models import PostTag
 from mediacore.forms import ClearableAvatarFileInput
 
@@ -82,6 +82,17 @@ class UserSettingsForm(forms.Form):
                 initial.append(i+1)
 
         self.fields['ignored_tags'].initial = initial
+
+
+class UserFolderForm(forms.ModelForm):
+    class Meta:
+        model = Folder
+        fields = (
+            'name',
+        )
+        widgets = {
+            'name': forms.TextInput(attrs={'placeholder': 'Имя папки', 'class': ''})
+        }
 
 
 # ---------------------- Password ----------------------------
