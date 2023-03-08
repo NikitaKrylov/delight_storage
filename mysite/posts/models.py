@@ -5,6 +5,7 @@ from django.db.models import Count, ExpressionWrapper, FloatField, F
 from django.db.models.functions import Cast
 from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
@@ -167,6 +168,7 @@ class PostTag(models.Model):
 
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
+        self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
     def __str__(self):

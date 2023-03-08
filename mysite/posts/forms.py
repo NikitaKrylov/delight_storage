@@ -57,6 +57,15 @@ class PostForm(forms.ModelForm):
         }
 
 
+class PostTagForm(forms.ModelForm):
+    class Meta:
+        model = PostTag
+        fields = ('name',)
+        widgets = {
+            'name': forms.TextInput(attrs={"class": ""})
+        }
+
+
 class SearchForm(forms.Form):
     TYPE_CHOICES = (
         ('likes_amount', "Лайкам"),
