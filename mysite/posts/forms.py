@@ -76,3 +76,11 @@ class SearchForm(forms.Form):
     type = forms.ChoiceField(choices=TYPE_CHOICES, initial='pub_date', widget=forms.RadioSelect(attrs={'class': 'search-sort__input hidden-input'}), required=False)
     is_desc = forms.BooleanField(required=False, initial=False,  widget=forms.CheckboxInput(attrs={'class': 'hidden-input', 'value': '-'}))
 
+
+class CreatePostTagForm(forms.ModelForm):
+    class Meta:
+        model = PostTag
+        fields = ('name',)
+        widgets = {
+            'name': forms.TextInput(attrs={'class': '', 'placeholder': 'Название'})
+        }

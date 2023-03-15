@@ -153,7 +153,7 @@ class PostTagManager(models.Manager):
 class PostTag(models.Model):
     name = models.CharField(
         _("название тега"), max_length=30, db_index=True, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         verbose_name = "Тег"

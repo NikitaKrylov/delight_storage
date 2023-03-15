@@ -6,14 +6,11 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q, Variance, Count, F
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
-from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
-
 from .mixins import CheckUserConformity
 from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
@@ -27,34 +24,32 @@ from posts.forms import CreatePostDelayForm, PostForm
 from django.contrib.auth import login, authenticate
 from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
-
 from posts.mixins import PostFilterFormMixin
+from posts.forms import CreatePostTagForm
 
 
-class SignatoryView(View):
-    http_method_names = ('get',)
+@login_required
+@require_http_methods(['GET'])
+def switch_subscription(request, *args, **kwargs):
+    ctx = {"has_sub": None}
+    user: User = request.user
 
-    def get(self, request, *args, **kwargs):
-        ctx = {"has_sub": None}
-        user: User = request.user
-        if user.is_authenticated:
-            # подписка уже имеется
-            if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists():
-                user.subscriptions.filter(
-                    subscription_object__id=kwargs['object_id']).delete()  # больше нету
-                ctx["has_sub"] = False
-            else:
-                sub = Subscription(
-                    subscription_object=User.objects.get(
-                        id=kwargs['object_id']),
-                    subscriber=user
-                )
-                sub.save()
-                user.subscriptions.add(sub)
-                ctx["has_sub"] = True
+    # подписка уже имеется
+    if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists():
+        user.subscriptions.filter(
+            subscription_object__id=kwargs['object_id']).delete()  # больше нету
+        ctx["has_sub"] = False
+    else:
+        sub = Subscription(
+            subscription_object=User.objects.get(
+                id=kwargs['object_id']),
+            subscriber=user
+        )
+        sub.save()
+        user.subscriptions.add(sub)
+        ctx["has_sub"] = True
 
-        return HttpResponse(json.dumps(ctx), content_type='application/json')
-
+    return JsonResponse(ctx)
 
 # --------Authentivation / Register-------
 
@@ -367,6 +362,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         context['image_formset'] = ImageFileFormSet()
         context['video_formset'] = VideoFileFormSet()
         context['delay_form'] = CreatePostDelayForm()
+        context['tag_form'] = CreatePostTagForm()
         return context
 
     def post(self, request, *args, **kwargs):

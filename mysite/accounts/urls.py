@@ -34,8 +34,8 @@ urlpatterns = [
     path('user/notifications/all/delete/', delete_all_notification, name='all_notification_delete'),
     path('user/notifications/all/read/', read_all_notification, name='all_notification_read'),
 
-    path('user/subscriptions/', UserSubscriptionListView.as_view(),name='user_subscriptions'),
-    path('user/subscribe-to/<int:object_id>/', SignatoryView.as_view(), name='subscribe'),
+    path('user/subscriptions/', UserSubscriptionListView.as_view(), name='user_subscriptions'),
+    path('user/subscribe-to/<int:object_id>/', switch_subscription, name='subscribe'),
 
     path('user/likes/', LikedPostList.as_view(), name='user_liked_posts'),
 

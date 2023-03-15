@@ -1,13 +1,14 @@
+from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
-from .forms import SearchForm
+from .forms import SearchForm, PostForm, CreatePostTagForm
 from .services.base import tags_vector
 import json
 
 import numpy as np
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef, Count
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
@@ -17,7 +18,7 @@ from sklearn.cluster import AgglomerativeClustering
 
 from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
 from .models import Post, Comment, PostTag, Like
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from accounts.models import Subscription, User
 
 from accounts.forms import ComplaintForm
@@ -27,22 +28,26 @@ def is_ajax(request) -> bool:
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-class CreateComplaint(View, LoginRequiredMixin):
-    def post(self, request, *args, **kwargs):
-        form = ComplaintForm(request.POST)
+@login_required
+@require_http_methods(['POST'])
+def create_post_complain(request, *args, **kwargs):
+    form = ComplaintForm(request.POST)
 
-        if form.is_valid():
-            post = Post.objects.get(pk=kwargs['pk'])
-
-            complaint = form.save(commit=False)
-            complaint.sender = request.user
-            complaint.post = post
-            complaint.save()
-
+    if form.is_valid():
+        post = Post.objects.get(pk=kwargs['pk'])
+        complaint = form.save(commit=False)
+        complaint.sender = request.user
+        complaint.post = post
+        complaint.save()
         return redirect(post)
 
+    raise ValidationError()
 
+
+@require_http_methods(['GET'])
 def get_tags(request, *args, **kwargs):
+    """Returns Json object with list of dicts contains the name and slug of the tags
+     by the requested names"""
     if not is_ajax(request):
         raise PermissionDenied()
 
@@ -58,49 +63,53 @@ def get_tags(request, *args, **kwargs):
     else:
         ctx = {'tags': list()}
 
-    return HttpResponse(json.dumps(ctx), content_type='application/json')
+    return JsonResponse(ctx)
 
 
-class AddCommentView(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login')
+@require_http_methods(['POST'])
+def create_post_tag(request, *args, **kwargs):
+    """Ajax's method which creates tag by the CreatePostTagForm"""
+    form = CreatePostTagForm(request.POST)
 
-    def post(self, request, *args, **kwargs):
-        post = Post.objects.get(pk=kwargs.get('pk'))
+    if form.is_valid():
+        tag: PostTag = form.save()
+        tag.save()
+        return JsonResponse({'name': tag.name, 'slug': tag.slug})
 
-        if post.disable_comments:
-            raise ValueError(
-                "К этому посту нельзя оставлять комментарии")
-
-        comment = Comment(author=request.user, post=post,
-                          text=request.POST['input-comments-form'])
-
-        comment.save()
-        return redirect(comment.post)
-
-    def get(self, request, *args, **kwargs):
-        return redirect('post', pk=kwargs['pk'])
+    response = JsonResponse({"error": 'this is an error'})
+    response.status_code = 403
+    return response
 
 
-class AddReplyCommentView(LoginRequiredMixin, View):
-    login_url = reverse_lazy('login')
+@login_required
+@require_http_methods(['POST'])
+def create_post_comment(request, *args, **kwargs):
+    post = Post.objects.get(pk=kwargs.get('pk'))
 
-    def post(self, request, *args, **kwargs):
-        post = Post.objects.get(pk=kwargs.get('pk'))
+    if post.disable_comments:
+        raise ValueError(
+            "К этому посту нельзя оставлять комментарии")
 
-        if post.disable_comments:
-            raise ValueError(
-                "К этому посту нельзя оставлять комментарии")
+    comment = Comment(author=request.user, post=post,
+                      text=request.POST['input-comments-form'])
+    comment.save()
+    return redirect(comment.post)
 
-        comment = Comment(author=request.user, post=post,
-                          text=request.POST['reply-reply'])
-        comment.answered = Comment.objects.get(
-            pk=kwargs['reply_comment_pk'])
 
-        comment.save()
-        return redirect(comment.post)
+def create_reply_post_comment(request, *args, **kwargs):
+    post = Post.objects.get(pk=kwargs.get('pk'))
 
-    def get(self, request, *args, **kwargs):
-        return redirect('post', pk=kwargs['pk'])
+    if post.disable_comments:
+        raise ValueError(
+            "К этому посту нельзя оставлять комментарии")
+
+    comment = Comment(author=request.user, post=post,
+                      text=request.POST['reply-reply'])
+    comment.answered = Comment.objects.get(
+        pk=kwargs['reply_comment_pk'])
+
+    comment.save()
+    return redirect(comment.post)
 
 
 def delete_comment(request, *args, **kwargs):
@@ -125,26 +134,24 @@ def delete_post(request, *args, **kwargs):
     return redirect('post_list')
 
 
-class LikePostView(View):
-    http_method_names = ('get',)
+@login_required
+@require_http_methods(['POST', 'GET'])
+def like_post(request, *args, **kwargs):
+    ctx = {"liked": None, "add_view": None}
 
-    def get(self, request, *args, **kwargs):
-        ctx = {"liked": None, "add_view": None}
+    post = Post.objects.get(pk=kwargs['pk'])
 
-        if request.user.is_authenticated:
-            post = Post.objects.get(pk=kwargs['pk'])
+    like, created = post.likes.get_or_create(user=request.user)
+    if not created:  # already liked the content
+        like.delete()
+        ctx['liked'] = False
+    else:
+        post.likes.add(like)
+        view, created = post.views.get_or_create(user=request.user)
+        ctx['liked'] = True
+        ctx['add_view'] = created
 
-            like, created = post.likes.get_or_create(user=request.user)
-            if not created:  # already liked the content
-                like.delete()
-                ctx['liked'] = False
-            else:
-                post.likes.add(like)
-                view, created = post.views.get_or_create(user=request.user)
-                ctx['liked'] = True
-                ctx['add_view'] = created
-
-        return HttpResponse(json.dumps(ctx), content_type='application/json')
+    return JsonResponse(ctx)
 
 
 class HomeView(PostFilterFormMixin, TemplateView):
@@ -166,7 +173,7 @@ class HomeView(PostFilterFormMixin, TemplateView):
         return context
 
 
-class PostView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
+class PostDetailView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
@@ -266,7 +273,6 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
 
 
         search_form = SearchForm(self.request.session.get('search_form', None))
-        print(search_form.data)
         order = search_form.data.get('type', 'pub_date')
         direction = search_form.data.get('is_desc', '')
         response = response.order_by(direction + order)
