@@ -12,7 +12,6 @@ from mediacore.models import ImageFile
 @admin.register(PostTag)
 class PostTagAdmin(admin.ModelAdmin):
     readonly_fields = ('related_posts_amount',)
-    prepopulated_fields = {"slug": ("name",)}
 
 
 @admin.register(PostDelay)

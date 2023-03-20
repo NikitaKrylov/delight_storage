@@ -2,7 +2,7 @@ from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
 from .forms import SearchForm, PostForm, CreatePostTagForm
-from .services.base import tags_vector
+from .services.base import tags_vector, TagsVectorizer
 import json
 
 import numpy as np
@@ -294,6 +294,12 @@ class SearchPostTagListView(ListView, PostQueryMixin, AnnotateUserLikesAndViewsM
         return super().get_queryset().filter(tags__slug=self.kwargs['slug'])
 
 
+import numpy as np
+from sklearn.cluster import AgglomerativeClustering
+import pandas as pd
+from collections import defaultdict
+
+
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
     template_name = 'posts/compilations.html'
 
@@ -301,32 +307,32 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
-        from itertools import combinations
-        import numpy as np
-        from sklearn.cluster import AgglomerativeClustering
 
-        posts = Post.objects.all()
-        m = create_distance_matrix(list(posts), posts.count())
-        print(m)
+        posts = Post.objects.order_by('id')
+        posts_id = posts.values_list('id', flat=True)
+        distance_matrix = create_distance_matrix(posts, posts.count())
+        data = pd.DataFrame(distance_matrix, columns=posts_id, index=posts_id)
+        print(data)
+
         model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
-                                        distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(m)
-        print(model.n_clusters)
-        print(model.distances_)
+                                        distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(data.values)
+        clusters = defaultdict(list)
 
-        for i in zip(list(posts), model.labels_):
-            print(i)
+        for post, i in zip(list(posts), model.labels_):
+            clusters[i].append(post.id)
+
+        print(model.n_clusters_)
+        print(clusters)
 
         return context
 
 
 def create_distance_matrix(posts, square_size):
     matrix = np.zeros((square_size, square_size))
-    posts_tags = [tags_vector(i.tags.values_list('id', flat=True))
-                  for i in posts]
+    posts_tags = TagsVectorizer().create(posts)
 
     for i in range(square_size):
         for j in range(square_size):
-            matrix[i, j] = 1.0 - \
-                jaccard_score(posts_tags[i], posts_tags[j], average='macro')
+            matrix[i, j] = 1 - jaccard_score(posts_tags[i], posts_tags[j], average='macro')
 
     return matrix

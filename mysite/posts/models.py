@@ -3,11 +3,10 @@ from django.db import models
 from accounts.models import User, ClientIP
 from django.db.models import Count, ExpressionWrapper, FloatField, F
 from django.db.models.functions import Cast
-from django.dispatch import receiver
 from django.utils import timezone
-from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from slugify import slugify
 
 
 class PostManager(models.Manager):
@@ -167,7 +166,6 @@ class PostTag(models.Model):
     objects = PostTagManager()
 
     def save(self, *args, **kwargs):
-        self.name = self.name.lower()
         self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 

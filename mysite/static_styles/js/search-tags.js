@@ -110,8 +110,8 @@ searchInput.on("input", function () {
 						} else {
 							let txtTag = e.getElementsByTagName("span")[0].textContent;
 							e.getElementsByTagName("span")[0].innerHTML = txtTag;
-							response["tags"].splice(
-								response["tags"].findIndex((tag) => {
+							response.splice(
+								response.findIndex((tag) => {
 									return tag.name === txtTag;
 								}),
 								1,
@@ -120,7 +120,7 @@ searchInput.on("input", function () {
 					});
 				}
 
-				response["tags"].forEach((tag, inx) => {
+				response.forEach((tag, inx) => {
 					let newTag = createTags(tag.name, tag.slug);
 					tagList.append(newTag);
 					show(newTag);
