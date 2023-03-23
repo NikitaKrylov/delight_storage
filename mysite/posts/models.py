@@ -51,7 +51,6 @@ class Post(models.Model):
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
     delay = models.OneToOneField('PostDelay', verbose_name=_(
         'время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
-
     objects = PostManager()
 
     class Meta:

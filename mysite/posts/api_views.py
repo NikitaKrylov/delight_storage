@@ -1,7 +1,11 @@
 from django.db.models import Q
-from .serializers import PostTagSerializer
-from .models import PostTag
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+from .serializers import PostTagSerializer, PostSerializer
+from .models import PostTag, Post
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 
 class PostTagList(generics.ListAPIView):
@@ -16,3 +20,19 @@ class PostTagList(generics.ListAPIView):
             return PostTag.objects.filter(query)
 
         return PostTag.objects.all()
+
+
+class PostDetail(generics.RetrieveAPIView):
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+
+class UpdatePost(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    lookup_field = 'pk'
+    # permission_classes = [IsAuthenticated]
+
+
+
+

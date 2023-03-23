@@ -9,7 +9,6 @@ urlpatterns = [
     path('posts/search/', SearchPostList.as_view(), name='search'),
     path('posts/search/<slug:slug>/', SearchPostTagListView.as_view(), name='search_by_tag'),
     path('posts/complication/', PostCompilationsList.as_view(), name='complication'),
-    #     path('posts/liked/', LikedPostList.as_view(), name='liked_posts'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post'),
     path('post/<int:pk>/delete/', delete_post, name='delete_post'),
 
@@ -26,4 +25,7 @@ urlpatterns = [
 
     path('posts/api/tags/all/', PostTagList.as_view(), name='post_api_tags'),
     path('posts/api/tags/search/', PostTagList.as_view(), name='post_api_tags_search'),
+    path('posts/api/get/<int:pk>/', PostDetail.as_view(), name='post_api_get'),
+    path('posts/api/update/<int:pk>/', UpdatePost.as_view(), name='post_api_update'),
+    path('posts/api/<int:pk>/add_tag/<int:tag_id>/', UpdatePost.as_view(), name='post_api_add_tag'),
 ]

@@ -2,7 +2,7 @@ from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
 from .forms import SearchForm, PostForm, CreatePostTagForm
-from .services.base import tags_vector, TagsVectorizer
+from .services.clustering import TagsVectorizer, PostClustering
 import json
 
 import numpy as np
@@ -298,6 +298,7 @@ import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 import pandas as pd
 from collections import defaultdict
+from .services.clustering import PostCluster
 
 
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
@@ -308,22 +309,29 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
 
-        posts = Post.objects.order_by('id')
-        posts_id = posts.values_list('id', flat=True)
-        distance_matrix = create_distance_matrix(posts, posts.count())
-        data = pd.DataFrame(distance_matrix, columns=posts_id, index=posts_id)
-        print(data)
+        # posts = Post.objects.order_by('id')
+        # posts_id = posts.values_list('id', flat=True)
+        # distance_matrix = create_distance_matrix(posts, posts.count())
+        # data = pd.DataFrame(distance_matrix, columns=posts_id, index=posts_id)
+        # print(data)
+        #
+        # model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
+        #                                 distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(data.values)
+        # clusters = defaultdict(set)
+        # for post, i in zip(list(posts), model.labels_):
+        #     clusters[i].add(post.id)
+        #
+        # print(model.n_clusters_)
+        # print(clusters)
+        #
+        # l = set()
+        #
+        # for label, ids in clusters.items():
+        #     l.add(PostCluster(label, Post.objects.filter(id__in=ids).all()))
+        #
+        # print(l)
 
-        model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
-                                        distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(data.values)
-        clusters = defaultdict(list)
-
-        for post, i in zip(list(posts), model.labels_):
-            clusters[i].append(post.id)
-
-        print(model.n_clusters_)
-        print(clusters)
-
+        context['clusters'] = PostClustering().fit(Post.objects.all())
         return context
 
 
