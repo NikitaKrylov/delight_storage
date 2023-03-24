@@ -18,9 +18,9 @@ from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
-from posts.models import Post, PostDelay, Comment, Like, UserView
+from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
-from posts.forms import CreatePostDelayForm, PostForm
+from posts.forms import PostForm
 from django.contrib.auth import login, authenticate
 from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
@@ -361,7 +361,6 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создать пост'
         context['image_formset'] = ImageFileFormSet()
         context['video_formset'] = VideoFileFormSet()
-        context['delay_form'] = CreatePostDelayForm()
         context['tag_form'] = CreatePostTagForm()
         return context
 
@@ -371,17 +370,11 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             request.POST, request.FILES, instance=form.instance)
         video_formset = VideoFileFormSet(
             request.POST, request.FILES, instance=form.instance)
-        delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and (image_formset.is_valid() or video_formset.is_valid()):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-
-            if delay_form.is_valid():
-                delay = delay_form.save()
-                post.delay = delay
-                post.save()
 
             form.save_m2m()
 
@@ -395,7 +388,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
             return redirect('self_user_posts')
 
-        return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'delay_form': delay_form})
+        return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
 
 
 class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
@@ -413,8 +406,6 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
 
-        context['delay_form'] = CreatePostDelayForm(
-            instance=post.delay or None)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -422,23 +413,6 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
         if form.is_valid():
             post = form.save()
-
-            delay_form = CreatePostDelayForm(
-                request.POST, instance=post.delay or None)
-
-            if delay_form.is_valid():
-                delay = delay_form.save()
-                post.delay = delay
-                post.save()
-
-            else:
-                delay_form = CreatePostDelayForm()
-                if post.delay:
-                    post.delay.delete()
-                    post.delay = None
-                    if post.status == Post.STATUS.DEFERRED:
-                        post.status = Post.STATUS.PUBLISHED
-                    post.save()
 
             image_formset = ImageFileFormSet(
                 request.POST, request.FILES, instance=post)
@@ -449,9 +423,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
             videos = video_formset.save()
 
         else:
-            delay_form = CreatePostDelayForm()
-            return render(request, self.template_name, {'form': form, 'delay_form': delay_form,
-                                                        'image_formset': ImageFileFormSet(instance=form.instance)})
+            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
 
         return redirect('self_user_posts')
 

@@ -1,7 +1,5 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from django.forms import modelform_factory
-from .models import PostTag, PostDelay, Post
+from .models import PostTag, Post
 
 
 class PostTagsForm(forms.Form):
@@ -16,25 +14,6 @@ class PostTagsForm(forms.Form):
             self.fields[tag.slug].required = False
 
 
-class CreatePostDelayForm(forms.ModelForm):
-
-    class Meta:
-        model = PostDelay
-        fields = ('time',)
-        widgets = {
-            'time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['time'].required = False
-
-    def is_valid(self):
-        if not self.data['time'] or self.data['time'] is None:
-            return False
-        return super().is_valid()
-
-
 class PostForm(forms.ModelForm):
 
     class Meta:
@@ -46,12 +25,14 @@ class PostForm(forms.ModelForm):
             'status',
             'description',
             'tags',
+            'delayed_publication_time',
         )
         widgets = {
             'only_for_adult': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
             'for_autenticated_users': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
             'disable_comments': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
             'status': forms.RadioSelect(attrs={'class': 'status-post__input hidden-input', }),
+            'delayed_publication_time': forms.DateTimeInput(),
             'description': forms.Textarea(attrs={'class': 'textarea__input textarea-autosize', 'placeholder': 'Описание', 'cols': '20', 'rows': '2', }),
             'tags': forms.CheckboxSelectMultiple(attrs={"class": "tags-list__checkbox hidden-input three-pos-inp", "tabindex": -1, "data-state": 0, }),
         }

@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _
 from .models import *
 from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
 from contentcreation.services.generation import ContentGenerator
@@ -12,16 +11,6 @@ from mediacore.models import ImageFile
 @admin.register(PostTag)
 class PostTagAdmin(admin.ModelAdmin):
     readonly_fields = ('related_posts_amount',)
-
-
-@admin.register(PostDelay)
-class PostDelayAdmin(admin.ModelAdmin):
-    readonly_fields = ('post',)
-
-    def get_related_post_link(self, obj):
-        return mark_safe("<a href='{}'>{}</a>".format(obj.get_absolute_url(), obj))
-
-    get_related_post_link.short_description = "Отложеный объект"
 
 
 @admin.register(Post)

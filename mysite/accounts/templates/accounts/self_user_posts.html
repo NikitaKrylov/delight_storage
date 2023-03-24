@@ -69,8 +69,8 @@
         <div class="gallery__content">
           {% if post.status != post.STATUS.PUBLISHED %}
           <div class="gallery__status">
-            {% if post.status == post.STATUS.DEFERRED and post.delay %}
-            {{post.delay.time}}
+            {% if post.status == post.STATUS.DEFERRED %}
+            {{post.delayed_publication_time}}
             {% else %}
             черновик
             {% endif %}

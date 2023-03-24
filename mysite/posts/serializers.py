@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from posts.models import Post, PostTag
-from mediacore.models import ImageFile
 from mediacore.serializers import ImageFileSerializer, VideoFileSerializer
 
 
@@ -22,7 +21,6 @@ class PostSerializer(serializers.ModelSerializer):
     status = serializers.CharField()
     description = serializers.CharField()
     tags = serializers.PrimaryKeyRelatedField(queryset=PostTag.objects.all(), many=True)
-    # images = serializers.PrimaryKeyRelatedField(queryset=ImageFile.objects.all(), many=True)
     images = ImageFileSerializer(many=True)
     videos = VideoFileSerializer(many=True)
 
@@ -42,7 +40,6 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def update(self, instance: Post, validated_data):
-        print(validated_data)
         if 'tags' not in validated_data:
             raise NotImplementedError("Update realization not supported for '{}'".format(validated_data))
 
