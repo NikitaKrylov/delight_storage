@@ -1,8 +1,11 @@
 from collections import namedtuple
 from datetime import date, datetime, timedelta
 from typing import List
-
 from django.db.models import QuerySet
+from accounts.models import User
+from posts.models import Post
+import pandas as pd
+import numpy as np
 
 
 def get_client_ip(request):
@@ -51,3 +54,10 @@ class ChartStatistic:
         ]
         # elif self._queryset.model == Comment and self.field == "count":
         #     return self._queryset.count()
+
+
+def get_users_like_dataset(user: User):
+    posts = Post.objects.filter(likes__user=user)
+
+    dataset = pd.DataFrame(index=posts.values_list('id', flat=True))
+

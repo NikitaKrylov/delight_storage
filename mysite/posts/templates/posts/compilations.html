@@ -3,6 +3,16 @@
 
 {% block content %}
 
+<h3>Всего клас</h3>
 
+{% for cluster in clusters %}
+
+    {% for post in cluster.queryset %}
+        <a href="{{post.get_absolute_url}}">{{post}}</a>
+    {% endfor %}
+    <br/>
+    <br/>
+
+{% endfor %}
 
 {% endblock %}

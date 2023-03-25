@@ -35,6 +35,8 @@
         </main>
     </div>
 
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <script src="{% static '/libs/autosize.min.js' %}"></script>
@@ -45,6 +47,37 @@
     <script src="{% static '/js/index.js' %}"></script>
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
 
+
+    <form id="tag_creation_form" method="post" >
+
+        {% csrf_token %}
+        {{tag_form.as_p}}
+        <input type="submit" value="Создать">
+    </form>
+
+
+    <script>
+        $('#tag_creation_form').on('submit', function(event) {
+            event.preventDefault();
+            console.log("123");
+            $.ajax({
+                url: '{% url "create_post_tag" %}',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                    name: $('#id_name').val(),
+                },
+
+                success: function(json){
+                console.log(json);
+                },
+                error: function (response) {
+                console.log(response.responseJSON.error)
+                }
+            });
+
+        });
+    </script>
 
 </body>
 

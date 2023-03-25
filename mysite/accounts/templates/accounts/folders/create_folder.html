@@ -1,0 +1,13 @@
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<form method="POST">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">Создать</button>
+</form>
+
+{% endblock %}

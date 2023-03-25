@@ -3,10 +3,10 @@ from django.db import models
 from accounts.models import User, ClientIP
 from django.db.models import Count, ExpressionWrapper, FloatField, F
 from django.db.models.functions import Cast
-from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
+from slugify import slugify
 
 
 class PostManager(models.Manager):
@@ -49,9 +49,7 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(
         "PostTag", verbose_name=_('теги'), blank=True, null=True)
-    delay = models.OneToOneField('PostDelay', verbose_name=_(
-        'время отложенной публикации'), on_delete=models.SET_NULL, null=True, blank=True)
-
+    delayed_publication_time = models.DateTimeField(_('Время отложенной публикации'), null=True, blank=True)
     objects = PostManager()
 
     class Meta:
@@ -69,7 +67,7 @@ class Post(models.Model):
         return reverse('post_like', kwargs={"pk": self.pk})
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if self.delay:
+        if self.delayed_publication_time:
             self.status = self.STATUS.DEFERRED
         return super().save(force_insert, force_update, using, update_fields)
 
@@ -77,36 +75,19 @@ class Post(models.Model):
         if self.status == Post.STATUS.PUBLISHED and not self.pub_date:
             self.pub_date = timezone.now()
 
-        if self.delay and self.delay.time < timezone.now():
+        if self.delayed_publication_time and self.delayed_publication_time < timezone.now():
             raise ValidationError(
                 "Время публикации не может быть меньше текущего.")
 
-        if self.status == Post.STATUS.DEFERRED and not self.delay:
+        if self.status == Post.STATUS.DEFERRED and not self.delayed_publication_time:
             raise ValidationError(
                 "Укажите время публикации для отложенного поста")
         return super().clean()
 
     def __str__(self):
-        if self.delay:
+        if self.delayed_publication_time:
             return "Отложенный пост id - {}".format(self.pk)
         return "Пост id - {}".format(self.pk)
-
-
-class PostDelay(models.Model):
-    time = models.DateTimeField(verbose_name=_('Время отложенной публикации'))
-
-    class Meta:
-        verbose_name = "Отложенная задача"
-        verbose_name_plural = "Отложенные задачи"
-
-    def clean(self):
-        if self.time and self.time < timezone.now():
-            raise ValidationError(
-                "Время отложенной задачи не может быть меньше текущей!")
-        return super().clean()
-
-    def __str__(self):
-        return "Задержка публикации до {}".format(self.time)
 
 
 # -----------------------COMMENTS----------------------------
@@ -152,7 +133,7 @@ class PostTagManager(models.Manager):
 class PostTag(models.Model):
     name = models.CharField(
         _("название тега"), max_length=30, db_index=True, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     class Meta:
         verbose_name = "Тег"
@@ -166,7 +147,7 @@ class PostTag(models.Model):
     objects = PostTagManager()
 
     def save(self, *args, **kwargs):
-        self.name = self.name.lower()
+        self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
     def __str__(self):

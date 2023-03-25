@@ -1,3 +1,4 @@
+from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
 import json
@@ -5,55 +6,50 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.db.models import Q, Variance, Count, F
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
-from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
-
 from .mixins import CheckUserConformity
-from .models import Notification
+from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm, UserSettingsForm
+    UserSetPasswordForm, UserSettingsForm, UserFolderForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
-from posts.models import Post, PostDelay, Comment, Like, UserView
+from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
-from posts.forms import CreatePostDelayForm, PostForm
+from posts.forms import PostForm
 from django.contrib.auth import login, authenticate
 from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
-
 from posts.mixins import PostFilterFormMixin
+from posts.forms import CreatePostTagForm
 
 
-class SignatoryView(View):
-    http_method_names = ('get',)
+@login_required
+@require_http_methods(['GET'])
+def switch_subscription(request, *args, **kwargs):
+    ctx = {"has_sub": None}
+    user: User = request.user
 
-    def get(self, request, *args, **kwargs):
-        ctx = {"has_sub": None}
-        user: User = request.user
-        if user.is_authenticated:
-            # подписка уже имеется
-            if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists():
-                user.subscriptions.filter(
-                    subscription_object__id=kwargs['object_id']).delete()  # больше нету
-                ctx["has_sub"] = False
-            else:
-                sub = Subscription(
-                    subscription_object=User.objects.get(
-                        id=kwargs['object_id']),
-                    subscriber=user
-                )
-                sub.save()
-                user.subscriptions.add(sub)
-                ctx["has_sub"] = True
+    # подписка уже имеется
+    if user.subscriptions.filter(subscription_object__id=kwargs['object_id']).exists():
+        user.subscriptions.filter(
+            subscription_object__id=kwargs['object_id']).delete()  # больше нету
+        ctx["has_sub"] = False
+    else:
+        sub = Subscription(
+            subscription_object=User.objects.get(
+                id=kwargs['object_id']),
+            subscriber=user
+        )
+        sub.save()
+        user.subscriptions.add(sub)
+        ctx["has_sub"] = True
 
-        return HttpResponse(json.dumps(ctx), content_type='application/json')
-
+    return JsonResponse(ctx)
 
 # --------Authentivation / Register-------
 
@@ -110,6 +106,77 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
     """4. Уведомление об успешном изменении пароля"""
     template_name = 'accounts/password_reset/password_reset_complete.html'
 
+
+# --------------- User Folders-----------------
+
+
+class UserFoldersListView(LoginRequiredMixin, ListView):
+    template_name = 'accounts/folders/user_folders.html'
+    context_object_name = 'folders'
+    model = Folder
+
+    def get_queryset(self):
+        return self.request.user.folders.all()
+
+
+class UserFolderView(LoginRequiredMixin, DetailView):
+    template_name = 'accounts/folders/user_folder.html'
+    context_object_name = 'folder'
+    model = Folder
+
+    def get_context_data(self, **kwargs):
+        context = super(UserFolderView, self).get_context_data(**kwargs)
+        context['folder_posts'] = self.get_object().posts.all()
+        context['folder_form'] = UserFolderForm(instance=self.get_object())
+        return context
+
+
+class CreateUserFolderView(LoginRequiredMixin, CreateView):
+    model = Folder
+    form_class = UserFolderForm
+    template_name = 'accounts/folders/create_folder.html'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+@login_required
+def delete_folder(request, *args, **kwargs):
+    request.user.folders.filter(pk=kwargs['pk']).delete()
+    return redirect('user_folders')
+
+
+@require_http_methods(["POST"])
+def edit_folder(request, *args, **kwargs):
+    form = UserFolderForm(request.POST, instance=request.user.folders.get(pk=kwargs['pk']))
+    if form.is_valid():
+        folder = form.save()
+        return redirect('user_folder', pk=folder.pk)
+
+
+@login_required
+def add_to_folder(request, *args, **kwargs):
+    folder = request.user.folders.get(id=kwargs['folder'])
+    post = Post.objects.get(id=kwargs['post'])
+
+    if post not in folder:
+        folder.add(post)
+
+    return None
+
+
+@login_required
+def remove_from_folder(request, *args, **kwargs):
+    folder = request.user.folders.get(id=kwargs['folder'])
+    post = Post.objects.get(id=kwargs['post'])
+
+    if post in folder:
+        folder.remove(post)
+
+    return redirect('user_folder', pk=folder.id)
 
 # --------------User Page---------------
 
@@ -294,7 +361,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         context['title'] = 'Создать пост'
         context['image_formset'] = ImageFileFormSet()
         context['video_formset'] = VideoFileFormSet()
-        context['delay_form'] = CreatePostDelayForm()
+        context['tag_form'] = CreatePostTagForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -303,17 +370,11 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             request.POST, request.FILES, instance=form.instance)
         video_formset = VideoFileFormSet(
             request.POST, request.FILES, instance=form.instance)
-        delay_form = CreatePostDelayForm(request.POST)
 
         if form.is_valid() and (image_formset.is_valid() or video_formset.is_valid()):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-
-            if delay_form.is_valid():
-                delay = delay_form.save()
-                post.delay = delay
-                post.save()
 
             form.save_m2m()
 
@@ -327,7 +388,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
             return redirect('self_user_posts')
 
-        return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'delay_form': delay_form})
+        return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
 
 
 class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
@@ -345,8 +406,6 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
 
-        context['delay_form'] = CreatePostDelayForm(
-            instance=post.delay or None)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -354,23 +413,6 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
         if form.is_valid():
             post = form.save()
-
-            delay_form = CreatePostDelayForm(
-                request.POST, instance=post.delay or None)
-
-            if delay_form.is_valid():
-                delay = delay_form.save()
-                post.delay = delay
-                post.save()
-
-            else:
-                delay_form = CreatePostDelayForm()
-                if post.delay:
-                    post.delay.delete()
-                    post.delay = None
-                    if post.status == Post.STATUS.DEFERRED:
-                        post.status = Post.STATUS.PUBLISHED
-                    post.save()
 
             image_formset = ImageFileFormSet(
                 request.POST, request.FILES, instance=post)
@@ -381,9 +423,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
             videos = video_formset.save()
 
         else:
-            delay_form = CreatePostDelayForm()
-            return render(request, self.template_name, {'form': form, 'delay_form': delay_form,
-                                                        'image_formset': ImageFileFormSet(instance=form.instance)})
+            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
 
         return redirect('self_user_posts')
 

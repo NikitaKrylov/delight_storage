@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.db.models import QuerySet
 from django.urls import reverse
 from django.utils import timezone
-from typing import List
+from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
+from telethon.tl.types import Folder
 
 
 class UserManager(BaseUserManager):
@@ -75,16 +77,60 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
-# class UserSettings(models.Model):
-#     class Meta:
-#         verbose_name = _("Настройки пользователя")
-#         verbose_name_plural = _("Настройки пользователей")
-#
-#     ignored_tags = models.ManyToManyField(
-#         "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
-#
-#     def __str__(self):
-#         return "Настройки пользователя {}".format(self.user.username)
+class FolderPost(models.Model):
+    post = models.ForeignKey('posts.Post', models.CASCADE, verbose_name=_('пост'))
+    folder = models.ForeignKey('Folder', models.CASCADE, related_name='posts', verbose_name=_('папка'))
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name=_('дата добавления'))
+
+    class Meta:
+        verbose_name = _('пост папки')
+        verbose_name_plural = _('посты папки')
+        ordering = ('-created',)
+
+    def __str__(self):
+        return "{} папки '{}'".format(str(self.post), self.folder.name)
+
+
+class Folder(models.Model):
+    user = models.ForeignKey(User, models.CASCADE, related_name='folders', verbose_name=_('пользователь'))
+    name = models.CharField(max_length=70, verbose_name=_('Название'))
+    created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name=_('дата создания'))
+
+    class Meta:
+        verbose_name = _('папка пользователя')
+        verbose_name_plural = _('папки пользователей')
+        ordering = ('-created',)
+
+    def add(self, obj: Union['posts.Post', FolderPost, QuerySet]):
+        if isinstance(obj, FolderPost):
+            obj.folder = self
+            obj.save()
+
+        elif isinstance(obj, QuerySet):
+            FolderPost.objects.bulk_create([
+                FolderPost(post=post, folder=self) for post in obj.all()
+            ])
+
+        else:
+            FolderPost.objects.create(post=obj, folder=self)
+
+    def remove(self, obj):
+        if isinstance(obj, FolderPost):
+            obj.delete()
+        else:
+            self.posts.filter(post__id=obj.id).delete()
+
+    def __contains__(self, item):
+        if isinstance(item, FolderPost):
+            return self.posts.filter(id=item.id).exists()
+
+        return self.posts.filter(post__id=item.id).exists()
+
+    def get_absolute_url(self):
+        return reverse('user_folder', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return "Папка '{}' пользователя {}".format(self.name, str(self.user))
 
 
 class ClientIP(models.Model):

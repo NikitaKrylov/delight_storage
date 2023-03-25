@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count, ExpressionWrapper, FloatField, Case, When, Value, F
+from django.db.models import Count, ExpressionWrapper, FloatField, Case, When, Value, F, QuerySet
 from django.test import TestCase
-from posts.models import Post, UserView, Like
+from posts.models import Post, UserView, Like, PostTag
 from random import randint
 
 
@@ -46,5 +46,7 @@ class PostTestCase(TestCase):
                 post.value,
                 likes / views
             ))
+
+
 
 

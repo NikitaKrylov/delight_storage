@@ -1,0 +1,15 @@
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block content %}
+
+<a href="{% url 'create_user_folder' %}">Создать папку</a>
+
+{% for folder in folders %}
+
+<a href="{{ folder.get_absolute_url }}">{{folder.name}}</a>
+<a href="{% url 'delete_user_folder' folder.id %}">Удалить</a>
+
+{% endfor %}
+
+{% endblock %}
