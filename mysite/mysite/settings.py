@@ -37,7 +37,8 @@ ALLOWED_HOSTS = [
     '192.168.1.2',
     '172.20.10.2',
     '192.168.1.13',
-    '192.168.1.11'
+    '192.168.1.11',
+    '192.168.1.4'
 ]
 
 INTERNAL_IPS = [
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'notifications',
     'contentcreation',
     'compressor',
+    'compressor_toolkit',
     'posts',
     'social_django',
     'celerycore',
@@ -201,12 +203,16 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = config['SOCIAL_AUTH']['SOCIAL_AUTH_VK_OAUTH2_SECR
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
 # memcache
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-#         'LOCATION': '127.0.0.1:11211',
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+    # 'default': {
+    #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+    #     'LOCATION': '127.0.0.1:11211',
+    # }
+}
 
 # django-compressor
 COMPRESS_ENABLED = True
@@ -221,6 +227,8 @@ STATICFILES_FINDERS = (
 COMPRESS_FILTERS = {
     'css': [
         'compressor.filters.css_default.CssAbsoluteFilter',
+        # # 'compressor.filters.cssmin.CSSMinFilter',
+        # 'compressor.filters.template.TemplateFilter'
         'compressor.filters.cssmin.rCSSMinFilter',
     ],
     'js': [
@@ -228,14 +236,20 @@ COMPRESS_FILTERS = {
     ]
 }
 
+# COMPRESS_PRECOMPILERS = (
+#     # ('text/x-scss', 'django_libsass.SassCompiler'),
+#     ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
+#     ('text/x-scss', 'compressor_toolkit.precompilers.SCSSCompiler'),
+#     # ('text/x-scss', 'compressor_toolkit.precompilers.SCSSCompiler'),
+# )
 COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'django_libsass.SassCompiler'),
+    ('text/x-scss', 'compressor_toolkit.precompilers.SCSSCompiler'),
+    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
 )
 
 HTML_MINIFY = True
 KEEP_COMMENTS_ON_MINIFYING = True
 COMPRESS_OFFLINE = True
-# COMPRESS_ENABLED = not DEBUG
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

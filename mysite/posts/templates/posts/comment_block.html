@@ -23,7 +23,8 @@
                     <ul class="comment__control-list dropdown__list">
                         <li class="comment__control-item dropdown__item">
                             <a href="#complaints-comment-window"
-                                class="comment__control-link dropdown__subitem popup-link">Пожаловаться</a>
+                                class="comment__control-link dropdown__subitem popup-link" rel="modal:open"
+                                data-modal="#complaints-comment-window">Пожаловаться</a>
                         </li>
                         {% if request.user == comment.author %}
                         <li class="comment__control-item dropdown__item">
@@ -38,9 +39,7 @@
                 </div>
             </div>
             <div class="comment__content">
-                <div>
-                    {{comment.text}}
-                </div>
+                <p>{{comment.text}}</p>
             </div>
         </div>
         <div class="comment__controls">

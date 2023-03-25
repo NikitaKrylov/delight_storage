@@ -311,3 +311,14 @@ const gallerySet = lightGallery(document.getElementById("lightgallery"), {
 		rotate: true,
 	},
 });
+
+// окна жалоб
+$("a[data-modal='#complaints-post-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});
+
+$("a[data-modal='#complaints-comment-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});

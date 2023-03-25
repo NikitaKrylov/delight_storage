@@ -61,7 +61,7 @@ class EditUserProfileForm(forms.ModelForm):
         )
         widgets = {
             'avatar': ClearableAvatarFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
-            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+            'birth_date': forms.DateInput(attrs={'type': 'date', 'autocomplete': 'off'}),
             'username': forms.TextInput(),
             'email': forms.EmailInput(),
         }

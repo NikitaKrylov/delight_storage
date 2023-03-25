@@ -38,52 +38,82 @@ body {
 
 /* nav-menu-mobile */
 
-#nav-menu-mobile {
+.sidebar-mobile {
   /* width: 85%; */
-  height: 100%;
-  min-width: #{$min-width + px};
-  background-color: var(--bg-sidebar-default);
   position: fixed;
   top: 0;
   left: -100%;
-  transition: all .4s ease;
+  // min-width: #{$min-width + px};
+  width: 100%;
+  height: 100%;
   z-index: 120;
+  // background-color: var(--bg-sidebar-default);
+  transition: all .4s ease;
   // overflow: auto;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   // padding-bottom: 90px;
-  width: 100%;
 
   &._active {
-    display: block;
+    // display: block;
     left: 0;
     // transform: translate(0%, 0);
     opacity: 1;
     visibility: visible;
     pointer-events: all;
   }
-  @media (min-width: $width-mobile) {
-    & {
-      display: none;
+
+  
+  &__inner {
+    min-width: #{$min-width + px};
+    height: 100%;
+    background-color: var(--bg-sidebar-default);
+    
+    @media (min-width: $width-mobile) {
+      & {
+        display: none;
+      }
+    }
+    @media (min-width: #{$min-width + px}) {
+      & {
+        width: 60%;
+    
+        /* max-width: 300px; */
+      }
     }
   }
-  @media (min-width: #{$min-width + px}) {
-    & {
-      width: 80%;
-  
-      /* max-width: 300px; */
-    }
+
+  &__container {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  &__header {
+    padding: 15px 0 5px;
+  }
+
+  &__btn {
+    top: 16px;
+    left: 25px;
+    bottom: inherit;
+    left: inherit;
+    z-index: 1;
+    font-size: 34px;
+    // color: var(--light-pink);
+    color: var(--primary-color);
+  }
+
+  &__nav-mobile {
+    padding: 15px 0;
   }
 }
 
 .header-menu {
   display: flex;
   justify-content: space-between;
-  width: 90%;
-  margin: auto;
-  padding: 15px 0 5px;
-  zoom: 1;
+  // width: 90%;
+  // margin: auto;
   height: auto;
   color: var(--white);
 
@@ -98,29 +128,35 @@ body {
   }
 }
 
+.nav-mobile {
+
+  &__list {
+    // padding: 15px 0 40px 0;
+  }
+
+  &__item {
+    position: relative;
+    border-bottom: 1px solid var(--dark-line);
+  }
+
+  &__link {
+    display: block;
+    padding: 12px 16px;
+  }
+
+  &__text {
+    height: 100%;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--secondary-white);
+  }
+}
+
 #topmenu-section a.phLogoWrap {
   float: left;
   width: auto;
   padding-top: 0;
-}
-
-.close-ham-menu-2,
-.close-ham-menu {
-  // position: absolute;
-  top: 16px;
-  left: 25px;
-  bottom: inherit;
-  left: inherit;
-  z-index: 1;
-  font-size: 34px;
-  color: var(--light-pink);
-}
-
-.menu-wrapper {
-  width: 90%;
-  margin: auto;
-  zoom: 1;
-  padding: 15px 0 40px 0;
 }
 
 .phLogoWrap {

@@ -907,7 +907,7 @@ $browser-context: 16; // Default
     height: 92%;
     width: 100%;
 
-    &__image {
+    &__item {
         width: 100%;
         height: 100%;
         display: flex;
@@ -968,7 +968,7 @@ $browser-context: 16; // Default
 
         &.swiper-button-next,
         &.swiper-button-prev {
-            top: calc(50% - 100px);
+            top: calc(50% - 44px);
             color: var(--white);
         }
 
@@ -997,93 +997,4 @@ $browser-context: 16; // Default
 // }
 
 // -------- end-slider --------
-
-// -------- всплывающее окно ----------
-.popup {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    // background-color: rgba(0, 0, 0, 0.8);
-    top: 0;
-    left: 0;
-    z-index: 120;
-
-    &._active {
-        display: block;
-    }
-
-    &__inner {
-        min-height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
-
-    &__content {
-        position: relative;
-        background-color: var(--bg-secondary-default);
-        color: var(--white);
-        max-width: 500px;
-        // min-height: 300px;
-        width: 100%;
-        padding: 20px;
-        border-radius: 10px;
-    }
-}
-
-.modal {
-
-    &__header {
-    }
-
-    &__title {
-        font-size: 20px;
-    }
-
-    &__close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 20px;
-        color: black;
-        cursor: pointer;
-        font-size: 24px;
-        color: var(--primary-color);
-    }
-
-    &__body {
-        padding-bottom: 15px;
-        margin: 15px 0 15px 0;
-        border-bottom: 1px solid var(--dark-line);
-    }
-
-    &__controls {
-        margin-bottom: 20px;
-    }
-
-    &__control {
-        padding: 5px 0;
-    }
-
-    &__input {
-        font-size: 16px;
-    }
-
-    &__btn {
-        width: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        // color: var(--bg-light-primary-default);
-        color: var(--white);
-        background-color: var(--primary-color);
-
-        &:hover {
-            background-color: var(--secondary-pink);
-        }
-    }
-}
-
-// -------- конец всплывающее окно ----------
 

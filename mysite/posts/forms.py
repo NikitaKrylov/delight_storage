@@ -63,7 +63,9 @@ class SearchForm(forms.Form):
         ('views_amount', 'Просмотрам'),
         ('pub_date', 'Дате')
     )
-    text = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={'class': 'search__input-form', 'autocomplete': 'off', 'placeholder': 'Поиск...'}))
-    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='pub_date', widget=forms.RadioSelect(attrs={'class': 'search-sort__input hidden-input'}), required=False)
-    is_desc = forms.BooleanField(required=False, initial=False,  widget=forms.CheckboxInput(attrs={'class': 'hidden-input', 'value': '-'}))
-
+    text = forms.CharField(max_length=200, required=False, widget=forms.TextInput(attrs={
+                           'class': 'search__input-form', 'autocomplete': 'off', 'placeholder': 'Поиск...'}))
+    type = forms.ChoiceField(choices=TYPE_CHOICES, initial='pub_date', widget=forms.RadioSelect(
+        attrs={'class': 'search-sort__input hidden-input'}), required=False)
+    is_desc = forms.BooleanField(required=False, initial=False,  widget=forms.CheckboxInput(
+        attrs={'class': 'hidden-input', 'value': '-'}))

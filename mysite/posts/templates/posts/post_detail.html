@@ -22,50 +22,55 @@
 <link rel="stylesheet" href="https://unpkg.com/lightgallery@2.7.0/css/lg-rotate.css" />
 <link rel="stylesheet" href="https://unpkg.com/lightgallery@2.7.0/css/lg-video.css" />
 <link rel="stylesheet" href="https://unpkg.com/lightgallery@2.7.0/css/lg-share.css" />
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.6.1/css/iziModal.css"
+    integrity="sha512-uZ+G0SzK4GMUDUzxzbIeLGLjYgAhQ2KrIV4bWIP5o6URt5XVcn8S02eW6C1DH35bqq/XX1jYwlhhNPPIE1+q1A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+
+<!-- modal notification -->
+<link rel="stylesheet" href="{% static 'css/iziToast.min.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<div id="complaints-comment-window" class="popup">
+<div id="complaints-comment-window" class="modal popup">
     <div class="popup__inner">
         <div class="popup__content">
-            <div class="modal">
-                <div class="modal__header">
+            <div class="mymodal">
+                <div class="mymodal__header">
                     <div class="modal__title title">Жалоба</div>
-                    <div class="modal__close close-popup">
+                    <!-- <div class="modal__close close-popup">
                         <i class="fa-solid fa-xmark"></i>
-                    </div>
+                    </div> -->
                 </div>
-                <div class="modal__body">
-                    <div class="modal__controls">
-                        <label class="modal__control radio">
+                <div class="mymodal__body">
+                    <div class="mymodal__controls">
+                        <label class="mymodal__control radio">
                             <input class="radio__input hidden-input" type="radio" name="radio-btn">
                             <span class="radio__btn"></span>
                             <span class="radio__text">Реклама / Смап</span>
                         </label>
-                        <label class="modal__control radio">
+                        <label class="mymodal__control radio">
                             <input class="radio__input hidden-input" type="radio" name="radio-btn">
                             <span class="radio__btn"></span>
                             <span class="radio__text">Грубое поведение</span>
                         </label>
-                        <label class="modal__control radio">
+                        <label class="mymodal__control radio">
                             <input class="radio__input hidden-input" type="radio" name="radio-btn">
                             <span class="radio__btn"></span>
                             <span class="radio__text">Запрещенный контент</span>
                         </label>
                     </div>
-                    <div class="modal__input textarea">
+                    <div class="mymodal__input textarea">
                         <textarea class="textarea__input" placeholder="Опишите подробнее"></textarea>
                     </div>
                 </div>
-                <button class="modal__btn button">Отправить</button>
+                <button class="mymodal__btn button">Отправить</button>
             </div>
         </div>
     </div>
 </div>
-<div id="complaints-post-window" class="popup">
-    <!--    <form>-->
-    <!--        {% csrf_token %}-->
+<!-- <div id="complaints-post-window" class="popup">
     <div class="popup__inner">
         <div class="popup__content">
             <div class="modal">
@@ -79,21 +84,6 @@
                     {% csrf_token %}
                     <div class="modal__body">
                         <div class="modal__controls">
-                            <!-- <label class="modal__control radio">
-                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                <span class="radio__btn"></span>
-                                <span class="radio__text">Запрещенный контент</span>
-                            </label>
-                            <label class="modal__control radio">
-                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                <span class="radio__btn"></span>
-                                <span class="radio__text">Нет метки 18+</span>
-                            </label>
-                            <label class="modal__control radio">
-                                <input class="radio__input hidden-input" type="radio" name="radio-btn">
-                                <span class="radio__btn"></span>
-                                <span class="radio__text">Не соответствует теме</span>
-                            </label> -->
                             {{complaint_form.type}}
                         </div>
                         <div class="modal__input textarea">
@@ -105,7 +95,34 @@
             </div>
         </div>
     </div>
+</div> -->
+<div id="complaints-post-window" class="modal popup">
+    <div class="popup__inner">
+        <div class="popup__content">
+            <div class="mymodal">
+                <div class="mymodal__header">
+                    <div class="mymodal__title title">Жалоба</div>
+                    <!-- <div class="mymodal__close close-popup" rel="modal:close">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div> -->
+                </div>
+                <form action="{% url 'create_post_complaint' post.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mymodal__body">
+                        <div class="mymodal__controls">
+                            {{complaint_form.type}}
+                        </div>
+                        <div class="mymodal__input textarea">
+                            {{complaint_form.description}}
+                        </div>
+                    </div>
+                    <button class="mymodal__btn button" type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+{% include "html/_confirmation-window.html" %}
 
 <div class="post-container">
     <div class="post-images">
@@ -115,14 +132,14 @@
             <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
                 {% for image in images %}
                 <div class="image-slider__slide swiper-slide">
-                    <div class="image-slider__image">
+                    <div class="image-slider__item">
                         <img src="{{ image.file.url }}">
                     </div>
                 </div>
                 {% endfor %}
                 {% for video in videos %}
                 <div class="image-slider__slide swiper-slide">
-                    <div class="image-slider__image">
+                    <div class="image-slider__item">
                         <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
                     </div>
                 </div>
@@ -145,7 +162,7 @@
                 {% endfor %}
                 {% for video in videos %}
                 <div class="image-slider-2__slide swiper-slide">
-                    <img src="{{ video.file.url }}">
+                    <video width="100%" height="100%" src="{{ video.file.url }}"></video>
                 </div>
                 {% endfor %}
             </div>
@@ -209,8 +226,8 @@
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
                             </div> -->
                             <li class="post-complaints__item dropdown__item">
-                                <a href="#complaints-post-window"
-                                    class="post-complaints__link dropdown__subitem popup-link">Пожаловаться</a>
+                                <a href="#complaints-post-window" class="post-complaints__link dropdown__subitem"
+                                    rel="modal:open" data-modal="#complaints-post-window">Пожаловаться</a>
                             </li>
                             {% if request.user == post.author %}
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
@@ -223,7 +240,8 @@
                             </div> -->
                             <li class="post-complaints__item dropdown__item">
                                 <a href="{% url 'delete_post' post.pk %}"
-                                    class="post-complaints__link dropdown__subitem">Удалить</a>
+                                    class="post-complaints__link dropdown__subitem requires-confirm"
+                                    data-modal="#confirmation-window">Удалить</a>
                             </li>
                             {% endif %}
                         </ul>
@@ -273,7 +291,7 @@
                 </div>
                 <div class="post-info-details__content post-tags">
                     {% for tag in tags %}
-                    <a href="{% url 'search_by_tag' tag.slug%}" class="post-tags__tag">{{tag}}</a>
+                    <a href="{% url 'search_by_tag' tag.slug %}" class="post-tags__tag">{{tag}}</a>
                     {% endfor %}
                 </div>
             </div>
@@ -283,7 +301,7 @@
                     <span class="post-info-details__text">Описание</span>
                 </div>
                 <div class="post-info-details__content post-description">
-                    {{post.description}}<br>
+                    <p>{{post.description}}</p>
                 </div>
             </div>
             {% endif %}
@@ -339,6 +357,7 @@
     </div>
 </div>
 
+<div class="trigger-success button">asdfasfasdf</div>
 {% endblock %}
 
 
@@ -358,4 +377,23 @@
 <!-- <script src="{% static 'posts/js/post-detail.js' %}"></script> -->
 <script src="{% static 'posts/js/post-detail.js' %}"></script>
 
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.6.1/js/iziModal.min.js"
+    integrity="sha512-lR/2z/m/AunQdfBTSR8gp9bwkrjwMq1cP0BYRIZu8zd4ycLcpRYJopB+WsBGPDjlkJUwC6VHCmuAXwwPHlacww=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $("#complaints-post-window").iziModal();
+</script> -->
+
+<!-- modal notification -->
+<script src="{% static 'libs/iziToast.min.js' %}" type="text/javascript"></script>
+<script>
+    $(".trigger-success").on('click', function () {
+        iziToast.success({
+            title: 'Успешно',
+            message: '',
+        });
+    })
+</script>
 {% endblock %}

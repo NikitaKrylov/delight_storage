@@ -31,5 +31,4 @@ if (isMobile.any()) {
 
 } else {
     document.body.classList.add('_pc');
-
 }

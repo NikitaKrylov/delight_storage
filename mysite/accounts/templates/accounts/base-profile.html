@@ -2,8 +2,11 @@
 {% load static %}
 {% load pages %}
 
+
 {% block compressible_stylesheet %}
+
 <link rel="stylesheet" href="{% static 'accounts/css/base-profile.css' %}">
+
 {% block compress-style-page %}
 {% endblock %}
 {% endblock %}
@@ -17,6 +20,7 @@
 
 
 {% block main %}
+{% include "html/_confirmation-window.html" %}
 <div class="account-container">
     <div class="account-header">
         <div class="account-header__hat">
@@ -91,7 +95,9 @@
 
 
 {% block script %}
+
 <script src="{% static 'accounts/js/base-profile.js' %}"></script>
+
 {% block script-page %}
 {% endblock %}
 {% endblock %}

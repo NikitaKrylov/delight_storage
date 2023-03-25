@@ -8,12 +8,19 @@ $width-mobile: 991px;
 
 .notification-menu {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     align-items: center;
     padding: 15px 0 10px 0;
 
+    @media (min-width: $width-mobile) {
+        & {
+            justify-content: flex-end;
+        }
+    }
+
     &__title {
+        flex: 1 1 auto;
         font-size: 24px;
     }
 
@@ -26,7 +33,13 @@ $width-mobile: 991px;
 
     &__btn {
         flex: 0 1 auto;
-        padding: 10px 30px;
+        padding: 5px 12px;
+
+        @media (min-width: $width-mobile) {
+            & {
+                padding: 10px 30px;
+            }
+        }
     }
 }
 
@@ -128,7 +141,6 @@ $width-mobile: 991px;
     }
 
     &__btn {
-        position: relative;
         z-index: 1;
         flex: 0 1 auto;
         padding: 5px;
@@ -139,42 +151,12 @@ $width-mobile: 991px;
         line-height: normal;
         background: transparent;
 
-        &::after {
-            content: attr(aria-label);
-            position: absolute;
-            top: -100%;
-            // left: -50%;
-            right: 0;
-            display: none;
-            padding: 0 10px;
-            line-height: 28px;
-            font-size: 14px;
-            background-color: var(--secondary-dark-gray);
-            color: var(--secondary-white);
-            border-radius: 5px;
-
-            &:hover {
-                display: none;
-            }
-        }
-
         &:hover {
             & {
                 background-color: var(--bg-light-secondary-default);
             }
-            &::after {
-                display: block;
-            }
         }
     }
-}
-
-.button-red {
-    color: var(--error-light);
-}
-
-.button-green {
-    color: var(--enable);
 }
 
 .blackout {

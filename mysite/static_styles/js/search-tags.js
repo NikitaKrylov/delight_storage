@@ -32,6 +32,7 @@ function btn(button, closebtn, parent) {
 
 let searchBtn = $(".search-button");
 let closeSearchBtn = $(".search__close-btn");
+const searchInput = $(".search__input-form");
 let isSearchOpen = false;
 
 searchBtn.on("click", function (e) {
@@ -40,15 +41,17 @@ searchBtn.on("click", function (e) {
 	isSearchOpen = true;
 	menuOverlayOpen(document.querySelector(".search"));
 	// btn(".search-button", ".search__close-btn", ".search");
-	setTimeout(() => document.querySelector(".search__input-form").focus(), 100);
+	setTimeout(() => searchInput.focus(), 100);
 	// document.querySelector('.search-input__input').focus()
 });
 
 closeSearchBtn.on("click", function (e) {
 	// $(".search").removeClass("_active");
 	// document.body.classList.remove("_lock");
-	isSearchOpen = false;
-	menuOverlayClose(document.querySelector(".search"));
+	// isSearchOpen = false;
+	// menuOverlayClose(document.querySelector(".search"));
+	searchInput.val("").focus();
+	searchInput.trigger("input");
 });
 
 document.querySelector(".search").addEventListener("click", function (e) {
@@ -99,7 +102,7 @@ if (!isMobile.any()) {
 const tagList = document.querySelector(".tags-list");
 const tagBtn = document.querySelector(".tags-list__tag");
 // const searchInput = document.querySelector(".search__input-form");
-const searchInput = $(".search__input-form");
+// const searchInput = $(".search__input-form");
 // let arrayitem = document.querySelectorAll('.tags-list__tag');
 let arrayitem = [];
 
@@ -355,11 +358,11 @@ function inserMark(string, position, fullLen) {
 // =====================================================
 
 // кнопка показа всех тегов
-document.querySelector(".search__show-all-btn").addEventListener("click", () =>
-	arrayitem.forEach(function (e) {
-		show(e);
-	}),
-);
+// document.querySelector(".search__show-all-btn").addEventListener("click", () =>
+// 	arrayitem.forEach(function (e) {
+// 		show(e);
+// 	}),
+// );
 
 // кнопка очистки выбранных тегов
 document.querySelector(".search__hide-all-btn").addEventListener("click", () => {
@@ -374,6 +377,7 @@ document.querySelector(".search__hide-all-btn").addEventListener("click", () => 
 	});
 });
 
+// кнопка сортировки постов
 $(".search-sort").on("click", function (e) {
 	if (e.target.closest(".search-sort__btn")) {
 		$(".search-sort__list")
@@ -389,6 +393,15 @@ $(".search-sort").on("click", function (e) {
 	}
 });
 
+$(document).ready(function () {
+	document.querySelectorAll(".search-sort__item").forEach(function (value, inx) {
+		if (value.querySelector(".search-sort__input").checked) {
+			$(".search-sort__btn").text($(value).text());
+		}
+	});
+});
+
+// сортировка убыванию/возрастанию
 $(".search-sort__desc-asc").on("change", function (e) {
 	$(e.target.closest(".search-sort__desc-asc")).toggleClass("_active");
 });

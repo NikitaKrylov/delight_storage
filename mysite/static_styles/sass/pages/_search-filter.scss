@@ -333,6 +333,14 @@ border-radius: 4px; */
     }
   }
 
+  &__item > label {
+    display: block;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: var(--white);
+    cursor: pointer;
+  }
+
   &__text {
     // padding: 5px;
     font-size: 14px;

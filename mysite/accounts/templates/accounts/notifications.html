@@ -23,7 +23,8 @@
         <div class="notification-menu__controls">
             <a href="{% url 'all_notification_read' %}" class="notification-menu__btn button dark-btn">Прочитать все</a>
             <a href="{% url 'all_notification_delete' %}"
-                class="notification-menu__btn button button-red dark-btn">Удалить все</a>
+                class="notification-menu__btn button button_red button_clean dark-btn"
+                data-modal="#confirmation-window">Удалить все</a>
         </div>
     </div>
     {% if unread %}
@@ -47,7 +48,7 @@
                                 <i class="fa-solid fa-check"></i>
                             </a>
                             <a href="{% url 'notification_delete' notification.pk %}"
-                                class="notification-list__btn button button-red" title="Удалить">
+                                class="notification-list__btn button button_red button_clean" title="Удалить">
                                 <i class="fa-solid fa-xmark"></i>
                             </a>
                         </div>
@@ -87,7 +88,7 @@
                         </div>
                         <div class="notification-list__controls">
                             <a href="{% url 'notification_delete' notification.pk %}"
-                                class="notification-list__btn button button-red" title="Удалить">
+                                class="notification-list__btn button button_red button_clean" title="Удалить">
                                 <i class="fa-solid fa-xmark"></i>
                             </a>
                         </div>

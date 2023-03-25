@@ -720,6 +720,13 @@ border-radius: 4px; */
 .search-sort__item:hover {
   background-color: var(--bg-dropdown-hover);
 }
+.search-sort__item > label {
+  display: block;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: var(--white);
+  cursor: pointer;
+}
 .search-sort__text {
   font-size: 14px;
 }

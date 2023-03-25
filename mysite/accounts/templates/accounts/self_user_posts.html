@@ -114,13 +114,16 @@
                     </div>
                   </div>
                   <div class="cover-item-gallery__items-control">
-                    <a href="{% url 'change_post' post.id %}" class="cover-item-gallery__item-control tooltip" title="Редактировать">
+                    <a href="{% url 'change_post' post.id %}" class="cover-item-gallery__item-control tooltip"
+                      title="Редактировать">
                       <span><i class="fa-solid fa-pen-to-square"></i></span>
                     </a>
-                    <a href="{% url 'post_stat' post.id %}" class="cover-item-gallery__item-control tooltip" title="Статистика">
+                    <a href="{% url 'post_stat' post.id %}" class="cover-item-gallery__item-control tooltip"
+                      title="Статистика">
                       <span><i class="fa-solid fa-chart-simple"></i></span>
                     </a>
-                    <a href="#" class="cover-item-gallery__item-control button-red tooltip" title="Удалить">
+                    <a href="#" class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
+                      data-modal="#confirmation-window">
                       <span><i class="fa-solid fa-trash-can"></i></span>
                     </a>
                   </div>

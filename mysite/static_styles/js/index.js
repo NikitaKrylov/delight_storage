@@ -146,52 +146,52 @@ if (header) {
 //     });
 // }
 
-let isPopupOpen = false;
+// let isPopupOpen = false;
 
-const popupLinks = document.querySelectorAll(".popup-link");
-if (popupLinks.length > 0) {
-	popupLinks.forEach(function (val, index) {
-		const popupLink = popupLinks[index];
+// const popupLinks = document.querySelectorAll(".popup-link");
+// if (popupLinks.length > 0) {
+// 	popupLinks.forEach(function (val, index) {
+// 		const popupLink = popupLinks[index];
 
-		const popupName = popupLink.getAttribute("href").replace("#", "");
-		const curentPopup = document.getElementById(popupName);
-		popupLink.addEventListener("click", function (e) {
-			// popupOpen(curentPopup);
-			isPopupOpen = true;
-			menuOverlayOpen(curentPopup);
-			e.preventDefault();
-		});
+// 		const popupName = popupLink.getAttribute("href").replace("#", "");
+// 		const curentPopup = document.getElementById(popupName);
+// 		popupLink.addEventListener("click", function (e) {
+// 			// popupOpen(curentPopup);
+// 			isPopupOpen = true;
+// 			menuOverlayOpen(curentPopup);
+// 			e.preventDefault();
+// 		});
 
-		curentPopup.addEventListener("click", function (e) {
-			if (!e.target.closest(".popup__content")) {
-				isPopupOpen = false;
-				menuOverlayClose(curentPopup);
-			}
-		});
-	});
-}
+// 		curentPopup.addEventListener("click", function (e) {
+// 			if (!e.target.closest(".popup__content")) {
+// 				isPopupOpen = false;
+// 				menuOverlayClose(curentPopup);
+// 			}
+// 		});
+// 	});
+// }
 
-const popupCloseIcon = document.querySelectorAll(".close-popup");
-if (popupCloseIcon.length > 0) {
-	popupCloseIcon.forEach(function (val, index) {
-		const popupClose = popupCloseIcon[index];
-		popupClose.addEventListener("click", function (e) {
-			// popupClose(el.closest('.popup'));
-			isPopupOpen = false;
-			menuOverlayClose(popupClose.closest(".popup"));
-			e.preventDefault();
-		});
-	});
-}
+// const popupCloseIcon = document.querySelectorAll(".close-popup");
+// if (popupCloseIcon.length > 0) {
+// 	popupCloseIcon.forEach(function (val, index) {
+// 		const popupClose = popupCloseIcon[index];
+// 		popupClose.addEventListener("click", function (e) {
+// 			// popupClose(el.closest('.popup'));
+// 			isPopupOpen = false;
+// 			menuOverlayClose(popupClose.closest(".popup"));
+// 			e.preventDefault();
+// 		});
+// 	});
+// }
 
-if (!isMobile.any()) {
-	document.addEventListener("keydown", (e) => {
-		if (e.code == "Escape" && isPopupOpen) {
-			const popupActive = document.querySelector(".popup._active");
-			menuOverlayClose(popupActive);
-		}
-	});
-}
+// if (!isMobile.any()) {
+// 	document.addEventListener("keydown", (e) => {
+// 		if (e.code == "Escape" && isPopupOpen) {
+// 			const popupActive = document.querySelector(".popup._active");
+// 			menuOverlayClose(popupActive);
+// 		}
+// 	});
+// }
 
 autosize($(".textarea-autosize"));
 
@@ -264,3 +264,65 @@ function messagePopup(message, wait = false, viewTime = 2000) {
 		// setTimeout(() => alertText.remove(), viewTime)
 	}
 }
+
+// модальные окна
+const baseSettingsModal = {
+	closeClass: "icon-remove fa-solid",
+	closeText: "",
+	fadeDuration: 200,
+	fadeDelay: 0.2,
+};
+
+// окно подверждения да/нет
+// function confirmModal() {
+// 	$("#confirmation-window").modal(
+// 		Object.assign({}, baseSettingsModal, {
+// 			escapeClose: false,
+// 			clickClose: false,
+// 			showClose: false,
+// 		}),
+// 	);
+// }
+
+let isConfirmed = false;
+let linkConfirm;
+
+// ожидание ответа от пользователя
+$("a[data-modal='#confirmation-window']").on("click", function (e) {
+	linkConfirm = $(this).attr("href");
+
+	// confirmModal()
+	// return false
+
+	if (!isConfirmed) {
+		// confirmModal();
+		$($(this).data("modal")).modal(
+			Object.assign({}, baseSettingsModal, {
+				escapeClose: false,
+				clickClose: false,
+				showClose: false,
+			}),
+		);
+		return false;
+	}
+
+	// произойдет автоматически
+	// return true;
+});
+
+// нажатие кнопки да
+$(".modal-btn-confirm").on("click", function (e) {
+	isConfirmed = true;
+	// $("a[data-modal='#confirmation-window']").triggerHandler("click", [true]);
+	$(`a[href="${linkConfirm}"]`)[0].click();
+});
+
+// $("#confirmation-window").on($.modal.BEFORE_CLOSE, function (event, modal) {
+//     if (isConfirmed) {
+//         location.href = linkConfirm ? linkConfirm : false;
+//     }
+// });
+
+$("#confirmation-window").on($.modal.CLOSE, function (event, modal) {
+	isConfirmed = false;
+});

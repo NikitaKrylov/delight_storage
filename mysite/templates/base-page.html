@@ -1,5 +1,5 @@
-{% load compress %}
 {% load static %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="{% static '/css/reset.css' %}">
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
     <link rel="stylesheet" href="{% static '/css/page.css' %}">
+
+    <!-- modal window -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
     {% block compressible_stylesheet %}{% endblock %}
     {% block uncompressible_stylesheet %}{% endblock %}
 
@@ -40,10 +44,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.js"></script>
+    <!-- modal window -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
     <script src="{% static '/libs/autosize.min.js' %}"></script>
+
     <script src="{% static '/js/device.js' %}"></script>
     <script src="{% static '/js/search-tags.js' %}"></script>
     <script src="{% static '/js/index.js' %}"></script>
+
     <script src="{% static '/libs/swiped-events.min.js' %}"></script>
     {% block script %}
     {% endblock %}
