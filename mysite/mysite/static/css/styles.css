@@ -324,9 +324,21 @@ a {
     padding: 0 16px;
   }
 }
+.button_red {
+  background-color: var(--error-light);
+  color: var(--white);
+}
+.button_clean {
+  background: transparent;
+}
 
-.button-red {
-  color: var(--error-light) !important;
+.button_red.button_clean {
+  color: var(--error-light);
+}
+
+a[rel="modal:close"].button_red {
+  background-color: var(--error-light);
+  color: var(--white);
 }
 
 .button-green {
@@ -866,4 +878,105 @@ a {
 
 .flash-message {
   text-align: center;
+}
+
+.popup__inner {
+  min-height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.popup__content {
+  position: relative;
+  background-color: var(--bg-secondary-default);
+  color: var(--white);
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.popup.popup-narrow {
+  max-width: 350px;
+}
+
+.mymodal__title {
+  font-size: 20px;
+}
+.mymodal__close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--primary-color);
+}
+.mymodal__body {
+  padding-bottom: 15px;
+  margin: 15px 0 15px 0;
+  border-bottom: 1px solid var(--dark-line);
+}
+.mymodal__controls {
+  margin-bottom: 10px;
+}
+.mymodal__control {
+  padding: 5px 0;
+}
+.mymodal__input {
+  font-size: 16px;
+}
+.mymodal__btn {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--white);
+  background-color: var(--primary-color);
+}
+.mymodal__btn:hover {
+  background-color: var(--secondary-pink);
+}
+.mymodal__buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  gap: 10px;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.modal.popup {
+  padding: 0px;
+  background: transparent;
+  width: 100%;
+}
+
+.modal a.close-modal[class*=icon-] {
+  width: 15px;
+  height: 24px;
+  text-align: center;
+  text-decoration: none;
+  text-indent: 0;
+  background: transparent;
+  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  top: 15px;
+  right: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--primary-color);
+}
+.modal a.close-modal[class*=icon-]::before {
+  content: "\f00d";
 }

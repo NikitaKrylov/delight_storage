@@ -1,3 +1,28 @@
+<div id="addtags-window" class="modal popup">
+    <div class="popup__inner">
+        <div class="popup__content">
+            <div class="mymodal">
+                <div class="mymodal__header">
+                    <div class="mymodal__title title-block">Придумайте свой тег</div>
+                </div>
+                <form>
+                    <div class="mymodal__body">
+                        <div class="mymodal__input">
+                            <input>
+                        </div>
+                    </div>
+                    <div class="mymodal__controls">
+                        <div class="mymodal__buttons">
+                            <button class="mymodal__btn button" type="submit">Сохранить</button>
+                            <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="post-add">
     <div class="post-add__body option-post">
         <label class="option-post__checkbox checkbox">
@@ -107,9 +132,10 @@
                             </div>
 
                             <div class="selected-tags__text">
-                                <span class="selected-tags__btn add-tag-btn" title="Добавить свой тег">
+                                <a href="#addtags-window" class="selected-tags__btn add-tag-btn"
+                                    title="Добавить свой тег" rel="modal:open" data-modal="#addtags-window">
                                     <i class="fa-solid fa-plus"></i>
-                                </span>
+                                </a>
                             </div>
                         </div>
                         <div class="selected-tags__content search-tags">
@@ -175,6 +201,4 @@
         <button id="add-form-video" class="add-form-btn button" type="button">Добавить
             видео</button>
     </div>
-
-
 </div>

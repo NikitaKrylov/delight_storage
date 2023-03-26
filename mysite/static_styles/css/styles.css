@@ -908,7 +908,6 @@ a[rel="modal:close"].button_red {
       -ms-flex-direction: row;
           flex-direction: row;
   gap: 10px;
-  padding-top: 20px;
   text-align: center;
 }
 
@@ -936,4 +935,12 @@ a[rel="modal:close"].button_red {
 }
 .modal a.close-modal[class*=icon-]::before {
   content: "\f00d";
+}
+
+.input-calendar {
+  padding: 15px;
+  border-radius: 5px;
+  background: var(--bg-secondary-default);
+  border: 1px solid var(--bg-light-primary-default);
+  color: var(--secondary-white);
 }

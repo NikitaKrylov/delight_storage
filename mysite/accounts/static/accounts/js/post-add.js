@@ -386,8 +386,8 @@ if ($("body").hasClass("_pc")) {
 		},
 	};
 
-	$("#id_time").attr("type", "text");
-	new AirDatepicker("#id_time", {
+	$(".input-calendar").attr("type", "text");
+	new AirDatepicker(".input-calendar", {
 		timepicker: true,
 		buttons: [todayBtn, "clear"],
 	});
@@ -427,4 +427,10 @@ $(document).on("click", function (e) {
 		$(".status-post__list").hide();
 		$(".status-post__icon").removeClass("_active");
 	}
+});
+
+// окно добавления тегов
+$("a[data-modal='#addtags-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
 });

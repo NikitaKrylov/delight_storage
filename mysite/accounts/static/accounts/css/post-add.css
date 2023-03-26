@@ -531,10 +531,3 @@
 input[type=date]::-webkit-datetime-edit-text {
   padding: 0 3px;
 }
-#id_time {
-  padding: 15px;
-  border-radius: 5px;
-  background: var(--bg-secondary-default);
-  border: 1px solid var(--bg-light-primary-default);
-  color: var(--secondary-white);
-}

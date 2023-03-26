@@ -32,7 +32,7 @@ class PostForm(forms.ModelForm):
             'for_autenticated_users': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
             'disable_comments': forms.CheckboxInput(attrs={'class': 'checkbox__input hidden-input', }),
             'status': forms.RadioSelect(attrs={'class': 'status-post__input hidden-input', }),
-            'delayed_publication_time': forms.DateTimeInput(),
+            'delayed_publication_time': forms.DateTimeInput(attrs={'class': 'input-calendar', 'type': 'datetime-local'}),
             'description': forms.Textarea(attrs={'class': 'textarea__input textarea-autosize', 'placeholder': 'Описание', 'cols': '20', 'rows': '2', }),
             'tags': forms.CheckboxSelectMultiple(attrs={"class": "tags-list__checkbox hidden-input three-pos-inp", "tabindex": -1, "data-state": 0, }),
         }

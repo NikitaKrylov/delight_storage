@@ -856,7 +856,7 @@ a[rel="modal:close"].button_red {
   }
 }
 
-// -------- всплывающее окно ----------
+// всплывающее окно
 .popup {
   // position: fixed;
   // display: none;
@@ -949,7 +949,7 @@ a[rel="modal:close"].button_red {
       display: flex;
       flex-direction: row;
       gap: 10px;
-      padding-top: 20px;
+      // padding-top: 20px;
       text-align: center;
   }
 }
@@ -991,5 +991,12 @@ a[rel="modal:close"].button_red {
   }
 }
 
-// -------- конец всплывающее окно ----------
+// календарь
+.input-calendar {
+  padding: 15px;
+  border-radius: 5px;
+  background: var(--bg-secondary-default);
+  border: 1px solid var(--bg-light-primary-default);
+  color: var(--secondary-white);
+}
 
