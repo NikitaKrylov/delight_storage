@@ -16,16 +16,16 @@ from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm, UserFolderForm
 from .models import User, Subscription
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
 from posts.forms import PostForm
 from django.contrib.auth import login, authenticate
-from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
 from posts.mixins import PostFilterFormMixin
 from posts.forms import CreatePostTagForm
+from posts.mixins import PostListMixin
 
 
 @login_required
@@ -277,11 +277,14 @@ def read_all_notification(request, *args, **kwargs):
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+class UserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
     template_name = 'accounts/self_user_posts.html'
+    mark_liked = False
+    check_availability = False
+    post_status = None
 
     def get_queryset(self):
         return super().get_queryset().filter(author=self.request.user)
@@ -405,6 +408,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         context['post'] = post
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
+        context['tag_form'] = CreatePostTagForm()
 
         return context
 
@@ -429,9 +433,6 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
-
-    def get_user(self):
-        return self.get_object().author
 
 
 class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
@@ -471,7 +472,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         return self.get_object().author
 
 
-class LikedPostList(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin):
+class LikedPostList( PostListMixin, LoginRequiredMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'

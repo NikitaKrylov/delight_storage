@@ -130,14 +130,14 @@
             style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
             <!-- <button class="dynamic-gallery-button button"></button> -->
             <div class="image-slider__wrapper swiper-wrapper static-thumbnails">
-                {% for image in images %}
+                {% for image in post.images.all %}
                 <div class="image-slider__slide swiper-slide">
                     <div class="image-slider__item">
                         <img src="{{ image.file.url }}">
                     </div>
                 </div>
                 {% endfor %}
-                {% for video in videos %}
+                {% for video in post.videos.all %}
                 <div class="image-slider__slide swiper-slide">
                     <div class="image-slider__item">
                         <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
@@ -155,12 +155,12 @@
 
         <div thumbsSlider="" class="image-slider-2 swiper">
             <div class="image-slider-2__wrapper swiper-wrapper">
-                {% for image in images %}
+                {% for image in post.images.all %}
                 <div class="image-slider-2__slide swiper-slide">
                     <img src="{{ image.file.url }}">
                 </div>
                 {% endfor %}
-                {% for video in videos %}
+                {% for video in post.videos.all %}
                 <div class="image-slider-2__slide swiper-slide">
                     <video width="100%" height="100%" src="{{ video.file.url }}"></video>
                 </div>
@@ -295,7 +295,7 @@
                     <span class="post-info-details__text">Теги</span>
                 </div>
                 <div class="post-info-details__content post-tags">
-                    {% for tag in tags %}
+                    {% for tag in post.tags.all %}
                     <a href="{% url 'search_by_tag' tag.slug %}" class="post-tags__tag">{{tag}}</a>
                     {% endfor %}
                 </div>
@@ -349,7 +349,7 @@
                 </div>
                 {% if comments %}
                 <div class="comments-list">
-                    {% for comment in comments %}
+                    {% for comment in post.comments.all %}
                     {% if not comment.answered %}
                     {% include 'posts/comment_block.html' %}
                     {% endif %}

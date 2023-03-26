@@ -1,9 +1,6 @@
-from django.db.models import Exists, OuterRef, Count, F
-from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.list import MultipleObjectMixin
+from django.db.models import Exists, OuterRef, Count, QuerySet
 from .forms import PostTagsForm, SearchForm
 from .models import Post, Like, PostTag
-from .services.base import update_post_views
 
 
 class PostFilterFormMixin:
@@ -18,47 +15,61 @@ class PostFilterFormMixin:
                     'slug': key,
                     'value': value
                 })
-        # context['search_input'] = self.request.session.get('search_input', '')
-        # context['sort_direction'] = self.request.session.get('sort_direction', '')
-        # sort_type = self.request.session.get('sort_type', '')
-        # context['sort_type'] = {'by-likes':'Лайкам', 'by-views': 'Просмотрам'}.get(sort_type, None) if sort_type else None
+
         context['search_form'] = SearchForm(self.request.session.get('search_form', None))
         return context
 
 
-class PostQueryMixin(MultipleObjectMixin):
-    model = Post
+class PostListMixin:
+    annotate_views_and_likes = True
+    check_availability = True
+    mark_liked = True
+    post_status: Post.STATUS = Post.STATUS.PUBLISHED
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-        user = self.request.user
+        queryset = super().get_queryset().prefetch_related(
+            'likes',
+            'views',
+            'images',
+            'videos',
+        ).select_related('author')
 
-        if user.is_authenticated:
-            if not user.is_adult():
-                queryset = queryset.filter(only_for_adult=False)
-            queryset = queryset.exclude(tags__in=user.ignored_tags.all())
-        else:
-            queryset = queryset.filter(for_autenticated_users=False).filter(only_for_adult=False)
+        if self.annotate_views_and_likes:
+            queryset = self._annotate_views_and_likes(queryset)
 
-        return queryset.filter(status=Post.STATUS.PUBLISHED)
+        if self.mark_liked:
+            queryset = self._mark_liked(queryset, self.request.user)
 
+        if self.check_availability:
+            queryset = self._check_availability(queryset, self.request.user)
 
-class UpdateViewsMixin(SingleObjectMixin):
-    """Inherited before PostMixin"""
-    def get(self, request, *args, **kwargs):
-        update_post_views(request, self.get_object())
-        return super().get(request, *args, **kwargs)
+        if self.post_status is not None:
+            queryset = queryset.filter(status=self.post_status)
 
+        return queryset
 
-class AnnotateUserLikesAndViewsMixin(MultipleObjectMixin):
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if self.request.user.is_authenticated:
-            queryset = queryset.annotate(
-                has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=self.request.user)),
-
-            )
+    @staticmethod
+    def _annotate_views_and_likes(queryset: QuerySet[Post], order_by='-creation_date'):
         return queryset.annotate(
             views_amount=Count('views', distinct=True),
             likes_amount=Count('likes', distinct=True)
-        ).order_by('-creation_date')
+        ).order_by(order_by)
+
+    @staticmethod
+    def _mark_liked(queryset, user):
+        if not user.is_authenticated:
+            return queryset
+
+        return queryset.annotate(
+                has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=user)),
+            )
+
+    @staticmethod
+    def _check_availability(queryset, user):
+        if user.is_authenticated:
+            if not user.is_adult():
+                queryset = queryset.exclude(only_for_adult=True)
+        else:
+            queryset = queryset.exclude(for_autenticated_users=True).exclude(only_for_adult=True)
+
+        return queryset

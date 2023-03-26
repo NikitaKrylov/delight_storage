@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
-from django.db.models import Count, ExpressionWrapper, FloatField, F
+from django.db.models import Count, FloatField, F
 from django.db.models.functions import Cast
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -42,13 +42,13 @@ class Post(models.Model):
         _("для авторизированных пользователей"), default=False)
     disable_comments = models.BooleanField(
         _("запретить коментарии"), default=False)
-    status = models.CharField(_('статус'), choices=STATUS.choices, default=STATUS.CONSIDERATION, help_text=_(
+    status = models.CharField(_('статус'), choices=STATUS.choices, default=STATUS.PUBLISHED, help_text=_(
         'При выборе задержки помечается как "отложено"'), max_length=20)
     description = models.CharField(
         _('описание'), max_length=500, null=True, blank=True)
 
     tags = models.ManyToManyField(
-        "PostTag", verbose_name=_('теги'), blank=True, null=True)
+        "PostTag", verbose_name=_('теги'))
     delayed_publication_time = models.DateTimeField(_('Время отложенной публикации'), null=True, blank=True)
     objects = PostManager()
 

@@ -5,11 +5,15 @@ from mediacore.serializers import ImageFileSerializer, VideoFileSerializer
 
 class PostTagSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50)
-    slug = serializers.CharField(max_length=50)
+    slug = serializers.CharField(max_length=50, allow_blank=True, allow_null=True, required=False)
 
     class Meta:
         model = PostTag
         fields = ('name', 'slug',)
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'}
+        }
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -20,7 +24,8 @@ class PostSerializer(serializers.ModelSerializer):
     disable_comments = serializers.BooleanField()
     status = serializers.CharField()
     description = serializers.CharField()
-    tags = serializers.PrimaryKeyRelatedField(queryset=PostTag.objects.all(), many=True)
+    # tags = serializers.PrimaryKeyRelatedField(queryset=PostTag.objects.all(), many=True)
+    tags = serializers.SlugRelatedField(queryset=PostTag.objects.all(), many=True, slug_field='slug')
     images = ImageFileSerializer(many=True)
     videos = VideoFileSerializer(many=True)
 
@@ -40,10 +45,10 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def update(self, instance: Post, validated_data):
-        if 'tags' not in validated_data:
-            raise NotImplementedError("Update realization not supported for '{}'".format(validated_data))
+        print(validated_data)
 
         if self.partial:
-            instance.tags.add( *validated_data['tags'] )
-            instance.save()
+            if 'tags' in validated_data:
+                instance.tags.add( *validated_data['tags'] )
+                instance.save()
         return instance
