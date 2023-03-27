@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     birth_date = models.DateField(
         verbose_name=_("дата рождения"), blank=True, null=True)
     start_date = models.DateField(
-        verbose_name=_("дата регистрации"), auto_now_add=True)
+        verbose_name=_("дата регистрации"), auto_now_add=True, editable=False)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -99,6 +99,7 @@ class Folder(models.Model):
     name = models.CharField(max_length=70, verbose_name=_('Название'))
     icon = models.ImageField(_('иконка'), blank=True, null=True)
     description = models.CharField(max_length=250, blank=True, null=True, verbose_name=_('описание'))
+    is_private = models.BooleanField(_('приватная папка'), default=True, help_text=_('другие пользователи смогут видеть содержимое папки'))
     created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name=_('дата создания'))
 
     class Meta:
