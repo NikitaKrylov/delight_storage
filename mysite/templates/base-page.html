@@ -16,6 +16,7 @@
 
     <!-- modal window -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <link rel="stylesheet" href="{% static 'css/iziToast.min.css' %}">
 
     {% block compressible_stylesheet %}{% endblock %}
     {% block uncompressible_stylesheet %}{% endblock %}
@@ -50,7 +51,7 @@
     <script src="{% static '/js/device.js' %}"></script>
     <script src="{% static '/js/search-tags.js' %}"></script>
     <script src="{% static '/js/index.js' %}"></script>
-
+    <script src="{% static 'libs/iziToast.min.js' %}" type="text/javascript"></script>
     <script src="{% static '/libs/swiped-events.min.js' %}"></script>
     {% block script %}
     {% endblock %}
@@ -59,6 +60,35 @@
         let urlTag = "{% url 'tags-filter' %}"
 
     </script>
+
+    {% if messages %}
+    <script>
+    {% for message in messages %}
+
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            iziToast.success({
+                title: 'Успешно',
+                message: '{{message}}',
+            });
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+            iziToast.info({
+                    title: '{{message}}',
+                });
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+            iziToast.warning({
+                    title: 'Предупреждение!',
+                    message: '{{message}}',
+                });
+        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            iziToast.error({
+                title: 'Ошибка!',
+                message: '{{message}}',
+            });
+        {% endif %}
+
+    {% endfor %}
+    </script>
+    {% endif %}
 </body>
 
 </html>

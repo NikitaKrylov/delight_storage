@@ -1,5 +1,6 @@
 import sys
 
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
@@ -10,7 +11,7 @@ from .services.clustering import TagsVectorizer, PostClustering
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.db.models import Q, F, Count
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 
 from .mixins import PostFilterFormMixin, PostListMixin
@@ -110,12 +111,14 @@ def create_reply_post_comment(request, *args, **kwargs):
 
 
 def delete_comment(request, *args, **kwargs):
-    comment = Comment.objects.get(pk=kwargs['pk'])
-    if request.user != comment.author:
-        raise PermissionDenied()
+    comment = get_object_or_404(Comment, pk=kwargs['pk'])
 
     if request.user.is_authenticated and (request.user == comment.author or request.user.is_superuser):
         comment.delete()
+        messages.success(request, 'Комментарий удален')
+    else:
+        raise PermissionDenied("Вы не являетесь автором комментария")
+
     return redirect(comment.post)
 
 

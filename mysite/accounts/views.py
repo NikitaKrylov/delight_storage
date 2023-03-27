@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
@@ -135,17 +136,22 @@ class CreateUserFolderView(LoginRequiredMixin, CreateView):
     model = Folder
     form_class = UserFolderForm
     template_name = 'accounts/folders/create_folder.html'
+    success_url = reverse_lazy('user_folders')
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
+        self.object: Folder = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
+        messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
         return super().form_valid(form)
 
 
 @login_required
 def delete_folder(request, *args, **kwargs):
-    request.user.folders.filter(pk=kwargs['pk']).delete()
+    folder = request.user.folders.filter(pk=kwargs['pk'])
+    messages.success(request, "Папка '{}' удалена.".format(folder.first().name))
+    folder.delete()
+
     return redirect('user_folders')
 
 
@@ -250,6 +256,7 @@ def delete_notification(request, *args, **kwargs):
     notification.deleted = True
     notification.unread = False
     notification.save()
+
     return redirect('user_notifications')
 
 
@@ -267,13 +274,27 @@ def read_notification(request, *args, **kwargs):
 
 @login_required(login_url=reverse_lazy('login'))
 def delete_all_notification(request, *args, **kwargs):
-    request.user.notifications.update(deleted=True, unread=False)
+    notifications = request.user.notifications.filter(deleted=False)
+
+    if notifications.count() > 0:
+        messages.success(request, 'Удалено уведомлений - {}'.format(notifications.count()))
+    else:
+        messages.info(request, "Список уведомлений пуст")
+
+    notifications.update(deleted=True, unread=False)
     return redirect('user_notifications')
 
 
 @login_required(login_url=reverse_lazy('login'))
 def read_all_notification(request, *args, **kwargs):
-    request.user.notifications.update(unread=False)
+    notifications = request.user.notifications.filter(deleted=False, unread=False)
+
+    if notifications.count() > 0:
+        messages.success(request, 'Уведомлениый прочитано - {}'.format(notifications.count()))
+    else:
+        messages.info(request, "Список уведомлений пуст")
+
+    notifications.update(unread=False)
     return redirect('user_notifications')
 
 
@@ -389,6 +410,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
                 for video in video_formset.save(commit=False):
                     video.save()
 
+            messages.success(request, "{} создан.".format(str(post)))
             return redirect('self_user_posts')
 
         return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
@@ -429,6 +451,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         else:
             return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
 
+        messages.success(request, "{} изменен.".format(str(post)))
         return redirect('self_user_posts')
 
     def get_form(self, *args, **kwargs):

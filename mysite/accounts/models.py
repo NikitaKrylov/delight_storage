@@ -1,6 +1,9 @@
+import os
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models import QuerySet
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from typing import List, Union
@@ -94,6 +97,8 @@ class FolderPost(models.Model):
 class Folder(models.Model):
     user = models.ForeignKey(User, models.CASCADE, related_name='folders', verbose_name=_('пользователь'))
     name = models.CharField(max_length=70, verbose_name=_('Название'))
+    icon = models.ImageField(_('иконка'), blank=True, null=True)
+    description = models.CharField(max_length=250, blank=True, null=True, verbose_name=_('описание'))
     created = models.DateTimeField(auto_now_add=True, editable=False, verbose_name=_('дата создания'))
 
     class Meta:
@@ -131,6 +136,13 @@ class Folder(models.Model):
 
     def __str__(self):
         return "Папка '{}' пользователя {}".format(self.name, str(self.user))
+
+
+@receiver(models.signals.post_delete, sender=Folder)
+def auto_delete_file_on_delete(sender, instance: Folder, **kwargs):
+    if instance.icon:
+        if os.path.isfile(instance.icon.path):
+            os.remove(instance.icon.path)
 
 
 class ClientIP(models.Model):

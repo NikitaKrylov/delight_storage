@@ -11,6 +11,7 @@
 
 
 {% block content %}
+
 <div class="profile-container page-block">
     <form id="user_profile_form" method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
         {% csrf_token %}

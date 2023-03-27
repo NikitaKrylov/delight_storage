@@ -347,7 +347,7 @@
                         </div>
                     </form>
                 </div>
-                {% if comments %}
+                {% if post.comments.all %}
                 <div class="comments-list">
                     {% for comment in post.comments.all %}
                     {% if not comment.answered %}
@@ -362,7 +362,6 @@
     </div>
 </div>
 
-<div class="trigger-success button">asdfasfasdf</div>
 {% endblock %}
 
 
@@ -382,23 +381,15 @@
 <!-- <script src="{% static 'posts/js/post-detail.js' %}"></script> -->
 <script src="{% static 'posts/js/post-detail.js' %}"></script>
 
-
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.6.1/js/iziModal.min.js"
-    integrity="sha512-lR/2z/m/AunQdfBTSR8gp9bwkrjwMq1cP0BYRIZu8zd4ycLcpRYJopB+WsBGPDjlkJUwC6VHCmuAXwwPHlacww=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+{% if not request.user.is_authenticated %}
 <script>
-    $("#complaints-post-window").iziModal();
-</script> -->
-
-<!-- modal notification -->
-<script src="{% static 'libs/iziToast.min.js' %}" type="text/javascript"></script>
-<script>
-    $(".trigger-success").on('click', function () {
-        iziToast.success({
-            title: 'Успешно',
-            message: '',
+    console.log($('.subscribe-btn'));
+    $('.subscribe-btn').on('click', function() {
+        iziToast.info({
+            title: 'Авторизируйтесь чтобы подписаться на пользователя',
         });
-    })
+    });
 </script>
+{% endif %}
+
 {% endblock %}
