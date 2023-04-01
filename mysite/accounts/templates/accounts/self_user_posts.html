@@ -122,7 +122,7 @@
                       title="Статистика">
                       <span><i class="fa-solid fa-chart-simple"></i></span>
                     </a>
-                    <a href="#" class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
+                    <a href="{% url 'delete_post' post.id %}" class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
                       data-modal="#confirmation-window">
                       <span><i class="fa-solid fa-trash-can"></i></span>
                     </a>
@@ -225,5 +225,7 @@
 <script src="{% static 'posts/js/gallery.js' %}"></script>
 <script src="{% static 'posts/js/like.js' %}"></script>
 <script src="{% static 'accounts/js/user-posts.js' %}"></script>
+
+
 
 {% endblock %}

@@ -1,5 +1,12 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+
 from .views import *
+from .api_views import *
+
+router = DefaultRouter()
+router.register('api/users', UserViewSet, basename='users')
+
 
 urlpatterns = [
     path('signup/', RegisterView.as_view(), name='signup'),
@@ -54,5 +61,6 @@ urlpatterns = [
     # Сообщение об успешном изменении пароля
     path('password/reset/complete', UserPasswordResetCompleteView.as_view(),
          name='password_reset_complete')
-
 ]
+
+urlpatterns += router.urls

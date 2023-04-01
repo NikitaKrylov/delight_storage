@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
@@ -16,16 +17,16 @@ from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserSettingsForm, UserFolderForm
 from .models import User, Subscription
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
 from posts.forms import PostForm
 from django.contrib.auth import login, authenticate
-from posts.mixins import AnnotateUserLikesAndViewsMixin
 from accounts.services.base import ChartStatistic
 from posts.mixins import PostFilterFormMixin
 from posts.forms import CreatePostTagForm
+from posts.mixins import PostListMixin
 
 
 @login_required
@@ -135,17 +136,22 @@ class CreateUserFolderView(LoginRequiredMixin, CreateView):
     model = Folder
     form_class = UserFolderForm
     template_name = 'accounts/folders/create_folder.html'
+    success_url = reverse_lazy('user_folders')
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
+        self.object: Folder = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
+        messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
         return super().form_valid(form)
 
 
 @login_required
 def delete_folder(request, *args, **kwargs):
-    request.user.folders.filter(pk=kwargs['pk']).delete()
+    folder = request.user.folders.filter(pk=kwargs['pk'])
+    messages.success(request, "Папка '{}' удалена.".format(folder.first().name))
+    folder.delete()
+
     return redirect('user_folders')
 
 
@@ -250,6 +256,7 @@ def delete_notification(request, *args, **kwargs):
     notification.deleted = True
     notification.unread = False
     notification.save()
+
     return redirect('user_notifications')
 
 
@@ -267,21 +274,38 @@ def read_notification(request, *args, **kwargs):
 
 @login_required(login_url=reverse_lazy('login'))
 def delete_all_notification(request, *args, **kwargs):
-    request.user.notifications.update(deleted=True, unread=False)
+    notifications = request.user.notifications.filter(deleted=False)
+
+    if notifications.count() > 0:
+        messages.success(request, 'Удалено уведомлений - {}'.format(notifications.count()))
+    else:
+        messages.info(request, "Список уведомлений пуст")
+
+    notifications.update(deleted=True, unread=False)
     return redirect('user_notifications')
 
 
 @login_required(login_url=reverse_lazy('login'))
 def read_all_notification(request, *args, **kwargs):
-    request.user.notifications.update(unread=False)
+    notifications = request.user.notifications.filter(deleted=False, unread=False)
+
+    if notifications.count() > 0:
+        messages.success(request, 'Уведомлениый прочитано - {}'.format(notifications.count()))
+    else:
+        messages.info(request, "Список уведомлений пуст")
+
+    notifications.update(unread=False)
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+class UserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
     template_name = 'accounts/self_user_posts.html'
+    mark_liked = False
+    check_availability = False
+    post_status = None
 
     def get_queryset(self):
         return super().get_queryset().filter(author=self.request.user)
@@ -386,6 +410,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
                 for video in video_formset.save(commit=False):
                     video.save()
 
+            messages.success(request, "{} создан.".format(str(post)))
             return redirect('self_user_posts')
 
         return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
@@ -405,6 +430,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         context['post'] = post
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
+        context['tag_form'] = CreatePostTagForm()
 
         return context
 
@@ -425,13 +451,11 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
         else:
             return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
 
+        messages.success(request, "{} изменен.".format(str(post)))
         return redirect('self_user_posts')
 
     def get_form(self, *args, **kwargs):
         return self.get_form_class()(instance=self.object)
-
-    def get_user(self):
-        return self.get_object().author
 
 
 class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
@@ -471,7 +495,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         return self.get_object().author
 
 
-class LikedPostList(LoginRequiredMixin, ListView, AnnotateUserLikesAndViewsMixin):
+class LikedPostList( PostListMixin, LoginRequiredMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'

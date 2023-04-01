@@ -1,24 +1,22 @@
+import sys
+
+from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
-from .forms import SearchForm, PostForm, CreatePostTagForm
+from .forms import SearchForm, CreatePostTagForm
+from .services.base import update_post_views
 from .services.clustering import TagsVectorizer, PostClustering
-import json
 
-import numpy as np
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied, ValidationError
-from django.db.models import Q, Case, F, When, BooleanField, Exists, OuterRef, Count
-from django.shortcuts import redirect, render
-from django.urls import reverse_lazy, reverse
-from django.views import View
+from django.db.models import Q, F, Count
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, TemplateView, DeleteView
-from sklearn.cluster import AgglomerativeClustering
 
-from .mixins import UpdateViewsMixin, PostQueryMixin, PostFilterFormMixin, AnnotateUserLikesAndViewsMixin
-from .models import Post, Comment, PostTag, Like
-from django.http import HttpResponse, Http404, JsonResponse
+from .mixins import PostFilterFormMixin, PostListMixin
+from .models import Post, Comment, PostTag
+from django.http import Http404, JsonResponse
 from accounts.models import Subscription, User
 
 from accounts.forms import ComplaintForm
@@ -113,12 +111,14 @@ def create_reply_post_comment(request, *args, **kwargs):
 
 
 def delete_comment(request, *args, **kwargs):
-    comment = Comment.objects.get(pk=kwargs['pk'])
-    if request.user != comment.author:
-        raise PermissionDenied()
+    comment = get_object_or_404(Comment, pk=kwargs['pk'])
 
     if request.user.is_authenticated and (request.user == comment.author or request.user.is_superuser):
         comment.delete()
+        messages.success(request, 'Комментарий удален')
+    else:
+        raise PermissionDenied("Вы не являетесь автором комментария")
+
     return redirect(comment.post)
 
 
@@ -173,7 +173,7 @@ class HomeView(PostFilterFormMixin, TemplateView):
         return context
 
 
-class PostDetailView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
+class PostDetailView(PostFilterFormMixin, DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
     context_object_name = 'post'
@@ -181,10 +181,6 @@ class PostDetailView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['complaint_form'] = ComplaintForm()
-        context['images'] = self.object.images.all()
-        context['videos'] = self.object.videos.all()
-        context['tags'] = self.object.tags.all()
-        context['comments'] = self.object.comments.all()
         context['title'] = "Пост {}".format(self.object.id)
         context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(
             subscription_object=self.object.author, subscriber=self.request.user).exists()
@@ -196,20 +192,20 @@ class PostDetailView(UpdateViewsMixin, PostFilterFormMixin, DetailView):
 
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
-
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
         if request.user.is_authenticated:
             if self.object.author == request.user and self.object.status != Post.STATUS.PUBLISHED:
                 return redirect('change_post', pk=self.object.pk)
 
             elif self.object.status != Post.STATUS.PUBLISHED:
-                raise Http404
+                raise Http404()
 
-        return super().dispatch(request, *args, **kwargs)
+        update_post_views(request, self.object)
+        return response
 
 
-class PostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin, ListView):
+class PostList(PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -226,7 +222,7 @@ class PostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMix
         return context
 
 
-class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin, ListView):
+class SearchPostList(PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -251,8 +247,7 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return context
 
     def get_queryset(self):
-        response = super().get_queryset().annotate(likes_amount=Count('likes', distinct=True),
-                                                   views_amount=Count('views', distinct=True))
+        response = super().get_queryset()
 
         filter_query = Q()
         exclude_query = Q()
@@ -271,7 +266,6 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
             elif value == -1:
                 exclude_query |= Q(tags__slug=name)
 
-
         search_form = SearchForm(self.request.session.get('search_form', None))
         order = search_form.data.get('type', 'pub_date')
         direction = search_form.data.get('is_desc', '')
@@ -284,7 +278,7 @@ class SearchPostList(PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterF
         return response.exclude(exclude_query).filter(filter_query).distinct()
 
 
-class SearchPostTagListView(ListView, PostQueryMixin, AnnotateUserLikesAndViewsMixin, PostFilterFormMixin):
+class SearchPostTagListView(PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'posts/images.html'
@@ -295,10 +289,6 @@ class SearchPostTagListView(ListView, PostQueryMixin, AnnotateUserLikesAndViewsM
 
 
 import numpy as np
-from sklearn.cluster import AgglomerativeClustering
-import pandas as pd
-from collections import defaultdict
-from .services.clustering import PostCluster
 
 
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
@@ -308,29 +298,6 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
-
-        # posts = Post.objects.order_by('id')
-        # posts_id = posts.values_list('id', flat=True)
-        # distance_matrix = create_distance_matrix(posts, posts.count())
-        # data = pd.DataFrame(distance_matrix, columns=posts_id, index=posts_id)
-        # print(data)
-        #
-        # model = AgglomerativeClustering(affinity='precomputed', linkage='complete',
-        #                                 distance_threshold=0.8, n_clusters=None, compute_full_tree=True).fit(data.values)
-        # clusters = defaultdict(set)
-        # for post, i in zip(list(posts), model.labels_):
-        #     clusters[i].add(post.id)
-        #
-        # print(model.n_clusters_)
-        # print(clusters)
-        #
-        # l = set()
-        #
-        # for label, ids in clusters.items():
-        #     l.add(PostCluster(label, Post.objects.filter(id__in=ids).all()))
-        #
-        # print(l)
-
         context['clusters'] = PostClustering().fit(Post.objects.all())
         return context
 

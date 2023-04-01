@@ -1,5 +1,7 @@
 {% load static %}
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,6 +63,7 @@
         </main>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <!-- modal window -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
@@ -73,35 +76,92 @@
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
 
 
-    <form id="tag_creation_form" method="post">
 
-        {% csrf_token %}
-        {{tag_form.as_p}}
-        <input type="submit" value="Создать">
-    </form>
-    <script>
-        $('#tag_creation_form').on('submit', function (event) {
-            event.preventDefault();
-            console.log("123");
-            $.ajax({
-                url: '{% url "create_post_tag" %}',
-                type: 'POST',
-                data: {
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    name: $('#id_name').val(),
-                },
+    <!--    <form id="tag_creation_form" method="post">-->
 
-                success: function (json) {
-                    console.log(json);
-                },
-                error: function (response) {
-                    console.log(response.responseJSON.error)
-                }
-            });
+    <!--        {% csrf_token %}-->
+    <!--        {{tag_form.as_p}}-->
+    <!--        <input type="submit" value="Создать">-->
+    <!--    </form>-->
 
-        });
-    </script>
+
+
 
 </body>
+
+<div id="addtags-window" class="modal popup">
+    <div class="popup__inner">
+        <div class="popup__content">
+            <div class="mymodal">
+                <div class="mymodal__header">
+                    <div class="mymodal__title title-block">Придумайте свой тег</div>
+                </div>
+                <form method="post" id="tag_creation_form">
+                    {% csrf_token %}
+                    <div class="mymodal__body">
+                        <div class="mymodal__input">
+                            {{tag_form.name}}
+                        </div>
+                    </div>
+                    <div class="mymodal__controls">
+                        <div class="mymodal__buttons">
+                            <!--                            <button class="mymodal__btn button" type="submit">Сохранить</button>-->
+                            <input class="mymodal__btn button" type="submit" value="Добавить">
+                            <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<script>-->
+<!--    console.log($('#tag_creation_form'))-->
+<!--    $('#tag_creation_form').on('submit', function (event) {-->
+<!--            event.preventDefault();-->
+<!--            console.log("123");-->
+<!--            $.ajax({-->
+<!--                url: '{% url "tags-list" %}',-->
+<!--                type: 'POST',-->
+<!--                data: {-->
+<!--                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),-->
+<!--                    name: $('#id_name').val(),-->
+<!--                },-->
+
+<!--                success: function (json) {-->
+<!--                    console.log(json);-->
+<!--                },-->
+<!--                error: function (response) {-->
+<!--                    console.log(response.responseJSON.error)-->
+<!--                }-->
+<!--            });-->
+
+<!--        });-->
+
+<!--</script>-->
+<script>
+    $('#tag_creation_form').on('submit', function (event) {
+        event.preventDefault();
+        $.ajax({
+            url: '{% url "tags-list" %}',
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                name: $('#id_name').val(),
+            },
+
+            success: function (json) {
+                console.log(json);
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        });
+
+    });
+</script>
 
 </html>

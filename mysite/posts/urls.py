@@ -7,7 +7,6 @@ from .api_views import *
 router = DefaultRouter()
 router.register("api/posts", PostViewSet, basename='posts')
 router.register("api/tags", PostTagViewSet, basename='tags')
-print(router.urls)
 
 
 urlpatterns = [
@@ -27,11 +26,9 @@ urlpatterns = [
 
     path('post/<int:pk>/like/', like_post, name='post_like'),
 
-    path('get_tags/', get_tags, name='get_tags'),
+    # path('get_tags/', get_tags, name='get_tags'),
     path('create_tag/', create_post_tag, name='create_post_tag'),
 
-    # path('posts/api/tags/all/', PostTagList.as_view(), name='post_api_tags'),
-    # path('posts/api/tags/search/', PostTagList.as_view(), name='post_api_tags_search'),
 ]
 
 urlpatterns += router.urls

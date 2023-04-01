@@ -88,10 +88,16 @@ class UserFolderForm(forms.ModelForm):
     class Meta:
         model = Folder
         fields = (
+            'icon',
             'name',
+            'is_private',
+            'description',
         )
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Имя папки', 'class': ''})
+            'icon': forms.FileInput(attrs={'class': ''}),
+            'name': forms.TextInput(attrs={'placeholder': 'Имя папки', 'class': ''}),
+            'description': forms.TextInput(attrs={'placeholder': 'Описание', 'class': ''}),
+            'is_private': forms.CheckboxInput(attrs={'class': ''}),
         }
 
 
