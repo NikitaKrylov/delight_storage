@@ -558,7 +558,7 @@ border-radius: 4px; */
   border-radius: 6px;
   font-size: 1.13em;
 }
-.search .search__icon {
+.search__icon {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -707,7 +707,7 @@ border-radius: 4px; */
 
 .search-sort__btn {
   padding-right: 0;
-  border-radius: 5px 0 0 5px;
+  border-radius: 4px 0 0 4px;
 }
 .search-sort__list {
   z-index: 1;
@@ -732,7 +732,7 @@ border-radius: 4px; */
 }
 .search-sort__control {
   padding-left: 10px;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 4px 4px 0;
 }
 .search-sort__desc-asc {
   display: -webkit-inline-box !important;

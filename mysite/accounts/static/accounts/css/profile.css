@@ -28,7 +28,7 @@
   padding: 15px;
   border-radius: 5px;
   background: transparent;
-  border: 1px solid var(--bg-light-primary-default);
+  border: 1px solid var(--bg-light-default);
 }
 .input-list__input:hover, .input-list__input:focus {
   border-color: var(--light-secondary-violet);

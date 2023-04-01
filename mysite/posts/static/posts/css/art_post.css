@@ -324,7 +324,7 @@
 .post-tags__tag {
   height: auto;
   line-height: normal;
-  border: 1px solid var(--bg-light-primary-default);
+  border: 1px solid var(--bg-light-default);
   padding: 0.75em 0.9375em;
   border-radius: 8px;
   color: var(--secondary-white);

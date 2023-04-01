@@ -147,7 +147,7 @@ border-radius: 4px; */
     // }
   }
 
-  .search__icon {
+  &__icon {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -313,7 +313,7 @@ border-radius: 4px; */
 .search-sort {
   &__btn {
     padding-right: 0;
-    border-radius: 5px 0 0 5px;
+    border-radius: 4px 0 0 4px;
   }
 
   &__list {
@@ -348,7 +348,7 @@ border-radius: 4px; */
 
   &__control {
     padding-left: 10px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 4px 4px 0;
 
     // &::before {
     //   content: "\f063";

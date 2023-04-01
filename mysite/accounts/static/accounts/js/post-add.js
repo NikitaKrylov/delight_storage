@@ -434,3 +434,7 @@ $("a[data-modal='#addtags-window']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
 });
+$("a[data-modal='#penis']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});

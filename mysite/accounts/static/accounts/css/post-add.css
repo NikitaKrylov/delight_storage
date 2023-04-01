@@ -67,7 +67,7 @@
 .option-post__checkbox-indicator {
   width: 22px;
   height: 22px;
-  border: solid 2px var(--bg-light-primary-default);
+  border: solid 2px var(--bg-light-default);
   background-color: var(--bg-btn-default);
 }
 
@@ -280,13 +280,13 @@
   background-color: var(--bg-light-secondary-default);
   color: var(--white);
   border-radius: 5px;
-  border: 1px solid var(--bg-light-primary-default);
+  border: 1px solid var(--bg-light-default);
   height: -webkit-max-content;
   height: -moz-max-content;
   height: max-content;
 }
 .tags-list__tag:hover {
-  background-color: var(--bg-light-primary-default);
+  background-color: var(--bg-light-default);
 }
 .tags-list__tag > label {
   cursor: pointer;
@@ -385,7 +385,7 @@
   height: auto;
   padding: 3px 0px;
   font-size: 18px;
-  border: solid 2px var(--bg-light-primary-default);
+  border: solid 2px var(--bg-light-default);
   background-color: var(--bg-btn-default);
 }
 .status-post__icon {

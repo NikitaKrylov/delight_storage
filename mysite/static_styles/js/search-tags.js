@@ -379,13 +379,14 @@ document.querySelector(".search__hide-all-btn").addEventListener("click", () => 
 
 // кнопка сортировки постов
 $(".search-sort").on("click", function (e) {
-	if (e.target.closest(".search-sort__btn")) {
-		$(".search-sort__list")
-			.stop(false, true)
-			.queue("fx", function () {
-				$(this).slideToggle("fast").dequeue("fx");
-			});
-	} else if (e.target.closest(".search-sort__item")) {
+	// if (e.target.closest(".search-sort__btn")) {
+	// 	$(".search-sort__list")
+	// 		.stop(false, true)
+	// 		.queue("fx", function () {
+	// 			$(this).slideToggle("fast").dequeue("fx");
+	// 		});
+	// } else
+	if ($(e.target).closest(".search-sort__item")) {
 		let txt = $(e.target).text();
 		if (txt) {
 			$(".search-sort__btn").text($(e.target).text());
@@ -409,10 +410,6 @@ $(".search-sort__desc-asc").on("change", function (e) {
 // $(".search-sort__btn").on('click', function(e) {
 //   $(".search-sort__list").slideToggle('fast');
 // });
-
-$(".search _active").on("click", function (e) {
-	console.log("d");
-});
 
 // $(document).on("click", function (e) {
 // 	if (!e.target.closest(".search-sort")) {

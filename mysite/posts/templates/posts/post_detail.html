@@ -219,7 +219,7 @@
                 </div>
                 <div class="post-cont-complaints">
                     <div class="post-complaints dropdown">
-                        <div class="post-complaints__button">
+                        <div class="post-complaints__button dropdown__btn">
                             <i class="fa-solid fa-ellipsis"></i>
                         </div>
                         <ul class="post-complaints__list dropdown__list">
@@ -230,8 +230,23 @@
                                     rel="modal:open" data-modal="#complaints-post-window">Пожаловаться</a>
                             </li>
                             <li class="post-complaints__item dropdown__item">
-                                <a href="#"
-                                    class="post-complaints__link dropdown__subitem">В папку</a>
+                                <div class="post-complaints__link dropdown__subitem">В папку<i
+                                        class="fa-solid dropdown__arrow" style="color: #ffffff;"></i>
+                                </div>
+                                <ul class="dropdown__list dropdown__sublist">
+                                    <li class="dropdown__item">
+                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
+                                    </li>
+                                    <li class="dropdown__item">
+                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
+                                    </li>
+                                    <li class="dropdown__item">
+                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
+                                    </li>
+                                    <li class="dropdown__item">
+                                        <a class="post-complaints__link dropdown__subitem">папка</a>
+                                    </li>
+                                </ul>
                             </li>
                             {% if request.user == post.author %}
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
@@ -361,8 +376,6 @@
         </div>
     </div>
 </div>
-
-<div class="trigger-success button">asdfasfasdf</div>
 {% endblock %}
 
 
@@ -393,12 +406,5 @@
 
 <!-- modal notification -->
 <script src="{% static 'libs/iziToast.min.js' %}" type="text/javascript"></script>
-<script>
-    $(".trigger-success").on('click', function () {
-        iziToast.success({
-            title: 'Успешно',
-            message: '',
-        });
-    })
-</script>
+
 {% endblock %}

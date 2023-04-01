@@ -230,7 +230,7 @@ $browser-context: 16; // Default
     }
 
     &__list {
-        // background-color: var(--bg-light-primary-default);
+        // background-color: var(--bg-light-default);
         margin: 0;
         // min-width: 160px;
         // border: none;
@@ -513,7 +513,7 @@ $browser-context: 16; // Default
     &__tag {
         height: auto;
         line-height: normal;
-        border: 1px solid var(--bg-light-primary-default);
+        border: 1px solid var(--bg-light-default);
         padding: em(12) em(15);
         border-radius: 8px;
         color: var(--secondary-white);
@@ -791,7 +791,7 @@ $browser-context: 16; // Default
     }
 
     &__control-list {
-        // background-color: var(--bg-light-primary-default);
+        // background-color: var(--bg-light-default);
         margin: 0;
         // min-width: 160px;
         // border: none;
