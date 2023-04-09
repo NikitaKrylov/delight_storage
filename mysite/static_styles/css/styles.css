@@ -183,7 +183,7 @@ body::-webkit-scrollbar-thumb,
 }
 @-moz-document url-prefix() {
   body,
-  .scrollbar {
+.scrollbar {
     scrollbar-width: 10px;
     scrollbar-color: var(--color-scrollbar-thumb) var(--bg-scrollbar);
   }
@@ -624,7 +624,7 @@ a[rel="modal:close"].button_red {
   line-height: 20px;
   word-break: break-word;
   background-color: var(--bg-light-secondary-default);
-  border: 1px solid var(--border-secondary-light);
+  border: 1px solid var(--bg-light-primary-default);
   border-radius: 3px;
   color: var(--white);
 }

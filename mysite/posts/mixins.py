@@ -1,4 +1,7 @@
 from django.db.models import Exists, OuterRef, Count, QuerySet
+
+from accounts.models import ClientIP
+from accounts.services.base import get_client_ip
 from .forms import PostTagsForm, SearchForm
 from .models import Post, Like, PostTag
 
@@ -38,7 +41,7 @@ class PostListMixin:
             queryset = self._annotate_views_and_likes(queryset)
 
         if self.mark_liked:
-            queryset = self._mark_liked(queryset, self.request.user)
+            queryset = self._mark_liked(self.request,  queryset, self.request.user)
 
         if self.check_availability:
             queryset = self._check_availability(queryset, self.request.user)
@@ -56,13 +59,17 @@ class PostListMixin:
         ).order_by(order_by)
 
     @staticmethod
-    def _mark_liked(queryset, user):
+    def _mark_liked(request, queryset, user):
         if not user.is_authenticated:
-            return queryset
+            client_ip, created = ClientIP.objects.get_or_create(ip=get_client_ip(request))
+            if created: return queryset
+            filters = {'post': OuterRef('pk'), 'client_ip': client_ip}
+        else:
+            filters = {'post': OuterRef('pk'), 'user': user}
 
         return queryset.annotate(
-                has_like=Exists(Like.objects.filter(post=OuterRef('pk'), user=user)),
-            )
+            has_like=Exists(Like.objects.filter(**filters)),
+        )
 
     @staticmethod
     def _check_availability(queryset, user):

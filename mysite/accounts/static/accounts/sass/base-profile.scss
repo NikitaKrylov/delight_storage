@@ -38,7 +38,7 @@ $max-width-сontainer: 1920;
 
 .account-header {
 	overflow: hidden;
-	border-radius: 5px;
+	border-radius: 15px;
 
 		&__hat {
 			overflow: hidden;
@@ -167,12 +167,12 @@ $max-width-сontainer: 1920;
 }
 
 .account-body {
-	padding-top: 10px;
+	padding-top: 25px;
 }
 
 .page-block {
-	padding: 15px;
-    border-radius: 5px;
+	padding: 20px;
+    border-radius: 15px;
     background-color: var(--bg-secondary-default);
 }
 

@@ -503,11 +503,11 @@ $browser-context: 16; // Default
 
 .header-profile-avatar {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 
   @media (min-width: $width-mobile) {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 }

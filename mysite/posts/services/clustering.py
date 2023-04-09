@@ -63,10 +63,10 @@ class PostClustering(AgglomerativeClustering):
     distance_matrix: np.ndarray
     dataset: pd.DataFrame
 
-    def __init__(self, distance_threshold: int = 0.8):
+    def __init__(self, distance_threshold: int = 0.8, ):
         super(PostClustering, self).__init__(affinity='precomputed', linkage='complete', distance_threshold=distance_threshold, n_clusters=None, compute_full_tree=True)
 
-    def fit(self, queryset: QuerySet[Post]) -> Set[PostCluster]:
+    def fit(self, queryset: QuerySet[Post], mis_cluster_size: int = 3):
         queryset = queryset.order_by('id')
         posts_id = queryset.values_list('id', flat=True)
         self.distance_matrix = create_distance_matrix(queryset)
@@ -78,7 +78,7 @@ class PostClustering(AgglomerativeClustering):
         for post, i in zip(list(queryset), self.labels_):
             clusters[i].add(post.id)
 
-        return set( PostCluster(label, Post.objects.filter(id__in=ids).all()) for label, ids in clusters.items() )
+        return filter(lambda c: len(c) >= mis_cluster_size, set(PostCluster(label, Post.objects.filter(id__in=ids).all()) for label, ids in clusters.items()))
 
 
 

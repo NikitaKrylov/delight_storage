@@ -562,7 +562,7 @@ $browser-context: 16; // Default
         font-family: $font-family-circeregular;
         background-color: var(--bg-secondary-default);
         border-radius: 3px;
-        border: 1px solid var(--border-secondary-light);
+        border: 1px solid var(--bg-light-primary-default);
         color: var(--dark-gray);
         cursor: pointer;
     }
@@ -575,7 +575,7 @@ $browser-context: 16; // Default
     }
 
     &__input {
-        border: none;
+        border: 1px solid var(--bg-light-primary-default);
     }
 
     // &__author {
@@ -680,6 +680,7 @@ $browser-context: 16; // Default
     text-align: center;
     height: 60px;
     background-color: var(--bg-secondary-default);
+    border-radius: 10px;
     font-weight: 600;
     letter-spacing: 1.3px;
     @include adaptive-value('font-size', 20, 16, 1);

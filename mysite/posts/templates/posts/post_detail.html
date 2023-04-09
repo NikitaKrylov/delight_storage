@@ -264,7 +264,7 @@
         </div>
         <div class="post-info-author">
             <div class="post-info-author__author">
-                <a href="" class="post-info-author__link">
+                <a href="{% url 'user_info' post.author.pk %}" class="post-info-author__link">
                     {% if post.author.avatar %}
                     <img class="post-info-author__avatar avatar" src="{{post.author.avatar.url}}" alt="Аватар">
                     {% else %}

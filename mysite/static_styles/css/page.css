@@ -393,13 +393,13 @@
 
 .header-profile-avatar {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 @media (min-width: 991px) {
   .header-profile-avatar {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
 }
 
