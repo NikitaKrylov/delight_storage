@@ -1,0 +1,82 @@
+{% extends 'base-page.html' %}
+{% load static %}
+{% load pages %}
+
+
+{% block compressible_stylesheet %}
+
+<link rel="stylesheet" href="{% static 'accounts/css/base-profile.css' %}">
+
+{% block compress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block uncompressible_stylesheet %}
+
+{% block uncompress-style-page %}
+{% endblock %}
+{% endblock %}
+
+
+{% block main %}
+{% include "html/_confirmation-window.html" %}
+<div class="account-container">
+    <div class="account-header">
+        <div class="account-header__hat">
+            <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+        </div>
+        <div class="account-header__user">
+            <div class="account-user">
+                <div class="account-user__avatar-wrapper">
+                    {% if user.avatar %}
+                    <img class="account-user__avatar avatar" src="{{user.avatar.url}}">
+                    {% else %}
+                    <img class="account-user__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                    {% endif %}
+                </div>
+                <div class="account-user__info">
+                    <span class="account-user__username">{{user.username}}</span>
+                    {% if user.is_superuser %}
+                    <span class="account-user__status">
+                        Admin
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="account-header__nav">
+            <ul class="account-nav">
+                <li class="account-nav__item">
+                    {% url 'user_info' user.pk as user_info_url %}
+                    <a href="{{user_info_url}}"
+                        class="account-nav__link {{request|mark_current_page:user_info_url}}">Профиль</a>
+                </li>
+                <li class="account-nav__item">
+                    {% url 'user_post_list' user.pk as user_posts_url %}
+                    <a href="{{user_posts_url}}"
+                        class="account-nav__link {{request|mark_current_page:user_posts_url}}">Посты</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <div class="account-body">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+
+<script src="{% static 'accounts/js/base-profile.js' %}"></script>
+
+{% block script-page %}
+{% endblock %}
+{% endblock %}

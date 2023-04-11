@@ -15,8 +15,14 @@ class PostTagViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     def filter(self, request, *args, **kwargs):
         query = Q()
-        for s in self.request.GET.get('operation', '').lower().split():
+        st = self.request.GET.get('operation', '').lower().split()
+
+        if not st:
+            return Response([])
+
+        for s in st:
             query |= Q(name__icontains=s)
+
         serializer = self.get_serializer(PostTag.objects.filter(query), many=True)
         return Response(serializer.data)
 

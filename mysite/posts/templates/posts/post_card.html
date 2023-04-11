@@ -1,4 +1,5 @@
 {% load static %}
+{% load pages %}
 
 <div class="gallery__item item-masonry infinite-item">
     <div class="gallery__content">
@@ -20,9 +21,9 @@
             {% if post.count_media > 1 %}
             <div class="dots-container">
                 <ul class="dots-items">
-                    <li class="dots-items__item"></li>
-                    <li class="dots-items__item"></li>
-                    <li class="dots-items__item"></li>
+                    {% for i in post.count_media|trange %}
+                        <li class="dots-items__item"></li>
+                    {% endfor %}
                 </ul>
             </div>
             {% endif %}
@@ -33,7 +34,12 @@
                         <div class="cover-item-gallery__author">
                             <div class="post-gallery">
                                 <div class="post-gallery__author">
-                                    <a href="" class="post-gallery__link">
+                                    {% if request.user == post.author %}
+                                    {% url 'profile' as user_info %}
+                                    {% else %}
+                                    {% url 'user_info' post.author.pk as user_info %}
+                                    {% endif %}
+                                    <a href="{{user_info}}" class="post-gallery__link">
                                         {% if post.author.avatar %}
                                         <img class="post-gallery__avatar avatar" src="{{post.author.avatar.url}}">
                                         {% else %}

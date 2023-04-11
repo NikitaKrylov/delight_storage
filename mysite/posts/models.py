@@ -158,7 +158,8 @@ class Like(models.Model):
     post = models.ForeignKey(Post, models.CASCADE, 'likes')
     creation_date = models.DateTimeField(_('дата лайка'), auto_now_add=True)
     user = models.ForeignKey(User, verbose_name=_(
-        'пользователь'), on_delete=models.SET_NULL, null=True, related_name="likes")
+        'пользователь'), on_delete=models.SET_NULL, null=True, blank=True, related_name="likes")
+    client_ip = models.ForeignKey(ClientIP, verbose_name=_('IP пользователя'), blank=True, on_delete=models.SET_NULL, null=True, related_name='likes')
 
     class Meta:
         verbose_name = 'Лайк'

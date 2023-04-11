@@ -4,7 +4,7 @@
 
 .account-header {
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .account-header__hat {
   overflow: hidden;
@@ -138,11 +138,11 @@
 }
 
 .account-body {
-  padding-top: 10px;
+  padding-top: 25px;
 }
 
 .page-block {
-  padding: 15px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 15px;
   background-color: var(--bg-secondary-default);
 }

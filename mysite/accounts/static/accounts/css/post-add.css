@@ -97,7 +97,7 @@
 .search__container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 10px;
+  gap: 30px;
   height: 100%;
   margin: 0 auto;
   font-family: "Helvetica";

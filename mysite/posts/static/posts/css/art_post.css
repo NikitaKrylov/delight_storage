@@ -358,7 +358,7 @@
   font-family: "CirceRegular";
   background-color: var(--bg-secondary-default);
   border-radius: 3px;
-  border: 1px solid var(--border-secondary-light);
+  border: 1px solid var(--bg-light-primary-default);
   color: var(--dark-gray);
   cursor: pointer;
 }
@@ -367,7 +367,7 @@
   font-size: 20px;
 }
 .comments-form__input {
-  border: none;
+  border: 1px solid var(--bg-light-primary-default);
 }
 .comments-form__sort {
   display: -webkit-box;
@@ -443,6 +443,7 @@
   text-align: center;
   height: 60px;
   background-color: var(--bg-secondary-default);
+  border-radius: 10px;
   font-weight: 600;
   letter-spacing: 1.3px;
   font-size: 20px;

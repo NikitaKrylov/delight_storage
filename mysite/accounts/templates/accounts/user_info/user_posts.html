@@ -1,0 +1,56 @@
+{% extends 'accounts/user_info/user_info.html' %}
+{% load static %}
+
+{% block compress-style-page %}
+<link rel="stylesheet" href="{% static 'posts/css/art_all.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="my-stats page-block" style="color: #fff; margin-bottom: 20px; display: flex; justify-content: space-between; padding-left: 10%; padding-right: 10%;">
+
+    <div>Постов: {{posts.count}}</div>
+    <div>Лайков: {{likes_count}}</div>
+    <div>Подписчиков: {{sub_count}}</div>
+
+
+</div>
+
+<div class="container-gallery" >
+    <section class="gallery infinite-container">
+        {% for post in posts %}
+
+        {% include 'posts/post_card.html' %}
+
+        {% endfor %}
+
+        <div class="loading-box">
+            <div class="pulse-container">
+                <div class="pulse-bubble pulse-bubble-1"></div>
+                <div class="pulse-bubble pulse-bubble-2"></div>
+                <div class="pulse-bubble pulse-bubble-3"></div>
+            </div>
+        </div>
+    </section>
+
+    {% if page_obj.has_next %}
+    <div>
+        <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
+    </div>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}
+
+
+
+{% block script-page %}
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="{% static 'posts/libs/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'posts/libs/infinite.min.js' %}"></script>
+<script src="{% static 'posts/js/gallery.js' %}"></script>
+<script src="{% static '/posts/js/like.js' %}"></script>
+
+{% endblock %}

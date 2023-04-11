@@ -54,8 +54,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     ignored_tags = models.ManyToManyField(
                 "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
 
-    # settings = models.OneToOneField('UserSettings', verbose_name=_("Настройки пользователя"), on_delete=models.PROTECT, related_name='user')
-
     objects = UserManager()
 
     USERNAME_FIELD = "email"
@@ -68,7 +66,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_adult(self):
         if self.birth_date is None:
             return False
-        return (timezone.now().year - self.birth_date.year) > 18
+        return (timezone.now().year - self.birth_date.year) >= 18
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={"pk": self.pk})

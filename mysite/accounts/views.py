@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Count, Sum
 from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
@@ -8,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
@@ -111,7 +112,7 @@ class UserPasswordResetCompleteView(PasswordResetCompleteView):
 # --------------- User Folders-----------------
 
 
-class UserFoldersListView(LoginRequiredMixin, ListView):
+class UserFoldersListView(LoginRequiredMixin, PostFilterFormMixin, ListView):
     template_name = 'accounts/folders/user_folders.html'
     context_object_name = 'folders'
     model = Folder
@@ -120,7 +121,7 @@ class UserFoldersListView(LoginRequiredMixin, ListView):
         return self.request.user.folders.all()
 
 
-class UserFolderView(LoginRequiredMixin, DetailView):
+class UserFolderView(LoginRequiredMixin, PostFilterFormMixin, DetailView):
     template_name = 'accounts/folders/user_folder.html'
     context_object_name = 'folder'
     model = Folder
@@ -132,7 +133,7 @@ class UserFolderView(LoginRequiredMixin, DetailView):
         return context
 
 
-class CreateUserFolderView(LoginRequiredMixin, CreateView):
+class CreateUserFolderView(LoginRequiredMixin, PostFilterFormMixin, CreateView):
     model = Folder
     form_class = UserFolderForm
     template_name = 'accounts/folders/create_folder.html'
@@ -184,6 +185,45 @@ def remove_from_folder(request, *args, **kwargs):
 
     return redirect('user_folder', pk=folder.id)
 
+# --------------User Info---------------
+
+
+class UserInfoView(DetailView):
+    model = User
+    template_name ='accounts/user_info/user_info.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserInfoView, self).get_context_data(**kwargs)
+        posts = Post.objects.filter(author=self.object).exclude(status=Post.STATUS.DEFERRED)
+        context['posts'] = posts
+        context['likes_count'], context['views_count'], context['comments_count'] = posts.aggregate(
+            likes_count=Count('likes'),
+            views_count=Count('views'),
+            comments_count=Count('comments')
+        ).values()
+
+        return context
+
+
+class UserPostList(PostListMixin, PostFilterFormMixin, ListView):
+    model = Post
+    template_name = 'accounts/user_info/user_posts.html'
+    context_object_name = 'posts'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserPostList, self).get_context_data(*args, **kwargs)
+        user = get_object_or_404(User, pk=self.kwargs['pk'])
+        context['user'] = user
+        context['sub_count'] = user.user_subscriptions.count()
+        context['likes_count'] = self.object_list.aggregate(lc=Sum('likes_amount'))['lc']
+        return context
+
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.kwargs['pk'])
+        return super().get_queryset().filter(author=user)
+
+
 # --------------User Page---------------
 
 
@@ -226,7 +266,7 @@ def edit_user_form(request, *args, **kwargs):
     return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
-class UserNotificationListView(LoginRequiredMixin, ListView):
+class UserNotificationListView(LoginRequiredMixin, PostFilterFormMixin, ListView):
     model = Notification
     context_object_name = 'notifications'
     login_url = reverse_lazy('login')
@@ -287,7 +327,7 @@ def delete_all_notification(request, *args, **kwargs):
 
 @login_required(login_url=reverse_lazy('login'))
 def read_all_notification(request, *args, **kwargs):
-    notifications = request.user.notifications.filter(deleted=False, unread=False)
+    notifications = request.user.notifications.filter(deleted=False, unread=True)
 
     if notifications.count() > 0:
         messages.success(request, 'Уведомлениый прочитано - {}'.format(notifications.count()))
@@ -298,7 +338,7 @@ def read_all_notification(request, *args, **kwargs):
     return redirect('user_notifications')
 
 
-class UserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixin, ListView):
+class SelfUserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixin, ListView):
     model = Post
     login_url = reverse_lazy('login')
     context_object_name = 'posts'
@@ -495,7 +535,7 @@ class PostStatisticView(LoginRequiredMixin, CheckUserConformity, DetailView):
         return self.get_object().author
 
 
-class LikedPostList( PostListMixin, LoginRequiredMixin, ListView):
+class LikedPostList( PostListMixin, LoginRequiredMixin, PostFilterFormMixin, ListView):
     model = Post
     paginate_by = 30
     template_name = 'accounts/liked_posts.html'

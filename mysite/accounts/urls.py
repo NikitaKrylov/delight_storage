@@ -16,8 +16,8 @@ urlpatterns = [
     path('user/profile/', UserProfileView.as_view(), name='profile'),
     path('user/profile/edit/', edit_user_form, name='profile_edit'),
 
-    path('user/self-posts/', UserPostListView.as_view(), name='self_user_posts'),
-    path('user/self-posts/', UserPostListView.as_view(), name='self_user_posts'),
+    path('user/self-posts/', SelfUserPostListView.as_view(), name='self_user_posts'),
+    path('user/self-posts/', SelfUserPostListView.as_view(), name='self_user_posts'),
     path('user/self-posts/create/', CreatePostView.as_view(), name='create_post'),
     path('user/self-posts/statistic/<int:pk>/', PostStatisticView.as_view(), name='post_stat'),
     path('user/self-posts/change/<int:pk>/',
@@ -60,7 +60,11 @@ urlpatterns = [
          UserPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     # Сообщение об успешном изменении пароля
     path('password/reset/complete', UserPasswordResetCompleteView.as_view(),
-         name='password_reset_complete')
+         name='password_reset_complete'),
+
+    # Another users info
+    path('user/<int:pk>/', UserInfoView.as_view(), name='user_info'),
+    path('user/<int:pk>/posts/', UserPostList.as_view(), name='user_post_list'),
 ]
 
 urlpatterns += router.urls

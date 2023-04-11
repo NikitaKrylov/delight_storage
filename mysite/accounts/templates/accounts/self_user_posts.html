@@ -1,5 +1,7 @@
 {% extends 'accounts/base-profile.html' %}
 {% load static %}
+{% load pages %}
+
 
 {% block compress-style-page %}
 <link rel="stylesheet" href="{% static 'posts/css/art_all.css' %}">
@@ -95,9 +97,9 @@
             {% if post.count_media > 1 %}
             <div class="dots-container">
               <ul class="dots-items">
+                {% for i in post.count_media|trange %}
                 <li class="dots-items__item"></li>
-                <li class="dots-items__item"></li>
-                <li class="dots-items__item"></li>
+                {% endfor %}
               </ul>
             </div>
             {% endif %}

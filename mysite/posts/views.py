@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
+from accounts.services.base import get_client_ip
 from .forms import SearchForm, CreatePostTagForm
-from .services.base import update_post_views
+from .services.base import update_post_views, update_post_like
 from .services.clustering import TagsVectorizer, PostClustering
 
 from django.contrib.auth.decorators import login_required
@@ -17,7 +18,7 @@ from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 from .mixins import PostFilterFormMixin, PostListMixin
 from .models import Post, Comment, PostTag
 from django.http import Http404, JsonResponse
-from accounts.models import Subscription, User
+from accounts.models import Subscription, User, ClientIP
 
 from accounts.forms import ComplaintForm
 
@@ -134,23 +135,10 @@ def delete_post(request, *args, **kwargs):
     return redirect('post_list')
 
 
-@login_required
 @require_http_methods(['POST', 'GET'])
 def like_post(request, *args, **kwargs):
-    ctx = {"liked": None, "add_view": None}
-
-    post = Post.objects.get(pk=kwargs['pk'])
-
-    like, created = post.likes.get_or_create(user=request.user)
-    if not created:  # already liked the content
-        like.delete()
-        ctx['liked'] = False
-    else:
-        post.likes.add(like)
-        view, created = post.views.get_or_create(user=request.user)
-        ctx['liked'] = True
-        ctx['add_view'] = created
-
+    post = get_object_or_404(Post, pk=kwargs['pk'])
+    ctx = update_post_like(request, post)
     return JsonResponse(ctx)
 
 
@@ -185,7 +173,8 @@ class PostDetailView(PostFilterFormMixin, DetailView):
         context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(
             subscription_object=self.object.author, subscriber=self.request.user).exists()
 
-        if self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists():
+        client_ip = ClientIP.objects.filter(ip=get_client_ip(self.request))
+        if (self.request.user.is_authenticated and self.object.likes.filter(user=self.request.user).exists()) or (client_ip.exists() and self.object.likes.filter(client_ip=client_ip.first()).exists()):
             context['like_active'] = '_active'
         else:
             context['like_active'] = ''
@@ -301,13 +290,3 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context['clusters'] = PostClustering().fit(Post.objects.all())
         return context
 
-
-def create_distance_matrix(posts, square_size):
-    matrix = np.zeros((square_size, square_size))
-    posts_tags = TagsVectorizer().create(posts)
-
-    for i in range(square_size):
-        for j in range(square_size):
-            matrix[i, j] = 1 - jaccard_score(posts_tags[i], posts_tags[j], average='macro')
-
-    return matrix
