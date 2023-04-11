@@ -63,32 +63,37 @@
 
     {% if messages %}
     <script>
-    {% for message in messages %}
+        {% for message in messages %}
 
         {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-            iziToast.success({
-                title: 'Успешно',
-                message: '{{message}}',
-            });
+        iziToast.success({
+            title: 'Успешно',
+            message: '{{message}}',
+        });
         {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-            iziToast.info({
-                    title: '{{message}}',
-                });
+        iziToast.info({
+            title: '{{message}}',
+        });
         {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
-            iziToast.warning({
-                    title: 'Предупреждение!',
-                    message: '{{message}}',
-                });
+        iziToast.warning({
+            title: 'Предупреждение!',
+            message: '{{message}}',
+        });
         {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            iziToast.error({
-                title: 'Ошибка!',
-                message: '{{message}}',
-            });
+        iziToast.error({
+            title: 'Ошибка!',
+            message: '{{message}}',
+        });
         {% endif %}
 
-    {% endfor %}
+        {% endfor %}
     </script>
+
     {% endif %}
+    <script>
+        const lg = document.getElementById("lightgallery");
+        // const plugin = lightGallery(lg);
+    </script>
 </body>
 
 </html>

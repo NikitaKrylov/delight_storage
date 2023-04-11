@@ -242,7 +242,7 @@ const gallerySet = lightGallery(document.getElementById("lightgallery"), {
 	pager: false,
 	closeOnTap: true,
 	galleryId: "nature",
-	selector: ".image-slider__image img",
+	selector: ".image-slider__item",
 	plugins: [lgZoom, lgFullscreen, lgRotate, lgHash, lgVideo],
 	mobileSettings: {
 		controls: false,

@@ -144,12 +144,14 @@ searchInput.on("input", function () {
 						} else {
 							let txtTag = e.getElementsByTagName("span")[0].textContent;
 							e.getElementsByTagName("span")[0].innerHTML = txtTag;
-							response.splice(
-								response.findIndex((tag) => {
-									return tag.name === txtTag;
-								}),
-								1,
-							);
+
+							// let inxTag = response.findIndex((tag) => tag.name === txtTag);
+
+							// if (inxTag !== -1) {
+							// 	response.splice(inxTag, 1);
+							// }
+
+							response = response.filter((tag) => tag.name !== txtTag);
 						}
 					});
 				}
@@ -212,7 +214,7 @@ searchInput.on("input", function () {
 						if (searchForMatches(e.innerText, text)) {
 							e.getElementsByTagName("span")[0].innerHTML = inserMark(
 								e.innerText,
-								e.innerText.toLowerCase().search(text),
+								e.innerText.toLowerCase().indexOf(text),
 								text.length,
 							);
 						}
@@ -291,7 +293,7 @@ $(tagList).on("click", function (e) {
 function searchForMatches(text, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
 	// return !(text.innerText.toLowerCase().search(textInp) == -1 || textInp == "");
-	return !(text.toLowerCase().search(textInp) == -1 || textInp == "");
+	return text.toLowerCase().includes(textInp.toLowerCase()) || textInp == "";
 }
 
 function hide(event) {
