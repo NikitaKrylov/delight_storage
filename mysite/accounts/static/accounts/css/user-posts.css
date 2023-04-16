@@ -99,7 +99,6 @@
   z-index: 1;
   padding: 20px;
   background-color: var(--bg-light-secondary-default);
-  color: var(--primary-color);
 }
 .add-post-btn::before {
   content: "";

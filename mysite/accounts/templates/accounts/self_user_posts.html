@@ -55,7 +55,7 @@
       <div class="add-post-container">
         <!-- <div class="add-post-inner"> -->
         <!-- </div> -->
-        <a href="{% url 'create_post' %}" class="add-post-btn">
+        <a href="{% url 'create_post' %}" class="add-post-btn button_pink button_clean">
           <i class="add-post-btn__icon fa-solid fa-plus"></i>
         </a>
       </div>
@@ -124,7 +124,8 @@
                       title="Статистика">
                       <span><i class="fa-solid fa-chart-simple"></i></span>
                     </a>
-                    <a href="{% url 'delete_post' post.id %}" class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
+                    <a href="{% url 'delete_post' post.id %}"
+                      class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
                       data-modal="#confirmation-window">
                       <span><i class="fa-solid fa-trash-can"></i></span>
                     </a>

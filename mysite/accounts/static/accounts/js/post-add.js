@@ -79,6 +79,7 @@ function selectedTags(btn) {
 	// 			painButton(clickBtn);
 	// 		}
 	// 	});
+
 	if (valueinp == "1") {
 		$(btn).appendTo($(contTags));
 	} else {
@@ -93,7 +94,7 @@ $(".tags-list__tag").on("change", function (e) {
 
 	if (clickBtn) {
 		valueButton(clickBtn);
-		painButton(clickBtn);
+		// painButton(clickBtn);
 		selectedTags(clickBtn);
 		// hide(clickBtn);
 		// скрыть кнопку если строка пустая и кнопка пасивна
@@ -109,7 +110,7 @@ $(".tags-list__tag").on("change", function (e) {
 // действия при вводе текста
 function searchForMatches(text, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
-	return !(text.innerText.toLowerCase().search(textInp) == -1 || textInp == "");
+	return text.toLowerCase().includes(textInp.toLowerCase()) || textInp == "";
 }
 
 function hide(event) {
@@ -141,7 +142,7 @@ function search(array, textInp) {
 	array.forEach(function (e) {
 		// let valueinp = e.querySelector('.three-pos-inp').value;
 		let valueinp = e.querySelector(".three-pos-inp").dataset.state;
-		if (searchForMatches(e, textInp) && valueinp == "0") {
+		if (searchForMatches(e.innerText, textInp) && valueinp == "0") {
 			// e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
 			show(e);
 		} else {
@@ -170,6 +171,28 @@ searchInput.addEventListener("input", function () {
 //     }
 //   })
 // })
+
+// создание пользолвательских тегов
+$("#tag_creation_form").on("submit", function (event) {
+	event.preventDefault();
+
+	$.ajax({
+		url: $(this).data("url"),
+		type: $(this).attr("method"),
+		data: {
+			csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+			name: $("#id_name").val(),
+		},
+
+		success: function (json) {
+			console.log(json);
+			$.modal.close();
+		},
+		error: function (response) {
+			console.log(response, "error");
+		},
+	});
+});
 
 // =====================================================
 
@@ -310,7 +333,9 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
 	} else {
-		messagePopup("Выберите фото");
+		iziToast.info({
+			title: "Выберите изображение",
+		});
 	}
 });
 
@@ -365,7 +390,9 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
 	} else {
-		messagePopup("Выберите видео", true);
+		iziToast.info({
+			title: "Выберите видео",
+		});
 	}
 });
 
@@ -431,10 +458,6 @@ $(document).on("click", function (e) {
 
 // окно добавления тегов
 $("a[data-modal='#addtags-window']").on("click", function (e) {
-	$($(this).data("modal")).modal(baseSettingsModal);
-	return false;
-});
-$("a[data-modal='#penis']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
 });

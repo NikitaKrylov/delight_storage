@@ -1,7 +1,5 @@
 {% load static %}
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,10 +15,14 @@
     <link rel="stylesheet" href="{% static 'accounts/css/post-add.css' %}">
     <link rel="stylesheet" href="{% static '/css/air-datepicker.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+
+    <!-- modal window -->
+    <link rel="stylesheet" href="{% static 'css/iziToast.min.css' %}">
     <title>{{title}}</title>
 </head>
 
 <body id="body">
+
     <div id="addtags-window" class="modal popup">
         <div class="popup__inner">
             <div class="popup__content">
@@ -28,15 +30,18 @@
                     <div class="mymodal__header">
                         <div class="mymodal__title title-block">Придумайте свой тег</div>
                     </div>
-                    <form>
+                    <form method="post" id="tag_creation_form" data-url="{% url 'tags-list' %}">
+                        {% csrf_token %}
                         <div class="mymodal__body">
                             <div class="mymodal__input">
-                                <input>
+                                {{tag_form.name}}
                             </div>
                         </div>
                         <div class="mymodal__controls">
                             <div class="mymodal__buttons">
-                                <button class="mymodal__btn button" type="submit">Сохранить</button>
+                                <!--                            <button class="mymodal__btn button" type="submit">Сохранить</button>-->
+                                <button class="mymodal__btn button button_pink" type="submit"
+                                    rel="modal:close">Добавить</button>
                                 <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
                             </div>
                         </div>
@@ -67,6 +72,7 @@
     <script src="https://kit.fontawesome.com/65443a9372.js" crossorigin="anonymous"></script>
     <!-- modal window -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="{% static 'libs/iziToast.min.js' %}" type="text/javascript"></script>
     <script src="{% static '/libs/autosize.min.js' %}"></script>
     <script src="{% static '/libs/air-datepicker.js' %}"></script>
     <script src="{% static '/libs/swiped-events.min.js' %}"></script>
@@ -86,36 +92,7 @@
 
 
 
-
 </body>
-
-<div id="addtags-window" class="modal popup">
-    <div class="popup__inner">
-        <div class="popup__content">
-            <div class="mymodal">
-                <div class="mymodal__header">
-                    <div class="mymodal__title title-block">Придумайте свой тег</div>
-                </div>
-                <form method="post" id="tag_creation_form">
-                    {% csrf_token %}
-                    <div class="mymodal__body">
-                        <div class="mymodal__input">
-                            {{tag_form.name}}
-                        </div>
-                    </div>
-                    <div class="mymodal__controls">
-                        <div class="mymodal__buttons">
-                            <!--                            <button class="mymodal__btn button" type="submit">Сохранить</button>-->
-                            <input class="mymodal__btn button" type="submit" value="Добавить">
-                            <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <!--<script>-->
@@ -142,26 +119,5 @@
 <!--        });-->
 
 <!--</script>-->
-<script>
-    $('#tag_creation_form').on('submit', function (event) {
-        event.preventDefault();
-        $.ajax({
-            url: '{% url "tags-list" %}',
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                name: $('#id_name').val(),
-            },
-
-            success: function (json) {
-                console.log(json);
-            },
-            error: function (response) {
-                console.log(response)
-            }
-        });
-
-    });
-</script>
 
 </html>

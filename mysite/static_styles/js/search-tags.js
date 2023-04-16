@@ -107,11 +107,13 @@ const tagBtn = document.querySelector(".tags-list__tag");
 let arrayitem = [];
 
 let inputDelay;
-searchInput.on("input", function () {
+searchInput.on("input", function (e) {
 	let textInp = searchInput.val().trim().toLowerCase();
 	clearTimeout(inputDelay);
 
 	inputDelay = setTimeout(function () {
+		console.log($(this), e);
+
 		$.ajax({
 			type: "GET",
 			url: urlTag,
@@ -402,11 +404,23 @@ $(document).ready(function () {
 			$(".search-sort__btn").text($(value).text());
 		}
 	});
+
+	if ($(".search-sort__desc-asc input").prop("checked")) {
+		$(".search-sort__desc-asc").attr("aria-label", "по убыванию");
+	}
 });
 
 // сортировка убыванию/возрастанию
 $(".search-sort__desc-asc").on("change", function (e) {
-	$(e.target.closest(".search-sort__desc-asc")).toggleClass("_active");
+	if ($(e.target).prop("checked")) {
+		$(e.target.closest(".search-sort__desc-asc"))
+			.removeClass("_active")
+			.attr("aria-label", "по убыванию");
+	} else {
+		$(e.target.closest(".search-sort__desc-asc"))
+			.addClass("_active")
+			.attr("aria-label", "по возростанию");
+	}
 });
 
 // $(".search-sort__btn").on('click', function(e) {
