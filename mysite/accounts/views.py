@@ -172,7 +172,7 @@ def add_to_folder(request, *args, **kwargs):
     if post not in folder:
         folder.add(post)
 
-    return None
+    return JsonResponse({'post': post.id, 'folder': folder.name})
 
 
 @login_required

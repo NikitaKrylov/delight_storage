@@ -1,9 +1,12 @@
 from django import forms
 from django.contrib.auth import password_validation
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
+from django.core.exceptions import ValidationError
+
 from .models import User, PostComplaint, Folder
 from posts.models import PostTag
 from mediacore.forms import ClearableAvatarFileInput
+from django.utils.translation import gettext_lazy as _
 
 
 class RegisterUserForm(UserCreationForm):
@@ -26,7 +29,18 @@ class RegisterUserForm(UserCreationForm):
             "username",
             "email",
         )
-        # widgets = {}
+
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        if User.objects.filter(username=data).exists():
+            raise ValidationError(_("Пользователь с таким именем уже существует"))
+        return data
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if User.objects.filter(email=data).exists():
+            raise ValidationError(_("Пользователь с такой почтой уже существует"))
+        return data
 
     def save(self, commit=True):
         user = super(RegisterUserForm, self).save(commit=False)

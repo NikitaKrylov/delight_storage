@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from .models import PostTag, Post
 
 
@@ -79,6 +81,12 @@ class PostTagForm(forms.ModelForm):
         model = PostTag
         fields = ("name",)
         widgets = {"name": forms.TextInput(attrs={"class": ""})}
+
+    def clean_name(self):
+        data = self.cleaned_data["name"]
+        if PostTag.objects.filter(name=data).exists():
+            raise ValidationError(_("Тег с таким названием уже существует"))
+        return data
 
 
 class SearchForm(forms.Form):

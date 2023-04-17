@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
@@ -60,11 +62,17 @@ class Post(models.Model):
     def count_media(self) -> int:
         return self.images.count() + self.videos.count()
 
+    @property
+    def formated_pub_date(self):
+        current_datetime = datetime.now(timezone.utc)
+        if (current_datetime - self.pub_date).days == 0:
+            return _("Сегодня в {}".format(self.pub_date.strftime("%H:%M")))
+        elif (current_datetime - self.pub_date).days == 1:
+            return _("Вчера в {}".format(self.pub_date.strftime("%H:%M")))
+        return self.pub_date
+
     def get_absolute_url(self):
         return reverse('post', kwargs={"pk": self.pk})
-
-    def get_absolute_like_url(self):
-        return reverse('post_like', kwargs={"pk": self.pk})
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         if self.delayed_publication_time:

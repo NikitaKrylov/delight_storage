@@ -83,7 +83,7 @@
         $('#tag_creation_form').on('submit', function (event) {
             event.preventDefault();
             $.ajax({
-                url: '{% url "tags-list" %}',
+                url: '{% url "create_post_tag" %}',
                 type: 'POST',
                 data: {
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
@@ -95,7 +95,7 @@
 
                 },
                 error: function (response) {
-                    console.log(response)
+                    console.log(response.responseJSON['error'])
                 }
             });
 

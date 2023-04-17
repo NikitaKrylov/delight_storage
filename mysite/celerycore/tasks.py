@@ -1,6 +1,7 @@
 from django.utils import timezone
 from .celery import app
 from posts.models import Post
+from celery import shared_task
 
 
 @app.task
@@ -13,5 +14,10 @@ def publish_posts():
         post.delayed_publication_time = None
         post.save(update_fields=['status', 'pub_date', 'delayed_publication_time'])
 
-    return f"\n--------------- Publish post, amount: {len(posts)} ---------------"
+    return f"Publish post, amount: {len(posts)}"
+
+
+@shared_task
+def parse_image_from_source():
+    pass
 

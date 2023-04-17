@@ -62,8 +62,7 @@
                             </div>
                             <button
                                 class="cover-item-gallery__like like-btn button {% if post.has_like %}_active{% endif %} {{like_active}}"
-                                data-href="{{ post.get_absolute_like_url }}">
-                                <!-- <i class="fa-regular fa-heart"></i> -->
+                                data-href="{% url 'post_like' post.pk %}">
                                 <div class="_39asK">
                                     <span class="like-cont-info">
                                         <span class="like-cont__likes-number">{{post.likes_amount}}</span>
