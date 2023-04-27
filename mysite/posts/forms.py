@@ -132,3 +132,9 @@ class CreatePostTagForm(forms.ModelForm):
                 }
             )
         }
+
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        if PostTag.objects.filter(name=data).exists():
+            raise ValidationError("Тег с таким названием уже существует")
+        return data

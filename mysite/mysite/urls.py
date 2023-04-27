@@ -10,6 +10,7 @@ urlpatterns = [
     path('account/', include('accounts.urls')),
     path('inbox/notifications/',
          include(notifications.urls, namespace='notifications')),
+    path('content/', include('contentcreation.urls')),
     path('', include('social_django.urls')),
 ]
 

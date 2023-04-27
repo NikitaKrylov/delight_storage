@@ -155,7 +155,8 @@ class PostTag(models.Model):
     objects = PostTagManager()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.name).lower()
+        self.name = self.name.lower()
         return super().save(*args, **kwargs)
 
     def __str__(self):

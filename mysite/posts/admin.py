@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.utils.safestring import mark_safe
 from .models import *
 from mediacore.admin import InlineImageFileAdmin, InlineVideoFileAdmin
-from contentcreation.services.generation import ContentGenerator
+from contentcreation.services.generation import ContentParser
 from mediacore.models import ImageFile
 
 
@@ -45,8 +45,8 @@ class PostAdmin(admin.ModelAdmin):
     def response_generate_image(self, request, post) -> bool:
         if "generate_image" in request.POST:
             try:
-                cg = ContentGenerator()
-                image_file = ImageFile(file=cg.generate(), post=post)
+                cg = ContentParser()
+                image_file = ImageFile(file=cg.get(), post=post)
                 image_file.save()
             except IndexError:
                 self.message_user(request, "Ошибка генерации медиа! Список '{}' пуст.".format(cg.last_source_type), level=messages.ERROR)

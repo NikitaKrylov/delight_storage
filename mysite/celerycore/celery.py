@@ -10,7 +10,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'check_and_publish_posts': {
         'task': "celerycore.tasks.publish_posts",
-        'schedule': 5.0,
+        'schedule': 20.0,
     },
 }
 
