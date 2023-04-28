@@ -137,7 +137,9 @@
         {{image_formset.management_form}}
         {% for image_form in image_formset %}
         <div class="add-file add-image">
-
+            {% for hidden in image_form.hidden_fields %}
+            {{hidden}}
+            {% endfor %}
             <!-- <div class="images-container"></div> -->
             <!-- <div class="add-image__file-text">{{image_form.file.label}}</div> -->
             <div class="add-file__controls">
