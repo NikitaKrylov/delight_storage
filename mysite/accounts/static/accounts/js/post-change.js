@@ -20,3 +20,13 @@ for (link of imagesEdLink) {
 }
 
 // $(currFile).prepend(imageCont);
+
+
+for (tag of $(".tags-list__tag")) {
+	if (tag.querySelector(".tags-list__checkbox").checked) {
+		console.log(tag)
+		valueButton(tag);
+		selectedTags(tag);
+		show(tag);
+	}
+}

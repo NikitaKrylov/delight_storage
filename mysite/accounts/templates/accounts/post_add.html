@@ -30,7 +30,7 @@
                     <div class="mymodal__header">
                         <div class="mymodal__title title-block">Придумайте свой тег</div>
                     </div>
-                    <form method="post" id="tag_creation_form" data-url="{% url 'tags-list' %}">
+                    <form method="post" id="tag_creation_form" data-url="{% url 'create_post_tag' %}">
                         {% csrf_token %}
                         <div class="mymodal__body">
                             <div class="mymodal__input">
