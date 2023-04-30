@@ -474,10 +474,11 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Редактирование'
-
         post = self.get_object()
         context['post'] = post
+
+        context['title'] = str(post)
+
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
         context['tag_form'] = CreatePostTagForm()

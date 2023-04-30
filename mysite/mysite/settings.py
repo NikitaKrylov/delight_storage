@@ -38,7 +38,7 @@ ALLOWED_HOSTS = [
     "192.168.1.2",
     "172.20.10.2",
     "192.168.1.13",
-    "192.168.1.11",
+    "192.168.1.7",
     "192.168.1.4",
     "192.168.1.5",
 ]
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "social_django",
     "celerycore",
     "debug_toolbar",
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -271,3 +272,4 @@ PUBLISH_POST_SCHEDULE = 10.0  # seconds
 API_ID = config["TELETHON"]["API_ID"]
 API_HASH = config["TELETHON"]["API_HASH"]
 USERNAME = config["TELETHON"]["USERNAME"]
+
