@@ -70,9 +70,8 @@ def create_post_tag(request, *args, **kwargs):
     if form.is_valid():
         tag: PostTag = form.save()
         tag.save()
-        return JsonResponse({'name': tag.name, 'slug': tag.slug})
+        return JsonResponse({'id': tag.id, 'name': tag.name, 'slug': tag.slug})
 
-    print(form.errors.as_data(), "\n\n\n\n")
     response = JsonResponse({"errors": list(form.errors.values())})
     response.status_code = 403
     return response

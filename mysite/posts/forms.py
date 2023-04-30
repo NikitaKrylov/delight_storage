@@ -1,6 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from slugify import slugify
+
 from .models import PostTag, Post
 
 
@@ -134,7 +137,8 @@ class CreatePostTagForm(forms.ModelForm):
         }
 
     def clean_name(self):
-        data = self.cleaned_data['name']
-        if PostTag.objects.filter(name=data).exists():
+        data = self.cleaned_data['name'].lower()
+        slug = slugify(data)
+        if PostTag.objects.filter(Q(name=data) | Q(slug=slug)).exists():
             raise ValidationError("Тег с таким названием уже существует")
         return data
