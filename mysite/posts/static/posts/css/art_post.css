@@ -63,7 +63,9 @@
 }
 @media (max-width: 1920px) {
   .like-cont {
-    gap: calc(15px + 25 * ((100vw - 264px) / 1656));
+    gap: calc(
+                15px + 25 * ((100vw - 264px) / 1656)
+            );
   }
 }
 .like-cont i {
@@ -97,7 +99,9 @@
 }
 @media (max-width: 1920px) {
   .like-cont-info span {
-    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                14px + 2 * ((100vw - 264px) / 1656)
+            );
   }
 }
 
@@ -132,7 +136,9 @@
 }
 @media (max-width: 1920px) {
   .post-data-published {
-    font-size: calc(14px + 4 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                14px + 4 * ((100vw - 264px) / 1656)
+            );
   }
 }
 
@@ -212,7 +218,9 @@
 }
 @media (max-width: 1920px) {
   .subscribe-btn__btn {
-    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                14px + 2 * ((100vw - 264px) / 1656)
+            );
   }
 }
 .subscribe-btn__btn::before, .subscribe-btn__btn::after {
@@ -329,7 +337,6 @@
   border-radius: 8px;
   color: var(--secondary-white);
   background-color: var(--bg-secondary-default);
-  font-family: "Rubik";
   font-weight: 600;
   font-size: 14px;
 }
@@ -393,7 +400,9 @@
 }
 @media (max-width: 1920px) {
   .comments-form__input-comment {
-    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                14px + 2 * ((100vw - 264px) / 1656)
+            );
   }
 }
 
@@ -407,7 +416,9 @@
 }
 @media (max-width: 1920px) {
   .comments-form-sorting__sort-btn {
-    font-size: calc(14px + 2 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                14px + 2 * ((100vw - 264px) / 1656)
+            );
   }
 }
 .comments-form-sorting__sort-btn i {
@@ -451,7 +462,9 @@
 }
 @media (max-width: 1920px) {
   .comments-are-forbidden {
-    font-size: calc(16px + 4 * ((100vw - 264px) / 1656));
+    font-size: calc(
+                16px + 4 * ((100vw - 264px) / 1656)
+            );
   }
 }
 .comments-are-forbidden > span {

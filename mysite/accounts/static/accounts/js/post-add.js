@@ -180,12 +180,20 @@ searchInput.addEventListener("input", function () {
 //   })
 // })
 
-// создание пользолвательских тегов
+// нахождение максимального id тега и добавление выбранных тегов
 let maxValInp = 0;
 $.each($(".tags-list__tag"), function (inx, val) {
+	console.log(val, val.querySelector(".tags-list__checkbox").value);
 	maxValInp = Math.max(maxValInp, Number(val.querySelector(".tags-list__checkbox").value));
+
+	if (val.querySelector(".tags-list__checkbox").checked) {
+		valueButton(val);
+		selectedTags(val);
+		show(val);
+	}
 });
 
+// создание пользолвательских тегов
 $("#tag_creation_form").on("submit", function (event) {
 	event.preventDefault();
 
@@ -199,25 +207,25 @@ $("#tag_creation_form").on("submit", function (event) {
 
 		success: function (json) {
 			console.log(json);
-			maxValInp += 1;
-
-			let newtag = $(`<div class="tags-list__tag _show">
-				<label for="id_tags_${maxValInp}">
-					<input class="tags-list__checkbox hidden-input three-pos-inp" data-state="1"
-					id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${maxValInp + 1}">
-					${json.name}
-				</label>
-			</div>`);
+			let newtag = $(`
+				<div class="tags-list__tag _show">
+					<label for="id_tags_${maxValInp}">
+						<input checked class="tags-list__checkbox hidden-input three-pos-inp" data-state="1"
+						id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${maxValInp + 1}">
+						${json.name.charAt(0).toUpperCase() + json.name.slice(1)}
+					</label>
+				</div>
+			`);
 
 			$(".selected-tags__list").append(newtag);
 
 			$.modal.close();
 		},
+
 		error: function (response) {
-			console.log(response.responseJSON["error"][0]);
 			$("#addtags-window")
 				.find(".errorlist")
-				.html(`<li>${response.responseJSON["error"][0]}</li>`);
+				.html(`<li>${response.responseJSON["errors"][0]}</li>`);
 		},
 	});
 });
@@ -297,10 +305,10 @@ function createFileInfo(file, width, height) {
 function addDelBtn(currFile) {
 	$(currFile.querySelector(".add-file-btn-cont")).after(
 		$(`
-		<span class="add-file__control del-btn button">
-			Удалить
-		</span>
-	`),
+			<span class="add-file__control del-btn button">
+				Удалить
+			</span>
+		`),
 	);
 }
 

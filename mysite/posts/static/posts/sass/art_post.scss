@@ -1,9 +1,9 @@
 // @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
-$font-family-inter: 'inter', sans-serif;
-$font-family-rubik: 'Rubik';
-$font-family-helvetica: 'Helvetica';
-$font-family-circeregular: 'CirceRegular';
+$font-family-inter: "inter", sans-serif;
+$font-family-rubik: "Rubik";
+$font-family-helvetica: "Helvetica";
+$font-family-circeregular: "CirceRegular";
 
 $size-image-avatar-sm: 40px;
 $size-image-avatar-md: 60px;
@@ -22,7 +22,7 @@ $width-mobile: 991px;
 $min-width-mobile: 700px;
 
 $padding-wrapper: 8;
-$min-width: 280-$padding-wrapper*2;
+$min-width: 280-$padding-wrapper * 2;
 
 $max-width: 1920;
 $max-width-сontainer: 1920;
@@ -32,20 +32,25 @@ $max-width-сontainer: 1920;
     @if $type == 1 {
         #{$property}: $start-size + px;
         @media (max-width: #{$max-width-сontainer + px}) {
-            #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width-сontainer - $min-width}));
+            #{$property}: calc(
+                #{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width-сontainer - $min-width})
+            );
         }
     } @else if $type == 2 {
         // только если экран больше контейнера
         #{$property}: $start-size + px;
         @media (min-width: #{$max-width-сontainer + px}) {
-            #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width}));
+            #{$property}: calc(
+                #{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width})
+            );
         }
     } @else {
         // всегда
-        #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width}));
+        #{$property}: calc(
+            #{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width})
+        );
     }
 }
-
 
 // перевод px в em
 $browser-context: 16; // Default
@@ -146,13 +151,13 @@ $browser-context: 16; // Default
     flex-direction: row;
     // grid-template-columns: repeat(3, 1fr);
     // gap: 15px;
-    @include adaptive-value('gap', 40, 15, 1);
+    @include adaptive-value("gap", 40, 15, 1);
     // justify-content: space-around;
     // width: 100%;
     color: var(--white);
     justify-content: space-around;
     width: 100%;
-    
+
     i {
         font-size: $like-cont-size;
         // color: white;
@@ -183,7 +188,7 @@ $browser-context: 16; // Default
     margin-left: 5px;
     // font-family: $font-family-inter;
     // @include adaptiv-font(16,  14);
-    @include adaptive-value('font-size', 16, 14, 1)
+    @include adaptive-value("font-size", 16, 14, 1);
 }
 
 // &__likes-info {
@@ -224,7 +229,6 @@ $browser-context: 16; // Default
 }
 
 .post-complaints {
-
     &__button {
         cursor: pointer;
     }
@@ -243,7 +247,6 @@ $browser-context: 16; // Default
     }
 
     &__item {
-
     }
 
     &__link {
@@ -278,7 +281,7 @@ $browser-context: 16; // Default
     color: var(--white);
     font-family: $font-family-circeregular;
     // font-size: 16px;
-    @include adaptive-value('font-size', 18, 14, 1);
+    @include adaptive-value("font-size", 18, 14, 1);
     margin-left: auto;
 }
 
@@ -293,9 +296,10 @@ $browser-context: 16; // Default
         grid-template-columns: 0.1fr 3fr;
     }
 
-    &__link {}
-    
-    &__avatar  {
+    &__link {
+    }
+
+    &__avatar {
         width: 45px;
         height: 45px;
     }
@@ -303,48 +307,48 @@ $browser-context: 16; // Default
 
 .subscribe-btn {
     position: relative;
-	overflow: hidden;
-	
-	&::before,
-	&::after {
-		position: absolute;
-		content: "";
-		left: 0;
-		bottom: 0;
-		background: var(--primary-purple);
-		// background: var(--primary-color);
-		transition: all 0.3s ease;
-	}
-	
-	&::before {
-		width: 1px;
-		height: 25%;
-	}
-	
-	&::after {
-		width: 10%;
-		height: 1px;
-	}
-	
-	&:hover {
-		&::before {
-			height: 100%;
-		}
-		
-		&::after {
-			width: 100%;
-		}
+    overflow: hidden;
+
+    &::before,
+    &::after {
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 0;
+        background: var(--primary-purple);
+        // background: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+
+    &::before {
+        width: 1px;
+        height: 25%;
+    }
+
+    &::after {
+        width: 10%;
+        height: 1px;
+    }
+
+    &:hover {
+        &::before {
+            height: 100%;
+        }
+
+        &::after {
+            width: 100%;
+        }
 
         .subscribe-btn__btn {
             &::before {
                 height: 100%;
             }
-            
+
             &::after {
                 width: 100%;
             }
         }
-	}
+    }
 
     &__btn {
         align-items: center;
@@ -353,7 +357,7 @@ $browser-context: 16; // Default
         background: transparent;
         border: none;
         // border-radius: 10px;
-        @include adaptive-value('font-size', 16, 14, 1);
+        @include adaptive-value("font-size", 16, 14, 1);
         // color: var(--primary-pink);
         gap: 10px;
 
@@ -366,7 +370,7 @@ $browser-context: 16; // Default
         position: relative;
         overflow: hidden;
         font-family: $font-family-circeregular;
-        
+
         // &:hover {
         //     box-shadow: 1px 1px 15px 5px rgba(229, 172, 255, 0.4);
         // }
@@ -381,25 +385,25 @@ $browser-context: 16; // Default
             // background: var(--primary-color);
             transition: all 0.3s ease;
         }
-        
+
         &:before {
             height: 25%;
             width: 1px;
         }
-        
+
         &:after {
             width: 10%;
             height: 1px;
         }
-        
+
         // &:hover {
         //   background: transparent;
         //     box-shadow: none;
-            
+
         //     &::before {
         //         height: 100%;
         //     }
-            
+
         //     &::after {
         //         width: 100%;
         //     }
@@ -423,7 +427,7 @@ $browser-context: 16; // Default
         transition: all 0.3s ease-in-out;
         &::after,
         &::before {
-            content: '';
+            content: "";
             position: absolute;
             top: calc($icon-size / 2 - 1px);
             left: 0;
@@ -469,7 +473,8 @@ $browser-context: 16; // Default
     gap: 30px;
     padding: 20px 0;
 
-    &__body {}
+    &__body {
+    }
 
     &__title {
         color: var(--light-gray);
@@ -484,7 +489,7 @@ $browser-context: 16; // Default
 .post-info-comments {
     // margin-top: 80px;
     padding-top: 94px;
-    
+
     &__container {
         padding: 0;
         border-radius: 15px;
@@ -496,12 +501,11 @@ $browser-context: 16; // Default
         //     }
         // }
     }
-
 }
 
 .post-info-tags {
-
-    &__title {}
+    &__title {
+    }
 }
 
 .post-tags {
@@ -520,7 +524,7 @@ $browser-context: 16; // Default
 
         background-color: var(--bg-secondary-default);
 
-        font-family: $font-family-rubik;
+        // font-family: $font-family-rubik;
         // @include font-settings(600, 14px, inherit);
         font-weight: 600;
         font-size: 14px;
@@ -534,8 +538,8 @@ $browser-context: 16; // Default
 }
 
 .post-info-description {
-
-    &__title {}
+    &__title {
+    }
 }
 
 .post-description {
@@ -601,7 +605,7 @@ $browser-context: 16; // Default
         // height:100%;
         // align-items: center;
         padding: 0 0 20px;
-        
+
         color: var(--white);
         @include font-settings(600, inherit, inherit);
     }
@@ -615,7 +619,7 @@ $browser-context: 16; // Default
         // color:var(--primary-white);
         // background: transparent;
 
-        @include adaptive-value('font-size', 16, 14, 1);
+        @include adaptive-value("font-size", 16, 14, 1);
     }
 }
 
@@ -625,8 +629,8 @@ $browser-context: 16; // Default
     &__sort-btn {
         cursor: pointer;
         font-family: $font-family-inter;
-        @include adaptive-value('font-size', 16, 14, 1);
-        
+        @include adaptive-value("font-size", 16, 14, 1);
+
         i {
             margin-right: 5px;
         }
@@ -683,7 +687,7 @@ $browser-context: 16; // Default
     border-radius: 10px;
     font-weight: 600;
     letter-spacing: 1.3px;
-    @include adaptive-value('font-size', 20, 16, 1);
+    @include adaptive-value("font-size", 20, 16, 1);
     color: var(--border-secondary-light);
 
     > span {
@@ -798,9 +802,8 @@ $browser-context: 16; // Default
         // border: none;
         right: 0;
     }
-    
-    &__control-item {
 
+    &__control-item {
     }
 
     &__control-link {
@@ -826,7 +829,7 @@ $browser-context: 16; // Default
 }
 
 .answer-button {
-    margin-right:10px;
+    margin-right: 10px;
     font-family: $font-family-helvetica;
     font-size: 14px;
     font-weight: 400;
@@ -851,7 +854,7 @@ $browser-context: 16; // Default
         padding: 8px 0 0 0;
 
         &::after {
-            content: '';
+            content: "";
             display: block;
             clear: both;
         }
@@ -885,7 +888,8 @@ $browser-context: 16; // Default
     padding: 0;
     z-index: 10;
     opacity: 0.9;
-    background: url("data:image/svg+xml; charset=utf-8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' width='22px' height='22px'><path style='fill:rgb(255, 255, 255)' d='M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z'/></svg>") 100% no-repeat;
+    background: url("data:image/svg+xml; charset=utf-8, <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' width='22px' height='22px'><path style='fill:rgb(255, 255, 255)' d='M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z'/></svg>")
+        100% no-repeat;
     background-color: transparent;
 }
 
@@ -998,4 +1002,3 @@ $browser-context: 16; // Default
 // }
 
 // -------- end-slider --------
-
