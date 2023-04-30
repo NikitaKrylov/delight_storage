@@ -9,6 +9,7 @@ function createFile(file, fileTag) {
 	addDelBtn(file);
 }
 
+//добавление имеющихся фото и видео
 for (link of imagesEdLink) {
 	const currImg = link.closest(".add-image");
 	const currVd = link.closest(".add-video");
@@ -31,10 +32,11 @@ for (link of imagesEdLink) {
 
 // $(currFile).prepend(imageCont);
 
-// $.each($(".tags-list__tag"), function (inx, val) {
-// 	if (val.querySelector(".tags-list__checkbox").checked) {
-// 		valueButton(val);
-// 		selectedTags(val);
-// 		show(val);
-// 	}
-// });
+//добавление выбранных тегов
+$.each($(".tags-list__tag"), function (inx, val) {
+	if (val.querySelector(".tags-list__checkbox").checked) {
+		valueButton(val);
+		selectedTags(val);
+		show(val);
+	}
+});

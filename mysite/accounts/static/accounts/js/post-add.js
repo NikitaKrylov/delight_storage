@@ -180,19 +180,6 @@ searchInput.addEventListener("input", function () {
 //   })
 // })
 
-// нахождение максимального id тега и добавление выбранных тегов
-let maxValInp = 0;
-$.each($(".tags-list__tag"), function (inx, val) {
-	console.log(val, val.querySelector(".tags-list__checkbox").value);
-	maxValInp = Math.max(maxValInp, Number(val.querySelector(".tags-list__checkbox").value));
-
-	if (val.querySelector(".tags-list__checkbox").checked) {
-		valueButton(val);
-		selectedTags(val);
-		show(val);
-	}
-});
-
 // создание пользолвательских тегов
 $("#tag_creation_form").on("submit", function (event) {
 	event.preventDefault();
@@ -206,12 +193,13 @@ $("#tag_creation_form").on("submit", function (event) {
 		},
 
 		success: function (json) {
-			console.log(json);
+			let maxValInp = $(".tags-list__tag").length;
+
 			let newtag = $(`
 				<div class="tags-list__tag _show">
 					<label for="id_tags_${maxValInp}">
 						<input checked class="tags-list__checkbox hidden-input three-pos-inp" data-state="1"
-						id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${maxValInp + 1}">
+						id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${json.id}">
 						${json.name.charAt(0).toUpperCase() + json.name.slice(1)}
 					</label>
 				</div>
