@@ -6,13 +6,9 @@ from random import choice
 import os
 from mysite.settings import API_ID, API_HASH, USERNAME
 
-loop = asyncio.new_event_loop()
-asyncio.set_event_loop(loop)
-
 
 async def get_random_image(channel_url: str, limit=80) -> str:
-    print(USERNAME, API_ID, API_HASH)
-    async with TelegramClient(USERNAME, API_ID, API_HASH, loop=loop) as client:
+    async with TelegramClient(USERNAME, API_ID, API_HASH) as client:
         history = await _get_history(client, channel_url, limit=limit)
         target_messages = []
         for message in history.messages:

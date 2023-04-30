@@ -37,16 +37,24 @@ const contTags = document.querySelector(".selected-tags__list");
 const listTags = document.querySelector(".tags-list");
 let arrayitem = document.querySelectorAll(".tags-list__tag");
 
+// arrayitem.forEach((e) => {
+// 	mtag.push(Number(e.querySelector(".tags-list__checkbox").value))
+// })
+
 // действия при нажатии на кнопку
 function valueButton(btn) {
 	// let valueinp = btn.querySelector('.three-pos-inp').value;
-	let valueinp = btn.querySelector(".three-pos-inp").dataset.state;
+	let btninp = btn.querySelector(".three-pos-inp");
+	let valueinp = btninp.dataset.state;
+
 	if (valueinp == "0") {
 		// btn.querySelector('.three-pos-inp').value = '1';
-		btn.querySelector(".three-pos-inp").dataset.state = 1;
+		btninp.dataset.state = 1;
+		btninp.checked = true;
 	} else if (valueinp == "1") {
 		// btn.querySelector('.three-pos-inp').value = '0';
-		btn.querySelector(".three-pos-inp").dataset.state = 0;
+		btninp.dataset.state = 0;
+		btninp.checked = false;
 	}
 }
 
@@ -89,7 +97,7 @@ function selectedTags(btn) {
 
 // tagBtn.addEventListener('click', function(e) {
 // $('.tags-list__tag').change(function(e) {
-$(".tags-list__tag").on("change", function (e) {
+$(document).on("change", ".tags-list__tag", function (e) {
 	let clickBtn = e.target.closest(".tags-list__tag");
 
 	if (clickBtn) {
@@ -173,6 +181,11 @@ searchInput.addEventListener("input", function () {
 // })
 
 // создание пользолвательских тегов
+let maxValInp = 0;
+$.each($(".tags-list__tag"), function (inx, val) {
+	maxValInp = Math.max(maxValInp, Number(val.querySelector(".tags-list__checkbox").value));
+});
+
 $("#tag_creation_form").on("submit", function (event) {
 	event.preventDefault();
 
@@ -186,13 +199,25 @@ $("#tag_creation_form").on("submit", function (event) {
 
 		success: function (json) {
 			console.log(json);
+			maxValInp += 1;
+
+			let newtag = $(`<div class="tags-list__tag _show">
+				<label for="id_tags_${maxValInp}">
+					<input class="tags-list__checkbox hidden-input three-pos-inp" data-state="1"
+					id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${maxValInp + 1}">
+					${json.name}
+				</label>
+			</div>`);
+
+			$(".selected-tags__list").append(newtag);
+
 			$.modal.close();
 		},
 		error: function (response) {
-			console.log(response.responseJSON["error"]);
+			console.log(response.responseJSON["error"][0]);
 			$("#addtags-window")
 				.find(".errorlist")
-				.html(`<li>${response.responseJSON["error"]}</li>`);
+				.html(`<li>${response.responseJSON["error"][0]}</li>`);
 		},
 	});
 });

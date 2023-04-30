@@ -14,7 +14,7 @@ class ImageFile(models.Model):
         FileExtensionValidator(allowed_extensions=ALLOWED_EXTENSIONS)
     ])
     post = models.ForeignKey(
-        'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='images')
+        'posts.Post', on_delete=models.CASCADE, help_text=_(file_post_help_text), related_name='images', null=True, blank=True)
     compressed = models.BooleanField(_('Использование компресии'), default=False)
 
     class Meta:

@@ -76,7 +76,29 @@
     <script src="{% static '/js/index.js' %}"></script>
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
     <script src="{% static 'accounts/js/post-change.js' %}"></script>
-</body>
 
+    <!-- <script>
+        $('#tag_creation_form').on('submit', function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '{% url "create_post_tag" %}',
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                    name: $('#id_name').val(),
+                },
+
+                success: function (json) {
+                    console.log(json);
+
+                },
+                error: function (response) {
+                    console.log(response.responseJSON['errors'][0])
+                }
+            });
+
+        });
+    </script> -->
+</body>
 
 </html>

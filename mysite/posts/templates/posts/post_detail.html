@@ -179,7 +179,7 @@
         <div class="like-wrap">
             <div class="like-cont">
                 <div class="post-cont-likes">
-                    <button class="like-btn button {{like_active}}" data-href="{{ post.get_absolute_like_url }}">
+                    <button class="like-btn button {{like_active}}" data-href="{% url 'post_like' post.pk %}">
                         <div class="_39asK">
                             <i class="like-btn__heart">
                                 <svg class="like-btn__not-pressed" xmlns='http://www.w3.org/2000/svg'
@@ -234,20 +234,21 @@
                                 <div class="post-complaints__link dropdown__subitem">В папку<i
                                         class="fa-solid dropdown__arrow" style="color: #ffffff;"></i>
                                 </div>
+
+                                {% if request.user.folders %}
                                 <ul class="dropdown__list dropdown__sublist">
+                                    {% for folder in request.user.folders.all %}
                                     <li class="dropdown__item">
-                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
+                                        <a class="post-complaints__link dropdown__subitem folde-item__link"
+                                            data-href="{% url 'add_to_folder' folder.pk post.pk %}">{{folder.name}}</a>
                                     </li>
+                                    {% endfor %}
                                     <li class="dropdown__item">
-                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
-                                    </li>
-                                    <li class="dropdown__item">
-                                        <a href="#" class="post-complaints__link dropdown__subitem">папка</a>
-                                    </li>
-                                    <li class="dropdown__item">
-                                        <a class="post-complaints__link dropdown__subitem">папка</a>
+                                        <a class="post-complaints__link dropdown__subitem">Создать папку</a>
                                     </li>
                                 </ul>
+                                {% endif %}
+
                             </li>
                             {% if request.user == post.author %}
                             <!-- <div class="post-complaints__dropdown-item dropdown-item">
@@ -273,7 +274,7 @@
                 <span>
                     Опубликованно:
                     <time>
-                        {{post.pub_date|date:"SHORT_DATE_FORMAT"}}
+                        {{post.formated_pub_date}}
                     </time>
                 </span>
             </div>
@@ -376,7 +377,6 @@
             </section>
         </div>
     </div>
-
 </div>
 {% endblock %}
 
@@ -406,7 +406,30 @@
         });
     });
 </script>
-
 {% endif %}
+<!--Array.from($(this)).forEach( function(element) {-->
+<!--            val url = element.getAttribute('data-href')-->
+<script>
+
+    $('a.folde-item__link').on('click', function () {
+        console.log($(this));
+
+        Array.from($(this)).forEach(function (element) {
+
+            $.ajax({
+                url: element.getAttribute('data-href'),
+                type: 'GET',
+                success: function (response) {
+                    var result =
+                        iziToast.success({
+                            title: `Пост ${response.post} добавлен в папку '${response.folder}'`,
+                        });
+                }
+            })
+        })
+
+    });
+
+</script>
 
 {% endblock %}

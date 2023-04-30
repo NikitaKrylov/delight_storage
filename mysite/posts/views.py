@@ -5,6 +5,7 @@ from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
 from accounts.services.base import get_client_ip
+from mysite.services import ajax_require
 from .forms import SearchForm, CreatePostTagForm
 from .services.base import update_post_views, update_post_like
 from .services.clustering import TagsVectorizer, PostClustering
@@ -23,10 +24,6 @@ from accounts.models import Subscription, User, ClientIP
 from accounts.forms import ComplaintForm
 
 
-def is_ajax(request) -> bool:
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-
-
 @login_required
 @require_http_methods(['POST'])
 def create_post_complain(request, *args, **kwargs):
@@ -43,12 +40,11 @@ def create_post_complain(request, *args, **kwargs):
     raise ValidationError()
 
 
+@ajax_require
 @require_http_methods(['GET'])
 def get_tags(request, *args, **kwargs):
     """Returns Json object with list of dicts contains the name and slug of the tags
      by the requested names"""
-    if not is_ajax(request):
-        raise PermissionDenied()
 
     strings: str = request.GET.get('operation').lower().split()
 
@@ -65,6 +61,7 @@ def get_tags(request, *args, **kwargs):
     return JsonResponse(ctx)
 
 
+@ajax_require
 @require_http_methods(['POST'])
 def create_post_tag(request, *args, **kwargs):
     """Ajax's method which creates tag by the CreatePostTagForm"""
@@ -75,7 +72,8 @@ def create_post_tag(request, *args, **kwargs):
         tag.save()
         return JsonResponse({'name': tag.name, 'slug': tag.slug})
 
-    response = JsonResponse({"error": 'this is an error'})
+    print(form.errors.as_data(), "\n\n\n\n")
+    response = JsonResponse({"errors": list(form.errors.values())})
     response.status_code = 403
     return response
 
@@ -123,7 +121,7 @@ def delete_comment(request, *args, **kwargs):
     return redirect(comment.post)
 
 
-@login_required()
+@login_required
 def delete_post(request, *args, **kwargs):
     post = Post.objects.get(pk=kwargs['pk'])
 
@@ -135,6 +133,7 @@ def delete_post(request, *args, **kwargs):
     return redirect('post_list')
 
 
+@ajax_require
 @require_http_methods(['POST', 'GET'])
 def like_post(request, *args, **kwargs):
     post = get_object_or_404(Post, pk=kwargs['pk'])

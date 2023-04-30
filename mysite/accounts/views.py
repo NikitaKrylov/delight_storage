@@ -172,7 +172,7 @@ def add_to_folder(request, *args, **kwargs):
     if post not in folder:
         folder.add(post)
 
-    return None
+    return JsonResponse({'post': post.id, 'folder': folder.name})
 
 
 @login_required
@@ -476,17 +476,21 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST, instance=self.get_object())
+        image_formset = ImageFileFormSet(
+            request.POST, request.FILES, instance=form.instance)
+        video_formset = VideoFileFormSet(
+            request.POST, request.FILES, instance=form.instance)
 
         if form.is_valid():
             post = form.save()
 
-            image_formset = ImageFileFormSet(
-                request.POST, request.FILES, instance=post)
-            images = image_formset.save()
+            if image_formset.is_valid():
+                for image in image_formset.save(commit=False):
+                    image.save()
 
-            video_formset = VideoFileFormSet(
-                request.POST, request.FILES, instance=post)
-            videos = video_formset.save()
+            if video_formset.is_valid():
+                for video in video_formset.save(commit=False):
+                    video.save()
 
         else:
             return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
