@@ -189,7 +189,10 @@ $("#tag_creation_form").on("submit", function (event) {
 			$.modal.close();
 		},
 		error: function (response) {
-			console.log(response, "error");
+			console.log(response.responseJSON["error"]);
+			$("#addtags-window")
+				.find(".errorlist")
+				.html(`<li>${response.responseJSON["error"]}</li>`);
 		},
 	});
 });
@@ -221,9 +224,10 @@ function addFileField(name, container, form, countForm, addBtn) {
 	if (newForm.querySelectorAll(".files-container").length) {
 		newForm.querySelector(".add-file__btn").textContent = "Выбрать файл";
 		newForm.querySelector(".files-container").remove();
+		newForm.querySelector(".del-btn").remove();
 	}
 
-	container.insertBefore(newForm, addBtn);
+	$(container).append(newForm);
 	totalForms.setAttribute("value", `${countForm + 1}`);
 }
 
@@ -265,6 +269,16 @@ function createFileInfo(file, width, height) {
 	return fileInfo;
 }
 
+function addDelBtn(currFile) {
+	$(currFile.querySelector(".add-file-btn-cont")).after(
+		$(`
+		<span class="add-file__control del-btn button">
+			Удалить
+		</span>
+	`),
+	);
+}
+
 // фото
 let cont = document.querySelector(".add-image-container");
 let addImgForm = document.querySelectorAll(".add-image");
@@ -274,10 +288,7 @@ let addButton = document.querySelector("#add-form-image");
 // let imgInp = document.querySelector('.add-file__input')
 
 // добавление полей фото
-addButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
-});
+
 // addButton.addEventListener("click", function (e) {
 //     e.preventDefault()
 
@@ -295,6 +306,11 @@ addButton.addEventListener("click", function (e) {
 //     totalForms.setAttribute('value', `${imgFormNum + 1}`)
 // });
 
+// addButton.addEventListener("click", function (e) {
+// 	e.preventDefault();
+// 	addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
+// });
+
 function isImage(file) {
 	return file.type.split("/")[0] === "image";
 }
@@ -310,18 +326,12 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 	if (file && isImage(file)) {
 		if (currFile.querySelectorAll(".files-container").length) {
 			currFile.querySelector(".files-container").remove();
+			currFile.querySelector(".del-btn").remove();
+		} else {
+			addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
 		}
 
 		let srcLink = URL.createObjectURL(file);
-
-		// let imageCont = $(`
-		//   <div class="files-container">
-		//     <div class="files-container__file-box">
-		//       <img class="files-container__file" src=${srcLink}>
-		//     </div>
-		//   </div>
-		// `);
-		// $(currFile).prepend(imageCont);
 
 		let imageCont = createFileCont(createImageTag(srcLink));
 		$(currFile).prepend(imageCont);
@@ -332,6 +342,8 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 		});
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
+
+		addDelBtn(currFile);
 	} else {
 		iziToast.info({
 			title: "Выберите изображение",
@@ -355,10 +367,10 @@ let addVdButton = document.querySelector("#add-form-video");
 // let totalVdForms = document.querySelector('#id_videos-TOTAL_FORMS')
 
 // добавление полей видео
-addVdButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
-});
+// addVdButton.addEventListener("click", function (e) {
+// 	e.preventDefault();
+// 	addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
+// });
 
 function isVideo(file) {
 	return file.type.split("/")[0] === "video";
@@ -375,6 +387,9 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 	if (file && isVideo(file)) {
 		if (currFile.querySelectorAll(".files-container").length) {
 			currFile.querySelector(".files-container").remove();
+			currFile.querySelector(".del-btn").remove();
+		} else {
+			addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
 		}
 
 		let srcLink = URL.createObjectURL(file);
@@ -389,6 +404,8 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 		});
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
+
+		addDelBtn(currFile);
 	} else {
 		iziToast.info({
 			title: "Выберите видео",
@@ -460,4 +477,13 @@ $(document).on("click", function (e) {
 $("a[data-modal='#addtags-window']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
+});
+
+$("#addtags-window").on($.modal.OPEN, function (event, modal) {
+	$(".input-user-tags").focus();
+});
+
+$("#addtags-window").on($.modal.CLOSE, function (event, modal) {
+	$("#addtags-window").find(".errorlist").html("");
+	$(".input-user-tags").val("");
 });

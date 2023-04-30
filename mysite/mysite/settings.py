@@ -10,6 +10,7 @@ from pathlib import Path
 import os
 from datetime import datetime
 import configparser
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
 
@@ -25,88 +26,88 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['DEFAULT_DJANGO']['SECRET_KEY']
+SECRET_KEY = config["DEFAULT_DJANGO"]["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.184.100',
-    '192.168.1.3',
-    '127.0.0.1',
-    '192.168.1.2',
-    '172.20.10.2',
-    '192.168.1.13',
-    '192.168.1.11',
-    '192.168.1.4'
+    "192.168.184.100",
+    "192.168.1.3",
+    "127.0.0.1",
+    "192.168.1.2",
+    "172.20.10.2",
+    "192.168.1.13",
+    "192.168.1.11",
+    "192.168.1.4",
+    "192.168.1.5",
 ]
 
 INTERNAL_IPS = [
-    '127.0.0.1',
+    "127.0.0.1",
 ]
 
 # Application definition
 
 INSTALLED_APPS = [
     "colorfield",
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'accounts',
-    'mediacore',
-    'notifications',
-    'contentcreation',
-    'compressor',
-    'compressor_toolkit',
-    'posts',
-    'social_django',
-    'celerycore',
-
-    'debug_toolbar',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "accounts",
+    "mediacore",
+    "notifications",
+    "contentcreation",
+    "compressor",
+    "compressor_toolkit",
+    "posts",
+    "social_django",
+    "celerycore",
+    "debug_toolbar",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 MIDDLEWARE = [
-    'django.middleware.gzip.GZipMiddleware',
-    'htmlmin.middleware.HtmlMinifyMiddleware',
-    'htmlmin.middleware.MarkRequestMiddleware',
-
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    "django.middleware.gzip.GZipMiddleware",
+    "htmlmin.middleware.HtmlMinifyMiddleware",
+    "htmlmin.middleware.MarkRequestMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-ROOT_URLCONF = 'mysite.urls'
+ROOT_URLCONF = "mysite.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            os.path.join(BASE_DIR, "templates"),
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
+WSGI_APPLICATION = "mysite.wsgi.application"
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # SESSION_COOKIE_AGE = None
@@ -115,9 +116,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -127,10 +128,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
 ]
 
@@ -138,10 +139,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = "ru-RU"
 USE_I18N = True
 
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
@@ -160,52 +161,57 @@ MIN_IMAGE_BAIT_SIZE = 1024
 
 PAGINATED_AMOUNT = 20
 
-LOGIN_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy("login")
 
-LOGIN_REDIRECT_URL = reverse_lazy('post_list')
-LOGOUT_REDIRECT_URL = reverse_lazy('post_list')
+LOGIN_REDIRECT_URL = reverse_lazy("post_list")
+LOGOUT_REDIRECT_URL = reverse_lazy("post_list")
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static_styles'),
+    os.path.join(BASE_DIR, "static_styles"),
 ]
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 )
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-POST_MEDIA_PATH = datetime.now().strftime('post_media/%Y/%m/%d')
-ALLOWED_EXTENSIONS = ('jpg', 'png', 'gif', 'webp', 'jpeg',)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+POST_MEDIA_PATH = datetime.now().strftime("post_media/%Y/%m/%d")
+ALLOWED_EXTENSIONS = (
+    "jpg",
+    "png",
+    "gif",
+    "webp",
+    "jpeg",
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
-NOTIFICATIONS_NOTIFICATION_MODEL = 'accounts.Notification'
+NOTIFICATIONS_NOTIFICATION_MODEL = "accounts.Notification"
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.vk.VKOAuth2',
-    'mysite.backends.AuthBackend',
-
+    "social_core.backends.vk.VKOAuth2",
+    "mysite.backends.AuthBackend",
 ]
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = config['SOCIAL_AUTH']['SOCIAL_AUTH_VK_OAUTH2_KEY']
-SOCIAL_AUTH_VK_OAUTH2_SECRET = config['SOCIAL_AUTH']['SOCIAL_AUTH_VK_OAUTH2_SECRET']
-SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_OAUTH2_KEY = config["SOCIAL_AUTH"]["SOCIAL_AUTH_VK_OAUTH2_KEY"]
+SOCIAL_AUTH_VK_OAUTH2_SECRET = config["SOCIAL_AUTH"]["SOCIAL_AUTH_VK_OAUTH2_SECRET"]
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email"]
 
 # memcache
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
-        'LOCATION': '127.0.0.1:11211',
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
     }
     # 'default': {
     #     'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -215,24 +221,24 @@ CACHES = {
 
 # django-compressor
 COMPRESS_ENABLED = True
-COMPRESS_CSS_HASHING_METHOD = 'content'
+COMPRESS_CSS_HASHING_METHOD = "content"
 
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
 )
 
 COMPRESS_FILTERS = {
-    'css': [
-        'compressor.filters.css_default.CssAbsoluteFilter',
+    "css": [
+        "compressor.filters.css_default.CssAbsoluteFilter",
         # # 'compressor.filters.cssmin.CSSMinFilter',
         # 'compressor.filters.template.TemplateFilter'
-        'compressor.filters.cssmin.rCSSMinFilter',
+        "compressor.filters.cssmin.rCSSMinFilter",
     ],
-    'js': [
-        'compressor.filters.jsmin.JSMinFilter',
-    ]
+    "js": [
+        "compressor.filters.jsmin.JSMinFilter",
+    ],
 }
 
 # COMPRESS_PRECOMPILERS = (
@@ -242,8 +248,8 @@ COMPRESS_FILTERS = {
 #     # ('text/x-scss', 'compressor_toolkit.precompilers.SCSSCompiler'),
 # )
 COMPRESS_PRECOMPILERS = (
-    ('text/x-scss', 'compressor_toolkit.precompilers.SCSSCompiler'),
-    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
+    ("text/x-scss", "compressor_toolkit.precompilers.SCSSCompiler"),
+    ("module", "compressor_toolkit.precompilers.ES6Compiler"),
 )
 
 HTML_MINIFY = True
@@ -251,17 +257,17 @@ KEEP_COMMENTS_ON_MINIFYING = True
 COMPRESS_OFFLINE = True
 
 if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 
 # CELERY
-CELERY_BROKER_URL = config['CELERY']['CELERY_BROKER_URL']
-CELERY_RESULT_BACKEND = config['CELERY']['CELERY_RESULT_BACKEND']
+CELERY_BROKER_URL = config["CELERY"]["CELERY_BROKER_URL"]
+CELERY_RESULT_BACKEND = config["CELERY"]["CELERY_RESULT_BACKEND"]
 PUBLISH_POST_SCHEDULE = 10.0  # seconds
 
 # TELETHON
-API_ID = config['TELETHON']['API_ID']
-API_HASH = config['TELETHON']['API_HASH']
-USERNAME = config['TELETHON']['USERNAME']
+API_ID = config["TELETHON"]["API_ID"]
+API_HASH = config["TELETHON"]["API_HASH"]
+USERNAME = config["TELETHON"]["USERNAME"]

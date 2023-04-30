@@ -19,6 +19,34 @@
 </head>
 
 <body id="body">
+
+    <div id="addtags-window" class="modal popup">
+        <div class="popup__inner">
+            <div class="popup__content">
+                <div class="mymodal">
+                    <div class="mymodal__header">
+                        <div class="mymodal__title title-block">Придумайте свой тег</div>
+                    </div>
+                    <form id="tag_creation_form">
+                        {% csrf_token %}
+                        <div class="mymodal__body">
+                            <div class="mymodal__input">
+                                {{tag_form.name}}
+                            </div>
+                        </div>
+                        <div class="mymodal__controls">
+                            <div class="mymodal__buttons">
+                                <!--                            <button class="mymodal__btn button" type="submit">Сохранить</button>-->
+                                <button class="mymodal__btn button button_pink" type="submit"
+                                    rel="modal:close">Добавить</button>
+                                <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="wrapper">
         <main class="page">
             <div class="container">
@@ -48,58 +76,7 @@
     <script src="{% static '/js/index.js' %}"></script>
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
     <script src="{% static 'accounts/js/post-change.js' %}"></script>
-
 </body>
 
-
-<div id="addtags-window" class="modal popup">
-    <div class="popup__inner">
-        <div class="popup__content">
-            <div class="mymodal">
-                <div class="mymodal__header">
-                    <div class="mymodal__title title-block">Придумайте свой тег</div>
-                </div>
-                <form id="tag_creation_form">
-                    {% csrf_token %}
-                    <div class="mymodal__body">
-                        <div class="mymodal__input">
-                            {{tag_form.name}}
-                        </div>
-                    </div>
-                    <div class="mymodal__controls">
-                        <div class="mymodal__buttons">
-<!--                            <button class="mymodal__btn button" type="submit">Сохранить</button>-->
-                            <input class="mymodal__btn button" type="submit" value="Добавить">
-                            <a class="mymodal__btn button button_red" rel="modal:close">Отмена</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-        $('#tag_creation_form').on('submit', function (event) {
-            event.preventDefault();
-            $.ajax({
-                url: '{% url "tags-list" %}',
-                type: 'POST',
-                data: {
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    name: $('#id_name').val(),
-                },
-
-                success: function (json) {
-                    console.log(json);
-
-                },
-                error: function (response) {
-                    console.log(response)
-                }
-            });
-
-        });
-    </script>
 
 </html>

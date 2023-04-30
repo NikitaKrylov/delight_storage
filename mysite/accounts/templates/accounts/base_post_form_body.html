@@ -45,13 +45,14 @@
     </div> -->
 
     <div class="post-add__body status-post">
-        <span class="title">
+        <span class="title title-block">
             {{form.status.label}}
         </span>
 
-        <div class="status-post__dropdown dropdown">
+        <span class="status-post__dropdown dropdown">
             <!-- <span class="status-post__btn button"><i
                   class="status-post__icon fa-solid fa-angle-down"></i></span> -->
+
             <span class="status-post__btn button"></span>
 
             <ul class="status-post__list dropdown__list">
@@ -59,20 +60,20 @@
                 <li class="status-post__item dropdown__item">{{s}}</li>
                 {% endfor %}
             </ul>
-        </div>
+        </span>
     </div>
 
     <div class="post-add__body delay-form">
-        <div class="delay-form__title title">
+        <div class="delay-form__title title title-block">
             {{form.delayed_publication_time.label}}
         </div>
-        <div class="delay-form__form">
+        <span class="delay-form__form">
             {{form.delayed_publication_time}}
-        </div>
+        </span>
     </div>
 
     <div class="post-add__body add-tags">
-
+        <div class="form-error">{{ form.tags.errors }}</div>
         <div class="add-tag__content">
             <div class="search">
                 <div class="search__container">
@@ -132,7 +133,7 @@
     </div>
 
     <div class="post-add__body add-image-container">
-        <div class="add-image-container__title title">Фото</div>
+        <div class="add-image-container__title title title-block">Фото</div>
 
         {{image_formset.management_form}}
         {% for image_form in image_formset %}
@@ -143,20 +144,19 @@
             <div class="add-file__controls">
                 {{image_form.file}}
                 {% if image_formset.can_delete %}
-                <span class="add-file__control del-btn button">
-                    <!-- <i class="fa-solid fa-circle-xmark"></i> -->
+                <!-- <span class="add-file__control del-btn button">
                     Удалить
-                </span>
+                </span> -->
                 {% endif %}
             </div>
         </div>
         {% endfor %}
-        <button id="add-form-image" class="add-form-btn button" type="button">Добавить
-            фото</button>
+        <!-- <button id="add-form-image" class="add-form-btn button" type="button">Добавить
+            фото</button> -->
     </div>
 
     <div class="post-add__body add-video-container">
-        <div class="add-video-container__title title">Видео</div>
+        <div class="add-video-container__title title title-block">Видео</div>
 
         {{video_formset.management_form}}
 
@@ -165,15 +165,15 @@
             <div class="add-file__controls">
                 {{video_form.file}}
                 {% if video_formset.can_delete %}
-                <span class="add-file__control del-btn button">
+                <!-- <span class="add-file__control del-btn button">
                     Удалить
-                </span>
+                </span> -->
                 {% endif %}
             </div>
         </div>
         {% endfor %}
 
-        <button id="add-form-video" class="add-form-btn button" type="button">Добавить
-            видео</button>
+        <!-- <button id="add-form-video" class="add-form-btn button" type="button">Добавить
+            видео</button> -->
     </div>
 </div>

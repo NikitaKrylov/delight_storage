@@ -1047,3 +1047,15 @@ a[rel="modal:close"].button_red {
   background-color: var(--bg-light-secondary-default);
   border: none;
 }
+
+.form-error {
+  padding: 3px 0;
+}
+
+.errorlist {
+  word-wrap: break-word;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 18px;
+  color: var(--error-light);
+}
