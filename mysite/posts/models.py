@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
@@ -155,7 +154,10 @@ class PostTag(models.Model):
     objects = PostTagManager()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name).lower()
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        self.slug = self.slug.lower()
         self.name = self.name.lower()
         return super().save(*args, **kwargs)
 
