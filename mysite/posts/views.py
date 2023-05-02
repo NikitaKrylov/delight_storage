@@ -21,7 +21,7 @@ from .models import Post, Comment, PostTag
 from django.http import Http404, JsonResponse
 from accounts.models import Subscription, User, ClientIP
 
-from accounts.forms import ComplaintForm
+from accounts.forms import ComplaintForm, UserFolderForm
 
 
 @login_required
@@ -167,6 +167,7 @@ class PostDetailView(PostFilterFormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['complaint_form'] = ComplaintForm()
+        context['folder_form'] = UserFolderForm()
         context['title'] = "Пост {}".format(self.object.id)
         context['has_sub'] = False if not self.request.user.is_authenticated else Subscription.objects.filter(
             subscription_object=self.object.author, subscriber=self.request.user).exists()

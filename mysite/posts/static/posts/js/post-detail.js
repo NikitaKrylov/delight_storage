@@ -262,3 +262,9 @@ $("a[data-modal='#complaints-comment-window']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
 });
+
+// окно папок
+$("a[data-modal='#folders-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});

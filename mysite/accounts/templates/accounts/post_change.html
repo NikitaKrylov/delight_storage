@@ -10,6 +10,9 @@
     <meta name="theme-color" content="#05060C">
     <!-- modal window -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+    <!-- richtext -->
+    <link rel="stylesheet" href="{% static 'accounts/css/richtext.min.css' %}">
+
     <link rel="stylesheet" href="{% static '/css/reset.css' %}">
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/post-add.css' %}">
@@ -68,6 +71,8 @@
                 </div>
             </div>
         </main>
+
+        <!-- <div id="editorjs" style="background-color: white;"></div> -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -82,26 +87,12 @@
     <script src="{% static 'accounts/js/post-add.js' %}"></script>
     <script src="{% static 'accounts/js/post-change.js' %}"></script>
 
-    <!-- <script>
-        $('#tag_creation_form').on('submit', function (event) {
-            event.preventDefault();
-            $.ajax({
-                url: '{% url "create_post_tag" %}',
-                type: 'POST',
-                data: {
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                    name: $('#id_name').val(),
-                },
 
-                success: function (json) {
-                    console.log(json);
-
-                },
-                error: function (response) {
-                    console.log(response.responseJSON['errors'][0])
-                }
-            });
-
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_description').summernote();
         });
     </script> -->
 </body>

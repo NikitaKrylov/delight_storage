@@ -505,6 +505,7 @@
 
 .del-btn {
   padding: 0 20px;
+  height: auto;
   cursor: pointer;
   border: 2px solid var(--disable);
 }

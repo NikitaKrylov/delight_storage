@@ -102,9 +102,6 @@
             <div class="mymodal">
                 <div class="mymodal__header">
                     <div class="mymodal__title title">Жалоба</div>
-                    <!-- <div class="mymodal__close close-popup" rel="modal:close">
-                        <i class="fa-solid fa-xmark"></i>
-                    </div> -->
                 </div>
                 <form action="{% url 'create_post_complaint' post.id %}" method="post">
                     {% csrf_token %}
@@ -117,6 +114,24 @@
                         </div>
                     </div>
                     <button class="mymodal__btn button button_pink" type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="folders-window" class="modal popup">
+    <div class="popup__inner">
+        <div class="popup__content">
+            <div class="mymodal">
+                <div class="mymodal__header">
+                    <div class="mymodal__title title">Папки</div>
+                </div>
+                <form action="{% url 'create_post_complaint' post.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="mymodal__body">
+                        {{folder_form}}
+                    </div>
                 </form>
             </div>
         </div>
@@ -244,7 +259,7 @@
                                     </li>
                                     {% endfor %}
                                     <li class="dropdown__item">
-                                        <a class="post-complaints__link dropdown__subitem">Создать папку</a>
+                                        <a href="#folders-window" class="post-complaints__link dropdown__subitem" rel="modal:open" data-modal="#folders-window">Создать папку</a>
                                     </li>
                                 </ul>
                                 {% endif %}
@@ -323,7 +338,7 @@
                     <span class="post-info-details__text">Описание</span>
                 </div>
                 <div class="post-info-details__content post-description">
-                    <p>{{post.description}}</p>
+                    {{post.description}}
                 </div>
             </div>
             {% endif %}
