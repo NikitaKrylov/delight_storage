@@ -116,8 +116,8 @@ $browser-context: 16; // Default
   &__checkbox-indicator {
     width: 22px;
     height: 22px;
-    border: solid 2px var(--bg-light-default);
-    background-color: var(--bg-btn-default);
+    // border: solid 2px var(--bg-light-default);
+    // background-color: var(--bg-btn-default);
   }
 }
 
@@ -617,6 +617,7 @@ $browser-context: 16; // Default
   // top: 0;
   // right: 0;
   padding: 0 20px;
+  height: auto;
   cursor: pointer;
   // font-size: 20px;
   // color: var(--primary-color);

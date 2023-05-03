@@ -380,3 +380,14 @@ $(document).on("click", function (e) {
 		hideAllDropdown(dropdownSubItm, ".dropdown__sublist");
 	}
 });
+
+// кнопка загрузки файлов
+let inputs = document.querySelectorAll(".input-file");
+Array.prototype.forEach.call(inputs, function (input) {
+	let inp = input.querySelector(".input-file__input");
+
+	inp.addEventListener("change", function (e) {
+		input.classList.add("_active");
+		input.querySelector(".input-file__text").innerText = "Готово";
+	});
+});

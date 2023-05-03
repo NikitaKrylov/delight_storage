@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('user/folders/', UserFoldersListView.as_view(), name='user_folders'),
     path('user/folders/create/', CreateUserFolderView.as_view(), name='create_user_folder'),
+    path('user/folders/ajax/create/', create_folder_ajax, name="create_user_folder_ajax"),
     path('user/folders/<int:pk>/', UserFolderView.as_view(), name='user_folder'),
     path('user/folders/<int:pk>/edit/', edit_folder, name='edit_user_folder'),
     path('user/folders/<int:pk>/delete/', delete_folder, name='delete_user_folder'),
