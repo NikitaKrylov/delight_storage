@@ -67,8 +67,6 @@
 .option-post__checkbox-indicator {
   width: 22px;
   height: 22px;
-  border: solid 2px var(--bg-light-default);
-  background-color: var(--bg-btn-default);
 }
 
 .search {

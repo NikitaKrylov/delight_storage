@@ -268,3 +268,31 @@ $("a[data-modal='#folders-window']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
 });
+
+
+// создание пользолвательских тегов
+$("#create_folder_form").on("submit", function (event) {
+	event.preventDefault();
+
+	$.ajax({
+		url: $(this).data("url"),
+		type: $(this).attr("method"),
+		data: {
+			csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+			name: $("#id_name").val(),
+		},
+
+		success: function (json) {
+			console.log(json)
+			$.modal.close();
+		},
+
+		error: function (response) {
+			console.log('response.responseJSON["errors"][0]')
+			// $("#addtags-window")
+			// 	.find(".errorlist")
+			// 	.html(`<li>${response.responseJSON["errors"][0]}</li>`);
+		},
+	});
+});
+

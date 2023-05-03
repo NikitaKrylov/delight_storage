@@ -3,6 +3,7 @@ from django.db.models import Count, Sum
 from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
+from mysite.services import ajax_require
 import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -145,6 +146,16 @@ class CreateUserFolderView(LoginRequiredMixin, PostFilterFormMixin, CreateView):
         self.object.save()
         messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
         return super().form_valid(form)
+
+@ajax_require
+def create_folder_ajax(request, *args, **kwargs):
+    folder  = UserFolderForm(request.POST)
+    if form.is_valid():
+        folder = form.create()
+        return JsonResponse({"id": folder.id, "name" : folder.name})
+    response = JsonResponse({"errors": list(form.errors.values())})
+    response.status_code = 403
+    return response
 
 
 @login_required

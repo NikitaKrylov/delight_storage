@@ -18,17 +18,6 @@
 
 // });
 
-// avatar button
-let inputs = document.querySelectorAll(".input-file");
-Array.prototype.forEach.call(inputs, function (input) {
-	let Inp = input.querySelector(".input-file__input");
-
-	Inp.addEventListener("change", function (e) {
-		input.classList.add("_active");
-		input.querySelector(".input-file__text").innerText = "Красавчик";
-	});
-});
-
 // инициализации календаря
 if (body.classList.contains("_pc")) {
 	$("#id_birth_date").attr("type", "text");
