@@ -1,7 +1,7 @@
 import os
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
 from django.db.models import QuerySet
 from django.dispatch import receiver
 from django.urls import reverse
@@ -53,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     ignored_tags = models.ManyToManyField(
                 "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+    role = models.ForeignKey('Role', verbose_name=_('роль'), on_delete=models.SET_NULL, blank=True, null=True)
 
     objects = UserManager()
 
@@ -76,6 +77,34 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+class Role(models.Model):
+    name = models.CharField(_("название"), max_length=50)
+    image = models.ImageField(_("иконка"), null=True, blank=True)
+    color = models.CharField(_("цвет"), max_length=7, help_text=_("цвет указывается в hex формате"), default="#fff")
+    description = models.CharField(_("описание"), max_length=255, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('роль')
+        verbose_name_plural = _('роли')
+
+    def __str__(self):
+        return self.name
+
+
+def check_role(user: User, role: Union[Role, str]):
+    if isinstance(role, Role):
+        return user.role == role
+    elif isinstance(role, str):
+        return user.role and user.role.name == role
+
+    return False
+
+
+def check_roles(user, roles: List[Union[Role, str]], complete_match=False):
+    rez = [check_role(user, role) for role in roles]
+    return all(rez) if complete_match else any(rez)
 
 
 class FolderPost(models.Model):

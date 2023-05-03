@@ -4,6 +4,7 @@
     <div class="comment__body">
         <div class="comment__inner">
             <div class="comment__head">
+                {% if request.user %}
                 <a href="" class="comment__user">
                     {% if comment.author.avatar %}
                     <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
