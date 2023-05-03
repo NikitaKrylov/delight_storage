@@ -24,8 +24,17 @@
 <div class="account-container">
     <div class="account-header">
         <div class="account-header__hat">
-            <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+            <div class="hat-edit">
+                <div class="hat-edit__btn">
+                    <a href="#" class="hat-edit__link"></a>
+                    <i class="hat-edit__icon fa-solid fa-pen" style="color: #ffffff;"></i>
+                </div>
+            </div>
+            <div>
+                <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+            </div>
         </div>
+
         <div class="account-header__user">
             <div class="account-user">
                 <div class="account-user__avatar-wrapper">
@@ -45,29 +54,15 @@
                 </div>
             </div>
 
-            <div style="display: flex; width: 30%; justify-content: space-between;">
-
-                <div class="logout-btn dark-btn button">
-                    <a href="{% url 'create_post' %}" class="dark-btn__link"></a>
-                    <div class="dark-btn__icon button_pink button_clean">
-                        <i class="fa-solid fa-image"></i>
-                    </div>
-                    <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
-                    <span class="dark-btn__text">Создать пост</span>
+            <div class="logout-btn dark-btn button">
+                <a href="{% url 'logout' %}" class="dark-btn__link"></a>
+                <div class="dark-btn__icon button_red button_clean"><i class="fa-solid fa-arrow-right-from-bracket"></i>
                 </div>
-
-                <div class="logout-btn dark-btn button">
-                    <a href="{% url 'logout' %}" class="dark-btn__link"></a>
-                    <div class="dark-btn__icon button_red button_clean"><i
-                            class="fa-solid fa-arrow-right-from-bracket"></i></div>
-                    <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
-                    <span class="dark-btn__text">Выход</span>
-                </div>
-
+                <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
+                <span class="dark-btn__text">Выход</span>
             </div>
-
-
         </div>
+
         <div class="account-header__nav">
             <ul class="account-nav">
                 <li class="account-nav__item">

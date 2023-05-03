@@ -14,155 +14,163 @@
 {% block content %}
 
 <div class="my-posts-container">
-  <div class="my-stats page-block">
-    <div class="my-stats__body">
-      <div class="my-stats__content my-post-stats">
-        <div class="my-stats__title title">
-          <span class="my-stats__text">Статистика</span>
-        </div>
-        <ul class="my-stats-list">
-          <li class="my-stats-list__item">
-            <div class="stats-info">
-              <div class="stats-info__text">Просмотров</div>
-              <div class="stats-info__value">{{views_amount}}</div>
-            </div>
-          </li>
-          <li class="my-stats-list__item">
-            <div class="stats-info">
-              <div class="stats-info__text">Лайков</div>
-              <div class="stats-info__value">{{likes_amount}}</div>
-            </div>
-          </li>
-          <li class="my-stats-list__item">
-            <div class="stats-info">
-              <div class="stats-info__text">Комментариев</div>
-              <div class="stats-info__value">{{comments_amount}}</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="my-stats__content charts">
-        <canvas id="all-dashboard" class="my-stats__charts" aria-label="Общая статистика"></canvas>
-        <div class="my-stats__controls">
-          <a href="{% url 'dashboard' %}" class="my-stats__btn">Подробнее</a>
-        </div>
-      </div>
-    </div>
-    <div class="add-post">
-      <div class="my-stats__title title">
-        <span class="my-posts__text">Добавить пост</span>
-      </div>
-      <div class="add-post-container">
-        <!-- <div class="add-post-inner"> -->
-        <!-- </div> -->
-        <a href="{% url 'create_post' %}" class="add-post-btn button_pink button_clean">
-          <i class="add-post-btn__icon fa-solid fa-plus"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-  {% if posts %}
+	<div class="my-stats page-block">
+		<div class="my-stats__body">
+			<div class="my-stats__content my-post-stats">
+				<div class="my-stats__title title">
+					<span class="my-stats__text">Статистика</span>
+				</div>
+				<ul class="my-stats-list">
+					<li class="my-stats-list__item">
+						<div class="stats-info">
+							<div class="stats-info__text">Просмотров</div>
+							<div class="stats-info__value">{{views_amount}}</div>
+						</div>
+					</li>
+					<li class="my-stats-list__item">
+						<div class="stats-info">
+							<div class="stats-info__text">Лайков</div>
+							<div class="stats-info__value">{{likes_amount}}</div>
+						</div>
+					</li>
+					<li class="my-stats-list__item">
+						<div class="stats-info">
+							<div class="stats-info__text">Комментариев</div>
+							<div class="stats-info__value">{{comments_amount}}</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="my-stats__content charts">
+				<canvas id="all-dashboard" class="my-stats__charts" aria-label="Общая статистика"></canvas>
+				<div class="my-stats__controls">
+					<a href="{% url 'dashboard' %}" class="my-stats__btn">Подробнее</a>
+				</div>
+			</div>
+		</div>
 
-  <div class="container-gallery">
-    <section class="gallery infinite-container">
-      {% for post in posts %}
+		<!-- <div class="add-post">
+			<div class="my-stats__title title">
+				<span class="my-posts__text">Добавить пост</span>
+			</div>
+			<div class="add-post-container">
+				<a href="{% url 'create_post' %}" class="add-post-btn button_pink button_clean">
+					<i class="add-post-btn__icon fa-solid fa-plus"></i>
+				</a>
+			</div>
+		</div> -->
 
-      <div class="gallery__item item-masonry infinite-item">
-        <div class="gallery__content">
-          {% if post.status != post.STATUS.PUBLISHED %}
-          <div class="gallery__status">
-            {% if post.status == post.STATUS.DEFERRED %}
-            {{post.delayed_publication_time}}
-            {% else %}
-            черновик
-            {% endif %}
-          </div>
-          {% endif %}
-          <div class="gallery__box-media">
-            <a class="gallery__link" href="{{post.get_absolute_url}}">
-              <div class="gallery__thumbnail">
-                {% if post.images.count > 0 %}
-                <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                {% else %}
-                <video class="gallery__media video" width=100% height="100%"
-                  src="{{post.videos.first.file.url}}"></video>
-                {% endif %}
-                <div class="gallery__media-overlay">
+		<div class="add-post-btn dark-btn button">
+			<a href="{% url 'create_post' %}" class="dark-btn__link"></a>
+			<div class="dark-btn__icon button_pink button_clean">
+				<i class="fa-solid fa-image"></i>
+			</div>
+			<span class="dark-btn__text">Создать пост</span>
+		</div>
+	</div>
 
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="gallery__actions cover-item-gallery-container">
-            {% if post.count_media > 1 %}
-            <div class="dots-container">
-              <ul class="dots-items">
-                {% for i in post.count_media|trange %}
-                <li class="dots-items__item"></li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% endif %}
-            <!-- <a href="{{post.get_absolute_url}}"></a> -->
-            <div class="cover-item-gallery">
-              <div>
-                <div class="cover-item-gallery__items">
-                  <div class="cover-item-gallery__LC">
-                    <div class="post-views">
-                      <div class="_39asK">
-                        <div class="gallery__numcom">{{ post.views.count }}</div>
-                        <span><i class="fa-regular fa-eye"></i></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="cover-item-gallery__items-control">
-                    <a href="{% url 'change_post' post.id %}" class="cover-item-gallery__item-control tooltip"
-                      title="Редактировать">
-                      <span><i class="fa-solid fa-pen-to-square"></i></span>
-                    </a>
-                    <a href="{% url 'post_stat' post.id %}" class="cover-item-gallery__item-control tooltip"
-                      title="Статистика">
-                      <span><i class="fa-solid fa-chart-simple"></i></span>
-                    </a>
-                    <a href="{% url 'delete_post' post.id %}"
-                      class="cover-item-gallery__item-control button_red button_clean tooltip" title="Удалить"
-                      data-modal="#confirmation-window">
-                      <span><i class="fa-solid fa-trash-can"></i></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+	{% if posts %}
+	<div class="container-gallery">
+		<section class="gallery infinite-container">
+			{% for post in posts %}
 
-      {% endfor %}
+			<div class="gallery__item item-masonry infinite-item">
+				<div class="gallery__content">
+					{% if post.status != post.STATUS.PUBLISHED %}
+					<div class="gallery__status">
+						{% if post.status == post.STATUS.DEFERRED %}
+						{{post.delayed_publication_time}}
+						{% else %}
+						черновик
+						{% endif %}
+					</div>
+					{% endif %}
+					<div class="gallery__box-media">
+						<a class="gallery__link" href="{{post.get_absolute_url}}">
+							<div class="gallery__thumbnail">
+								{% if post.images.count > 0 %}
+								<img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy"
+									alt="">
+								{% else %}
+								<video class="gallery__media video" width=100% height="100%"
+									src="{{post.videos.first.file.url}}"></video>
+								{% endif %}
+								<div class="gallery__media-overlay">
 
-      <div class="loading-box">
-        <div class="pulse-container">
-          <div class="pulse-bubble pulse-bubble-1"></div>
-          <div class="pulse-bubble pulse-bubble-2"></div>
-          <div class="pulse-bubble pulse-bubble-3"></div>
-        </div>
-      </div>
-    </section>
+								</div>
+							</div>
+						</a>
+					</div>
+					<div class="gallery__actions cover-item-gallery-container">
+						{% if post.count_media > 1 %}
+						<div class="dots-container">
+							<ul class="dots-items">
+								{% for i in post.count_media|trange %}
+								<li class="dots-items__item"></li>
+								{% endfor %}
+							</ul>
+						</div>
+						{% endif %}
+						<!-- <a href="{{post.get_absolute_url}}"></a> -->
+						<div class="cover-item-gallery">
+							<div>
+								<div class="cover-item-gallery__items">
+									<div class="cover-item-gallery__LC">
+										<div class="post-views">
+											<div class="_39asK">
+												<div class="gallery__numcom">{{ post.views.count }}</div>
+												<span><i class="fa-regular fa-eye"></i></span>
+											</div>
+										</div>
+									</div>
+									<div class="cover-item-gallery__items-control">
+										<a href="{% url 'change_post' post.id %}"
+											class="cover-item-gallery__item-control" title="Редактировать">
+											<span><i class="fa-solid fa-pen-to-square"></i></span>
+										</a>
+										<a href="{% url 'post_stat' post.id %}" class="cover-item-gallery__item-control"
+											title="Статистика">
+											<span><i class="fa-solid fa-chart-simple"></i></span>
+										</a>
+										<a href="{% url 'delete_post' post.id %}"
+											class="cover-item-gallery__item-control button_red button_clean"
+											title="Удалить" data-modal="#confirmation-window">
+											<span><i class="fa-solid fa-trash-can"></i></span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    {% if page_obj.has_next %}
-    <div>
-      <a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
-    </div>
-    {% endif %}
-  </div>
+			{% endfor %}
 
-  {% else %}
-  <div class="posts-not-found">
-    <span>Постов нет</span>
-    <div class="posts-not-found__icon">
-      <img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
-    </div>
-  </div>
-  {% endif %}
+			<div class="loading-box">
+				<div class="pulse-container">
+					<div class="pulse-bubble pulse-bubble-1"></div>
+					<div class="pulse-bubble pulse-bubble-2"></div>
+					<div class="pulse-bubble pulse-bubble-3"></div>
+				</div>
+			</div>
+		</section>
+
+		{% if page_obj.has_next %}
+		<div>
+			<a href="?page={{ page_obj.next_page_number }}" class="infinite-more-link"></a>
+		</div>
+		{% endif %}
+	</div>
+
+	{% else %}
+	<div class="posts-not-found">
+		<span>Постов нет</span>
+		<div class="posts-not-found__icon">
+			<img src="{% static 'posts/images/icon/2437-qiqi-cry.gif' %}" width="70px" height="70px">
+		</div>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}
 
@@ -173,51 +181,51 @@
 <script>
 
 
-  new Chart(document.getElementById('all-dashboard'), {
-    type: 'line',
-    data: {
-      labels: {{ dates| safe}},
-    datasets: [
+	new Chart(document.getElementById('all-dashboard'), {
+		type: 'line',
+		data: {
+			labels: {{ dates| safe}},
+		datasets: [
 
-    {
-      label: 'Количество просмотров за день',
-      data: {{ views_values| safe}},
-    borderWidth: 1,
+		{
+			label: 'Количество просмотров за день',
+			data: {{ views_values| safe}},
+		borderWidth: 1,
              },
-    {
-      label: 'Количество лайков за день',
-      data: {{ likes_values| safe}},
-    borderWidth: 1,
+		{
+			label: 'Количество лайков за день',
+			data: {{ likes_values| safe}},
+		borderWidth: 1,
              },
-    {
-      label: 'Количество комментариев за день',
-      data: {{ comments_values| safe}},
-    borderWidth: 1,
+		{
+			label: 'Количество комментариев за день',
+			data: {{ comments_values| safe}},
+		borderWidth: 1,
              },
 
-  ],
+	],
      },
 
-    options: {
-    maintainAspectRatio: false,
-    resizeDelay: 0.5,
-    scales: {
-      y: {
-        ticks: {
-          display: false,
-        }
-      }
-    },
-    animations: {
-      tension: {
-        duration: 5000,
-        easing: 'linear',
-        from: 0.5,
-        to: 0,
-        loop: true
-      }
-    },
-  }
+		options: {
+		maintainAspectRatio: false,
+		resizeDelay: 0.5,
+		scales: {
+			y: {
+				ticks: {
+					display: false,
+				}
+			}
+		},
+		animations: {
+			tension: {
+				duration: 5000,
+				easing: 'linear',
+				from: 0.5,
+				to: 0,
+				loop: true
+			}
+		},
+	}
  });
 </script>
 

@@ -10,8 +10,8 @@
                         <!--                        <input class="search__input-form" name="search" type="text" placeholder="Поиск..."-->
                         <!--                            autocomplete="off" data-search-input value="{{search_input}}">-->
                         {{search_form.text}}
-                        <div class="search__close-btn search__icon tooltip_down" aria-label="очистить">
-                            <i class="fa-solid fa-xmark"></i>
+                        <div class="search__close-btn search__icon">
+                            <i class="fa-solid fa-xmark" title="очистить"></i>
                         </div>
                     </div>
                     <div class="search__controls">
@@ -28,8 +28,8 @@
                             </span>
 
                             <label
-                                class="search-sort__control search-sort__desc-asc button fa-solid {% if not search_form.is_desc.value %}_active{% endif %} tooltip_right"
-                                aria-label="по возростанию">
+                                class="search-sort__control search-sort__desc-asc button fa-solid {% if not search_form.is_desc.value %}_active{% endif %} tooltip tooltip_right tooltip_end"
+                                tooltip-text="по возростанию">
                                 <!-- <input type="checkbox" class="hidden-input" name="sort-direction" value="1">-->
                                 {{search_form.is_desc}}
                             </label>

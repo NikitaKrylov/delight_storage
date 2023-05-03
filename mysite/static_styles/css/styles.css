@@ -184,7 +184,7 @@ body::-webkit-scrollbar-thumb,
 }
 @-moz-document url-prefix() {
   body,
-.scrollbar {
+  .scrollbar {
     scrollbar-width: 10px;
     scrollbar-color: var(--color-scrollbar-thumb) var(--bg-scrollbar);
   }
@@ -329,20 +329,18 @@ a {
   background-color: var(--error-light);
   color: var(--white);
 }
+.button_red.button_clean {
+  color: var(--error-light);
+}
 .button_pink {
   background-color: var(--primary-color);
   color: var(--white);
 }
-.button_clean {
-  background: transparent;
-}
-
-.button_red.button_clean {
-  color: var(--error-light);
-}
-
 .button_pink.button_clean {
   color: var(--primary-color);
+}
+.button_clean {
+  background: transparent;
 }
 
 a[rel="modal:close"].button_red {
@@ -355,9 +353,9 @@ a[rel="modal:close"].button_red {
 }
 
 .dark-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
   position: relative;
   gap: 10px;
   -webkit-box-align: center;
@@ -723,29 +721,16 @@ a[rel="modal:close"].button_red {
   background-color: var(--primary-color);
 }
 
-.tooltip_top,
-.tooltip_down,
-.tooltip_right,
-.tooltip_left,
 .tooltip {
   position: relative;
 }
-.tooltip_top:hover::after,
-.tooltip_down:hover::after,
-.tooltip_right:hover::after,
-.tooltip_left:hover::after,
 .tooltip:hover::after {
   display: block;
 }
-.tooltip_top::after,
-.tooltip_down::after,
-.tooltip_right::after,
-.tooltip_left::after,
 .tooltip::after {
-  content: attr(aria-label);
+  content: attr(tooltip-text);
   position: absolute;
   display: none;
-  margin-top: -5px;
   padding: 0 10px;
   line-height: 28px;
   font-size: 14px;
@@ -762,44 +747,33 @@ a[rel="modal:close"].button_red {
   white-space: nowrap;
   overflow: hidden;
 }
-.tooltip_top_top::after,
-.tooltip_down_top::after,
-.tooltip_right_top::after,
-.tooltip_left_top::after,
 .tooltip_top::after {
   bottom: 100%;
 }
-.tooltip_top_down::after,
-.tooltip_down_down::after,
-.tooltip_right_down::after,
-.tooltip_left_down::after,
 .tooltip_down::after {
   top: 100%;
 }
-.tooltip_top_right::after, .tooltip_top_left::after,
-.tooltip_down_right::after,
-.tooltip_down_left::after,
-.tooltip_right_right::after,
-.tooltip_right_left::after,
-.tooltip_left_right::after,
-.tooltip_left_left::after,
-.tooltip_right::after,
-.tooltip_left::after {
-  top: calc(50% + (100% - 28px) / 2);
+.tooltip_right::after, .tooltip_left::after {
+  top: calc((100% - 28px) / 2);
 }
-.tooltip_top_right::after,
-.tooltip_down_right::after,
-.tooltip_right_right::after,
-.tooltip_left_right::after,
 .tooltip_right::after {
   left: 100%;
 }
-.tooltip_top_left::after,
-.tooltip_down_left::after,
-.tooltip_right_left::after,
-.tooltip_left_left::after,
 .tooltip_left::after {
   right: 100%;
+}
+.tooltip_down.tooltip_start::after, .tooltip_top.tooltip_start::after {
+  right: 100%;
+}
+.tooltip_down.tooltip_end::after, .tooltip_top.tooltip_end::after {
+  left: 100%;
+}
+.tooltip_left.tooltip_start::after, .tooltip_right.tooltip_start::after {
+  top: auto;
+  bottom: 100%;
+}
+.tooltip_left.tooltip_end::after, .tooltip_right.tooltip_end::after {
+  top: 100%;
 }
 
 .radio {

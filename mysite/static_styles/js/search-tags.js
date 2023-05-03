@@ -406,7 +406,7 @@ $(document).ready(function () {
 	});
 
 	if ($(".search-sort__desc-asc input").prop("checked")) {
-		$(".search-sort__desc-asc").attr("aria-label", "по убыванию");
+		$(".search-sort__desc-asc").attr("tooltip-text", "по убыванию");
 	}
 });
 
@@ -415,11 +415,11 @@ $(".search-sort__desc-asc").on("change", function (e) {
 	if ($(e.target).prop("checked")) {
 		$(e.target.closest(".search-sort__desc-asc"))
 			.removeClass("_active")
-			.attr("aria-label", "по убыванию");
+			.attr("tooltip-text", "по убыванию");
 	} else {
 		$(e.target.closest(".search-sort__desc-asc"))
 			.addClass("_active")
-			.attr("aria-label", "по возростанию");
+			.attr("tooltip-text", "по возростанию");
 	}
 });
 

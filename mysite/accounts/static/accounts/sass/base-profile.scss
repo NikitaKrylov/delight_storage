@@ -1,35 +1,41 @@
-$font-family-circeregular: 'CirceRegular';
+$font-family-circeregular: "CirceRegular";
 $width-mobile: 991px;
 
 // перевод px в em
 $browser-context: 16; // Default
 @function em($pixels, $context: $browser-context) {
-    @return #{$pixels/$context}em;
+	@return #{$pixels/$context}em;
 }
 
 $padding-wrapper: 8;
-$min-width: 280-$padding-wrapper*2;
+$min-width: 280-$padding-wrapper * 2;
 
 $max-width: 1920;
 $max-width-сontainer: 1920;
 @mixin adaptive-value($property, $start-size, $end-size, $type) {
-    $add-size: $start-size - $end-size;
-    // только если экран меньше контейнера
-    @if $type == 1 {
-        #{$property}: $start-size + px;
-        @media (max-width: #{$max-width-сontainer + px}) {
-            #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width-сontainer - $min-width}));
-        }
-    } @else if $type == 2 {
-        // только если экран больше контейнера
-        #{$property}: $start-size + px;
-        @media (min-width: #{$max-width-сontainer + px}) {
-            #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width}));
-        }
-    } @else {
-        // всегда
-        #{$property}: calc(#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width}));
-    }
+	$add-size: $start-size - $end-size;
+	// только если экран меньше контейнера
+	@if $type == 1 {
+		#{$property}: $start-size + px;
+		@media (max-width: #{$max-width-сontainer + px}) {
+			#{$property}: calc(
+				#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width-сontainer - $min-width})
+			);
+		}
+	} @else if $type == 2 {
+		// только если экран больше контейнера
+		#{$property}: $start-size + px;
+		@media (min-width: #{$max-width-сontainer + px}) {
+			#{$property}: calc(
+				#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width})
+			);
+		}
+	} @else {
+		// всегда
+		#{$property}: calc(
+			#{$end-size + px} + #{$add-size} * ((100vw - #{$min-width + px}) / #{$max-width - $min-width})
+		);
+	}
 }
 
 .account-container {
@@ -40,84 +46,118 @@ $max-width-сontainer: 1920;
 	overflow: hidden;
 	border-radius: 15px;
 
-		&__hat {
-			overflow: hidden;
-			// height: 200px;
-			height: 160px;
+	&__hat {
+		overflow: hidden;
+		// height: 200px;
+		height: 160px;
 
-			// background-position: center;
-			// background-repeat: no-repeat;
-			// background-size: cover;
-			@media (min-width: $width-mobile) {
-				& {
-					height: 200px;
-				}
+		// background-position: center;
+		// background-repeat: no-repeat;
+		// background-size: cover;
+		@media (min-width: $width-mobile) {
+			& {
+				height: 200px;
 			}
 		}
 
-		&__user {
-      		display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 5px 10px;
-			background-color: var(--bg-secondary-default);
-
-			@media (min-width: $width-mobile) {
-				& {
-					padding: 10px 20px;
-				}
+		&:hover {
+			.hat-edit {
+				display: block;
 			}
 		}
+	}
 
-		&__nav {
-      		display: flex;
-			background-color: var(--bg-secondary-default);
+	&__user {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 5px 10px;
+		background-color: var(--bg-secondary-default);
+
+		@media (min-width: $width-mobile) {
+			& {
+				padding: 10px 20px;
+			}
 		}
+	}
+
+	&__nav {
+		display: flex;
+		background-color: var(--bg-secondary-default);
+	}
 }
 
 .account-hat-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  // background-position: center;
-  // background-repeat: no-repeat;
-  // background-size: cover;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	// background-position: center;
+	// background-repeat: no-repeat;
+	// background-size: cover;
+}
+
+.hat-edit {
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	overflow: hidden;
+
+	&__btn {
+		position: relative;
+		display: inline-flex;
+		padding: 10px;
+		border-radius: 10px;
+		background-color: var(--black);
+		opacity: 0.6;
+	}
+
+	&__link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	&__icon {
+	}
 }
 
 .account-user {
-  display: flex;
-  gap: 20px;
-  align-items: center;
+	display: flex;
+	gap: 20px;
+	align-items: center;
 
-		&__avatar {
-			width: 45px;
-			height: 45px;
+	&__avatar {
+		width: 45px;
+		height: 45px;
 
-			@media (min-width: $width-mobile) {
-				& {
-					width: 80px;
-					height: 80px;
-				}
+		@media (min-width: $width-mobile) {
+			& {
+				width: 80px;
+				height: 80px;
 			}
 		}
+	}
 
-		&__info {
-			display: flex;
-			flex-direction: column;
-			gap: 5px;
-			font-family: $font-family-circeregular;
-		}
+	&__info {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		font-family: $font-family-circeregular;
+	}
 
-		&__username {
-			letter-spacing: 1.2px;
-			@include adaptive-value('font-size', 30, 20, 1);
-			color: var(--white);
-		}
+	&__username {
+		letter-spacing: 1.2px;
+		@include adaptive-value("font-size", 30, 20, 1);
+		color: var(--white);
+	}
 
-		&__status {
-			@include adaptive-value('font-size', 18, 14, 1);
-			color: var(--dark-gray);
-		}
+	&__status {
+		@include adaptive-value("font-size", 18, 14, 1);
+		color: var(--dark-gray);
+	}
 }
 
 .logout-btn {
@@ -128,42 +168,42 @@ $max-width-сontainer: 1920;
 }
 
 .account-nav {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-  font-family: $font-family-circeregular;
+	display: flex;
+	overflow-x: auto;
+	white-space: nowrap;
+	font-family: $font-family-circeregular;
 
-		&__item {
-			// display: inherit;
-			
-			&._active {
-				.account-nav__link {
-					color: var(--secondary-white);
-				}
-			}
-		}
+	&__item {
+		// display: inherit;
 
-		&__icon {
-		}
-
-		&__link,
-		&__link:active {
-			display: block;
-			padding: 13px 15px;
-			color: var(--light-gray);
-			@include adaptive-value('font-size', 18, 14, 1);
-
-			&._current,
-			&:hover {
+		&._active {
+			.account-nav__link {
 				color: var(--secondary-white);
 			}
+		}
+	}
 
-			@media (min-width: $width-mobile) {
-				& {
-					padding: 15px 20px;
-				}				
+	&__icon {
+	}
+
+	&__link,
+	&__link:active {
+		display: block;
+		padding: 13px 15px;
+		color: var(--light-gray);
+		@include adaptive-value("font-size", 18, 14, 1);
+
+		&._current,
+		&:hover {
+			color: var(--secondary-white);
+		}
+
+		@media (min-width: $width-mobile) {
+			& {
+				padding: 15px 20px;
 			}
 		}
+	}
 }
 
 .account-body {
@@ -172,7 +212,6 @@ $max-width-сontainer: 1920;
 
 .page-block {
 	padding: 20px;
-    border-radius: 15px;
-    background-color: var(--bg-secondary-default);
+	border-radius: 15px;
+	background-color: var(--bg-secondary-default);
 }
-

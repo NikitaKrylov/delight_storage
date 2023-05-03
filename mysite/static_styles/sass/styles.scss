@@ -120,7 +120,9 @@ $browser-context: 16; // Default
 	@return #{($pixelsOne/$pixelsTwo) * 100%};
 }
 
+$max-width-mobile: 1280px;
 $width-mobile: 991px;
+$min-width-mobile: 700px;
 
 $max-width: 1920;
 
@@ -398,24 +400,24 @@ a {
 	&_red {
 		background-color: var(--error-light);
 		color: var(--white);
+
+		&.button_clean {
+			color: var(--error-light);
+		}
 	}
 
 	&_pink {
 		background-color: var(--primary-color);
 		color: var(--white);
+
+		&.button_clean {
+			color: var(--primary-color);
+		}
 	}
 
 	&_clean {
 		background: transparent;
 	}
-}
-
-.button_red.button_clean {
-	color: var(--error-light);
-}
-
-.button_pink.button_clean {
-	color: var(--primary-color);
 }
 
 a[rel="modal:close"].button_red {
@@ -428,7 +430,7 @@ a[rel="modal:close"].button_red {
 }
 
 .dark-btn {
-	display: flex;
+	display: inline-flex;
 	position: relative;
 	gap: 10px;
 	align-items: center;
@@ -750,13 +752,10 @@ a[rel="modal:close"].button_red {
 	}
 }
 
-.tooltip_top,
-.tooltip_down,
-.tooltip_right,
-.tooltip_left,
 .tooltip {
 	$ln: 28px;
 	position: relative;
+	z-index: ;
 
 	&:hover {
 		&::after {
@@ -765,12 +764,12 @@ a[rel="modal:close"].button_red {
 	}
 
 	&::after {
-		content: attr(aria-label);
+		content: attr(tooltip-text);
 		position: absolute;
 		// top: -100%;
 		// right: 0;
 		display: none;
-		margin-top: -5px;
+		// margin-top: -5px;
 		padding: 0 10px;
 		line-height: $ln;
 		font-size: 14px;
@@ -796,7 +795,7 @@ a[rel="modal:close"].button_red {
 	&_right,
 	&_left {
 		&::after {
-			top: calc(50% + ((100% - $ln) / 2));
+			top: calc((100% - $ln) / 2);
 		}
 	}
 
@@ -806,6 +805,33 @@ a[rel="modal:close"].button_red {
 
 	&_left::after {
 		right: 100%;
+	}
+
+	&_down,
+	&_top {
+		&.tooltip {
+			&_start::after {
+				right: 100%;
+			}
+
+			&_end::after {
+				left: 100%;
+			}
+		}
+	}
+
+	&_left,
+	&_right {
+		&.tooltip {
+			&_start::after {
+				top: auto;
+				bottom: 100%;
+			}
+
+			&_end::after {
+				top: 100%;
+			}
+		}
 	}
 }
 

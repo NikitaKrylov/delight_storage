@@ -1,4 +1,5 @@
 $width-mobile: 991px;
+$min-width-mobile: 700px;
 
 .my-posts-container {
 }
@@ -14,7 +15,7 @@ $width-mobile: 991px;
         display: flex;
         gap: 15px;
         flex-direction: column;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
 
         @media (min-width: $width-mobile) {
             flex-direction: row;
@@ -54,7 +55,7 @@ $width-mobile: 991px;
 .charts {
     position: relative;
     height: 30vh;
-    width: 90vw;
+    width: 86vw;
     margin: auto;
     // max-height: 300px;
     > canvas {
@@ -222,16 +223,21 @@ $width-mobile: 991px;
     position: relative;
     display: flex;
     justify-content: center;
-    max-width: 400px;
+    max-width: 100%;
     max-height: 100px;
     width: 100%;
     height: 100%;
+    // margin: 0 auto;
     overflow: hidden;
     z-index: 1;
     padding: 20px;
     background-color: var(--bg-light-secondary-default);
-
     // color: var(--primary-color);
+
+    @media (min-width: $min-width-mobile) {
+        max-width: 300px;
+        padding: 15px;
+    }
 
     &::before {
         content: "";
