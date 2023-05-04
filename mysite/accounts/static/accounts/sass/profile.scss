@@ -64,7 +64,7 @@ input[type="date"] {
 // }
 
 .date-inp-icon {
-    // height: 22px;
+    height: 22px;
     
     // background-repeat: no-repeat;
     // background-blend-mode: screen, normal;
@@ -74,7 +74,10 @@ input[type="date"] {
     // background-size: 16px;
     // appearance: none;
     // padding-left: 20px;
-    margin-left: -15px;
+    position: absolute;
+    // margin-left: -15px;
+    top: calc((100% - 22px) / 2);
+    right: 10px;
     color: var(--primary-color);
 }
 

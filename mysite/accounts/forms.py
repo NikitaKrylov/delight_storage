@@ -75,7 +75,7 @@ class EditUserProfileForm(forms.ModelForm):
         )
         widgets = {
             'avatar': ClearableAvatarFileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
-            'birth_date': forms.DateInput(attrs={'type': 'date', 'autocomplete': 'off'}),
+            'birth_date': forms.DateInput(attrs={'type': 'date', 'autocomplete': 'off', 'style': 'max-width: 232px; padding-right: 30px;'}),
             'username': forms.TextInput(),
             'email': forms.EmailInput(),
         }
@@ -94,7 +94,7 @@ class UserFolderForm(forms.ModelForm):
         widgets = {
             'icon': forms.FileInput(attrs={'class': 'input-file__input hidden-input', 'id': 'input-file__input'}),
             'name': forms.TextInput(attrs={'placeholder': 'Имя папки', 'class': ''}),
-            'description': forms.Textarea(attrs={'placeholder': 'Описание', 'class': ''}),
+            'description': forms.Textarea(attrs={'placeholder': 'Описание', 'class': 'textarea__input', 'cols': 20, 'rows': 2}),
             'is_private': forms.CheckboxInput(attrs={'class': 'hidden-input checkbox__input'}),
         }
 

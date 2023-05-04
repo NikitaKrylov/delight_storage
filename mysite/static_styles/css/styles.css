@@ -918,6 +918,7 @@ a[rel="modal:close"].button_red {
 @media (min-width: 991px) {
   .dropdown__sublist {
     top: 0;
+    right: auto;
     left: 100%;
     margin: 0 0 0 5px;
   }
@@ -1085,9 +1086,10 @@ a[rel="modal:close"].button_red {
 }
 .input-list__text {
   color: var(--white);
-  width: 200px;
+  width: 180px;
 }
 .input-list__input {
+  position: relative;
   border-radius: 5px;
   background: transparent;
   border: 1px solid var(--bg-light-default);
@@ -1096,10 +1098,11 @@ a[rel="modal:close"].button_red {
   border-color: var(--light-secondary-violet);
 }
 .input-list__input > input {
-  color: var(--secondary-white);
-  border: none;
-  background: transparent;
   padding: 15px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--secondary-white);
 }
 
 .input-file {

@@ -269,6 +269,11 @@ $("a[data-modal='#folders-window']").on("click", function (e) {
 	return false;
 });
 
+$("#folders-window").on($.modal.OPEN, function (e) {
+	$("#id_name").focus()
+});
+
+
 // создание пользолвательских тегов
 $("#create_folder_form").on("submit", function (event) {
 	event.preventDefault();
@@ -283,7 +288,7 @@ $("#create_folder_form").on("submit", function (event) {
 
 		success: function (json) {
 			let newFolder = $(`<li class="dropdown__item"><a data-id="${json['id']}" class="post-complaints__link dropdown__subitem folder-item__link">${json['name']}</a></li>`);
-            $(".folders-list").prepend(newFolder);
+            $(".folders-list").append(newFolder);
             $.modal.close()
 		},
 

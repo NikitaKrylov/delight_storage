@@ -931,12 +931,16 @@ a[rel="modal:close"].button_red {
 		display: none;
 		position: absolute;
 		top: 100%;
+
 		right: 0;
+		// left: -100%;
+
 		margin: 0;
 		background-color: var(--bg-light-primary-default);
 
 		@media (min-width: $width-mobile) {
 			top: 0;
+			right: auto;
 			left: 100%;
 			margin: 0 0 0 5px;
 		}
@@ -1135,11 +1139,12 @@ a[rel="modal:close"].button_red {
         
 		&__text {
             color: var(--white);
-            width: 200px;
+            width: 180px;
 		}
 
         &__input {
             // padding: 15px;
+			position: relative;
             border-radius: 5px;
             background: transparent;
             border: 1px solid var(--bg-light-default);
@@ -1150,10 +1155,11 @@ a[rel="modal:close"].button_red {
             }
 
             >input {
-                color: var(--secondary-white);
-                border: none;
-                background: transparent;
 				padding: 15px;
+				width: 100%;
+				background: transparent;
+				border: none;
+                color: var(--secondary-white);
                 // padding-right: 15px;
             }
 		}
