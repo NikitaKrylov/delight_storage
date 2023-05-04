@@ -81,22 +81,6 @@ class EditUserProfileForm(forms.ModelForm):
         }
 
 
-class UserSettingsForm(forms.Form):
-    ignored_tags = forms.ModelMultipleChoiceField(
-        queryset=PostTag.objects.all(),
-        widget=forms.CheckboxSelectMultiple()
-    )
-
-    def __init__(self, *args, user: User, **kwargs):
-        super().__init__(*args, **kwargs)
-        initial = []
-
-        for i, choice in enumerate(self.fields['ignored_tags'].choices):
-            if user.ignored_tags.filter(name=choice[1]).exists():
-                initial.append(i+1)
-
-        self.fields['ignored_tags'].initial = initial
-
 
 class UserFolderForm(forms.ModelForm):
     class Meta:

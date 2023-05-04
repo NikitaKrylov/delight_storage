@@ -17,7 +17,7 @@ from django.views.generic.edit import CreateView, UpdateView, FormView
 from .mixins import CheckUserConformity
 from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm, UserSettingsForm, UserFolderForm
+    UserSetPasswordForm, UserFolderForm
 from .models import User, Subscription
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
@@ -146,16 +146,6 @@ class CreateUserFolderView(LoginRequiredMixin, PostFilterFormMixin, CreateView):
         self.object.save()
         messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
         return super().form_valid(form)
-
-@ajax_require
-def create_folder_ajax(request, *args, **kwargs):
-    folder  = UserFolderForm(request.POST)
-    if form.is_valid():
-        folder = form.create()
-        return JsonResponse({"id": folder.id, "name" : folder.name})
-    response = JsonResponse({"errors": list(form.errors.values())})
-    response.status_code = 403
-    return response
 
 
 @login_required
@@ -383,29 +373,14 @@ class SelfUserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixi
         return context
 
 
-class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, FormView):
+class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, TemplateView):
     login_url = reverse_lazy('login')
-    form_class = UserSettingsForm
     template_name = 'accounts/settings.html'
-
-    def get_form(self, form_class=None):
-        return self.form_class(user=self.request.user)
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Настройки'
         return context
-
-
-@login_required(login_url=reverse_lazy('login'))
-def edit_user_settings(request, *args, **kwargs):
-    ctx = {}
-    form = UserSettingsForm(request.POST, user=request.user)
-
-    if form.is_valid():
-        pass
-
-    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 class UserSubscriptionListView(LoginRequiredMixin, PostFilterFormMixin, ListView):

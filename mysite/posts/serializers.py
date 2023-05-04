@@ -4,12 +4,11 @@ from mediacore.serializers import ImageFileSerializer, VideoFileSerializer
 
 
 class PostTagSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(max_length=50)
     slug = serializers.CharField(max_length=50, allow_blank=True, allow_null=True, required=False)
 
     class Meta:
         model = PostTag
-        fields = ('name', 'slug',)
+        fields = ('id', 'name', 'slug',)
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'}

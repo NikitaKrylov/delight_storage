@@ -123,7 +123,7 @@ class FolderPost(models.Model):
 
 class Folder(models.Model):
     user = models.ForeignKey(User, models.CASCADE, related_name='folders', verbose_name=_('пользователь'))
-    name = models.CharField(max_length=70, verbose_name=_('Название'))
+    name = models.CharField(max_length=30, verbose_name=_('Название'))
     icon = models.ImageField(_('иконка'), blank=True, null=True)
     description = models.CharField(max_length=250, blank=True, null=True, verbose_name=_('описание'))
     is_private = models.BooleanField(_('приватная папка'), default=True, help_text=_('другие пользователи смогут видеть содержимое папки'))
@@ -146,6 +146,11 @@ class Folder(models.Model):
 
         else:
             FolderPost.objects.create(post=obj, folder=self)
+
+    def clean(self):
+        if self.user.folders.filter(name=self.name):
+            raise ValueError(_("Папка с таким названием уже существует"))
+        return super().clean()
 
     def remove(self, obj):
         if isinstance(obj, FolderPost):

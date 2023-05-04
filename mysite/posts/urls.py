@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import *
 from .api_views import *
+from accounts.views import add_to_folder
 
 router = DefaultRouter()
 router.register("api/posts", PostViewSet, basename='posts')
@@ -16,6 +17,7 @@ urlpatterns = [
     path('posts/search/<slug:slug>/', SearchPostTagListView.as_view(), name='search_by_tag'),
     path('posts/complication/', PostCompilationsList.as_view(), name='complication'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post'),
+    path('post/<int:post>/add_to_folder/<int:folder>/', add_to_folder, name='add_to_folder'),
     path('post/<int:pk>/delete/', delete_post, name='delete_post'),
 
     path('post/<int:pk>/comments/add/', create_post_comment, name='add_comment'),
