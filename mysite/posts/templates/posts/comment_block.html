@@ -4,14 +4,17 @@
     <div class="comment__body">
         <div class="comment__inner">
             <div class="comment__head">
-                {% if request.user %}
-                <a href="" class="comment__user">
-                    {% if comment.author.avatar %}
-                    <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
-                    {% else %}
-                    <img class="comment__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
-                    {% endif %}
-                    <span class="comment__username">{{comment.author}}</span>
+                {% if request.user != comment.author %}
+                    <a href="{% url 'user_info' comment.author.id %}" class="comment__user">
+                {% else %}
+                    <a href="{% url 'profile' %}" class="comment__user">
+                {% endif %}
+                {% if comment.author.avatar %}
+                <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
+                {% else %}
+                <img class="comment__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                {% endif %}
+                <span class="comment__username">{{comment.author}}</span>
                 </a>
                 <time class="comment__date-time">
                     <time>{{comment.pub_date|date:"SHORT_DATE_FORMAT"}}</time>

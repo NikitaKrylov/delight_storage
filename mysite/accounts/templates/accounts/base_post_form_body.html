@@ -1,3 +1,5 @@
+<div class="form-error">{{ form.non_field_errors }}</div>
+
 <div class="post-add">
     <div class="post-add__body option-post">
         <label class="option-post__checkbox checkbox">
@@ -48,6 +50,8 @@
         <span class="title title-block">
             {{form.status.label}}
         </span>
+        <div class="form-error">{{ form.status.errors }}</div>
+
 
         <span class="status-post__dropdown dropdown">
             <!-- <span class="status-post__btn button"><i
@@ -73,7 +77,6 @@
     </div>
 
     <div class="post-add__body add-tags">
-        <div class="form-error">{{ form.tags.errors }}</div>
         <div class="add-tag__content">
             <div class="search">
                 <div class="search__container">
@@ -81,6 +84,8 @@
                         <div class="search__title title">
                             Теги
                         </div>
+                                <div class="form-error">{{ form.tags.errors }}</div>
+
                         <div class="search__body">
                             <div class="search__input-container">
                                 <div class="search__input">
@@ -164,6 +169,9 @@
 
         {% for video_form in video_formset %}
         <div class="add-file add-video">
+            {% for hidden in video_form.hidden_fields %}
+            {{hidden}}
+            {% endfor %}
             <div class="add-file__controls">
                 {{video_form.file}}
                 {% if video_formset.can_delete %}

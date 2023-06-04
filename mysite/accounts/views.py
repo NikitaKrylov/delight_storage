@@ -19,7 +19,7 @@ from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
     UserSetPasswordForm, UserFolderForm
 from .models import User, Subscription
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, resolve
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
@@ -80,7 +80,7 @@ class RegisterView(CreateView):
 class AuthenticationView(LoginView):
     form_class = AuthenticationUserForm
     template_name = 'accounts/authentication.html'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('home')
 
 
 # -----------------------Password reset-----------------------------
@@ -428,17 +428,23 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
             form.save_m2m()
 
-            if image_formset.is_valid():
-                for image in image_formset.save(commit=False):
-                    image.save()
+            images = image_formset.save(commit=False)
+            videos = video_formset.save(commit=False)
 
-            if video_formset.is_valid():
-                for video in video_formset.save(commit=False):
-                    video.save()
+            print(len(images) + len(videos))
+
+            if len(images) + len(videos) == 0:
+                form.add_error(None, "Пост должен иметь хотя бы один файл")
+                return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'video_formset': video_formset, 'tag_form':CreatePostTagForm()})
+
+            for image in images:
+                image.save()
+            for video in videos:
+                video.save()
 
             messages.success(request, "{} создан.".format(str(post)))
             return redirect('self_user_posts')
-        return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
+        return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'video_formset': video_formset, 'tag_form': CreatePostTagForm()})
 
 
 class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
@@ -479,7 +485,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
                     video.save()
 
         else:
-            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
+            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance), 'video_formset': VideoFileFormSet(instance=form.instance), 'tag_form': CreatePostTagForm()})
 
         messages.success(request, "{} изменен.".format(str(post)))
         return redirect('self_user_posts')
