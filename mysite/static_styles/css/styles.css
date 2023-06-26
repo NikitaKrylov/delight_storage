@@ -724,6 +724,7 @@ a[rel="modal:close"].button_red {
 
 .tooltip {
   position: relative;
+  z-index: 10;
 }
 .tooltip:hover::after {
   display: block;

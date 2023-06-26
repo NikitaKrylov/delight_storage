@@ -295,7 +295,7 @@
                                 </div>
 
                                 {% if request.user.folders %}
-                                <ul class="dropdown__list dropdown__sublist">
+                                <ul class="dropdown__list dropdown__sublist folders-list">
                                     {% for folder in request.user.folders.all %}
                                     <li class="dropdown__item">
                                         <a class="post-complaints__link dropdown__subitem folde-item__link"
@@ -303,7 +303,8 @@
                                     </li>
                                     {% endfor %}
                                     <li class="dropdown__item">
-                                        <a href="#folders-window" class="post-complaints__link dropdown__subitem" rel="modal:open" data-modal="#folders-window">Создать папку</a>
+                                        <a href="#folders-window" class="post-complaints__link dropdown__subitem"
+                                            rel="modal:open" data-modal="#folders-window">Создать папку</a>
                                     </li>
                                 </ul>
                                 {% endif %}

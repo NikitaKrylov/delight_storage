@@ -16,7 +16,6 @@ function btn(button, closebtn, parent) {
 		if (!e.target.closest(".search__container")) {
 			clsname.removeClass("_active");
 			document.body.classList.remove("_lock");
-			console.log("d");
 		} else {
 			if (clsbtn) {
 				clsbtn.click(function (e) {

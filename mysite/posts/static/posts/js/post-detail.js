@@ -269,7 +269,6 @@ $("a[data-modal='#folders-window']").on("click", function (e) {
 	return false;
 });
 
-
 // создание пользолвательских тегов
 $("#create_folder_form").on("submit", function (event) {
 	event.preventDefault();
@@ -283,12 +282,12 @@ $("#create_folder_form").on("submit", function (event) {
 		},
 
 		success: function (json) {
-			console.log(json)
+			console.log(json);
 			$.modal.close();
 		},
 
 		error: function (response) {
-			console.log('response.responseJSON["errors"][0]')
+			console.log('response.responseJSON["errors"][0]');
 			// $("#addtags-window")
 			// 	.find(".errorlist")
 			// 	.html(`<li>${response.responseJSON["errors"][0]}</li>`);
@@ -296,3 +295,10 @@ $("#create_folder_form").on("submit", function (event) {
 	});
 });
 
+let newFolder = $(`
+	<li class="dropdown__item">
+		<a class="dropdown__subitem">имя папки</a>
+	</li>
+`);
+
+$(".folders-list").append(newFolder);

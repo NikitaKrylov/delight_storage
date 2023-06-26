@@ -147,17 +147,21 @@ function inserMark(string, position, fullLen) {
 
 function search(array, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
-	array.forEach(function (e) {
+	array.forEach((e) => {
 		// let valueinp = e.querySelector('.three-pos-inp').value;
 		let valueinp = e.querySelector(".three-pos-inp").dataset.state;
-		if (searchForMatches(e.innerText, textInp) && valueinp == "0") {
-			// e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
-			show(e);
-		} else {
-			if (valueinp == "0") {
-				hide(e);
+
+		for (let text of textInp.split(" ")) {
+			if (searchForMatches(e.innerText, text) && valueinp == "0") {
+				// e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
+				show(e);
+				return;
+			} else {
+				if (valueinp == "0") {
+					hide(e);
+				}
+				// e.getElementsByTagName('span')[0].innerHTML = e.innerText;
 			}
-			// e.getElementsByTagName('span')[0].innerHTML = e.innerText;
 		}
 	});
 }
