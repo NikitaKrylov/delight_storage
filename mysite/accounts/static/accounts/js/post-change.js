@@ -31,12 +31,3 @@ for (link of imagesEdLink) {
 }
 
 // $(currFile).prepend(imageCont);
-
-//добавление выбранных тегов
-$.each($(".tags-list__tag"), function (inx, val) {
-	if (val.querySelector(".tags-list__checkbox").checked) {
-		valueButton(val);
-		selectedTags(val);
-		show(val);
-	}
-});

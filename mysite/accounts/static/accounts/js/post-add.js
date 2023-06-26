@@ -42,6 +42,7 @@ let arrayitem = document.querySelectorAll(".tags-list__tag");
 // })
 
 // действия при нажатии на кнопку
+
 function valueButton(btn) {
 	// let valueinp = btn.querySelector('.three-pos-inp').value;
 	let btninp = btn.querySelector(".three-pos-inp");
@@ -116,6 +117,7 @@ $(document).on("change", ".tags-list__tag", function (e) {
 });
 
 // действия при вводе текста
+
 function searchForMatches(text, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
 	return text.toLowerCase().includes(textInp.toLowerCase()) || textInp == "";
@@ -220,6 +222,15 @@ $("#tag_creation_form").on("submit", function (event) {
 				.html(`<li>${response.responseJSON["errors"][0]}</li>`);
 		},
 	});
+});
+
+//добавление выбранных тегов
+$.each($(".tags-list__tag"), function (inx, val) {
+	if (val.querySelector(".tags-list__checkbox").checked) {
+		valueButton(val);
+		selectedTags(val);
+		show(val);
+	}
 });
 
 // =====================================================
