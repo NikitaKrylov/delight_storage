@@ -1,5 +1,4 @@
 import os
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
 from django.db.models import QuerySet
@@ -9,7 +8,6 @@ from django.utils import timezone
 from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
-from telethon.tl.types import Folder
 
 
 class UserManager(BaseUserManager):
@@ -249,7 +247,7 @@ class PostComplaint(models.Model):
         BAD_TAG = 'BT', _('Несоответствие тегам')
         BAD_MEDIA = 'BM', _('Неподходящие/плохие медиа')
         PLAGIAT = 'PL', _('Плагиат')
-        ANOTHER = 'AN', _("Еще")
+        ANOTHER = 'AN', _("Другое")
 
     status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
     type = models.CharField(_('тип жалобы'), choices=Types.choices, default=Types.BAD_TAG, max_length=40)
@@ -260,4 +258,5 @@ class PostComplaint(models.Model):
 
     def __str__(self):
         return 'Жалоба на {} от {}'.format(self.post, self.sender)
+
 

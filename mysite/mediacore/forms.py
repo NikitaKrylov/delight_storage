@@ -27,8 +27,6 @@ class ImageInlineFormSet(BaseInlineFormSet):
         attrs={"class": "add-image__del-btn checkbox__input hidden-input"})
 
 
-
-
 ImageFileFormSet = inlineformset_factory(
     Post, ImageFile, form=ImageFileForm, formset=ImageInlineFormSet, extra=1)
 

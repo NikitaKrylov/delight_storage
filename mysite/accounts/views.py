@@ -424,9 +424,6 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         if form.is_valid() and (image_formset.is_valid() or video_formset.is_valid()):
             post = form.save(commit=False)
             post.author = request.user
-            post.save()
-
-            form.save_m2m()
 
             images = image_formset.save(commit=False)
             videos = video_formset.save(commit=False)
@@ -436,6 +433,9 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             if len(images) + len(videos) == 0:
                 form.add_error(None, "Пост должен иметь хотя бы один файл")
                 return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'video_formset': video_formset, 'tag_form':CreatePostTagForm()})
+
+            post.save()
+            form.save_m2m()
 
             for image in images:
                 image.save()

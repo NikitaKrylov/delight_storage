@@ -19,3 +19,9 @@ def mark_current_page(request, url: str):
 @register.filter(name='trange')
 def trange(rangelable):
     return range(rangelable)
+
+
+@register.filter(name='short_num')
+def short_num(value):
+    ...
+
