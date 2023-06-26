@@ -46,20 +46,29 @@
                 </div>
                 <div class="account-user__info">
                     <span class="account-user__username">{{request.user.username}}</span>
-                    {% if request.user.is_superuser %}
-                    <span class="account-user__status">
-                        Admin
-                    </span>
+                    <!--                    {% if request.user.is_superuser %}-->
+                    <!--                    <span class="account-user__status">-->
+                    <!--                        Admin-->
+                    <!--                    </span>-->
+                    <!--                    {% endif %}-->
+                    {% if request.user.role %}
+                    <span style="color: {{request.user.role.color}};">{{request.user.role.name}}</span>
                     {% endif %}
                 </div>
             </div>
 
-            <div class="logout-btn dark-btn button">
-                <a href="{% url 'logout' %}" class="dark-btn__link"></a>
-                <div class="dark-btn__icon button_red button_clean"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <div>
+
+
+
+                <div class="logout-btn dark-btn button">
+                    <a href="{% url 'logout' %}" class="dark-btn__link"></a>
+                    <div class="dark-btn__icon button_red button_clean"><i
+                            class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                    <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
+                    <span class="dark-btn__text">Выход</span>
                 </div>
-                <!-- <a href="{% url 'signup' %}" class="dark-btn__button">Выход</a> -->
-                <span class="dark-btn__text">Выход</span>
+
             </div>
         </div>
 

@@ -1,7 +1,7 @@
 import os
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
 from django.db.models import QuerySet
 from django.dispatch import receiver
 from django.urls import reverse
@@ -53,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     ignored_tags = models.ManyToManyField(
                 "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+    role = models.ForeignKey('Role', verbose_name=_('роль'), on_delete=models.SET_NULL, blank=True, null=True)
 
     objects = UserManager()
 
@@ -78,6 +79,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
+class Role(models.Model):
+    name = models.CharField(_("название"), max_length=50)
+    image = models.ImageField(_("иконка"), null=True, blank=True)
+    color = models.CharField(_("цвет"), max_length=7, help_text=_("цвет указывается в hex формате"), default="#fff")
+    description = models.CharField(_("описание"), max_length=255, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('роль')
+        verbose_name_plural = _('роли')
+
+    def __str__(self):
+        return self.name
+
+
+def check_role(user: User, role: Union[Role, str]):
+    if isinstance(role, Role):
+        return user.role == role
+    elif isinstance(role, str):
+        return user.role and user.role.name == role
+
+    return False
+
+
+def check_roles(user, roles: List[Union[Role, str]], complete_match=False):
+    rez = [check_role(user, role) for role in roles]
+    return all(rez) if complete_match else any(rez)
+
+
 class FolderPost(models.Model):
     post = models.ForeignKey('posts.Post', models.CASCADE, verbose_name=_('пост'))
     folder = models.ForeignKey('Folder', models.CASCADE, related_name='posts', verbose_name=_('папка'))
@@ -94,7 +123,7 @@ class FolderPost(models.Model):
 
 class Folder(models.Model):
     user = models.ForeignKey(User, models.CASCADE, related_name='folders', verbose_name=_('пользователь'))
-    name = models.CharField(max_length=70, verbose_name=_('Название'))
+    name = models.CharField(max_length=30, verbose_name=_('Название'))
     icon = models.ImageField(_('иконка'), blank=True, null=True)
     description = models.CharField(max_length=250, blank=True, null=True, verbose_name=_('описание'))
     is_private = models.BooleanField(_('приватная папка'), default=True, help_text=_('другие пользователи смогут видеть содержимое папки'))
@@ -117,6 +146,11 @@ class Folder(models.Model):
 
         else:
             FolderPost.objects.create(post=obj, folder=self)
+
+    def clean(self):
+        if self.user.folders.filter(name=self.name):
+            raise ValueError(_("Папка с таким названием уже существует"))
+        return super().clean()
 
     def remove(self, obj):
         if isinstance(obj, FolderPost):

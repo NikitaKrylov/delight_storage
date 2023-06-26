@@ -6,6 +6,7 @@ from .api_views import *
 
 router = DefaultRouter()
 router.register('api/users', UserViewSet, basename='users')
+router.register('api/folders', UserFolderViewSet, basename='folders')
 
 
 urlpatterns = [
@@ -24,15 +25,13 @@ urlpatterns = [
          EditPostView.as_view(), name='change_post'),
 
     path('user/settings/', UserSettingsFormView.as_view(), name='user_settings'),
-    path('user/settings/edit/', edit_user_settings, name='user_settings_edit'),
 
     path('user/folders/', UserFoldersListView.as_view(), name='user_folders'),
     path('user/folders/create/', CreateUserFolderView.as_view(), name='create_user_folder'),
-    path('user/folders/ajax/create/', create_folder_ajax, name="create_user_folder_ajax"),
     path('user/folders/<int:pk>/', UserFolderView.as_view(), name='user_folder'),
     path('user/folders/<int:pk>/edit/', edit_folder, name='edit_user_folder'),
     path('user/folders/<int:pk>/delete/', delete_folder, name='delete_user_folder'),
-    path('user/folders/<int:folder>/add/<int:post>/', add_to_folder, name='add_to_folder'),
+    path('user/folders/<int:folder>/add/<int:post>/', add_to_folder, name='add_post_to_folder'),
     path('user/folders/<int:folder>/remove/<int:post>/', remove_from_folder, name='remove_from_folder'),
 
     path('user/notifications/', UserNotificationListView.as_view(),

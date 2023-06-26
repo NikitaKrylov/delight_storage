@@ -17,9 +17,9 @@ from django.views.generic.edit import CreateView, UpdateView, FormView
 from .mixins import CheckUserConformity
 from .models import Notification, Folder
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm, UserSettingsForm, UserFolderForm
+    UserSetPasswordForm, UserFolderForm
 from .models import User, Subscription
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, resolve
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
 from posts.models import Post, Comment, Like, UserView
 from mediacore.forms import ImageFileFormSet, VideoFileFormSet
@@ -80,7 +80,7 @@ class RegisterView(CreateView):
 class AuthenticationView(LoginView):
     form_class = AuthenticationUserForm
     template_name = 'accounts/authentication.html'
-    success_url = reverse_lazy('post_list')
+    success_url = reverse_lazy('home')
 
 
 # -----------------------Password reset-----------------------------
@@ -146,16 +146,6 @@ class CreateUserFolderView(LoginRequiredMixin, PostFilterFormMixin, CreateView):
         self.object.save()
         messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
         return super().form_valid(form)
-
-@ajax_require
-def create_folder_ajax(request, *args, **kwargs):
-    folder  = UserFolderForm(request.POST)
-    if form.is_valid():
-        folder = form.create()
-        return JsonResponse({"id": folder.id, "name" : folder.name})
-    response = JsonResponse({"errors": list(form.errors.values())})
-    response.status_code = 403
-    return response
 
 
 @login_required
@@ -383,29 +373,14 @@ class SelfUserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixi
         return context
 
 
-class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, FormView):
+class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, TemplateView):
     login_url = reverse_lazy('login')
-    form_class = UserSettingsForm
     template_name = 'accounts/settings.html'
-
-    def get_form(self, form_class=None):
-        return self.form_class(user=self.request.user)
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Настройки'
         return context
-
-
-@login_required(login_url=reverse_lazy('login'))
-def edit_user_settings(request, *args, **kwargs):
-    ctx = {}
-    form = UserSettingsForm(request.POST, user=request.user)
-
-    if form.is_valid():
-        pass
-
-    return HttpResponse(json.dumps(ctx), content_type='application/json')
 
 
 class UserSubscriptionListView(LoginRequiredMixin, PostFilterFormMixin, ListView):
@@ -453,17 +428,23 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
             form.save_m2m()
 
-            if image_formset.is_valid():
-                for image in image_formset.save(commit=False):
-                    image.save()
+            images = image_formset.save(commit=False)
+            videos = video_formset.save(commit=False)
 
-            if video_formset.is_valid():
-                for video in video_formset.save(commit=False):
-                    video.save()
+            print(len(images) + len(videos))
+
+            if len(images) + len(videos) == 0:
+                form.add_error(None, "Пост должен иметь хотя бы один файл")
+                return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'video_formset': video_formset, 'tag_form':CreatePostTagForm()})
+
+            for image in images:
+                image.save()
+            for video in videos:
+                video.save()
 
             messages.success(request, "{} создан.".format(str(post)))
             return redirect('self_user_posts')
-        return render(request, self.template_name, {'form': form, 'image_formset': image_formset})
+        return render(request, self.template_name, {'form': form, 'image_formset': image_formset, 'video_formset': video_formset, 'tag_form': CreatePostTagForm()})
 
 
 class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
@@ -474,10 +455,11 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Редактирование'
-
         post = self.get_object()
         context['post'] = post
+
+        context['title'] = str(post)
+
         context['image_formset'] = ImageFileFormSet(instance=post)
         context['video_formset'] = VideoFileFormSet(instance=post)
         context['tag_form'] = CreatePostTagForm()
@@ -503,7 +485,7 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity,  UpdateView):
                     video.save()
 
         else:
-            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance)})
+            return render(request, self.template_name, {'form': form, 'image_formset': ImageFileFormSet(instance=form.instance), 'video_formset': VideoFileFormSet(instance=form.instance), 'tag_form': CreatePostTagForm()})
 
         messages.success(request, "{} изменен.".format(str(post)))
         return redirect('self_user_posts')

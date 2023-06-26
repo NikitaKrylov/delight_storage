@@ -107,27 +107,15 @@ class EditUserProfileForm(forms.ModelForm):
                 }
             ),
             "birth_date": forms.DateInput(
-                attrs={"type": "date", "autocomplete": "off"}
+                attrs={
+                    "type": "date",
+                    "autocomplete": "off",
+                    "style": "max-width: 232px; padding-right: 30px;",
+                }
             ),
             "username": forms.TextInput(),
             "email": forms.EmailInput(),
         }
-
-
-class UserSettingsForm(forms.Form):
-    ignored_tags = forms.ModelMultipleChoiceField(
-        queryset=PostTag.objects.all(), widget=forms.CheckboxSelectMultiple()
-    )
-
-    def __init__(self, *args, user: User, **kwargs):
-        super().__init__(*args, **kwargs)
-        initial = []
-
-        for i, choice in enumerate(self.fields["ignored_tags"].choices):
-            if user.ignored_tags.filter(name=choice[1]).exists():
-                initial.append(i + 1)
-
-        self.fields["ignored_tags"].initial = initial
 
 
 class UserFolderForm(forms.ModelForm):
@@ -148,7 +136,12 @@ class UserFolderForm(forms.ModelForm):
             ),
             "name": forms.TextInput(attrs={"placeholder": "Имя папки", "class": ""}),
             "description": forms.Textarea(
-                attrs={"placeholder": "Описание", "class": ""}
+                attrs={
+                    "placeholder": "Описание",
+                    "class": "textarea__input",
+                    "cols": 20,
+                    "rows": 2,
+                }
             ),
             "is_private": forms.CheckboxInput(
                 attrs={"class": "hidden-input checkbox__input"}

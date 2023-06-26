@@ -51,29 +51,3 @@ class VideoFile(models.Model):
 
     def __str__(self):
         return self.filename()
-
-
-@receiver(models.signals.post_delete, sender=ImageFile)
-def auto_delete_file_on_delete(sender, instance, **kwargs):
-    if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
-
-
-@receiver(models.signals.pre_save, sender=ImageFile)
-def auto_delete_file_on_change(sender, instance, **kwargs):
-    if not instance.pk:
-        return False
-
-
-@receiver(models.signals.post_delete, sender=VideoFile)
-def auto_delete_file_on_delete(sender, instance, **kwargs):
-    if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
-
-
-@receiver(models.signals.pre_save, sender=VideoFile)
-def auto_delete_file_on_change(sender, instance, **kwargs):
-    if not instance.pk:
-        return False

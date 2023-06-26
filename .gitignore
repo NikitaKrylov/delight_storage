@@ -48,6 +48,7 @@ out/
 atlassian-ide-plugin.xml
 
 # Python #
+__pycache__/
 *.py[cod]
 *$py.class
 

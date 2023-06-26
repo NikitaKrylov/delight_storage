@@ -37,10 +37,8 @@
                 </div>
                 <div class="account-user__info">
                     <span class="account-user__username">{{user.username}}</span>
-                    {% if user.is_superuser %}
-                    <span class="account-user__status">
-                        Admin
-                    </span>
+                    {% if user.role %}
+                        <span style="color: {{user.role.color}};">{{user.role.name}}</span>
                     {% endif %}
                 </div>
             </div>

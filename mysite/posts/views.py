@@ -129,7 +129,8 @@ def delete_post(request, *args, **kwargs):
 
     if request.user == post.author:
         post.delete()
-    return redirect('post_list')
+
+    return redirect('self_user_posts')
 
 
 @ajax_require

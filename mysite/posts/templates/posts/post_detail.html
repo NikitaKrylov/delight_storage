@@ -127,7 +127,7 @@
                 <div class="mymodal__header">
                     <div class="mymodal__title title">Создать папку</div>
                 </div>
-                <form id="create_folder_form" data-url="{% url 'create_user_folder_ajax' %}" method="post">
+                <form id="create_folder_form" data-url="{% url 'folders-list' %}" method="POST">
                     {% csrf_token %}
                     <div class="mymodal__body">
                         <div class="input-list">
@@ -158,7 +158,7 @@
                             </div>
                             <div class="input-list__item">
                                 <div class="input-list__text">{{folder_form.description.label}}</div>
-                                <div class="input-list__input">{{folder_form.description}}</div>
+                                <div class="input-list__input textarea">{{folder_form.description}}</div>
                             </div>
                             <div class="input-list__item">
                                 <label class="checkbox">
@@ -296,16 +296,17 @@
 
                                 {% if request.user.folders %}
                                 <ul class="dropdown__list dropdown__sublist folders-list">
-                                    {% for folder in request.user.folders.all %}
-                                    <li class="dropdown__item">
-                                        <a class="post-complaints__link dropdown__subitem folde-item__link"
-                                            data-href="{% url 'add_to_folder' folder.pk post.pk %}">{{folder.name}}</a>
-                                    </li>
-                                    {% endfor %}
                                     <li class="dropdown__item">
                                         <a href="#folders-window" class="post-complaints__link dropdown__subitem"
-                                            rel="modal:open" data-modal="#folders-window">Создать папку</a>
+                                            rel="modal:open" data-modal="#folders-window"
+                                            style="justify-content: center;">Создать папку</a>
                                     </li>
+                                    {% for folder in request.user.folders.all %}
+                                    <li class="dropdown__item">
+                                        <a class="post-complaints__link dropdown__subitem folder-item__link"
+                                            data-id="{{folder.id}}">{{folder.name}}</a>
+                                    </li>
+                                    {% endfor %}
                                 </ul>
                                 {% endif %}
 
@@ -471,13 +472,11 @@
 <!--            val url = element.getAttribute('data-href')-->
 <script>
 
-    $('a.folde-item__link').on('click', function () {
-        console.log($(this));
-
+    $('.folders-list').on('click', '.folder-item__link', function () {
         Array.from($(this)).forEach(function (element) {
 
             $.ajax({
-                url: element.getAttribute('data-href'),
+                url: "add_to_folder/" + element.getAttribute('data-id') + "/",
                 type: 'GET',
                 success: function (response) {
                     var result =
@@ -492,4 +491,11 @@
 
 </script>
 
+
+
+<script>
+
+
+
+</script>
 {% endblock %}

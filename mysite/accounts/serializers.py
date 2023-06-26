@@ -11,8 +11,8 @@ class FolderPostSerializer(serializers.ModelSerializer):
 
 class FolderSerializer(serializers.ModelSerializer):
 
-    user = serializers.CharField(source='user.username')
-    posts = FolderPostSerializer(many=True)
+    user = serializers.CharField(source='user.username', required=False)
+    posts = FolderPostSerializer(many=True, required=False)
 
     class Meta:
         model = Folder

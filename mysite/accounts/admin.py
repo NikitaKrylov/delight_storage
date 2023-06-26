@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models import User, ClientIP, Subscription, PostComplaint, Folder, FolderPost
+from .models import User, ClientIP, Subscription, PostComplaint, Folder, FolderPost, Role
 
 admin.site.register(ClientIP)
+admin.site.register(Role)
 
 
 @admin.register(User)
@@ -14,6 +15,7 @@ class UserAdmin(admin.ModelAdmin):
         'username',
         'email',
         'is_adult',
+        'role',
     )
     readonly_fields = (
         'last_login',
