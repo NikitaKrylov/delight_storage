@@ -34,7 +34,7 @@ let closeSearchBtn = $(".search__close-btn");
 const searchInput = $(".search__input-form");
 let isSearchOpen = false;
 
-searchBtn.on("click", function (e) {
+searchBtn.on("click", () => {
 	// $(".search").addClass("_active");
 	// document.body.classList.add("_lock");
 	isSearchOpen = true;
@@ -49,8 +49,13 @@ closeSearchBtn.on("click", function (e) {
 	// document.body.classList.remove("_lock");
 	// isSearchOpen = false;
 	// menuOverlayClose(document.querySelector(".search"));
-	searchInput.val("").focus();
-	searchInput.trigger("input");
+	if (searchInput.val()) {
+		searchInput.val("").focus();
+		searchInput.trigger("input");
+	} else {
+		isSearchOpen = false;
+		menuOverlayClose(document.querySelector(".search"));
+	}
 });
 
 document.querySelector(".search").addEventListener("click", function (e) {
@@ -162,50 +167,6 @@ searchInput.on("input", function (e) {
 					tagList.append(newTag);
 					show(newTag);
 				});
-
-				// // удаление старых тегво кроме выбранных
-				// if (arrayitem.length !== 0) {
-				// 	arrayitem.forEach(function (e) {
-				// 		let valueinp = e.querySelector(".three-pos-inp").value;
-
-				// 		if (valueinp == "0") {
-				// 			e.remove();
-				// 		} else {
-				// 			let txtTag = e.getElementsByTagName("span")[0].textContent;
-				// 			e.getElementsByTagName("span")[0].innerHTML = txtTag;
-				// 			selectTags.push(txtTag);
-				// 		}
-				// 	});
-				// }
-
-				// // удаление дубликатов выбранныех тегов
-				// let res = response["tags"].filter(function (e) {
-				// 	let inxTag = selectTags.indexOf(e["name"]);
-				// 	return !(inxTag in selectTags);
-				// });
-
-				// // создание, добавление и отображение новых тегов
-				// res.forEach(function (e) {
-				// 	let name = e["name"];
-				// 	let slug = e["slug"];
-
-				// 	let tag = document.createElement("div");
-				// 	tag.className = "tags-list__tag";
-				// 	tag.style = "display: none;";
-				// 	tag.innerHTML = `
-				// 		<input class="tags-list__checkbox hidden-input three-pos-inp" id="id_${slug}" name="${slug}"
-				// 		readonly tabindex="-1" type="number" value="0">
-				// 		<span>${name}</span>`;
-
-				// 	tagList.append(tag);
-
-				// 	// tag.getElementsByTagName("span")[0].innerHTML = inserMark(
-				// 	// 	name,
-				// 	// 	name.toLowerCase().search(textInp),
-				// 	// 	textInp.length,
-				// 	// );
-				// 	show(tag);
-				// });
 
 				arrayitem = document.querySelectorAll(".tags-list__tag");
 				tagSort(arrayitem);
