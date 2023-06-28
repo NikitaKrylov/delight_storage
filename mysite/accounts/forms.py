@@ -8,7 +8,7 @@ from django.contrib.auth.forms import (
 )
 from django.core.exceptions import ValidationError
 
-from .models import User, PostComplaint, Folder
+from .models import User, PostComplaint, Folder, UserSettings
 from posts.models import PostTag
 from mediacore.forms import ClearableAvatarFileInput
 from django.utils.translation import gettext_lazy as _
@@ -116,6 +116,14 @@ class EditUserProfileForm(forms.ModelForm):
             "username": forms.TextInput(),
             "email": forms.EmailInput(),
         }
+
+
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserSettings
+        fields = "__all__"
+        exclude = ('user',)
+        widgets = {}
 
 
 class UserFolderForm(forms.ModelForm):

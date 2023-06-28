@@ -9,6 +9,8 @@ from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
 
+from mysite.errors import IncorrectDeletionError
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email: str, username: str, password: str = None, **other_field):
@@ -49,8 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    ignored_tags = models.ManyToManyField(
-                "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+
     role = models.ForeignKey('Role', verbose_name=_('роль'), on_delete=models.SET_NULL, blank=True, null=True)
 
     objects = UserManager()
@@ -75,6 +76,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(User, related_name="settings", on_delete=models.CASCADE)
+    ignored_tags = models.ManyToManyField(
+        "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+    user_card_image = models.ImageField(upload_to='users_card_images/', blank=True, null=True)
+    notify_on_post_commented = models.BooleanField(_('Уведомлять о новом комментарии к посту'), default=True)
+    notify_on_comment_reply = models.BooleanField(_('Уведомлять об ответе на комментарий'), default=True)
+
+    def delete(self, using=None, keep_parents=False):
+        raise IncorrectDeletionError("You cannot delete \"UserSettings\" model manually, deletion is possible by cascading deletion through the user model")
+
+    def __str__(self):
+        return 'Настройки пользователя {}'.format(self.user.username)
 
 
 class Role(models.Model):

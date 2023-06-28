@@ -31,7 +31,11 @@
                 </div>
             </div>
             <div>
+                {% if request.user.settings.user_card_image %}
+                <img class="account-hat-image" src="{{request.user.settings.user_card_image.url}}">
+                {% else %}
                 <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+                {% endif %}
             </div>
         </div>
 
@@ -106,7 +110,8 @@
                         class="account-nav__link {{request|mark_current_page:user_folders_url}}">Папки</a>
                 </li>
                 <li class="account-nav__item">
-                    <a href="#" class="account-nav__link">Настройки</a>
+                    {% url 'user_settings' as user_settings_url %}
+                    <a href="{{user_settings_url}}" class="account-nav__link {{request|mark_current_page:user_settings_url}}">Настройки</a>
                 </li>
             </ul>
         </div>

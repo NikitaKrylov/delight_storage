@@ -3,7 +3,6 @@ from django.db.models import Count, Sum
 from django.views.decorators.http import require_http_methods
 from posts.models import PostTag, Post
 import datetime
-from mysite.services import ajax_require
 import json
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -15,9 +14,9 @@ from django.utils import timezone
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
 from .mixins import CheckUserConformity
-from .models import Notification, Folder
+from .models import Notification, Folder, UserSettings
 from .forms import RegisterUserForm, AuthenticationUserForm, EditUserProfileForm, UserPasswordResetForm, \
-    UserSetPasswordForm, UserFolderForm
+    UserSetPasswordForm, UserFolderForm, UserSettingsForm
 from .models import User, Subscription
 from django.urls import reverse_lazy, resolve
 from django.contrib.auth.views import LoginView, PasswordResetConfirmView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView
@@ -228,31 +227,20 @@ class UserPostList(PostListMixin, PostFilterFormMixin, ListView):
 # --------------User Page---------------
 
 
-class UserProfileView(LoginRequiredMixin, PostFilterFormMixin, FormView):
+class UserProfileView(LoginRequiredMixin, PostFilterFormMixin, UpdateView):
     template_name = 'accounts/profile.html'
     login_url = reverse_lazy('login')
+    model = User
     form_class = EditUserProfileForm
+    success_url = '.'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Профиль'
         return context
 
-    def get_form(self, form_class=None):
-        user = self.request.user
-        return EditUserProfileForm(initial={
-            'username': user.username,
-            'avatar': user.avatar,
-            'email': user.email,
-            'birth_date': user.birth_date
-        })
-
-    def post(self, request, *args, **kwargs):
-        form = EditUserProfileForm(
-            request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-        return redirect('profile')
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -373,14 +361,23 @@ class SelfUserPostListView(LoginRequiredMixin, PostListMixin, PostFilterFormMixi
         return context
 
 
-class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, TemplateView):
+class UserSettingsFormView(LoginRequiredMixin, PostFilterFormMixin, UpdateView):
     login_url = reverse_lazy('login')
     template_name = 'accounts/settings.html'
+    model = UserSettings
+    form_class = UserSettingsForm
+    success_url = '.'
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'Настройки'
         return context
+
+    def get_object(self, queryset=None):
+        user_settings = self.request.user.settings
+        if user_settings is not None:
+            return user_settings
+        raise ValueError("Model doesnt exist")
 
 
 class UserSubscriptionListView(LoginRequiredMixin, PostFilterFormMixin, ListView):
