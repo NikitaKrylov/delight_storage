@@ -110,18 +110,25 @@ const defaultOffset = 200;
 const header = document.querySelector(".header");
 
 if (header) {
-	const scrollPosition = () => window.pageYOffset || document.documentElement.scrollTop;
+	const getScrollPosition = () => window.scrollY || document.documentElement.scrollTop;
 	const containHide = () => header.classList.contains("_hide-header");
+
 	window.addEventListener("scroll", () => {
-		if (scrollPosition() > lastScroll && !containHide() && scrollPosition() > defaultOffset) {
+		let scrollPosition = getScrollPosition();
+
+		if (scrollPosition > lastScroll && !containHide() && scrollPosition > defaultOffset) {
 			// scroll down
 			header.classList.add("_hide-header");
-		} else if (scrollPosition() < lastScroll && containHide()) {
+		} else if (
+			scrollPosition < lastScroll &&
+			containHide() &&
+			scrollPosition < defaultOffset - scrollPosition
+		) {
 			// scroll up
 			header.classList.remove("_hide-header");
 		}
 
-		lastScroll = scrollPosition();
+		lastScroll = scrollPosition;
 	});
 }
 

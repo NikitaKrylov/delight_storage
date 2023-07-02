@@ -1,4 +1,5 @@
 $width-mobile: 991px;
+$min-width-mobile: 700px;
 
 .my-posts-container {
 }
@@ -14,7 +15,7 @@ $width-mobile: 991px;
         display: flex;
         gap: 15px;
         flex-direction: column;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
 
         @media (min-width: $width-mobile) {
             flex-direction: row;
@@ -26,7 +27,6 @@ $width-mobile: 991px;
     }
 
     &__test {
-
     }
 
     &__charts {
@@ -49,17 +49,16 @@ $width-mobile: 991px;
         color: var(--white);
         // border: none;
         // background: transparent;
-
     }
 }
 
 .charts {
     position: relative;
     height: 30vh;
-    width: 90vw;
+    width: 86vw;
     margin: auto;
     // max-height: 300px;
-    >canvas {
+    > canvas {
         // width: 100% !important;
         // height: 100% !important;
         // min-height: 300px;
@@ -71,7 +70,6 @@ $width-mobile: 991px;
 }
 
 .my-stats-list {
-
     &__item {
         padding: 20px 0;
         color: var(--secondary-white);
@@ -83,16 +81,15 @@ $width-mobile: 991px;
     gap: 5px;
     justify-content: space-between;
 
-		&__text {
-            // width: 50%;
-		}
+    &__text {
+        // width: 50%;
+    }
 
-		&__value {
-		}
+    &__value {
+    }
 }
 
 .add-post {
-
 }
 
 .add-post-container {
@@ -158,7 +155,6 @@ $width-mobile: 991px;
 //     }
 // }
 
-
 // .add-post-btn {
 //     position: relative;
 //     display: flex;
@@ -220,7 +216,6 @@ $width-mobile: 991px;
     color: var(--secondary-white);
 }
 
-
 .add-post-container {
 }
 
@@ -228,29 +223,34 @@ $width-mobile: 991px;
     position: relative;
     display: flex;
     justify-content: center;
-    max-width: 400px;
+    max-width: 100%;
     max-height: 100px;
     width: 100%;
     height: 100%;
+    // margin: 0 auto;
     overflow: hidden;
     z-index: 1;
     padding: 20px;
     background-color: var(--bg-light-secondary-default);
+    // color: var(--primary-color);
 
-    color: var(--primary-color);
+    @media (min-width: $min-width-mobile) {
+        max-width: 300px;
+        padding: 15px;
+    }
 
     &::before {
         content: "";
         position: absolute;
         pointer-events: none;
-        transition: transform .1s linear;
+        transition: transform 0.1s linear;
         transform-origin: top right;
         top: 0;
         width: 100%;
         height: 100%;
         transform: translateX(calc(-50% + 13.5px)) skewX(-25.8deg);
         z-index: -1;
-        background: linear-gradient(191deg,rgba(39,43,68,.4),rgba(255, 255, 255, 0));
+        background: linear-gradient(191deg, rgba(39, 43, 68, 0.4), rgba(255, 255, 255, 0));
     }
 
     &:hover {

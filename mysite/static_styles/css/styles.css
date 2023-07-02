@@ -356,6 +356,9 @@ a[rel="modal:close"].button_red {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   position: relative;
   gap: 10px;
   -webkit-box-align: center;

@@ -4,104 +4,7 @@
     // background-color: var(--bg-secondary-default);
 }
 
-.input-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 20px;
 
-		&__item {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-		}
-        
-		&__text {
-            color: var(--white);
-            width: 200px;
-		}
-
-        &__input {
-            padding: 15px;
-            border-radius: 5px;
-            background: transparent;
-            border: 1px solid var(--bg-light-primary-default);
-            
-            &:hover,
-            &:focus {
-                border-color: var(--light-secondary-violet);
-            }
-
-            >input {
-                color: var(--secondary-white);
-                border: none;
-                background: transparent;
-                padding-right: 15px;
-            }
-		}
-}
-
-
-.input-file {
-    position: relative;
-    color: var(--secondary-white);
-    
-    &__input {
-
-    }
-    
-    &__btn {
-        display: flex;
-        gap: 5px;
-        cursor: pointer;
-        width: 100%;
-        height: 100%;
-    }
-
-    &__icon {
-        position: relative;
-        font-size: 18px;
-        width: 1em;
-        height: 1em;
-    }
-
-    &__not-selected {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 1em;
-        height: 1em;
-        fill: var(--white);
-        transform: scale(1);
-        transition: transform 0.2s;
-    }
-
-    &__selected {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 1em;
-        height: 1em;
-        fill: var(--white);
-        transform: scale(0);
-        transition: transform 0.2s;
-    }
-
-    &__text {
-
-    }
-
-    &._active {
-        .input-file__not-selected {
-            transform: scale(0);
-        }
-
-        .input-file__selected {
-            transform: scale(1)
-        }
-    }
-}
 
 input[type="date"] {
         &::-webkit-datetime-edit {
@@ -161,7 +64,7 @@ input[type="date"] {
 // }
 
 .date-inp-icon {
-    // height: 22px;
+    height: 22px;
     
     // background-repeat: no-repeat;
     // background-blend-mode: screen, normal;
@@ -171,7 +74,10 @@ input[type="date"] {
     // background-size: 16px;
     // appearance: none;
     // padding-left: 20px;
-    margin-left: -15px;
+    position: absolute;
+    // margin-left: -15px;
+    top: calc((100% - 22px) / 2);
+    right: 10px;
     color: var(--primary-color);
 }
 

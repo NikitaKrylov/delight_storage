@@ -124,22 +124,21 @@ $max-width-mobile: 1280px;
 $width-mobile: 991px;
 $min-width-mobile: 700px;
 
-$max-width: 1920;
-
 $padding-wrapper: 8;
+$max-width: 1920;
 $min-width: 280-$padding-wrapper * 2;
 
-$max-width-сontainer: 1920;
+$max-width-constainer: 1920;
 @mixin adaptive-value($property, $start-size, $end-size, $type) {
 	$add-size: $start-size - $end-size;
 	// только если экран меньше контейнера
 	@if $type == 1 {
 		#{$property}: $start-size + px;
-		@media (max-width: #{$max-width-сontainer + px}) {
+		@media (max-width: #{$max-width-constainer + px}) {
 			#{$property}: calc(
 				#{$end-size + px} + #{$add-size} *
 					(
-						(100vw - #{$min-width - $padding-wrapper * 2 + px}) / #{$max-width-сontainer - $min-width -
+						(100vw - #{$min-width - $padding-wrapper * 2 + px}) / #{$max-width-constainer - $min-width -
 							$padding-wrapper * 2}
 					)
 			);
@@ -147,7 +146,7 @@ $max-width-сontainer: 1920;
 	} @else if $type == 2 {
 		// только если экран больше контейнера
 		#{$property}: $start-size + px;
-		@media (min-width: #{$max-width-сontainer + px}) {
+		@media (min-width: #{$max-width-constainer + px}) {
 			#{$property}: calc(
 				#{$end-size + px} + #{$add-size} *
 					(
@@ -431,6 +430,7 @@ a[rel="modal:close"].button_red {
 
 .dark-btn {
 	display: inline-flex;
+	justify-content: center;
 	position: relative;
 	gap: 10px;
 	align-items: center;

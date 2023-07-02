@@ -84,148 +84,88 @@ $(document).on("click", function (e) {
 });
 
 // answer-button / жалобы на комы
-$(function () {
-	document.querySelector(".comments-list").addEventListener("click", function (e) {
-		let currentButton = e.target;
-		if (currentButton.closest(".answer-button")) {
-			if (!currentButton.classList.contains("_active")) {
-				$(".answer-button").text("ответить").removeClass("_active");
-				$(".comment-reply").prop("hidden", true);
-				$(".comments-form__input-comment").val("");
 
-				$(currentButton).addClass("_active");
-				currentButton.textContent = "отмена";
-				setTimeout(
-					() =>
-						currentButton
-							.closest(".comment__body")
-							.querySelector(".comment-reply__input > textarea")
-							.focus(),
-					100,
-				);
-				var commentboxId = $(currentButton).attr("data-commentbox");
-				$("#" + commentboxId).prop("hidden", false);
-			} else {
-				$(".answer-button").text("ответить").removeClass("_active");
-				$(".comment-reply").prop("hidden", true);
-				$(".comments-form__input-comment").val("");
-			}
+$(".comments-list").on("click", function (e) {
+	let currentButton = $(e.target);
+
+	if (currentButton.hasClass("answer-button")) {
+		if (!currentButton.hasClass("_active")) {
+			$(".answer-button").text("ответить").removeClass("_active");
+			$(".comment-reply").prop("hidden", true);
+			$(".comments-form__input-comment").val("");
+
+			currentButton.addClass("_active");
+			currentButton.text("отмена");
+
+			setTimeout(
+				() =>
+					currentButton
+						.closest(".comment__body")
+						.find(".comment-reply__input > textarea")
+						.focus(),
+
+				100,
+			);
+
+			var commentboxId = $(currentButton).attr("data-commentbox");
+			$("#" + commentboxId).prop("hidden", false);
+		} else {
+			$(".answer-button").text("ответить").removeClass("_active");
+			$(".comment-reply").prop("hidden", true);
+			$(".comments-form__input-comment").val("");
 		}
-
-		if (currentButton.closest(".comment__control-btn")) {
-			let complaintBtn = currentButton.closest(".comment__control-btn");
-			const complaints = complaintBtn.parentNode.querySelector(".comment__control-list");
-
-			if (!complaintBtn.classList.contains("_active")) {
-				// $('.comment__control-dropdown').animate({
-				//     height: 'hide',
-				//     opacity: 0,
-				// }, animSpeed).slideUp(animSpeed);
-				// $('.comment__control-dropdown').prop("hidden", true);
-
-				// $(complaints).animate({
-				//     height: 'show',
-				//     opacity: 1,
-				// }, animSpeed).slideDown(animSpeed);
-				// $(complaints).prop("hidden", false);
-
-				$(".comment__control-btn").removeClass("_active");
-				$(".comment__control-list")
-					.stop(false, true)
-					.queue("fx", function () {
-						$(this).slideUp("fast").dequeue("fx");
-					});
-				// $('.comment__control-list').slideUp('fast');
-				$(complaintBtn).addClass("_active");
-				$(complaints)
-					.stop(false, true)
-					.queue("fx", function () {
-						$(this).slideDown("fast").dequeue("fx");
-					});
-				$(complaints).slideDown("fast");
-			} else {
-				// $(complaints).animate({
-				//     height: 'hide',
-				//     opacity: 0,
-				// }, animSpeed).slideUp(animSpeed);
-				// $('.comment__control-dropdown').prop("hidden", true);
-
-				$(complaintBtn).removeClass("_active");
-				$(complaints)
-					.stop(false, true)
-					.queue("fx", function () {
-						$(this).slideUp("fast").dequeue("fx");
-					});
-				// $(complaints).slideUp('fast');
-				// $(".comment__control-btn").removeClass("_active");
-				// $('.comment__cotrol-list').slideUp('fast');
-			}
-
-			// при клике на пустое место
-			$(document).on("click", function (e) {
-				if (!e.target.closest(".comment__control-btn")) {
-					$(".comment__control-btn").removeClass("_active");
-					$(".comment__control-list").prop("hidden", true);
-					// $('.comment__control-list').animate({
-					//     height: 'hide',
-					//     opacity: 0,
-					// }, animSpeed).slideUp(animSpeed);
-					$(".comment__control-list").slideUp("fast");
-				}
-			});
-		}
-	});
+	}
 });
 
 // дропдаун жалоб поста
-let complaintPostBtn = document.querySelector(".post-complaints__button");
-const complaintsPost = document.querySelector(".post-complaints__list");
-complaintPostBtn.addEventListener("click", (e) => {
-	if (!complaintPostBtn.classList.contains("_active")) {
-		$(complaintPostBtn).addClass("_active");
-		// $(complaintsPost).prop("hidden", false);
+// let complaintPostBtn = document.querySelector(".post-complaints__button");
+// let complaintsPost = document.querySelector(".post-complaints__list");
+// complaintPostBtn.addEventListener("click", (e) => {
+// 	if (!complaintPostBtn.classList.contains("_active")) {
+// 		$(complaintPostBtn).addClass("_active");
+// 		// $(complaintsPost).prop("hidden", false);
 
-		// $(complaintsPost).animate({
-		//     height: 'show',
-		//     opacity: 1,
-		// }, animSpeed).slideDown(animSpeed);
+// 		// $(complaintsPost).animate({
+// 		//     height: 'show',
+// 		//     opacity: 1,
+// 		// }, animSpeed).slideDown(animSpeed);
 
-		$(complaintsPost)
-			.stop(false, true)
-			.queue("fx", function () {
-				$(this).slideDown("fast").dequeue("fx");
-			});
-		// $(complaintsPost).slideDown('fast');
-	} else {
-		$(complaintPostBtn).removeClass("_active");
-		// $(complaintsPost).prop("hidden", true);
+// 		$(complaintsPost)
+// 			.stop(false, true)
+// 			.queue("fx", function () {
+// 				$(this).slideDown("fast").dequeue("fx");
+// 			});
+// 		// $(complaintsPost).slideDown('fast');
+// 	} else {
+// 		$(complaintPostBtn).removeClass("_active");
+// 		// $(complaintsPost).prop("hidden", true);
 
-		// $(complaintsPost).animate({
-		//     height: 'hide',
-		//     opacity: 0,
-		// }, animSpeed).slideUp(animSpeed);
+// 		// $(complaintsPost).animate({
+// 		//     height: 'hide',
+// 		//     opacity: 0,
+// 		// }, animSpeed).slideUp(animSpeed);
 
-		$(complaintsPost)
-			.stop(false, true)
-			.queue("fx", function () {
-				$(this).slideUp("fast").dequeue("fx");
-			});
-		// $(complaintsPost).slideUp('fast');
-	}
-});
-// дропдаун жалоб поста при клике на пустое место
-$(document).on("click", function (e) {
-	if (!e.target.closest(".post-complaints__button")) {
-		$(complaintPostBtn).removeClass("_active");
-		// $(complaintsPost).prop("hidden", true);
+// 		$(complaintsPost)
+// 			.stop(false, true)
+// 			.queue("fx", function () {
+// 				$(this).slideUp("fast").dequeue("fx");
+// 			});
+// 		// $(complaintsPost).slideUp('fast');
+// 	}
+// });
+// // дропдаун жалоб поста при клике на пустое место
+// $(document).on("click", function (e) {
+// 	if (!e.target.closest(".post-complaints__button")) {
+// 		$(complaintPostBtn).removeClass("_active");
+// 		// $(complaintsPost).prop("hidden", true);
 
-		// $(complaintsPost).animate({
-		//     height: 'hide',
-		//     opacity: 0,
-		// }, animSpeed).slideUp(animSpeed);
-		$(complaintsPost).slideUp("fast");
-	}
-});
+// 		// $(complaintsPost).animate({
+// 		//     height: 'hide',
+// 		//     opacity: 0,
+// 		// }, animSpeed).slideUp(animSpeed);
+// 		$(complaintsPost).slideUp("fast");
+// 	}
+// });
 
 // input-comment
 $(".comments-form__pseudo-form").on("click", function (e) {
@@ -302,7 +242,7 @@ const gallerySet = lightGallery(document.getElementById("lightgallery"), {
 	pager: false,
 	closeOnTap: true,
 	galleryId: "nature",
-	selector: ".image-slider__image img",
+	selector: ".image-slider__item",
 	plugins: [lgZoom, lgFullscreen, lgRotate, lgHash, lgVideo],
 	mobileSettings: {
 		controls: false,
@@ -321,4 +261,40 @@ $("a[data-modal='#complaints-post-window']").on("click", function (e) {
 $("a[data-modal='#complaints-comment-window']").on("click", function (e) {
 	$($(this).data("modal")).modal(baseSettingsModal);
 	return false;
+});
+
+// окно папок
+$("a[data-modal='#folders-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});
+
+$("#folders-window").on($.modal.OPEN, function (e) {
+	$("#id_name").focus();
+});
+
+// создание пользолвательских тегов
+$("#create_folder_form").on("submit", function (event) {
+	event.preventDefault();
+
+	$.ajax({
+		url: $(this).data("url"),
+		type: $(this).attr("method"),
+		data: {
+			csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+			name: $("#id_name").val(),
+		},
+
+		success: function (json) {
+			let newFolder = $(
+				`<li class="dropdown__item"><a data-id="${json["id"]}" class="post-complaints__link dropdown__subitem folder-item__link">${json["name"]}</a></li>`,
+			);
+			$(".folders-list").append(newFolder);
+			$.modal.close();
+		},
+
+		error: function (response) {
+			console.log(response.responseJSON[0]);
+		},
+	});
 });

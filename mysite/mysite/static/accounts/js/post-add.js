@@ -37,16 +37,25 @@ const contTags = document.querySelector(".selected-tags__list");
 const listTags = document.querySelector(".tags-list");
 let arrayitem = document.querySelectorAll(".tags-list__tag");
 
+// arrayitem.forEach((e) => {
+// 	mtag.push(Number(e.querySelector(".tags-list__checkbox").value))
+// })
+
 // действия при нажатии на кнопку
+
 function valueButton(btn) {
 	// let valueinp = btn.querySelector('.three-pos-inp').value;
-	let valueinp = btn.querySelector(".three-pos-inp").dataset.state;
+	let btninp = btn.querySelector(".three-pos-inp");
+	let valueinp = btninp.dataset.state;
+
 	if (valueinp == "0") {
 		// btn.querySelector('.three-pos-inp').value = '1';
-		btn.querySelector(".three-pos-inp").dataset.state = 1;
+		btninp.dataset.state = 1;
+		btninp.checked = true;
 	} else if (valueinp == "1") {
 		// btn.querySelector('.three-pos-inp').value = '0';
-		btn.querySelector(".three-pos-inp").dataset.state = 0;
+		btninp.dataset.state = 0;
+		btninp.checked = false;
 	}
 }
 
@@ -79,6 +88,7 @@ function selectedTags(btn) {
 	// 			painButton(clickBtn);
 	// 		}
 	// 	});
+
 	if (valueinp == "1") {
 		$(btn).appendTo($(contTags));
 	} else {
@@ -88,12 +98,12 @@ function selectedTags(btn) {
 
 // tagBtn.addEventListener('click', function(e) {
 // $('.tags-list__tag').change(function(e) {
-$(".tags-list__tag").on("change", function (e) {
+$(document).on("change", ".tags-list__tag", function (e) {
 	let clickBtn = e.target.closest(".tags-list__tag");
 
 	if (clickBtn) {
 		valueButton(clickBtn);
-		painButton(clickBtn);
+		// painButton(clickBtn);
 		selectedTags(clickBtn);
 		// hide(clickBtn);
 		// скрыть кнопку если строка пустая и кнопка пасивна
@@ -107,9 +117,10 @@ $(".tags-list__tag").on("change", function (e) {
 });
 
 // действия при вводе текста
+
 function searchForMatches(text, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
-	return !(text.innerText.toLowerCase().search(textInp) == -1 || textInp == "");
+	return text.toLowerCase().includes(textInp.toLowerCase()) || textInp == "";
 }
 
 function hide(event) {
@@ -138,17 +149,21 @@ function inserMark(string, position, fullLen) {
 
 function search(array, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
-	array.forEach(function (e) {
+	array.forEach((e) => {
 		// let valueinp = e.querySelector('.three-pos-inp').value;
 		let valueinp = e.querySelector(".three-pos-inp").dataset.state;
-		if (searchForMatches(e, textInp) && valueinp == "0") {
-			// e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
-			show(e);
-		} else {
-			if (valueinp == "0") {
-				hide(e);
+
+		for (let text of textInp.split(" ")) {
+			if (searchForMatches(e.innerText, text) && valueinp == "0") {
+				// e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
+				show(e);
+				return;
+			} else {
+				if (valueinp == "0") {
+					hide(e);
+				}
+				// e.getElementsByTagName('span')[0].innerHTML = e.innerText;
 			}
-			// e.getElementsByTagName('span')[0].innerHTML = e.innerText;
 		}
 	});
 }
@@ -170,6 +185,53 @@ searchInput.addEventListener("input", function () {
 //     }
 //   })
 // })
+
+// создание пользолвательских тегов
+$("#tag_creation_form").on("submit", function (event) {
+	event.preventDefault();
+
+	$.ajax({
+		url: $(this).data("url"),
+		type: $(this).attr("method"),
+		data: {
+			csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+			name: $("#id_name").val(),
+		},
+
+		success: function (json) {
+			let maxValInp = $(".tags-list__tag").length;
+
+			let newtag = $(`
+				<div class="tags-list__tag _show">
+					<label for="id_tags_${maxValInp}">
+						<input checked class="tags-list__checkbox hidden-input three-pos-inp" data-state="1"
+						id="id_tags_${maxValInp}" name="tags" tabindex="-1" type="checkbox" value="${json.id}">
+						${json.name.charAt(0).toUpperCase() + json.name.slice(1)}
+					</label>
+				</div>
+			`);
+
+			$(".selected-tags__list").append(newtag);
+
+			$.modal.close();
+		},
+
+		error: function (response) {
+			$("#addtags-window")
+				.find(".errorlist")
+				.html(`<li>${response.responseJSON["errors"][0]}</li>`);
+		},
+	});
+});
+
+//добавление выбранных тегов
+$.each($(".tags-list__tag"), function (inx, val) {
+	if (val.querySelector(".tags-list__checkbox").checked) {
+		valueButton(val);
+		selectedTags(val);
+		show(val);
+	}
+});
 
 // =====================================================
 
@@ -198,9 +260,10 @@ function addFileField(name, container, form, countForm, addBtn) {
 	if (newForm.querySelectorAll(".files-container").length) {
 		newForm.querySelector(".add-file__btn").textContent = "Выбрать файл";
 		newForm.querySelector(".files-container").remove();
+		newForm.querySelector(".del-btn").remove();
 	}
 
-	container.insertBefore(newForm, addBtn);
+	$(container).append(newForm);
 	totalForms.setAttribute("value", `${countForm + 1}`);
 }
 
@@ -242,6 +305,16 @@ function createFileInfo(file, width, height) {
 	return fileInfo;
 }
 
+function addDelBtn(currFile) {
+	$(currFile.querySelector(".add-file-btn-cont")).after(
+		$(`
+			<span class="add-file__control del-btn button">
+				Удалить
+			</span>
+		`),
+	);
+}
+
 // фото
 let cont = document.querySelector(".add-image-container");
 let addImgForm = document.querySelectorAll(".add-image");
@@ -251,10 +324,7 @@ let addButton = document.querySelector("#add-form-image");
 // let imgInp = document.querySelector('.add-file__input')
 
 // добавление полей фото
-addButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
-});
+
 // addButton.addEventListener("click", function (e) {
 //     e.preventDefault()
 
@@ -272,6 +342,11 @@ addButton.addEventListener("click", function (e) {
 //     totalForms.setAttribute('value', `${imgFormNum + 1}`)
 // });
 
+// addButton.addEventListener("click", function (e) {
+// 	e.preventDefault();
+// 	addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
+// });
+
 function isImage(file) {
 	return file.type.split("/")[0] === "image";
 }
@@ -287,18 +362,12 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 	if (file && isImage(file)) {
 		if (currFile.querySelectorAll(".files-container").length) {
 			currFile.querySelector(".files-container").remove();
+			currFile.querySelector(".del-btn").remove();
+		} else {
+			addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
 		}
 
 		let srcLink = URL.createObjectURL(file);
-
-		// let imageCont = $(`
-		//   <div class="files-container">
-		//     <div class="files-container__file-box">
-		//       <img class="files-container__file" src=${srcLink}>
-		//     </div>
-		//   </div>
-		// `);
-		// $(currFile).prepend(imageCont);
 
 		let imageCont = createFileCont(createImageTag(srcLink));
 		$(currFile).prepend(imageCont);
@@ -309,8 +378,12 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 		});
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
+
+		addDelBtn(currFile);
 	} else {
-		messagePopup("Выберите фото");
+		iziToast.info({
+			title: "Выберите изображение",
+		});
 	}
 });
 
@@ -330,10 +403,10 @@ let addVdButton = document.querySelector("#add-form-video");
 // let totalVdForms = document.querySelector('#id_videos-TOTAL_FORMS')
 
 // добавление полей видео
-addVdButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
-});
+// addVdButton.addEventListener("click", function (e) {
+// 	e.preventDefault();
+// 	addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
+// });
 
 function isVideo(file) {
 	return file.type.split("/")[0] === "video";
@@ -350,6 +423,9 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 	if (file && isVideo(file)) {
 		if (currFile.querySelectorAll(".files-container").length) {
 			currFile.querySelector(".files-container").remove();
+			currFile.querySelector(".del-btn").remove();
+		} else {
+			addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
 		}
 
 		let srcLink = URL.createObjectURL(file);
@@ -364,8 +440,12 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 		});
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
+
+		addDelBtn(currFile);
 	} else {
-		messagePopup("Выберите видео", true);
+		iziToast.info({
+			title: "Выберите видео",
+		});
 	}
 });
 
@@ -386,8 +466,8 @@ if ($("body").hasClass("_pc")) {
 		},
 	};
 
-	$("#id_time").attr("type", "text");
-	new AirDatepicker("#id_time", {
+	$(".input-calendar").attr("type", "text");
+	new AirDatepicker(".input-calendar", {
 		timepicker: true,
 		buttons: [todayBtn, "clear"],
 	});
@@ -427,4 +507,19 @@ $(document).on("click", function (e) {
 		$(".status-post__list").hide();
 		$(".status-post__icon").removeClass("_active");
 	}
+});
+
+// окно добавления тегов
+$("a[data-modal='#addtags-window']").on("click", function (e) {
+	$($(this).data("modal")).modal(baseSettingsModal);
+	return false;
+});
+
+$("#addtags-window").on($.modal.OPEN, function (event, modal) {
+	$(".input-user-tags").focus();
+});
+
+$("#addtags-window").on($.modal.CLOSE, function (event, modal) {
+	$("#addtags-window").find(".errorlist").html("");
+	$(".input-user-tags").val("");
 });

@@ -16,7 +16,6 @@ function btn(button, closebtn, parent) {
 		if (!e.target.closest(".search__container")) {
 			clsname.removeClass("_active");
 			document.body.classList.remove("_lock");
-			console.log("d");
 		} else {
 			if (clsbtn) {
 				clsbtn.click(function (e) {
@@ -35,7 +34,7 @@ let closeSearchBtn = $(".search__close-btn");
 const searchInput = $(".search__input-form");
 let isSearchOpen = false;
 
-searchBtn.on("click", function (e) {
+searchBtn.on("click", () => {
 	// $(".search").addClass("_active");
 	// document.body.classList.add("_lock");
 	isSearchOpen = true;
@@ -50,8 +49,13 @@ closeSearchBtn.on("click", function (e) {
 	// document.body.classList.remove("_lock");
 	// isSearchOpen = false;
 	// menuOverlayClose(document.querySelector(".search"));
-	searchInput.val("").focus();
-	searchInput.trigger("input");
+	if (searchInput.val()) {
+		searchInput.val("").focus();
+		searchInput.trigger("input");
+	} else {
+		isSearchOpen = false;
+		menuOverlayClose(document.querySelector(".search"));
+	}
 });
 
 document.querySelector(".search").addEventListener("click", function (e) {
@@ -107,11 +111,13 @@ const tagBtn = document.querySelector(".tags-list__tag");
 let arrayitem = [];
 
 let inputDelay;
-searchInput.on("input", function () {
+searchInput.on("input", function (e) {
 	let textInp = searchInput.val().trim().toLowerCase();
 	clearTimeout(inputDelay);
 
 	inputDelay = setTimeout(function () {
+		console.log($(this), e);
+
 		$.ajax({
 			type: "GET",
 			url: urlTag,
@@ -144,65 +150,23 @@ searchInput.on("input", function () {
 						} else {
 							let txtTag = e.getElementsByTagName("span")[0].textContent;
 							e.getElementsByTagName("span")[0].innerHTML = txtTag;
-							response["tags"].splice(
-								response["tags"].findIndex((tag) => {
-									return tag.name === txtTag;
-								}),
-								1,
-							);
+
+							// let inxTag = response.findIndex((tag) => tag.name === txtTag);
+
+							// if (inxTag !== -1) {
+							// 	response.splice(inxTag, 1);
+							// }
+
+							response = response.filter((tag) => tag.name !== txtTag);
 						}
 					});
 				}
 
-				response["tags"].forEach((tag, inx) => {
+				response.forEach((tag, inx) => {
 					let newTag = createTags(tag.name, tag.slug);
 					tagList.append(newTag);
 					show(newTag);
 				});
-
-				// // удаление старых тегво кроме выбранных
-				// if (arrayitem.length !== 0) {
-				// 	arrayitem.forEach(function (e) {
-				// 		let valueinp = e.querySelector(".three-pos-inp").value;
-
-				// 		if (valueinp == "0") {
-				// 			e.remove();
-				// 		} else {
-				// 			let txtTag = e.getElementsByTagName("span")[0].textContent;
-				// 			e.getElementsByTagName("span")[0].innerHTML = txtTag;
-				// 			selectTags.push(txtTag);
-				// 		}
-				// 	});
-				// }
-
-				// // удаление дубликатов выбранныех тегов
-				// let res = response["tags"].filter(function (e) {
-				// 	let inxTag = selectTags.indexOf(e["name"]);
-				// 	return !(inxTag in selectTags);
-				// });
-
-				// // создание, добавление и отображение новых тегов
-				// res.forEach(function (e) {
-				// 	let name = e["name"];
-				// 	let slug = e["slug"];
-
-				// 	let tag = document.createElement("div");
-				// 	tag.className = "tags-list__tag";
-				// 	tag.style = "display: none;";
-				// 	tag.innerHTML = `
-				// 		<input class="tags-list__checkbox hidden-input three-pos-inp" id="id_${slug}" name="${slug}"
-				// 		readonly tabindex="-1" type="number" value="0">
-				// 		<span>${name}</span>`;
-
-				// 	tagList.append(tag);
-
-				// 	// tag.getElementsByTagName("span")[0].innerHTML = inserMark(
-				// 	// 	name,
-				// 	// 	name.toLowerCase().search(textInp),
-				// 	// 	textInp.length,
-				// 	// );
-				// 	show(tag);
-				// });
 
 				arrayitem = document.querySelectorAll(".tags-list__tag");
 				tagSort(arrayitem);
@@ -212,7 +176,7 @@ searchInput.on("input", function () {
 						if (searchForMatches(e.innerText, text)) {
 							e.getElementsByTagName("span")[0].innerHTML = inserMark(
 								e.innerText,
-								e.innerText.toLowerCase().search(text),
+								e.innerText.toLowerCase().indexOf(text),
 								text.length,
 							);
 						}
@@ -291,7 +255,7 @@ $(tagList).on("click", function (e) {
 function searchForMatches(text, textInp) {
 	// let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
 	// return !(text.innerText.toLowerCase().search(textInp) == -1 || textInp == "");
-	return !(text.toLowerCase().search(textInp) == -1 || textInp == "");
+	return text.toLowerCase().includes(textInp.toLowerCase()) || textInp == "";
 }
 
 function hide(event) {
@@ -379,13 +343,14 @@ document.querySelector(".search__hide-all-btn").addEventListener("click", () => 
 
 // кнопка сортировки постов
 $(".search-sort").on("click", function (e) {
-	if (e.target.closest(".search-sort__btn")) {
-		$(".search-sort__list")
-			.stop(false, true)
-			.queue("fx", function () {
-				$(this).slideToggle("fast").dequeue("fx");
-			});
-	} else if (e.target.closest(".search-sort__item")) {
+	// if (e.target.closest(".search-sort__btn")) {
+	// 	$(".search-sort__list")
+	// 		.stop(false, true)
+	// 		.queue("fx", function () {
+	// 			$(this).slideToggle("fast").dequeue("fx");
+	// 		});
+	// } else
+	if ($(e.target).closest(".search-sort__item")) {
 		let txt = $(e.target).text();
 		if (txt) {
 			$(".search-sort__btn").text($(e.target).text());
@@ -399,20 +364,28 @@ $(document).ready(function () {
 			$(".search-sort__btn").text($(value).text());
 		}
 	});
+
+	if ($(".search-sort__desc-asc input").prop("checked")) {
+		$(".search-sort__desc-asc").attr("tooltip-text", "по убыванию");
+	}
 });
 
 // сортировка убыванию/возрастанию
 $(".search-sort__desc-asc").on("change", function (e) {
-	$(e.target.closest(".search-sort__desc-asc")).toggleClass("_active");
+	if ($(e.target).prop("checked")) {
+		$(e.target.closest(".search-sort__desc-asc"))
+			.removeClass("_active")
+			.attr("tooltip-text", "по убыванию");
+	} else {
+		$(e.target.closest(".search-sort__desc-asc"))
+			.addClass("_active")
+			.attr("tooltip-text", "по возростанию");
+	}
 });
 
 // $(".search-sort__btn").on('click', function(e) {
 //   $(".search-sort__list").slideToggle('fast');
 // });
-
-$(".search _active").on("click", function (e) {
-	console.log("d");
-});
 
 // $(document).on("click", function (e) {
 // 	if (!e.target.closest(".search-sort")) {

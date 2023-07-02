@@ -4,7 +4,7 @@
 
 .account-header {
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 15px;
 }
 .account-header__hat {
   overflow: hidden;
@@ -14,6 +14,9 @@
   .account-header__hat {
     height: 200px;
   }
+}
+.account-header__hat:hover .hat-edit {
+  display: block;
 }
 .account-header__user {
   display: -webkit-box;
@@ -47,6 +50,30 @@
      object-fit: cover;
 }
 
+.hat-edit {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  overflow: hidden;
+}
+.hat-edit__btn {
+  position: relative;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--black);
+  opacity: 0.6;
+}
+.hat-edit__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 .account-user {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -84,7 +111,9 @@
 }
 @media (max-width: 1920px) {
   .account-user__username {
-    font-size: calc(20px + 10 * ((100vw - 264px) / 1656));
+    font-size: calc(
+				20px + 10 * ((100vw - 264px) / 1656)
+			);
   }
 }
 .account-user__status {
@@ -93,7 +122,9 @@
 }
 @media (max-width: 1920px) {
   .account-user__status {
-    font-size: calc(14px + 4 * ((100vw - 264px) / 1656));
+    font-size: calc(
+				14px + 4 * ((100vw - 264px) / 1656)
+			);
   }
 }
 
@@ -125,7 +156,9 @@
 }
 @media (max-width: 1920px) {
   .account-nav__link, .account-nav__link:active {
-    font-size: calc(14px + 4 * ((100vw - 264px) / 1656));
+    font-size: calc(
+				14px + 4 * ((100vw - 264px) / 1656)
+			);
   }
 }
 .account-nav__link._current, .account-nav__link:hover, .account-nav__link:active._current, .account-nav__link:active:hover {
@@ -138,11 +171,11 @@
 }
 
 .account-body {
-  padding-top: 10px;
+  padding-top: 25px;
 }
 
 .page-block {
-  padding: 15px;
-  border-radius: 5px;
+  padding: 20px;
+  border-radius: 15px;
   background-color: var(--bg-secondary-default);
 }
