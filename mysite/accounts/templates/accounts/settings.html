@@ -1,33 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  <form id="user_settings_form" method="post">
+{% extends 'accounts/base-profile.html' %}
+{% load static %}
+
+{% block content %}
+  <form id="user_settings_form" method="post" action="." enctype="multipart/form-data">
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Сохранить">
   </form>
-</body>
+{% endblock %}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-$('#user_settings_form').on('submit', function(event) {
-        event.preventDefault();
 
-        $.ajax({
-            url: '{% url "user_settings_edit" %}',
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-            },
-
-            success: function(json){
-            },
-        });
-
-    });
-</script>
 </html>

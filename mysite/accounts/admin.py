@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import User, ClientIP, Subscription, PostComplaint, Folder, FolderPost, Role
+
+from mysite.errors import IncorrectDeletionError
+from .models import User, ClientIP, Subscription, PostComplaint, Folder, FolderPost, Role, UserSettings
 
 admin.site.register(ClientIP)
 admin.site.register(Role)
@@ -23,7 +25,6 @@ class UserAdmin(admin.ModelAdmin):
         'subscribers_amount',
     )
     exclude = ('password',)
-    filter_horizontal = ('ignored_tags',)
 
     def is_adult(self, obj: User):
         return obj.is_adult()
@@ -35,6 +36,17 @@ class UserAdmin(admin.ModelAdmin):
         return obj.user_subscriptions.count()
 
     subscribers_amount.short_description = "Кол-во подписчиков"
+
+
+@admin.register(UserSettings)
+class UserSettingsAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+
+    def delete_model(self, request, obj):
+        raise IncorrectDeletionError("You cannot delete \"UserSettings\" model manually, deletion is possible by cascading deletion through the user model")
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 
 @admin.register(Folder)

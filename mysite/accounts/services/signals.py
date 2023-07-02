@@ -1,7 +1,15 @@
 from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
-from accounts.models import PostComplaint, Notification
+from accounts.models import PostComplaint, Notification, UserSettings, User
+
+
+@receiver(models.signals.post_save, sender=User)
+def create_user_settings_on_user_created(sender, instance: User, created: bool, raw, using, update_fields, **kwargs):
+    if created:
+        UserSettings.objects.create(
+            user=instance
+        )
 
 
 @receiver(models.signals.post_save, sender=PostComplaint)
@@ -24,7 +32,7 @@ def notify_on_post_complaint_created(sender, instance: PostComplaint, created: b
             """.format(
                 name=instance.sender,
                 post_name=str(instance.post),
-                c_type=instance.type,
+                c_type=instance.get_type_display(),
                 c_desc=instance.description,
                 post_url=reverse('post', kwargs={'pk': instance.pk}))
 

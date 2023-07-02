@@ -1,5 +1,4 @@
 import os
-
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
 from django.db.models import QuerySet
@@ -9,7 +8,8 @@ from django.utils import timezone
 from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
-from telethon.tl.types import Folder
+
+from mysite.errors import IncorrectDeletionError
 
 
 class UserManager(BaseUserManager):
@@ -51,8 +51,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    ignored_tags = models.ManyToManyField(
-                "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+
     role = models.ForeignKey('Role', verbose_name=_('роль'), on_delete=models.SET_NULL, blank=True, null=True)
 
     objects = UserManager()
@@ -77,6 +76,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(User, related_name="settings", on_delete=models.CASCADE)
+    ignored_tags = models.ManyToManyField(
+        "posts.PostTag", verbose_name=_('игнорируемые теги'), blank=True)
+    user_card_image = models.ImageField(upload_to='users_card_images/', blank=True, null=True)
+    notify_on_post_commented = models.BooleanField(_('Уведомлять о новом комментарии к посту'), default=True)
+    notify_on_comment_reply = models.BooleanField(_('Уведомлять об ответе на комментарий'), default=True)
+
+    def delete(self, using=None, keep_parents=False):
+        raise IncorrectDeletionError("You cannot delete \"UserSettings\" model manually, deletion is possible by cascading deletion through the user model")
+
+    def __str__(self):
+        return 'Настройки пользователя {}'.format(self.user.username)
 
 
 class Role(models.Model):
@@ -249,7 +263,7 @@ class PostComplaint(models.Model):
         BAD_TAG = 'BT', _('Несоответствие тегам')
         BAD_MEDIA = 'BM', _('Неподходящие/плохие медиа')
         PLAGIAT = 'PL', _('Плагиат')
-        ANOTHER = 'AN', _("Еще")
+        ANOTHER = 'AN', _("Другое")
 
     status = models.CharField(_('статус'), choices=Status.choices, max_length=20, default=Status.CONSIDERATION)
     type = models.CharField(_('тип жалобы'), choices=Types.choices, default=Types.BAD_TAG, max_length=40)
@@ -260,4 +274,5 @@ class PostComplaint(models.Model):
 
     def __str__(self):
         return 'Жалоба на {} от {}'.format(self.post, self.sender)
+
 
