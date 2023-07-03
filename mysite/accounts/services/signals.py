@@ -34,7 +34,7 @@ def notify_on_post_complaint_created(sender, instance: PostComplaint, created: b
                 post_name=str(instance.post),
                 c_type=instance.get_type_display(),
                 c_desc=instance.description,
-                post_url=reverse('post', kwargs={'pk': instance.pk}))
+                post_url=instance.post.get_absolute_url())
 
 
         )

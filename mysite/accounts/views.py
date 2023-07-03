@@ -423,6 +423,8 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             post.author = request.user
 
             images = image_formset.save(commit=False)
+            print(video_formset.is_valid())
+            print(video_formset.errors)
             videos = video_formset.save(commit=False)
 
             print(len(images) + len(videos))

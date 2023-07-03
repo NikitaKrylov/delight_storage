@@ -36,7 +36,7 @@ class TagsVectorizer:
     def __init__(self, dimension: int = 100):
         self._dimension = dimension
 
-    def _from_list(self, values: List[int], ones_value=False) -> np.ndarray:
+    def _from_list(self, values: List[int], ones_value=True) -> np.ndarray:
         vector = np.zeros(self._dimension, dtype=np.int64)
         for i in values:
             vector[i-1] = 1 if ones_value else i
@@ -69,6 +69,7 @@ class PostClustering(AgglomerativeClustering):
     def fit(self, queryset: QuerySet[Post], mis_cluster_size: int = 3):
         queryset = queryset.order_by('id')
         posts_id = queryset.values_list('id', flat=True)
+
         self.distance_matrix = create_distance_matrix(queryset)
         self.dataset = pd.DataFrame(self.distance_matrix, columns=posts_id, index=posts_id)
 

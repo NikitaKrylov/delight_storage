@@ -8,7 +8,6 @@ from django.utils import timezone
 from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
-
 from mysite.errors import IncorrectDeletionError
 
 
