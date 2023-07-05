@@ -466,7 +466,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             request.POST, request.FILES, instance=form.instance
         )
 
-        if form.is_valid() and (image_formset.is_valid() and video_formset.is_valid()):
+        if form.is_valid() and image_formset.is_valid() and video_formset.is_valid():
             post = form.save(commit=False)
             post.author = request.user
 
@@ -523,8 +523,8 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity, UpdateView):
 
         context["title"] = str(post)
 
-        context["image_formset"] = ImageFileFormSet(instance=post)
-        context["video_formset"] = VideoFileFormSet(instance=post)
+        context["image_formset"] = ImageFileFormSet(instance=post, prefix="images")
+        context["video_formset"] = VideoFileFormSet(instance=post, prefix="videos")
         context["tag_form"] = CreatePostTagForm()
 
         return context
@@ -532,10 +532,10 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity, UpdateView):
     def post(self, request, *args, **kwargs):
         form = self.get_form_class()(request.POST, instance=self.get_object())
         image_formset = ImageFileFormSet(
-            request.POST, request.FILES, instance=form.instance
+            request.POST, request.FILES, instance=form.instance, prefix="images"
         )
         video_formset = VideoFileFormSet(
-            request.POST, request.FILES, instance=form.instance
+            request.POST, request.FILES, instance=form.instance, prefix="videos"
         )
 
         if form.is_valid():

@@ -277,9 +277,6 @@ class SearchPostTagListView(PostListMixin, PostFilterFormMixin, ListView):
         return super().get_queryset().filter(tags__slug=self.kwargs['slug'])
 
 
-import numpy as np
-
-
 class PostCompilationsList(PostFilterFormMixin, TemplateView):
     template_name = 'posts/compilations.html'
 
