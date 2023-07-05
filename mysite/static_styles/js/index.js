@@ -111,19 +111,16 @@ const header = document.querySelector(".header");
 
 if (header) {
 	const getScrollPosition = () => window.scrollY || document.documentElement.scrollTop;
-	const containHide = () => header.classList.contains("_hide-header");
+	const getContainHide = () => header.classList.contains("_hide-header");
 
 	window.addEventListener("scroll", () => {
 		let scrollPosition = getScrollPosition();
+		let containHide = getContainHide();
 
-		if (scrollPosition > lastScroll && !containHide() && scrollPosition > defaultOffset) {
+		if (scrollPosition > lastScroll && !containHide && scrollPosition > defaultOffset) {
 			// scroll down
 			header.classList.add("_hide-header");
-		} else if (
-			scrollPosition < lastScroll &&
-			containHide() &&
-			scrollPosition < defaultOffset - scrollPosition
-		) {
+		} else if (scrollPosition < lastScroll && containHide) {
 			// scroll up
 			header.classList.remove("_hide-header");
 		}

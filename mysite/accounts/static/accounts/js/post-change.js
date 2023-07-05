@@ -1,6 +1,6 @@
 const imagesEdLink = document.querySelectorAll(".fileEditingLink");
 
-let reg = /.+(\.jpg|\.jpeg|\.gif)$/i;
+let reg = /.+(\.jpg|\.jpeg|\.png|\.gif)$/i;
 
 function createFile(file, fileTag) {
 	// fileTag = createVideoTag(link);

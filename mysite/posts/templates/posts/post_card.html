@@ -3,26 +3,26 @@
 
 <div class="gallery__item item-masonry infinite-item">
     <div class="gallery__content">
-        <div class="gallery__box-media">
-            <a class="gallery__link" href="{{post.get_absolute_url}}">
-                <div class="gallery__thumbnail">
+        <div class="box-media">
+            <a class="box-media__link" href="{{post.get_absolute_url}}">
+                <div class="box-media__thumbnail">
                     {% if post.images.count > 0 %}
-                    <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
                     {% else %}
-                    <video class="gallery__media video" width=100% height="100%"
+                    <video class="box-media__media video" width=100% height="100%"
                         src="{{post.videos.first.file.url}}"></video>
                     {% endif %}
-                    <div class="gallery__media-overlay">
-                    </div>
+                    <div class="box-media__media-overlay"></div>
                 </div>
             </a>
         </div>
+
         <div class="gallery__actions cover-item-gallery-container">
             {% if post.count_media > 1 %}
             <div class="dots-container">
                 <ul class="dots-items">
                     {% for i in post.count_media|trange %}
-                        <li class="dots-items__item"></li>
+                    <li class="dots-items__item"></li>
                     {% endfor %}
                 </ul>
             </div>

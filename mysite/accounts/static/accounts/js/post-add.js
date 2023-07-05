@@ -236,6 +236,34 @@ $.each($(".tags-list__tag"), function (inx, val) {
 // =====================================================
 
 // функции работы с файлами
+
+function addFileField(name, container, countForm) {
+	$(container).append(
+		$(`
+			<div class="add-file add-${name}">
+				<!-- files-container -->
+
+				<input id="id_${name}s-${countForm}-id" name="${name}s-${countForm}-id"
+					 type="hidden">
+				<input id="id_${name}s-${countForm}-post" name="${name}s-${countForm}-post"
+					 type="hidden">
+
+				<div class="add-file__controls">
+					<label class="add-file__control add-file-btn-cont">
+
+						<input ${name === "image" ? "accept = image/*" : ""}
+							class="add-file__input hidden-input" 
+							id="id_${name}s-${countForm}-file" name="${name}s-${countForm}-file"
+							type="file">
+
+						<span class="add-file__btn button">Выбрать файл</span>
+					</label>
+				</div>
+			</div>
+		`),
+	);
+}
+
 function formatBytes(bytes, decimals = 2) {
 	if (bytes === 0) {
 		return "0";
@@ -249,34 +277,37 @@ function formatBytes(bytes, decimals = 2) {
 	}
 }
 
-function addFileField(name, container, form, countForm, addBtn) {
-	let totalForms = document.querySelector(`#id_${name}s-TOTAL_FORMS`);
+// function addFileField(name, container, form, countForm, addBtn) {
+// 	let totalForms = document.querySelector(`#id_${name}s-TOTAL_FORMS`);
 
-	let newForm = form[0].cloneNode(true);
-	let formRegex = RegExp(`${name}s-(\\d){1}-`, "g");
+// 	console.log(form[0], "cloning");
 
-	newForm.innerHTML = newForm.innerHTML.replace(formRegex, `${name}s-${countForm}-`);
+// 	let newForm = form[0].cloneNode(true);
+// 	let formRegex = RegExp(`${name}s-(\\d){1}-`, "g");
 
-	if (newForm.querySelectorAll(".files-container").length) {
-		newForm.querySelector(".add-file__btn").textContent = "Выбрать файл";
-		newForm.querySelector(".files-container").remove();
-		newForm.querySelector(".del-btn").remove();
-	}
+// 	newForm.innerHTML = newForm.innerHTML.replace(formRegex, `${name}s-${countForm}-`);
 
-	$(container).append(newForm);
-	totalForms.setAttribute("value", `${countForm + 1}`);
-}
+// 	console.log(newForm, "newform");
+
+// 	if (newForm.querySelectorAll(".files-container").length) {
+// 		newForm.querySelector(".add-file__btn").textContent = "Выбрать файл";
+// 		newForm.querySelector(".files-container").remove();
+// 		newForm.querySelector(".del-btn").remove();
+// 		newForm.querySelector(".fileEditingLink").remove();
+// 	}
+
+// 	$(container).append(newForm);
+// 	totalForms.setAttribute("value", `${countForm + 1}`);
+// }
 
 function createFileCont(file) {
-	let fileCont = $(`
+	return $(`
     	<div class="files-container">
      		<div class="files-container__file-box">
         		${file}
       		</div>
     	</div>
   	`);
-
-	return fileCont;
 }
 
 function createFileInfo(file, width, height) {
@@ -285,7 +316,7 @@ function createFileInfo(file, width, height) {
 	let fileWidth = width;
 	let fileHeight = height;
 
-	let fileInfo = $(`
+	return $(`
     <div class="files-container__file-info file-info">
       <div class="file-info__item">
         <div class="file-info__title title">Имя: </div>
@@ -301,8 +332,6 @@ function createFileInfo(file, width, height) {
       </div>
     </div>
   `);
-
-	return fileInfo;
 }
 
 function addDelBtn(currFile) {
@@ -319,12 +348,8 @@ function addDelBtn(currFile) {
 let cont = document.querySelector(".add-image-container");
 let addImgForm = document.querySelectorAll(".add-image");
 let imgFormNum = addImgForm.length - 1;
-let addButton = document.querySelector("#add-form-image");
-// let totalForms = document.querySelector('#id_images-TOTAL_FORMS')
-// let imgInp = document.querySelector('.add-file__input')
 
 // добавление полей фото
-
 // addButton.addEventListener("click", function (e) {
 //     e.preventDefault()
 
@@ -364,18 +389,19 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 			currFile.querySelector(".files-container").remove();
 			currFile.querySelector(".del-btn").remove();
 		} else {
-			addFileField("image", cont, addImgForm, (imgFormNum += 1), addButton);
+			addFileField("image", cont, (imgFormNum += 1));
 		}
 
-		let srcLink = URL.createObjectURL(file);
+		document.querySelector("#id_images-TOTAL_FORMS").setAttribute("value", `${imgFormNum + 1}`);
 
-		let imageCont = createFileCont(createImageTag(srcLink));
+		let imageCont = createFileCont(createImageTag(URL.createObjectURL(file)));
 		$(currFile).prepend(imageCont);
 
-		let currImg = $(imageCont).find("img");
-		currImg.on("load", function () {
-			imageCont.append(createFileInfo(file, this.naturalWidth, this.naturalHeight));
-		});
+		$(imageCont)
+			.find("img")
+			.on("load", () =>
+				imageCont.append(createFileInfo(file, this.naturalWidth, this.naturalHeight)),
+			);
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
 
@@ -387,20 +413,12 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 	}
 });
 
-$(".add-image-container").on("click", ".del-btn", function (e) {
-	const currAddImg = e.target.closest(".add-image");
-	// if (document.querySelectorAll('.add-image').length > 1) {
-	//   currAddImg.remove()
-	// }
-	currAddImg.remove();
-});
+$(".add-image-container").on("click", ".del-btn", (e) => e.target.closest(".add-image").remove());
 
 // видео
 let contVd = document.querySelector(".add-video-container");
 let addVdForm = document.querySelectorAll(".add-video");
 let vdFormNum = addVdForm.length - 1;
-let addVdButton = document.querySelector("#add-form-video");
-// let totalVdForms = document.querySelector('#id_videos-TOTAL_FORMS')
 
 // добавление полей видео
 // addVdButton.addEventListener("click", function (e) {
@@ -425,19 +443,19 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 			currFile.querySelector(".files-container").remove();
 			currFile.querySelector(".del-btn").remove();
 		} else {
-			addFileField("video", contVd, addVdForm, (vdFormNum += 1), addVdButton);
+			addFileField("video", contVd, (vdFormNum += 1));
 		}
 
-		let srcLink = URL.createObjectURL(file);
+		document.querySelector("#id_videos-TOTAL_FORMS").setAttribute("value", `${vdFormNum + 1}`);
 
-		let videoCont = createFileCont(createVideoTag(srcLink));
-		console.log(videoCont);
+		let videoCont = createFileCont(createVideoTag(URL.createObjectURL(file)));
 		$(currFile).prepend(videoCont);
 
-		let currVideo = $(videoCont).find("video");
-		currVideo.on("loadeddata", function () {
-			videoCont.append(createFileInfo(file, this.videoWidth, this.videoHeight));
-		});
+		$(videoCont)
+			.find("video")
+			.on("loadeddata", () =>
+				videoCont.append(createFileInfo(file, this.videoWidth, this.videoHeight)),
+			);
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
 
@@ -449,16 +467,14 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 	}
 });
 
-$(".add-video-container").on("click", ".del-btn", function (e) {
-	const currFile = e.target.closest(".add-video");
-	currFile.remove();
-});
+$(".add-video-container").on("click", ".del-btn", (e) => e.target.closest(".add-video").remove());
 
 // инициализации календаря
 if ($("body").hasClass("_pc")) {
 	let todayBtn = {
 		content: "Сегодня",
 		className: "today-btn-picker",
+
 		onClick: (dp) => {
 			let date = new Date();
 			dp.selectDate(date);
@@ -467,6 +483,7 @@ if ($("body").hasClass("_pc")) {
 	};
 
 	$(".input-calendar").attr("type", "text");
+
 	new AirDatepicker(".input-calendar", {
 		timepicker: true,
 		buttons: [todayBtn, "clear"],

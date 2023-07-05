@@ -79,12 +79,13 @@
     <div class="post-add__body add-tags">
         <div class="add-tag__content">
             <div class="search">
+                <div class="form-error">{{ form.tags.errors }}</div>
+
                 <div class="search__container">
                     <div class="search__input-wrapper">
                         <div class="search__title title">
                             Теги
                         </div>
-                                <div class="form-error">{{ form.tags.errors }}</div>
 
                         <div class="search__body">
                             <div class="search__input-container">
@@ -130,8 +131,8 @@
 
     <div class="post-add__body description-post">
         <div class="description-post__title title">
-          {{form.description.label}}
-      </div>
+            {{form.description.label}}
+        </div>
         <div class="description-post__input textarea">
             {{form.description}}
         </div>
@@ -143,6 +144,7 @@
         {{image_formset.management_form}}
         {% for image_form in image_formset %}
         <div class="add-file add-image">
+            <!-- --files-container-- -->
             {% for hidden in image_form.hidden_fields %}
             {{hidden}}
             {% endfor %}

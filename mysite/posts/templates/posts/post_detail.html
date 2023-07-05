@@ -192,7 +192,7 @@
                 {% for image in post.images.all %}
                 <div class="image-slider__slide swiper-slide">
                     <div class="image-slider__item" data-src="{{ image.file.url }}">
-                        <img src=" {{ image.file.url }}">
+                        <img src="{{ image.file.url }}">
                     </div>
                 </div>
                 {% endfor %}

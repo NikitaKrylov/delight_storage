@@ -1,0 +1,16 @@
+.compilations__wrapper.swiper-wrapper {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.compilations__slide.swiper-slide {
+  width: auto;
+}
+.compilations__thumbnail {
+  height: 100%;
+}
+.compilations__media {
+  max-height: 300px;
+  -o-object-fit: contain;
+     object-fit: contain;
+}

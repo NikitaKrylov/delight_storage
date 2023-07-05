@@ -37,7 +37,8 @@
                             class="search-button__icon dark-btn__icon button_pink button_clean fa-solid fa-magnifying-glass"></i>
                         <span class="nav-list__text dark-btn__text">Поиск</span>
                     </li>
-                    <li class="nav-list__item dark-btn button">
+                    {% url 'complication' as complication_url %}
+                    <li class="nav-list__item dark-btn button {{request|mark_current_page:complication_url}}">
                         <a href="{% url 'complication' %}" class="dark-btn__link"></a>
                         <span class="nav-list__text dark-btn__text">Подборка</span>
                     </li>

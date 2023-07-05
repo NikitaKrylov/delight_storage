@@ -1146,3 +1146,9 @@ a[rel="modal:close"].button_red {
       -ms-transform: scale(1);
           transform: scale(1);
 }
+
+.page-block {
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--bg-secondary-default);
+}
