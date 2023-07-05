@@ -9,8 +9,7 @@
                     {% if post.images.count > 0 %}
                     <img class="gallery__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
                     {% else %}
-                    <video class="gallery__media video" width=100% height="100%"
-                        src="{{post.videos.first.file.url}}"></video>
+                    <img class="gallery__media lazy" src="{{post.videos.first.thumbnail.url}}" loading="lazy" alt="">
                     {% endif %}
                     <div class="gallery__media-overlay">
                     </div>

@@ -1,15 +1,14 @@
 from tempfile import NamedTemporaryFile
-
 from django.core.files import File
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 import os
 from django.utils.translation import gettext_lazy as _
-from django.dispatch import receiver
-from mysite.settings import POST_MEDIA_PATH, ALLOWED_EXTENSIONS
+from mysite.settings import POST_MEDIA_PATH, ALLOWED_EXTENSIONS, MEDIA_ROOT
 import cv2
 from django.core.files.storage import default_storage
+from pathlib import Path
 
 file_post_help_text = 'файл обязательно должен быть прикреплен к посту'
 
@@ -56,6 +55,7 @@ class VideoFile(models.Model):
             print('generate thumbnails')
             self._create_thumbnail()
 
+    @property
     def filename(self):
         return os.path.basename(self.file.name)
 
@@ -63,21 +63,19 @@ class VideoFile(models.Model):
         return self.file.size
 
     def _create_thumbnail(self):
-        # проверка типа
-        ...
-        file_name = self.filename()[:self.filename().rfind('.')] + '_thumbnail.jpg'
-        vidcap = cv2.VideoCapture(self.file.path)
-        success, image = vidcap.read()
-        if not success: return
+        file_name = Path(self.file.name).stem + '_thumbnail.jpg'
+        file_path = os.path.join(MEDIA_ROOT, file_name)
 
-        result = cv2.imwrite(file_name, image)
-        if not result: return
+        success, image = cv2.VideoCapture(self.file.path).read()
+        cv2.imwrite(file_path, image)
 
         with NamedTemporaryFile() as temp_file:
-            with open(file_name, 'rb') as file:
+            with open(file_path, 'rb') as file:
                 temp_file.write(file.read())
 
             self.thumbnail.save(file_name, File(temp_file), save=True)
 
+        default_storage.delete(file_name)
+
     def __str__(self):
-        return self.filename()
+        return self.filename

@@ -78,7 +78,6 @@ class Post(models.Model):
             self.status = self.STATUS.DEFERRED
         return super().save(force_insert, force_update, using, update_fields)
 
-
     def clean(self):
         if self.status == Post.STATUS.PUBLISHED and not self.pub_date:
             self.pub_date = timezone.now()

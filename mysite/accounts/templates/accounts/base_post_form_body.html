@@ -151,9 +151,7 @@
             <div class="add-file__controls">
                 {{image_form.file}}
                 {% if image_formset.can_delete %}
-                <!-- <span class="add-file__control del-btn button">
-                    Удалить
-                </span> -->
+                {{image_form.DELETE}}
                 {% endif %}
             </div>
         </div>
@@ -175,9 +173,7 @@
             <div class="add-file__controls">
                 {{video_form.file}}
                 {% if video_formset.can_delete %}
-                <!-- <span class="add-file__control del-btn button">
-                    Удалить
-                </span> -->
+                {{video_form.DELETE}}
                 {% endif %}
             </div>
         </div>

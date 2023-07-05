@@ -36,7 +36,8 @@ class VideoFileForm(forms.ModelForm):
         model = VideoFile
         fields = ['file']
         widgets = {
-            'file': ClearableFileInput
+            'file': ClearableFileInput,
+            '' : None
         }
 
 
