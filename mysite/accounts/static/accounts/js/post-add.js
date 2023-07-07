@@ -250,14 +250,18 @@ function addFileField(name, container, countForm) {
 
 				<div class="add-file__controls">
 					<label class="add-file__control add-file-btn-cont">
-
 						<input ${name === "image" ? "accept = image/*" : ""}
 							class="add-file__input hidden-input" 
 							id="id_${name}s-${countForm}-file" name="${name}s-${countForm}-file"
 							type="file">
-
+							
 						<span class="add-file__btn button">Выбрать файл</span>
 					</label>
+
+					<input class="add-file__del-btn checkbox__input hidden-input"
+						id="id_${name}s-${countForm}-DELETE"
+						name="${name}s-${countForm}-DELETE"
+						type="checkbox">
 				</div>
 			</div>
 		`),
@@ -413,7 +417,19 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 	}
 });
 
-$(".add-image-container").on("click", ".del-btn", (e) => e.target.closest(".add-image").remove());
+// $(".add-image-container").on("click", ".del-btn", (e) => {
+// 	const currFile = e.target.closest(".add-image");
+
+// 	// $(currFile).animate(
+// 	// 	{
+// 	// 		opacity: 0,
+// 	// 	},
+// 	// 	250,
+// 	// 	() => (currFile.hidden = true),
+// 	// );
+
+// 	currFile.querySelector(".add-file__del-btn").checked = true;
+// });
 
 // видео
 let contVd = document.querySelector(".add-video-container");
@@ -467,7 +483,25 @@ $(".add-video-container").on("change", ".add-file__input", function (e) {
 	}
 });
 
-$(".add-video-container").on("click", ".del-btn", (e) => e.target.closest(".add-video").remove());
+$(document).on("click", ".del-btn", function (e) {
+	let currFile = e.target.closest(".add-file");
+	currFile.querySelector(".add-file__del-btn").checked = true;
+	currFile.hidden = true;
+});
+
+// $(".add-video-container").on("click", ".del-btn", (e) => {
+// 	let currFile = e.target.closest(".add-video");
+
+// $(currFile).animate(
+// 	{
+// 		opacity: 0,
+// 	},
+// 	250,
+// 	() => (currFile.hidden = true),
+// );
+
+// 	currFile.querySelector(".add-file__del-btn").checked = true;
+// });
 
 // инициализации календаря
 if ($("body").hasClass("_pc")) {

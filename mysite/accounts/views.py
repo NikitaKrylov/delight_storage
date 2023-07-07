@@ -545,9 +545,15 @@ class EditPostView(LoginRequiredMixin, CheckUserConformity, UpdateView):
                 for image in image_formset.save(commit=False):
                     image.save()
 
+                for image in image_formset.deleted_objects:
+                    image.delete()
+
             if video_formset.is_valid():
                 for video in video_formset.save(commit=False):
                     video.save()
+
+                for video in video_formset.deleted_objects:
+                    video.delete()
 
         else:
             return render(
