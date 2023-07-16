@@ -7,8 +7,8 @@ $min-width-mobile: 700px;
 $max-width: 1920;
 $padding-wrapper: 8;
 
-$font-family-inter: "inter", sans-serif;
-$font-family-rubik: "Rubik";
+// $font-family-inter: "inter", sans-serif;
+// $font-family-rubik: "Rubik";
 $font-family-helvetica: "Helvetica";
 $font-family-circeregular: "CirceRegular";
 
@@ -21,7 +21,7 @@ $browser-context: 16; // Default
 .wrapper {
   max-width: 1024px;
   // width: 100%;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 .page {
@@ -57,8 +57,7 @@ $browser-context: 16; // Default
 .container {
   display: flex;
   // max-width: 1920px;
-  margin: 0 auto;
-  margin-top: 17px;
+  margin: 15px auto;
   width: 100%;
   padding: 0 #{$padding-wrapper + px};
   // min-width: 0;
@@ -78,6 +77,7 @@ $browser-context: 16; // Default
 }
 
 .post-add-wrapper {
+  margin-top: 20px;
   // padding: 5% 10%;
 }
 

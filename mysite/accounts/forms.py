@@ -122,7 +122,7 @@ class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = UserSettings
         fields = "__all__"
-        exclude = ('user',)
+        exclude = ("user",)
         widgets = {}
 
 

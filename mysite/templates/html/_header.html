@@ -3,53 +3,53 @@
 
 <header class="header">
     <div class="header__wrapper">
-        <div class="header__container">
-            <div class="header__logo">
-                <span class="header__logo logo">DelightArt</span>
+        <nav class="nav">
+            <div class="nav__logo">
+                <span class="nav__text-logo">DelightArt</span>
             </div>
 
-            <button class="header__mobile-navigation" href="#nav-sidebar-mobile" type="button"
+            <button class="nav__mobile-navigation mobile-navigation button-hide" type="button"
                 aria-label="открыть меню навигации">
-                <i class="fa-solid fa-bars hamburgerIcon"></i>
+                <i class="hamburgerIcon fa-solid fa-bars"></i>
             </button>
 
-            <div class="header__control-nav">
-                <div class="header__search">
-                    <button class="search-button search-button-mobile dark-btn button">
+            <div class="nav__control-nav">
+                <div class="search-button-mobile">
+                    <button class="search-button-mobile__btn search-button dark-btn button">
                         <i class="dark-btn__icon button_pink button_clean fa-solid fa-magnifying-glass"></i>
                         <span class="dark-btn__text">Поиск</span>
                     </button>
                 </div>
 
-                <ul class="header__nav-list nav-list">
+                <ul class="nav__nav-list nav-list">
                     {% url 'home' as home_url %}
-                    <li class="nav-list__item dark-btn button {{request|mark_current_page:home_url}}">
-                        <a href="{% url 'home' %}" class="dark-btn__link"></a>
-                        <span class="nav-list__text dark-btn__text">Главная</span>
+                    <li class="nav-list__item {{request|mark_current_page:home_url}}">
+                        <a class="nav-list__link" href="{% url 'home' %}">Главная</a>
+                        <!-- <span class="nav-list__text dark-btn__text">Главная</span> -->
                     </li>
                     {% url 'post_list' as post_list_url %}
-                    <li class="nav-list__item dark-btn button {{request|mark_current_page:post_list_url}}">
-                        <a href="{% url 'post_list' %}" class="dark-btn__link"></a>
-                        <span class="nav-list__text dark-btn__text">Лента</span>
+                    <li class="nav-list__item {{request|mark_current_page:post_list_url}}">
+                        <a class="nav-list__link" href="{% url 'post_list' %}">Лента</a>
                     </li>
-                    <li class="nav-list__item search-button dark-btn button">
-                        <i
-                            class="search-button__icon dark-btn__icon button_pink button_clean fa-solid fa-magnifying-glass"></i>
-                        <span class="nav-list__text dark-btn__text">Поиск</span>
+                    <li class="nav-list__item">
+                        <button class="nav-list__btn search-button dark-btn button" aria-label="открыть поиск">
+                            <i
+                                class="search-button__icon dark-btn__icon button_pink button_clean fa-solid fa-magnifying-glass"></i>
+                            <span class="dark-btn__text">Поиск</span>
+                        </button>
                     </li>
                     {% url 'complication' as complication_url %}
-                    <li class="nav-list__item dark-btn button {{request|mark_current_page:complication_url}}">
-                        <a href="{% url 'complication' %}" class="dark-btn__link"></a>
-                        <span class="nav-list__text dark-btn__text">Подборка</span>
+                    <li class="nav-list__item {{request|mark_current_page:complication_url}}">
+                        <a class="nav-list__link" href="{% url 'complication' %}">Подборка</a>
                     </li>
-                    <li class="nav-list__item dark-btn button">
-                        <span class="nav-list__text dark-btn__text">Ещё…</span>
+                    <li class="nav-list__item">
+                        <span class="nav-list__btn">Ещё…</span>
                     </li>
                 </ul>
             </div>
 
-            <div class="header__account-menu">
-                <div class="header__notification-icons">
+            <div class="nav__account-menu">
+                <div class="nav__notification-icons">
                     <div class="notification-items">
                         <div class="notification-items__item">
                             <div class="notification-items__icon">
@@ -62,23 +62,24 @@
                                 {% endif %}
                                 {% endwith %}
                                 {% endif %}
-                                <a href="{% url 'user_notifications' %}" class="notification-items__link">
+                                <a class="notification-items__link" href="{% url 'user_notifications' %}"
+                                    aria-label="уведомления">
                                     <i class="fa-solid fa-bell"></i>
                                 </a>
                             </div>
                         </div>
                         <div class="notification-items__item">
                             <div class="notification-items__icon">
-                                <a href="{% url 'user_liked_posts' %}" class="notification-items__link">
+                                <a class="notification-items__link" href="{% url 'user_liked_posts' %}"
+                                    aria-label="лайки">
                                     <i class=" fa-solid fa-heart"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="header__profile">
+                <div class="nav__profile">
                     {% if request.user.is_authenticated %}
-                    <!-- для зареганых -->
                     <a href="{% url 'profile' %}">
                         {% if request.user.avatar %}
                         <img class="header-profile-avatar avatar" src="{{request.user.avatar.url}}" alt="Аватар">
@@ -88,16 +89,16 @@
                         {% endif %}
                     </a>
                     {% else %}
-                    <a href="{% url 'login' %}" class="header__link lock-link">
+                    <a href="{% url 'login' %}" class="nav__link lock-link">
                         <div class="lock">
                             <div class="lock__icon"></div>
                         </div>
                     </a>
-                    <a href="{% url 'login' %}" class="button header__link login-link">Войти</a>
-                    <a href="{% url 'signup' %}" class="button header__link signin-link">Регистрация</a>
+                    <a href="{% url 'login' %}" class="button nav__link login-link">Войти</a>
+                    <a href="{% url 'signup' %}" class="button nav__link signin-link">Регистрация</a>
                     {% endif %}
                 </div>
             </div>
-        </div>
+        </nav>
     </div>
 </header>

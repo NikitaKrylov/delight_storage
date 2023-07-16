@@ -192,7 +192,7 @@
                 {% for image in post.images.all %}
                 <div class="image-slider__slide swiper-slide">
                     <div class="image-slider__item" data-src="{{ image.file.url }}">
-                        <img src="{{ image.file.url }}">
+                        <img class="image-slider__media" src="{{ image.file.url }}">
                     </div>
                 </div>
                 {% endfor %}
@@ -200,7 +200,8 @@
                 <div class="image-slider__slide swiper-slide">
                     <div class="image-slider__item" data-video='{"source": [{"src": "{{ video.file.url }}", "type": "video/mp4" }],
                     "attributes" : {"preload": false, "controls" : true}}'>
-                        <video width="100%" height="100%" src="{{ video.file.url }}" controls></video>
+                        <div class="circled-play-icon"></div>
+                        <video class="image-slider__media" src="{{ video.file.url }}"></video>
                     </div>
                 </div>
                 {% endfor %}
@@ -217,12 +218,12 @@
             <div class="image-slider-2__wrapper swiper-wrapper">
                 {% for image in post.images.all %}
                 <div class="image-slider-2__slide swiper-slide">
-                    <img src="{{ image.file.url }}">
+                    <img class="image-slider-2__media" src="{{ image.file.url }}">
                 </div>
                 {% endfor %}
                 {% for video in post.videos.all %}
                 <div class="image-slider-2__slide swiper-slide">
-                    <video width="100%" height="100%" src="{{ video.file.url }}"></video>
+                    <video class="image-slider-2__media" src="{{ video.file.url }}"></video>
                 </div>
                 {% endfor %}
             </div>
@@ -340,6 +341,7 @@
                 </span>
             </div>
         </div>
+
         <div class="post-info-author">
             <div class="post-info-author__author">
                 <a href="{% url 'user_info' post.author.pk %}" class="post-info-author__link">
@@ -390,53 +392,51 @@
             {% endif %}
         </div>
 
-        <div class="post-info-comments">
-            <section class="post-info-comments__container">
-                {% if post.disable_comments %}
+        <section class="post-info-comments">
+            {% if post.disable_comments %}
 
-                <div class="comments-are-forbidden">
-                    <span>Автор запретил комментарии</span>
+            <div class="comments-are-forbidden">
+                <span>Автор запретил комментарии</span>
+            </div>
+
+            {% else %}
+            <div class="comments-form">
+                <div class="comments-form__sort">
+                    <div class="comments-form__title title">
+                        <span class="comments-form__text">Комментарии</span>
+                    </div>
                 </div>
-
-                {% else %}
-                <div class="comments-form">
-                    <div class="comments-form__sort">
-                        <div class="comments-form__title title">
-                            <span class="comments-form__text">Комментарии</span>
+                <form id="input-comments-form" class="comments-form__form" action="{% url 'add_comment' post.id %}"
+                    method="post">
+                    {% csrf_token %}
+                    <div class="comments-form__pseudo-form">
+                        Написать комментарий
+                    </div>
+                    <div class="comments-form__reply" hidden>
+                        <div class="comments-form__input textarea" aria-placeholder="Введите ваш комментарий">
+                            <textarea class="comments-form__input-comment textarea__input textarea-autosize"
+                                name="input-comments-form" placeholder="Написать комментарий" required></textarea>
+                        </div>
+                        <div class="comments-form__controls">
+                            <div class="comment-form__send">
+                                <button class="button-send" type="submit"
+                                    aria-label="отправить коментарий">Оптравить</button>
+                            </div>
                         </div>
                     </div>
-                    <form id="input-comments-form" class="comments-form__form" action="{% url 'add_comment' post.id %}"
-                        method="post">
-                        {% csrf_token %}
-                        <div class="comments-form__pseudo-form">
-                            Написать комментарий
-                        </div>
-                        <div class="comments-form__reply" hidden>
-                            <div class="comments-form__input textarea" aria-placeholder="Введите ваш комментарий">
-                                <textarea class="comments-form__input-comment textarea__input textarea-autosize"
-                                    name="input-comments-form" placeholder="Написать комментарий" required></textarea>
-                            </div>
-                            <div class="comments-form__controls">
-                                <div class="comment-form__send">
-                                    <button class="button-send" type="submit"
-                                        aria-label="отправить коментарий">Оптравить</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                {% if post.comments.all %}
-                <div class="comments-list">
-                    {% for comment in post.comments.all %}
-                    {% if not comment.answered %}
-                    {% include 'posts/comment_block.html' %}
-                    {% endif %}
-                    {% endfor %}
-                </div>
+                </form>
+            </div>
+            {% if post.comments.all %}
+            <div class="comments-list">
+                {% for comment in post.comments.all %}
+                {% if not comment.answered %}
+                {% include 'posts/comment_block.html' %}
                 {% endif %}
-                {% endif %}
-            </section>
-        </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+        </section>
     </div>
 </div>
 {% endblock %}

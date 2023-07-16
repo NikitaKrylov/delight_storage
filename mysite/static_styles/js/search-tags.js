@@ -29,79 +29,46 @@ function btn(button, closebtn, parent) {
 	});
 }
 
+let search = $(".search");
 let searchBtn = $(".search-button");
 let closeSearchBtn = $(".search__close-btn");
-const searchInput = $(".search__input-form");
+let searchInput = $(".search__input-form");
+let searchForm = $("#search-form");
 let isSearchOpen = false;
 
 searchBtn.on("click", () => {
-	// $(".search").addClass("_active");
-	// document.body.classList.add("_lock");
 	isSearchOpen = true;
-	menuOverlayOpen(document.querySelector(".search"));
-	// btn(".search-button", ".search__close-btn", ".search");
+
+	menuOverlayOpen(search);
 	setTimeout(() => searchInput.focus(), 100);
-	// document.querySelector('.search-input__input').focus()
 });
 
 closeSearchBtn.on("click", function (e) {
-	// $(".search").removeClass("_active");
-	// document.body.classList.remove("_lock");
-	// isSearchOpen = false;
-	// menuOverlayClose(document.querySelector(".search"));
 	if (searchInput.val()) {
 		searchInput.val("").focus();
 		searchInput.trigger("input");
 	} else {
 		isSearchOpen = false;
-		menuOverlayClose(document.querySelector(".search"));
+		menuOverlayClose(search);
 	}
 });
 
-document.querySelector(".search").addEventListener("click", function (e) {
+search.on("click", function (e) {
 	if (!(e.target.closest(".search__input-container") ?? e.target.closest(".tags-list__tag"))) {
 		isSearchOpen = false;
-		menuOverlayClose(document.querySelector(".search"));
+		menuOverlayClose(search);
 	}
 });
 
 if (!isMobile.any()) {
 	document.addEventListener("keydown", (e) => {
 		if (e.code == "Escape" && isSearchOpen) {
-			menuOverlayClose(document.querySelector(".search"));
+			menuOverlayClose(search);
+		} else if (e.code == "Enter" && isSearchOpen) {
+			searchForm.submit();
 		}
 	});
 }
-
-// // желательно чтобы кнопки имели общий родитель который имеет селетор или id
-// function threeBtn(btnName) {
-//   let parentBtn = document.querySelector(btnName).parentNode;
-//   // let arrayBtn = document.querySelectorAll(btnName)
-
-//   parentBtn.addEventListener('click', function(e) {
-//     let tar = e.target.closest(btnName);
-//     if (tar) {
-//       let valueinp = tar.querySelector('.three-pos-inp').value;
-//       if (valueinp == '0') {
-//         tar.classList.add('_enabled');
-//         tar.querySelector('.three-pos-inp').value = '1';
-//         console.log('value 1', tar.querySelector('.three-pos-inp').value)
-
-//       } else if (valueinp == '1') {
-//         tar.classList.add('_disabled');
-//         tar.classList.remove('_enabled');
-//         tar.querySelector('.three-pos-inp').value = '-1';
-//         console.log('value -1', tar.querySelector('.three-pos-inp').value)
-
-//       } else if (valueinp == '-1') {
-//         tar.classList.remove('_disabled');
-//         tar.querySelector('.three-pos-inp').value = '0';
-//         console.log('value 0', tar.querySelector('.three-pos-inp').value)
-//       }
-//     };
-//   });
-// };
-// threeBtn('.tags-list__tag');
 
 const tagList = document.querySelector(".tags-list");
 const tagBtn = document.querySelector(".tags-list__tag");
@@ -116,19 +83,12 @@ searchInput.on("input", function (e) {
 	clearTimeout(inputDelay);
 
 	inputDelay = setTimeout(function () {
-		console.log($(this), e);
-
 		$.ajax({
 			type: "GET",
 			url: urlTag,
 			data: { operation: textInp },
 			dataType: "json",
 			success: function (response) {
-				// let selectTags = [];
-				console.log(response);
-
-				let time = performance.now();
-
 				function createTags(nameTag, slugTag) {
 					let tag = document.createElement("div");
 					tag.className = "tags-list__tag";
@@ -150,13 +110,6 @@ searchInput.on("input", function (e) {
 						} else {
 							let txtTag = e.getElementsByTagName("span")[0].textContent;
 							e.getElementsByTagName("span")[0].innerHTML = txtTag;
-
-							// let inxTag = response.findIndex((tag) => tag.name === txtTag);
-
-							// if (inxTag !== -1) {
-							// 	response.splice(inxTag, 1);
-							// }
-
 							response = response.filter((tag) => tag.name !== txtTag);
 						}
 					});
@@ -182,9 +135,6 @@ searchInput.on("input", function (e) {
 						}
 					});
 				});
-
-				time = performance.now() - time;
-				console.log("Время выполнения = ", time / 1000);
 			},
 		});
 	}, 200);
@@ -232,24 +182,13 @@ function tagSort(array) {
 $(tagList).on("click", function (e) {
 	let clickBtn = e.target.closest(".tags-list__tag");
 	if (clickBtn) {
-		setTimeout(() => clickBtn.querySelector(".three-pos-inp").focus(), 100);
+		// setTimeout(() => clickBtn.querySelector(".three-pos-inp").focus(), 100);
 		valueButton(clickBtn);
 		painButton(clickBtn);
 
 		tagSort(arrayitem);
 	}
 });
-
-// tagBtn.parentNode.addEventListener('click', function(e) {
-//   let clickBtn = e.target.closest('.tags-list__tag')
-//   if (clickBtn) {
-//     setTimeout(() => clickBtn.querySelector('.three-pos-inp').focus(), 100);
-//     valueButton(clickBtn);
-//     painButton(clickBtn);
-
-//     tagSort(arrayitem);
-//   };
-// });
 
 // действия при вводе текста
 function searchForMatches(text, textInp) {
@@ -286,41 +225,6 @@ function inserMark(string, position, fullLen) {
 	);
 }
 
-// function search(array, textInp) {
-//   // let textInp = document.querySelector(this.inputName).value.trim().toLowerCase();
-//   array.forEach(function(e) {
-//     let valueinp = e.querySelector('.three-pos-inp').value;
-//     if (searchForMatches(e, textInp)) {
-//       e.getElementsByTagName('span')[0].innerHTML = inserMark(e.innerText, e.innerText.toLowerCase().search(textInp), textInp.length);
-//       show(e);
-//     } else {
-//       if (valueinp=='0') {
-//         hide(e);
-//       };
-//       e.getElementsByTagName('span')[0].innerHTML = e.innerText;
-//     };
-//   });
-// }
-
-// searchInput.addEventListener('input', function() {
-//   let textInp = searchInput.value.trim().toLowerCase();
-//   search(arrayitem, textInp);
-// });
-
-// // действия при загрузке страницы
-// // $(document).ready(function() {
-// //   arrayitem.forEach(function(e) {
-// //     painButton(e);
-// //     let valueinp = e.querySelector('.three-pos-inp').value;
-// //     if (valueinp != '0') {
-// //       show(e);
-// //     }
-// //   })
-// //   tagSort(arrayitem);
-// // })
-
-// =====================================================
-
 // кнопка показа всех тегов
 // document.querySelector(".search__show-all-btn").addEventListener("click", () =>
 // 	arrayitem.forEach(function (e) {
@@ -350,7 +254,7 @@ $(".search-sort").on("click", function (e) {
 	// 			$(this).slideToggle("fast").dequeue("fx");
 	// 		});
 	// } else
-	if ($(e.target).closest(".search-sort__item")) {
+	if (e.target.closest(".search-sort__item")) {
 		let txt = $(e.target).text();
 		if (txt) {
 			$(".search-sort__btn").text($(e.target).text());

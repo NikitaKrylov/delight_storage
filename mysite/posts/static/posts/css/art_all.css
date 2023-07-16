@@ -55,6 +55,9 @@
   margin-right: 8px;
 }
 
+.box-media__link {
+  display: block;
+}
 .box-media__thumbnail {
   position: relative;
 }

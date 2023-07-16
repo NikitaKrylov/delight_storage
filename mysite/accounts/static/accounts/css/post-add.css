@@ -1,6 +1,6 @@
 .wrapper {
   max-width: 1024px;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 .page {
@@ -23,8 +23,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin: 0 auto;
-  margin-top: 17px;
+  margin: 15px auto;
   width: 100%;
   padding: 0 8px;
   -webkit-box-pack: center;
@@ -35,6 +34,10 @@
   .container {
     padding: 0 20px;
   }
+}
+
+.post-add-wrapper {
+  margin-top: 20px;
 }
 
 .post-add {

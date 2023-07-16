@@ -160,6 +160,7 @@ $svg-like-color-active: rgb(247, 164, 222);
 
 .box-media {
   &__link {
+    display: block;
   }
 
   &__thumbnail {

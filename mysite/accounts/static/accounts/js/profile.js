@@ -19,7 +19,7 @@
 // });
 
 // инициализации календаря
-if (body.classList.contains("_pc")) {
+if (body.hasClass("_pc")) {
 	$("#id_birth_date").attr("type", "text");
 	new AirDatepicker("#id_birth_date");
 }

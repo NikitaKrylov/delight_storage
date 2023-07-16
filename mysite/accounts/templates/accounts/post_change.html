@@ -60,6 +60,9 @@
         <main class="page">
             <div class="container">
                 <div class="page__wrapper">
+                    <div class="title title-block">
+                        {{title}}
+                    </div>
                     <div class="post-add-wrapper">
                         <form id="form-container" method="post" action="." enctype="multipart/form-data">
                             {% csrf_token %}

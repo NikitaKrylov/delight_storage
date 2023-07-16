@@ -1,8 +1,63 @@
-.compilations-container {
-}
+$width-mobile: 991px;
+$min-width-mobile: 700px;
+
+$font-family-circeregular: "CirceRegular";
+$font-family-helvetica: "Helvetica";
 
 .compilations {
-    // max-width: 1280px;
+    margin-bottom: 20px;
+
+    &__head {
+        display: grid;
+        gap: 0;
+        font-weight: 400;
+        // font-family: $font-family-helvetica;
+        font-size: 22px;
+
+        @media (min-width: $min-width-mobile) {
+            grid-template-columns: auto 1fr;
+            gap: 20px;
+        }
+    }
+
+    &__text {
+    }
+
+    &__items {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        // padding-left: 20px;
+        font-size: 20px;
+    }
+
+    &__item {
+    }
+
+    &__link {
+        color: var(--light-gray);
+    }
+
+    &__btn {
+        padding: 0;
+
+        font-family: $font-family-circeregular;
+        font-size: 20px;
+        background: transparent;
+        color: var(--light-gray);
+    }
+
+    &__slider-container {
+        position: relative;
+        // padding: 0 50px 0 50px;
+    }
+
+    &__slider {
+        &.swiper {
+            padding: 0px 0 20px 0;
+        }
+    }
 
     &__wrapper.swiper-wrapper {
         align-items: center;
@@ -48,5 +103,63 @@
     &__media {
         max-height: 300px;
         object-fit: contain;
+    }
+
+    &__slider-buttons {
+    }
+
+    // &__slider-button {
+    //     // color: var(--white) !important;
+
+    //     &.swiper-button-next,
+    //     &.swiper-button-prev {
+    //         top: 50%;
+    //         color: var(--white);
+    //     }
+
+    //     &.swiper-button-next {
+    //         margin-right: 0;
+    //     }
+    //     &.swiper-button-prev {
+    //         margin-left: 0;
+    //     }
+    // }
+
+    &__slider-scrollbar {
+        &.swiper-scrollbar {
+            // --swiper-scrollbar-bottom: -10px;
+            --swiper-scrollbar-size: 10px;
+
+            @media (min-width: $width-mobile) {
+                --swiper-scrollbar-size: 4px;
+            }
+        }
+
+        .swiper-scrollbar-drag {
+            z-index: 3;
+            cursor: pointer;
+            background-color: var(--primary-color);
+        }
+    }
+}
+
+.fade {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+
+    background: linear-gradient(
+        90deg,
+        rgba(13, 15, 27, 1) 0%,
+        rgba(255, 255, 255, 0) 15%,
+        rgba(255, 255, 255, 0) 85%,
+        rgba(13, 15, 27, 1) 100%
+    );
+
+    @media (min-width: $min-width-mobile) {
+        display: block;
     }
 }

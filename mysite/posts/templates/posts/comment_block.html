@@ -1,46 +1,24 @@
 {% load static %}
 
-<div class="comment">
-    <div class="comment__body">
+<section class="comment">
+    <article class="comment__body">
         <div class="comment__inner">
             <div class="comment__head">
                 {% if request.user != comment.author %}
-                    <a href="{% url 'user_info' comment.author.id %}" class="comment__user">
-                {% else %}
+                <a href="{% url 'user_info' comment.author.id %}" class="comment__user">
+                    {% else %}
                     <a href="{% url 'profile' %}" class="comment__user">
-                {% endif %}
-                {% if comment.author.avatar %}
-                <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
-                {% else %}
-                <img class="comment__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
-                {% endif %}
-                <span class="comment__username">{{comment.author}}</span>
-                </a>
-                <time class="comment__date-time">
-                    <time>{{comment.pub_date|date:"SHORT_DATE_FORMAT"}}</time>
-                </time>
-
-                <div class="comment__control dropdown">
-                    <div class="comment__control-btn dropdown__btn">
-                        <i class="fa-solid fa-ellipsis"></i>
-                    </div>
-                    <ul class="comment__control-list dropdown__list">
-                        <li class="comment__control-item dropdown__item">
-                            <a href="#complaints-comment-window"
-                                class="comment__control-link dropdown__subitem popup-link" rel="modal:open"
-                                data-modal="#complaints-comment-window">Пожаловаться</a>
-                        </li>
-                        {% if request.user == comment.author %}
-                        <li class="comment__control-item dropdown__item">
-                            <a class="comment__control-link dropdown__subitem">Редактировать</a>
-                        </li>
-                        <li class="comment__control-item dropdown__item">
-                            <a href="{% url 'delete_comment' comment.pk %}"
-                                class="comment__control-link dropdown__subitem">Удалить</a>
-                        </li>
                         {% endif %}
-                    </ul>
-                </div>
+                        {% if comment.author.avatar %}
+                        <img class="comment__avatar avatar" src="{{comment.author.avatar.url}}">
+                        {% else %}
+                        <img class="comment__avatar avatar" src="{% static 'posts/images/icon/avatar.png' %}">
+                        {% endif %}
+                        <span class="comment__username">{{comment.author}}</span>
+                    </a>
+                    <time class="comment__date-time">
+                        <time>{{comment.pub_date}}</time>
+                    </time>
             </div>
             <div class="comment__content">
                 <p>{{comment.text}}</p>
@@ -48,6 +26,27 @@
         </div>
         <div class="comment__controls">
             <button class="answer-button" data-commentbox="{{comment.pk}}">ответить</button>
+            <div class="comment-complaints dropdown">
+                <button class="comment-complaints__btn dropdown__btn button-hide">
+                    <i class="fa-solid fa-ellipsis"></i>
+                </button>
+                <ul class="comment-complaints__drop-list dropdown__list">
+                    <li class="comment-complaints__item dropdown__item">
+                        <a href="#complaints-comment-window"
+                            class="comment-complaints__link dropdown__subitem popup-link" rel="modal:open"
+                            data-modal="#complaints-comment-window">Пожаловаться</a>
+                    </li>
+                    {% if request.user == comment.author %}
+                    <li class="comment-complaints__item dropdown__item">
+                        <a class="comment-complaints__link dropdown__subitem">Редактировать</a>
+                    </li>
+                    <li class="comment-complaints__item dropdown__item">
+                        <a href="{% url 'delete_comment' comment.pk %}"
+                            class="comment-complaints__link dropdown__subitem">Удалить</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
         <div class="comment-reply" id="{{comment.pk}}" hidden>
             <form id="reply-reply" action="{% url 'add_reply_comment' post.id comment.id %}" method="post">
@@ -63,10 +62,10 @@
                 </div>
             </form>
         </div>
-    </div>
+    </article>
     <div class="comment__children">
         {% for comment in comment.related_comments.all %}
         {% include 'posts/comment_block.html' %}
         {% endfor %}
     </div>
-</div>
+</section>

@@ -5,31 +5,32 @@
                 <div class="search__input-container">
                     <div class="search__input">
                         <button class="search__search-btn button search__icon" type="submit">
-                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <i class="fa-solid fa-magnifying-glass" aria-label="поиск"></i>
                         </button>
                         <!--                        <input class="search__input-form" name="search" type="text" placeholder="Поиск..."-->
                         <!--                            autocomplete="off" data-search-input value="{{search_input}}">-->
                         {{search_form.text}}
-                        <div class="search__close-btn search__icon">
-                            <i class="fa-solid fa-xmark" title="очистить"></i>
-                        </div>
+                        <button class="search__close-btn search__icon" type="button">
+                            <i class="fa-solid fa-xmark" aria-label="очистить строку поиска" title="очистить"></i>
+                        </button>
                     </div>
                     <div class="search__controls">
                         <!-- <button class="search__show-all-btn search__controls-button button"
                             type="button">Показать</button> -->
-                        <button class="search__hide-all-btn search__controls-button button"
-                            type="button">Очистить</button>
+                        <button class="search__hide-all-btn search__controls-button button" type="button"
+                            aria-label="очистить выбранные теги">Очистить</button>
 
 
                         <div class="search-sort dropdown">
-                            <span class="search-sort__btn search__controls-button button dropdown__btn">
+                            <button class="search-sort__btn search__controls-button button dropdown__btn" type="button"
+                                aria-label="сортировать по">
                                 <!-- {{search_form.type.value}} -->
                                 Дате
-                            </span>
+                            </button>
 
                             <label
                                 class="search-sort__control search-sort__desc-asc button fa-solid {% if not search_form.is_desc.value %}_active{% endif %} tooltip tooltip_right tooltip_end"
-                                tooltip-text="по возростанию">
+                                tooltip-text="по возростанию" aria-label="сортировать по убыванию или возростанию">
                                 <!-- <input type="checkbox" class="hidden-input" name="sort-direction" value="1">-->
                                 {{search_form.is_desc}}
                             </label>

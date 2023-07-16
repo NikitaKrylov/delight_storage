@@ -1,6 +1,7 @@
-const body = document.body;
+// const body = document.body;
+const body = $(document.body);
 
-if (body.classList.contains("_touch")) {
+if (body.hasClass("_touch")) {
 	// profile-menu
 	// $(".header-profile-avatar").on('click', function (e) {
 	//     rlMenu('#profile-menu-mobile', '.close-ham-menu-2');
@@ -18,13 +19,17 @@ if (body.classList.contains("_touch")) {
 }
 
 function menuOverlayClose(menu) {
-	menu.classList.remove("_active");
-	body.classList.remove("_lock");
+	// menu.classList.remove("_active");
+	// body.classList.remove("_lock");
+	menu.removeClass("_active");
+	body.removeClass("_lock");
 }
 
 function menuOverlayOpen(menu) {
-	menu.classList.add("_active");
-	body.classList.add("_lock");
+	// menu.classList.add("_active");
+	// body.classList.add("_lock");
+	menu.addClass("_active");
+	body.addClass("_lock");
 
 	// menu.addEventListener("click", function (e) {
 	// 	if (!e.target.closest(content)) {
@@ -33,76 +38,52 @@ function menuOverlayOpen(menu) {
 	// });
 }
 
-// function rlMenu(rlmenu, close) {
-//     // const button = document.querySelector(btn)
-//     const menu = document.querySelector(rlmenu)
-//     const closeHamMenu = document.querySelector(close)
+// кнопка бурегр
+// const sidebarMobBtn = document.querySelector(".mobile-navigation");
+// if (sidebarMobBtn) {
+// 	const currBtn = sidebarMobBtn.getAttribute("href").replace("#", "");
+// 	const currSidebar = document.getElementById(currBtn);
 
-//     // if (button) {
-//     //     button.addEventListener("click", function (e) {
-//     //         menu.classList.toggle('_active');
-//     //         document.body.classList.toggle('_lock')
-//     //     });
-//     // };
+// 	sidebarMobBtn.addEventListener("click", function (e) {
+// 		menuOverlayOpen(currSidebar);
+// 	});
 
-//     menu.classList.toggle('_active');
-//     body.classList.toggle('_lock')
-
-//     $(document).on('mouseup', function (e) {
-//         e.preventDefault();
-
-//         let s = $(menu)
-//         if (menu.classList.contains('_active') === true) {
-//             if (!s.is(e.target) && s.has(e.target).length === 0) {
-//                 s.removeClass('_active');
-//                 body.classList.remove('_lock')
-//             } else {
-//                 if (closeHamMenu) {
-//                     closeHamMenu.addEventListener("click", function (e) {
-//                         e.preventDefault();
-//                         menu.classList.remove('_active');
-//                         body.classList.remove('_lock')
-//                     });
-//                 }
-//             }
-//         }
-//     });
+// 	currSidebar.addEventListener("click", function (e) {
+// 		if (!e.target.closest(".sidebar-mobile__inner")) {
+// 			menuOverlayClose(currSidebar);
+// 		}
+// 	});
 // }
 
-// mav-menu
-// $(".header__mobile-navigation").on('click', function () {
-//     // rlMenu('.sidebar-mobile', '.sidebar-mobile__btn')
+// const sidebarMobClose = document.querySelectorAll(".sidebar-mobile__close-btn");
+// if (sidebarMobClose.length > 0) {
+// 	sidebarMobClose.forEach(function (val, index) {
+// 		const sidebarClose = sidebarMobClose[index];
 
-//     menuOverlayOpen('.sidebar-mobile', '.sidebar-mobile__btn')
-// });
+// 		sidebarClose.addEventListener("click", function (e) {
+// 			menuOverlayClose(sidebarClose.closest(".sidebar-mobile"));
+// 			e.preventDefault();
+// 		});
+// 	});
+// }
 
-// кнопка бурегр
-const sidebarMobBtn = document.querySelector(".header__mobile-navigation");
-if (sidebarMobBtn) {
-	const currBtn = sidebarMobBtn.getAttribute("href").replace("#", "");
-	const currSidebar = document.getElementById(currBtn);
+let sidebarMobBtn = $(".mobile-navigation");
+let sidebarMob = $(".sidebar-mobile");
+let sidebarMobClose = $(".sidebar-mobile__close-btn");
 
-	sidebarMobBtn.addEventListener("click", function (e) {
-		menuOverlayOpen(currSidebar);
-	});
+sidebarMobBtn.on("click", function () {
+	menuOverlayOpen(sidebarMob);
+});
 
-	currSidebar.addEventListener("click", function (e) {
-		if (!e.target.closest(".sidebar-mobile__inner")) {
-			menuOverlayClose(currSidebar);
-		}
-	});
-}
+sidebarMob.on("click", function (e) {
+	if (!e.target.closest(".sidebar-mobile__inner")) {
+		menuOverlayClose(sidebarMob);
+	}
+});
 
-const sidebarMobClose = document.querySelectorAll(".sidebar-mobile__btn");
-if (sidebarMobClose.length > 0) {
-	sidebarMobClose.forEach(function (val, index) {
-		const sidebarClose = sidebarMobClose[index];
-		sidebarClose.addEventListener("click", function (e) {
-			menuOverlayClose(sidebarClose.closest(".sidebar-mobile"));
-			e.preventDefault();
-		});
-	});
-}
+sidebarMobClose.on("click", function () {
+	menuOverlayClose(sidebarMob);
+});
 
 // view-hide-header
 let lastScroll = 0;
@@ -201,13 +182,15 @@ autosize($(".textarea-autosize"));
 
 // создание всплывающих сообщений
 function customAlert(message) {
-	let baseAlert = $(`<div class="alert">
-                            <div class="alert__inner">
-                                <div class="alert__content">
-                                    ${message}
-                                </div>
-                            </div>
-                        </div>`);
+	let baseAlert = $(
+		`<div class="alert">
+			<div class="alert__inner">
+				<div class="alert__content">
+					${message}
+				</div>
+			</div>
+		</div>`,
+	);
 
 	return baseAlert;
 }
@@ -226,7 +209,7 @@ function messagePopup(message, wait = false, viewTime = 2000) {
 	let alertText = customAlert(`<div class="flash-message">
                                     <span>${message}</span>
                                 </div>`);
-	$(body).prepend(alertText);
+	body.prepend(alertText);
 
 	// alertText.css('transition', `${viewTime / 10000}s`)
 	// alertText.css('transition', `opacity 10s`)

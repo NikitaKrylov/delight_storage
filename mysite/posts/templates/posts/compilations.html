@@ -30,160 +30,297 @@
 {% endfor %}
 
 
-<div class="compilations-container page-block">
-    <div class="title title-block">Подборка #1</div>
-
-    <section class="gallery compilations swiper">
-        <div class="fade" style="background: linear-gradient(90deg, rgba(13,15,27,1) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 85%, rgba(13,15,27,1) 100%); 
-                    z-index: 2;
-                    display: block;
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    pointer-events: none;">
-        </div>
-        <div class="compilations__wrapper swiper-wrapper">
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/UI-wRSkSas8.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7cc51d62da4ca9c.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7dOFzTV86Dk.png' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/UI-wRSkSas8.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7cc51d62da4ca9c.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7dOFzTV86Dk.png' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/UI-wRSkSas8.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7cc51d62da4ca9c.jpg' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
-            <div class="compilations__slide box-media swiper-slide">
-                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                    <div class="compilations__thumbnail box-media__thumbnail">
-                        <!-- {% if post.images.count > 0 %}
-                            <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
-                            {% else %}
-                            <video class="box-media__media video" width=100% height="100%"
-                                src="{{post.videos.first.file.url}}"></video>
-                            {% endif %} -->
-                        <img class="compilations__media box-media__media lazy"
-                            src="{% static 'images/test_img/7dOFzTV86Dk.png' %}" loading="lazy" alt="">
-                        <div class="box-media__media-overlay"></div>
-                    </div>
-                </a>
-            </div>
+<section class="compilations page-block gallery">
+    <div class="compilations__head title title-block">
+        <div class="compilations__text">
+            Подборка
+            <span class="button_pink button_clean">#</span>1
         </div>
 
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </section>
-</div>
+        <div class="compilations__items">
+            <div class="compilations__item">
+                <a class="compilations__link" href="#">смотреть</a>
+            </div>
+
+            <div class="compilations__item">
+                <button class="compilations__btn button">добавить в коллекцию</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="compilations__slider-container">
+        <div class="compilations__slider swiper">
+            <div class="fade"></div>
+
+            <div class="compilations__wrapper swiper-wrapper">
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img1.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img2.png' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img3.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img4.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img5.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img1.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img2.png' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img3.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img4.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <!-- {% if post.images.count > 0 %}
+                                    <img class="box-media__media lazy" src="{{post.images.first.file.url}}" loading="lazy" alt="">
+                                    {% else %}
+                                    <video class="box-media__media video" width=100% height="100%"
+                                        src="{{post.videos.first.file.url}}"></video>
+                                    {% endif %} -->
+                                <img class="compilations__media box-media__media lazy"
+                                    src="{% static 'images/test_img/img5.jpg' %}" loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="gallery__actions cover-item-gallery-container">
+                        <div class="dots-container">
+                            <ul class="dots-items">
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                                <li class="dots-items__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="compilations__slider-scrollbar swiper-scrollbar"></div>
+        </div>
+    </div>
+</section>
+
+
 
 {% endblock %}
 
@@ -193,26 +330,26 @@
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 <script>
-    const swiper = new Swiper(".compilations", {
+    new Swiper(".compilations__slider", {
         // loop: true,
         loopedSlides: 1,
         spaceBetween: 20,
         // freeMode: true,
-        slidesPerView: "auto",
+        slidesPerView: 1,
         watchOverflow: true,
         grabCursor: true,
-
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-        keyboard: {
-            enabled: true,
-            onlyInViewport: true,
-            pageUpDown: true,
-        },
-
         speed: 300,
+
+        scrollbar: {
+            el: ".swiper-scrollbar",
+            draggable: true,
+        },
+
+        breakpoints: {
+            700: {
+                slidesPerView: "auto",
+            },
+        }
     });
 </script>
 {% endblock %}

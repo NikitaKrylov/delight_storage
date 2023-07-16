@@ -155,8 +155,12 @@ body {
 body._lock {
   overflow: hidden;
 }
-body._lock .mobileMenuBackground {
+body._lock::after {
   display: block;
+}
+body::after {
+  content: "";
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -350,6 +354,12 @@ a[rel="modal:close"].button_red {
 
 .button-green {
   color: var(--enable) !important;
+}
+
+.button-hide {
+  padding: 0;
+  border: none;
+  background: transparent;
 }
 
 .dark-btn {
@@ -622,7 +632,7 @@ a[rel="modal:close"].button_red {
   padding: 3px 0;
   margin: 5px 0;
   font-size: 24px;
-  font-weight: 600;
+  font-weight: 400;
   font-family: "CirceRegular";
   color: var(--white);
 }
@@ -1041,36 +1051,31 @@ a[rel="modal:close"].button_red {
 }
 
 .input-list {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.input-list__item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  gap: 10px;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: auto;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 .input-list__text {
   color: var(--white);
-  width: 180px;
 }
 .input-list__input {
   position: relative;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 120px;
+  margin-bottom: 10px;
   border-radius: 5px;
   background: transparent;
   border: 1px solid var(--bg-light-default);
+}
+.input-list__input:last-child {
+  margin-bottom: 0;
 }
 .input-list__input:hover, .input-list__input:focus {
   border-color: var(--light-secondary-violet);
@@ -1081,6 +1086,15 @@ a[rel="modal:close"].button_red {
   background: transparent;
   border: none;
   color: var(--secondary-white);
+}
+@media (min-width: 700px) {
+  .input-list {
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+  }
+  .input-list__input {
+    margin-bottom: 0;
+  }
 }
 
 .input-file {
@@ -1151,4 +1165,13 @@ a[rel="modal:close"].button_red {
   padding: 20px;
   border-radius: 15px;
   background-color: var(--bg-secondary-default);
+}
+
+.circled-play-icon {
+  width: 96px;
+  height: 96px;
+  position: absolute;
+  top: calc(50% - 48px);
+  left: calc(50% - 48px);
+  background: url("https://img.icons8.com/pulsar-line/96/000000/circled-play.png") no-repeat;
 }

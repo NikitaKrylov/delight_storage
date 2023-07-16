@@ -8,7 +8,9 @@
 	font-weight: 400;
 	font-display: fallback;
 	font-display: fallback;
-	src: local(""), url("../fonts/inter-v12-latin-regular.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/inter-v12-latin-regular.woff2") format("woff2"),
 		url("../fonts/inter-v12-latin-regular.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -20,7 +22,9 @@
 	font-style: normal;
 	font-weight: 500;
 	font-display: fallback;
-	src: local(""), url("../fonts/inter-v12-latin-500.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/inter-v12-latin-500.woff2") format("woff2"),
 		url("../fonts/inter-v12-latin-500.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -32,7 +36,9 @@
 	font-style: normal;
 	font-weight: 700;
 	font-display: fallback;
-	src: local(""), url("../fonts/inter-v12-latin-700.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/inter-v12-latin-700.woff2") format("woff2"),
 		url("../fonts/inter-v12-latin-700.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -44,7 +50,9 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: fallback;
-	src: local(""), url("../fonts/rubik-v21-latin-regular.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/rubik-v21-latin-regular.woff2") format("woff2"),
 		url("../fonts/rubik-v21-latin-regular.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -56,7 +64,9 @@
 	font-style: normal;
 	font-weight: 600;
 	font-display: fallback;
-	src: local(""), url("../fonts/rubik-v21-latin-600.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/rubik-v21-latin-600.woff2") format("woff2"),
 		url("../fonts/rubik-v21-latin-600.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -68,7 +78,9 @@
 	font-style: italic;
 	font-weight: 400;
 	font-display: fallback;
-	src: local(""), url("../fonts/rubik-v21-latin-italic.woff2") format("woff2"),
+	src:
+		local(""),
+		url("../fonts/rubik-v21-latin-italic.woff2") format("woff2"),
 		url("../fonts/rubik-v21-latin-italic.woff") format("woff");
 
 	/* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
@@ -80,7 +92,9 @@
 	font-style: normal;
 	font-weight: 100;
 	font-display: fallback;
-	src: local(""), url("../fonts/CirceThin.woff") format("woff");
+	src:
+		local(""),
+		url("../fonts/CirceThin.woff") format("woff");
 }
 
 /* CirceThin - 400*/
@@ -89,7 +103,9 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: fallback;
-	src: local(""), url("../fonts/CirceRegular.woff") format("woff");
+	src:
+		local(""),
+		url("../fonts/CirceRegular.woff") format("woff");
 }
 
 $max-display-width: 1920px;
@@ -199,21 +215,6 @@ body {
 	overflow-x: hidden;
 	// padding-top: 100px;
 
-	&._lock {
-		overflow: hidden;
-
-		.mobileMenuBackground {
-			display: block;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.6);
-			z-index: 110;
-		}
-	}
-
 	font-family: $font-family-helvetica;
 	font-weight: 400;
 	font-size: 18px;
@@ -224,6 +225,37 @@ body {
 	//       padding-top: 54px;
 	//   }
 	// }
+
+	&._lock {
+		overflow: hidden;
+
+		// .mobileMenuBackground {
+		// 	display: block;
+		// 	position: fixed;
+		// 	top: 0;
+		// 	left: 0;
+		// 	width: 100%;
+		// 	height: 100%;
+		// 	background-color: rgba(0, 0, 0, 0.6);
+		// 	z-index: 110;
+		// }
+
+		&::after {
+			display: block;
+		}
+	}
+
+	&::after {
+		content: "";
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.6);
+		z-index: 110;
+	}
 }
 
 // scrollbar
@@ -426,6 +458,12 @@ a[rel="modal:close"].button_red {
 
 .button-green {
 	color: var(--enable) !important;
+}
+
+.button-hide {
+	padding: 0;
+	border: none;
+	background: transparent;
 }
 
 .dark-btn {
@@ -644,7 +682,8 @@ a[rel="modal:close"].button_red {
 	padding: 3px 0;
 	margin: 5px 0;
 	font-size: 24px;
-	font-weight: 600;
+	// font-weight: 600;
+	font-weight: 400;
 	font-family: "CirceRegular";
 	color: var(--white);
 }
@@ -1151,29 +1190,32 @@ a[rel="modal:close"].button_red {
 }
 
 .input-list {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
-	margin-bottom: 20px;
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: auto;
+	align-items: center;
+	gap: 10px;
 
-	&__item {
-		display: flex;
-		gap: 10px;
-		flex-wrap: wrap;
-		align-items: center;
-	}
+	margin-bottom: 20px;
 
 	&__text {
 		color: var(--white);
-		width: 180px;
 	}
 
 	&__input {
 		// padding: 15px;
 		position: relative;
+		width: fit-content;
+		min-width: 120px;
+		margin-bottom: 10px;
+
 		border-radius: 5px;
 		background: transparent;
 		border: 1px solid var(--bg-light-default);
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 
 		&:hover,
 		&:focus {
@@ -1187,6 +1229,17 @@ a[rel="modal:close"].button_red {
 			border: none;
 			color: var(--secondary-white);
 			// padding-right: 15px;
+		}
+	}
+
+	@media (min-width: $min-width-mobile) {
+		& {
+			grid-template-columns: auto 1fr;
+			gap: 20px;
+		}
+
+		&__input {
+			margin-bottom: 0;
 		}
 	}
 }
@@ -1255,4 +1308,15 @@ a[rel="modal:close"].button_red {
 	padding: 20px;
 	border-radius: 15px;
 	background-color: var(--bg-secondary-default);
+}
+
+.circled-play-icon {
+	$size: 96px;
+	width: $size;
+	height: $size;
+	position: absolute;
+	top: calc(50% - ($size / 2));
+	left: calc(50% - ($size / 2));
+
+	background: url("https://img.icons8.com/pulsar-line/96/000000/circled-play.png") no-repeat;
 }

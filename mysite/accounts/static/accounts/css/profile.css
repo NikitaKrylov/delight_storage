@@ -11,4 +11,5 @@ input[type=date]::-webkit-calendar-picker-indicator {
   top: calc((100% - 22px) / 2);
   right: 10px;
   color: var(--primary-color);
+  pointer-events: none;
 }

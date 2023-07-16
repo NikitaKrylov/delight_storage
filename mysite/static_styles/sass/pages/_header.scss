@@ -100,26 +100,31 @@ $header-gap: 10;
 			}
 		}
 	}
+}
 
-	&__container {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: #{$header-gap + px};
-		height: 44px;
-		min-width: #{$min-width + px};
-		width: inherit;
+.nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: #{$header-gap + px};
+	height: 44px;
+	min-width: #{$min-width + px};
+	width: inherit;
 
-		@media (min-width: $width-mobile) {
-			& {
-				height: 84px;
-			}
+	@media (min-width: $width-mobile) {
+		& {
+			height: 84px;
 		}
 	}
 
-	&__logo {
+	&__text-logo {
 		justify-self: start;
 		display: none;
+
+		font-size: 32px;
+		font-style: italic;
+		text-align: left;
+		color: var(--white);
 
 		@media (min-width: $width-mobile) {
 			& {
@@ -128,24 +133,12 @@ $header-gap: 10;
 		}
 	}
 
-	&__search {
-		display: flex;
-		visibility: visible;
-		pointer-events: all;
+	&__control-nav {
+		width: 100%;
+		// height: 60%;
+	}
 
-		width: inherit;
-		margin: 0;
-		// margin-left: 10px;
-
-		// @media (max-width: 991px) {
-		//   display: none;
-		// }
-
-		@media (min-width: $width-mobile) {
-			display: none;
-			visibility: hidden;
-			pointer-events: none;
-		}
+	&__nav-list {
 	}
 
 	&__account-menu {
@@ -156,24 +149,14 @@ $header-gap: 10;
 
 	&__mobile-navigation {
 		display: block;
-		// width: 47px;
-		background-color: transparent;
-		// position: absolute;
-		top: 0;
-		left: 0;
-		padding: 0;
-		border: 0;
+		// padding: 0;
+		// border: 0;
 
-		&::before,
-		&::after {
-			content: "";
-		}
+		// background-color: transparent;
 
 		@media (min-width: $width-mobile) {
 			& {
 				display: none;
-				visibility: hidden;
-				pointer-events: none;
 			}
 		}
 	}
@@ -222,16 +205,6 @@ $header-gap: 10;
 		@media (min-width: $width-mobile) {
 			display: block;
 		}
-	}
-
-	// ---------new header-----------
-	&__control-nav {
-		display: flex;
-		width: 100%;
-		// height: 60%;
-	}
-
-	&__nav-list {
 	}
 }
 
@@ -283,9 +256,9 @@ $header-gap: 10;
 // }
 
 .nav-list {
-	display: flex;
-	visibility: visible;
-	pointer-events: all;
+	display: none;
+	visibility: hidden;
+	pointer-events: none;
 
 	justify-content: space-around;
 	align-items: center;
@@ -296,11 +269,11 @@ $header-gap: 10;
 	margin: 0 auto;
 	min-width: #{$min-width + px};
 
-	@media (max-width: $width-mobile) {
+	@media (min-width: $width-mobile) {
 		& {
-			display: none;
-			visibility: hidden;
-			pointer-events: none;
+			display: flex;
+			visibility: visible;
+			pointer-events: all;
 		}
 	}
 
@@ -347,12 +320,15 @@ $header-gap: 10;
 
 	&__item {
 		display: flex;
+		align-items: center;
+		justify-content: center;
 		// min-width: 170px;
 		@include adaptive-value("width", 170, 80, 1);
-		@include adaptive-value("height", 52, 42, 1);
-		align-items: center;
+		@include adaptive-value("height", 40, 42, 1);
 
 		background-color: var(--bg-btn-default);
+		border: 1px solid var(--bg-light-default);
+		border-radius: 8px;
 		// transition: all 0.3s ease;
 
 		&._current,
@@ -361,23 +337,35 @@ $header-gap: 10;
 		}
 	}
 
+	&__btn,
 	&__link {
-		// text-transform: uppercase;
-		// outline-style: none;
-		text-align: center;
-	}
-
-	&__text {
 		display: flex;
 		font-family: $font-family-circeregular;
 		justify-content: center;
 		align-items: center;
+		width: 100%;
 		height: 100%;
 		// text-transform: uppercase;
 		// font-family: $font-family-inter;
-		@include adaptive-value("font-size", 24, 16, 1);
+		@include adaptive-value("font-size", 20, 16, 1);
 		color: var(--white);
 	}
+
+	&__btn {
+		border: none;
+	}
+
+	// &__text {
+	// 	display: flex;
+	// 	font-family: $font-family-circeregular;
+	// 	justify-content: center;
+	// 	align-items: center;
+	// 	height: 100%;
+	// 	// text-transform: uppercase;
+	// 	// font-family: $font-family-inter;
+	// 	@include adaptive-value("font-size", 20, 16, 1);
+	// 	color: var(--white);
+	// }
 }
 
 .hamburgerIcon {
@@ -389,14 +377,6 @@ $header-gap: 10;
 	@media (min-width: $width-mobile) {
 		display: none;
 	}
-}
-
-.logo {
-	// font-family: $font-family-inter;
-	font-size: 32px;
-	font-style: italic;
-	text-align: left;
-	color: var(--white);
 }
 
 .notification-items {
@@ -418,7 +398,7 @@ $header-gap: 10;
 		cursor: pointer;
 
 		i {
-			font-size: 20px;
+			font-size: 24px;
 			color: var(--white);
 
 			// &:hover {
@@ -432,6 +412,7 @@ $header-gap: 10;
 	}
 
 	&__icon {
+		padding: 10px;
 		line-height: 44px;
 		border-radius: 4px;
 
@@ -443,7 +424,10 @@ $header-gap: 10;
 	}
 
 	&__link {
-		display: block;
+		// display: block;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 100%;
 		height: 100%;
 	}
