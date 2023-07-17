@@ -43,7 +43,7 @@
             </div>
 
             <div class="compilations__item">
-                <button class="compilations__btn button">добавить в коллекцию</button>
+                <button class="compilations__btn button">добавить в папку</button>
             </div>
         </div>
     </div>
@@ -329,27 +329,5 @@
 {% block script-page %}
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script>
-    new Swiper(".compilations__slider", {
-        // loop: true,
-        loopedSlides: 1,
-        spaceBetween: 20,
-        // freeMode: true,
-        slidesPerView: 1,
-        watchOverflow: true,
-        grabCursor: true,
-        speed: 300,
-
-        scrollbar: {
-            el: ".swiper-scrollbar",
-            draggable: true,
-        },
-
-        breakpoints: {
-            700: {
-                slidesPerView: "auto",
-            },
-        }
-    });
-</script>
+<script src="{% static 'posts/js/compilations.js' %}"></script>
 {% endblock %}

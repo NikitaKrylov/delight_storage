@@ -25,16 +25,26 @@
     <div class="account-header">
         <div class="account-header__hat">
             <div class="hat-edit">
-                <div class="hat-edit__btn">
-                    <a href="#" class="hat-edit__link"></a>
-                    <i class="hat-edit__icon fa-solid fa-pen" style="color: #ffffff;"></i>
-                </div>
-            </div>
-            <div style="height:100%;">
+                <button class="hat-edit__btn-cont button-hide">
+                    <div class="hat-edit__btn">
+                        <a href="#" class="hat-edit__link"></a>
+                        <i class="hat-edit__icon fa-solid fa-pen" style="color: #ffffff;"></i>
+                    </div>
+                </button>
+                <!-- <div style="height:100%;">
+                    {% if request.user.settings.user_card_image %}
+                    <img class="account-hat-image" src="{{request.user.settings.user_card_image.url}}">
+                    {% else %}
+                    <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+                    {% endif %}
+                </div> -->
+
                 {% if request.user.settings.user_card_image %}
-                <img class="account-hat-image" src="{{request.user.settings.user_card_image.url}}">
+                <div class="hat-edit__image" role="img" aria-label="шапка профиля"
+                    style="background-image: url('{{request.user.settings.user_card_image.url}}')"></div>
                 {% else %}
-                <img class="account-hat-image" src="{% static 'accounts/images/main_8.Сакура.jpg' %}">
+                <div class="hat-edit__image" role="img" aria-label="шапка профиля"
+                    style="background-image: url({% static 'accounts/images/main_8.Сакура.jpg' %})"></div>
                 {% endif %}
             </div>
         </div>

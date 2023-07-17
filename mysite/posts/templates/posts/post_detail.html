@@ -131,48 +131,51 @@
                     {% csrf_token %}
                     <div class="mymodal__body">
                         <div class="input-list">
-                            <div class="input-list__item">
-                                <div class="input-list__text">{{folder_form.icon.label}}</div>
-                                <div class="input-list__input input-file">
-                                    {{folder_form.icon}}
-                                    <label for="input-file__input" class="input-file__btn">
-                                        <div class="input-file__icon">
-                                            <svg class="input-file__not-selected" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                                                <path
-                                                    d="M256 0C114.6 0 0 114.6 0 256S114.6 512 256 512s256-114.6 256-256S397.4 0 256 0zM135 241c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l87 87 87-87c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 345c-9.4 9.4-24.6 9.4-33.9 0L135 241z" />
-                                            </svg>
-                                            <svg class="input-file__selected" xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-                                                <path
-                                                    d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-                                            </svg>
-                                        </div>
-                                        <span class="input-file__text">Выбрать</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="input-list__item">
-                                <div class="input-list__text">{{folder_form.name.label}}</div>
-                                <div class="input-list__input">{{folder_form.name}}</div>
-                            </div>
-                            <div class="input-list__item">
-                                <div class="input-list__text">{{folder_form.description.label}}</div>
-                                <div class="input-list__input textarea">{{folder_form.description}}</div>
-                            </div>
-                            <div class="input-list__item">
-                                <label class="checkbox">
-                                    {{folder_form.is_private}}
-                                    <i class="checkbox__indicator checkbox__passive" style="width: 20px; height: 20px;">
-                                        <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
+
+                            <div class="input-list__text">{{folder_form.icon.label}}</div>
+                            <div class="input-list__input input-file">
+                                {{folder_form.icon}}
+                                <label for="input-file__input" class="input-file__btn">
+                                    <div class="input-file__icon">
+                                        <svg class="input-file__not-selected" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                                            <path
+                                                d="M256 0C114.6 0 0 114.6 0 256S114.6 512 256 512s256-114.6 256-256S397.4 0 256 0zM135 241c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l87 87 87-87c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9L273 345c-9.4 9.4-24.6 9.4-33.9 0L135 241z" />
+                                        </svg>
+                                        <svg class="input-file__selected" xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
                                             <path
                                                 d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
                                         </svg>
-                                    </i>
-                                    <span class="checkbox__text">{{folder_form.is_private.label}}</span>
+                                    </div>
+                                    <span class="input-file__text">Выбрать</span>
                                 </label>
                             </div>
+
+
+
+                            <div class="input-list__text">{{folder_form.name.label}}</div>
+                            <div class="input-list__input">{{folder_form.name}}</div>
+
+
+
+                            <div class="input-list__text">{{folder_form.description.label}}</div>
+                            <div class="input-list__input textarea">{{folder_form.description}}</div>
+
+
+
+                            <label class="checkbox">
+                                {{folder_form.is_private}}
+                                <i class="checkbox__indicator checkbox__passive" style="width: 20px; height: 20px;">
+                                    <svg class="checkbox__icon" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                                        <path
+                                            d="M470.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L192 338.7 425.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                                    </svg>
+                                </i>
+                                <span class="checkbox__text">{{folder_form.is_private.label}}</span>
+                            </label>
+
                         </div>
                     </div>
                     <button class="mymodal__btn button button_pink" type="submit">Сохранить</button>
@@ -488,14 +491,6 @@
         })
 
     });
-
-</script>
-
-
-
-<script>
-
-
 
 </script>
 {% endblock %}

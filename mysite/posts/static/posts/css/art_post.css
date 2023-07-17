@@ -644,10 +644,6 @@
   height: 92%;
   width: 100%;
 }
-.image-slider__slide {
-  cursor: -webkit-zoom-in;
-  cursor: zoom-in;
-}
 .image-slider__item {
   width: 100%;
   height: 100%;
@@ -661,6 +657,10 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
+}
+.image-slider__media {
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
 }
 
 .image-slider-2 {

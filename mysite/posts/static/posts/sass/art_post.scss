@@ -910,7 +910,6 @@ $browser-context: 16; // Default
     width: 100%;
 
     &__slide {
-        cursor: zoom-in;
     }
 
     &__item {
@@ -926,6 +925,10 @@ $browser-context: 16; // Default
         //     max-height: 100%;
         //     object-fit: contain;
         // }
+    }
+
+    &__media {
+        cursor: zoom-in;
     }
 }
 

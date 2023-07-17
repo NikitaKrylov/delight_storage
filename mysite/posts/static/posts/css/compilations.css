@@ -5,6 +5,9 @@
   display: grid;
   gap: 0;
   font-weight: 400;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 22px;
 }
 @media (min-width: 700px) {
@@ -53,9 +56,15 @@
   height: 100%;
 }
 .compilations__media {
+  width: 100%;
   max-height: 300px;
   -o-object-fit: contain;
      object-fit: contain;
+}
+@media (min-width: 700px) {
+  .compilations__media {
+    width: auto;
+  }
 }
 .compilations__slider-scrollbar.swiper-scrollbar {
   --swiper-scrollbar-size: 10px;
