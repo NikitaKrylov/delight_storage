@@ -188,7 +188,7 @@ body::-webkit-scrollbar-thumb,
 }
 @-moz-document url-prefix() {
   body,
-  .scrollbar {
+.scrollbar {
     scrollbar-width: 10px;
     scrollbar-color: var(--color-scrollbar-thumb) var(--bg-scrollbar);
   }
