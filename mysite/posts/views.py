@@ -1,6 +1,7 @@
 import sys
 
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.views.decorators.http import require_http_methods
 from sklearn.metrics import jaccard_score
 
@@ -284,6 +285,6 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
-        context['clusters'] = PostClustering().fit(Post.objects.all())
+        context['clusters'] = PostClustering(distance_threshold=0.8).fit(Post.objects.all())
         return context
 

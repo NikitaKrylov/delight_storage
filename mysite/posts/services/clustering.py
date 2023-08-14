@@ -63,7 +63,7 @@ class PostClustering(AgglomerativeClustering):
     distance_matrix: np.ndarray
     dataset: pd.DataFrame
 
-    def __init__(self, distance_threshold: int = 0.8, ):
+    def __init__(self, distance_threshold: float = 0.8, ):
         super(PostClustering, self).__init__(affinity='precomputed', linkage='complete', distance_threshold=distance_threshold, n_clusters=None, compute_full_tree=True)
 
     def fit(self, queryset: QuerySet[Post], mis_cluster_size: int = 3):
