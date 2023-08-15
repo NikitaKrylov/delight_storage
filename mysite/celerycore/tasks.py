@@ -1,8 +1,5 @@
-from typing import List
-
 from django.utils import timezone
-
-from accounts.models import Notification, User
+from accounts.models import Notification, User, NotificationData
 from posts.models import Post
 from celery import shared_task
 from . import celery_app
@@ -25,19 +22,15 @@ def parse_image_from_source():
 
 
 @shared_task
-def send_notifications(recipient_ids: List[int], sender_id: int, n_type: Notification.Types, verb: str, message: str = "", action_object=None):
-    from accounts.models import Notification, User
-
-    actor = User.objects.get(id=sender_id)
-    subs = [subscriber for subscriber in User.objects.filter(id__in=recipient_ids).all()]
+def send_notifications(nd: dict):
+    actor = User.objects.get(id=nd['sender_id'])
+    subs = [subscriber for subscriber in User.objects.filter(id__in=nd['recipient_ids']).all()]
     nt = [Notification(
         actor=actor,
         recipient=subscriber,
-        verb=verb,
-        action_object=action_object,
-        target=action_object,
-        type=n_type,
-        description=message
+        verb=nd['verb'],
+        type=nd['n_type'],
+        description=nd['message']
     ) for subscriber in subs]
     Notification.objects.bulk_create(nt)
     return len(subs)
