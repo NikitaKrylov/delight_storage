@@ -160,11 +160,6 @@ class Folder(models.Model):
         else:
             FolderPost.objects.create(post=obj, folder=self)
 
-    def clean(self):
-        if self.user.folders.filter(name=self.name):
-            raise ValueError(_("Папка с таким названием уже существует"))
-        return super().clean()
-
     def remove(self, obj):
         if isinstance(obj, FolderPost):
             obj.delete()

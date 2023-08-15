@@ -161,10 +161,10 @@ class CreateUserFolderView(LoginRequiredMixin, PostFilterFormMixin, CreateView):
     success_url = reverse_lazy("user_folders")
 
     def form_valid(self, form):
-        self.object: Folder = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        messages.success(self.request, "Папка '{}' создана.".format(self.object.name))
+        folder: Folder = form.save(commit=False)
+        folder.user = self.request.user
+        folder.save()
+        messages.success(self.request, "Папка '{}' создана.".format(folder.name))
         return super().form_valid(form)
 
 
