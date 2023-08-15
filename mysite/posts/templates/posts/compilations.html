@@ -42,19 +42,19 @@
 
             <div class="compilations__wrapper swiper-wrapper">
                 {% for post in cluster.queryset %}
-                    {% for image in post.images.all %}
-                        <div class="compilations__slide swiper-slide">
-                            <div class="box-media">
-                                <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
-                                    <div class="compilations__thumbnail box-media__thumbnail">
-                                        <img class="compilations__media box-media__media lazy"
-                                            src="{{image.file.url}}" loading="lazy" alt="" style="width: auto;">
-                                        <div class="box-media__media-overlay"></div>
-                                    </div>
-                                </a>
+                {% for image in post.images.all %}
+                <div class="compilations__slide swiper-slide">
+                    <div class="box-media">
+                        <a class="compilations__link box-media__link" href="{{post.get_absolute_url}}">
+                            <div class="compilations__thumbnail box-media__thumbnail">
+                                <img class="compilations__media box-media__media lazy" src="{{image.file.url}}"
+                                    loading="lazy" alt="">
+                                <div class="box-media__media-overlay"></div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
                 {% endfor %}
             </div>
 

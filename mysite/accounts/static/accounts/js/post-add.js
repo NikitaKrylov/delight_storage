@@ -403,9 +403,9 @@ $(".add-image-container").on("change", ".add-file__input", function (e) {
 
 		$(imageCont)
 			.find("img")
-			.on("load", () =>
-				imageCont.append(createFileInfo(file, this.naturalWidth, this.naturalHeight)),
-			);
+			.on("load", function () {
+				imageCont.append(createFileInfo(file, this.naturalWidth, this.naturalHeight));
+			});
 
 		currFile.querySelector(".add-file__btn").textContent = "Другой файл";
 
