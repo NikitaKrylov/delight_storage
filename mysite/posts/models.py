@@ -1,4 +1,7 @@
+from dataclasses import dataclass
 from datetime import datetime
+from typing import Any, List
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from accounts.models import User, ClientIP
@@ -200,3 +203,5 @@ class UserView(models.Model):
 
     def __str__(self):
         return 'Лайкт от {} -> {}'.format(self.user or self.client_ip, self.post)
+
+

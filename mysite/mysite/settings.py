@@ -14,7 +14,6 @@ import configparser
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
 
-
 config = configparser.ConfigParser(interpolation=None)
 config.read("config.ini")
 
@@ -30,6 +29,8 @@ SECRET_KEY = config["DEFAULT_DJANGO"]["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+USE_CELERY = False
 
 ALLOWED_HOSTS = [
     "192.168.184.100",

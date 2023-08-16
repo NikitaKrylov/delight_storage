@@ -1,6 +1,7 @@
 import os
+
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models import QuerySet
 from django.dispatch import receiver
 from django.urls import reverse

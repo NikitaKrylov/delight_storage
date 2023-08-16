@@ -285,6 +285,6 @@ class PostCompilationsList(PostFilterFormMixin, TemplateView):
         context = super(PostCompilationsList,
                         self).get_context_data(*args, **kwargs)
         context['title'] = "Подборки"
-        context['clusters'] = PostClustering(distance_threshold=0.8).fit(Post.objects.all())
+        context['clusters'] = PostClustering().fit(Post.objects.all())
         return context
 
