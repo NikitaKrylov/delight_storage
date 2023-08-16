@@ -1,13 +1,12 @@
 import os
-from dataclasses import dataclass
 
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager, Permission, GroupManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db.models import QuerySet
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from typing import List, Union, Any
+from typing import List, Union
 from django.utils.translation import gettext_lazy as _
 from notifications.base.models import AbstractNotification
 from mysite.errors import IncorrectDeletionError
@@ -248,16 +247,6 @@ class Notification(AbstractNotification):
 
     def __str__(self):
         return self.verb
-
-
-@dataclass
-class NotificationData:
-    sender_id: int
-    recipient_ids: List[int]
-    n_type: Notification.Types
-    verb: str
-    message: str
-    action_object: Any | None = None
 
 
 class PostComplaint(models.Model):

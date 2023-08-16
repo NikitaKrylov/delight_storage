@@ -2,23 +2,24 @@ from django.db import models
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from celerycore.tasks import send_notifications
+
+from accounts.services.models import NotificationData
+from accounts.services.notifications import notify, MODEL_SEND, MODEL_SEND_BY_CELERY
 from mysite.settings import USE_CELERY
 from posts.models import Post, Comment
-from accounts.models import Notification, NotificationData
+from accounts.models import Notification
 
 
 @receiver(models.signals.post_save, sender=Post)
 def notify_on_post_saved(
         sender, instance: Post, created: bool, raw, using, update_fields, **kwargs
 ):
-    print(instance, update_fields, instance.status == Post.STATUS.PUBLISHED)
     if not instance:
         return
 
     if (update_fields is not None and "status" in update_fields) or created:
         if instance.status == Post.STATUS.PUBLISHED:
-            nd = dict(
+            nd = NotificationData(
                 recipient_ids=list(
                     instance.author.user_subscriptions.filter(status=1).values_list(
                         "subscriber__id", flat=True
@@ -34,13 +35,7 @@ def notify_on_post_saved(
                 )
             )
 
-            if USE_CELERY:
-                send_notifications.delay(nd)
-                print("send use celery")
-
-            else:
-                send_notifications(nd)
-                print("send without celery")
+            notify(nd, MODEL_SEND_BY_CELERY if USE_CELERY else MODEL_SEND)
 
 
 @receiver(models.signals.post_save, sender=Comment)
@@ -62,7 +57,7 @@ def notify_on_comment_replied(
     url = reverse("post", kwargs={"pk": instance.post.pk})
     username = instance.author.username
     post_id = instance.post.id
-    nd = dict(
+    nd = NotificationData(
         sender_id=instance.author.id,
         recipient_ids=[instance.answered.author.id],
         verb="Ответ на комментарий" if instance.answered else "Новый комментарий",
@@ -73,7 +68,4 @@ def notify_on_comment_replied(
         else f'{username} прокомментировал ваш <a style="color: #DCA1F5; text-decoration: underline;" href="{url}">пост {post_id}</a>'
     )
 
-    if USE_CELERY:
-        send_notifications.delay(nd)
-    else:
-        send_notifications(nd)
+    notify(nd, MODEL_SEND_BY_CELERY if USE_CELERY else MODEL_SEND)

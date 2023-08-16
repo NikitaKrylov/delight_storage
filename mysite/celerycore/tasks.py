@@ -1,5 +1,5 @@
 from django.utils import timezone
-from accounts.models import Notification, User, NotificationData
+from accounts.models import Notification, User
 from posts.models import Post
 from celery import shared_task
 from . import celery_app

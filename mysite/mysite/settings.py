@@ -14,7 +14,6 @@ import configparser
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.urls import reverse_lazy
 
-
 config = configparser.ConfigParser(interpolation=None)
 config.read("config.ini")
 
